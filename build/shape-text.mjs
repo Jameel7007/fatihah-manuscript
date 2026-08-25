@@ -29,16 +29,23 @@ const BASELINE0 = 0.196;
 const LINE_PITCH = 0.0875;
 const MARK_DELAY_DP = 0.003; // §17 diacritic delay after the word's base group
 
-// Uthmani text — the eight §3 lines (āyah 7 split at its classic break)
+// Uthmani text — read from the PINNED canonical source (Tanzil Uthmani via
+// build/canonical-fatihah.json, verified by build/verify-text.mjs). The eight §3 lines:
+// āyāt 1–6 one line each, āyah 7 split at its classic break (after the first عَلَيْهِمْ).
+const canon = JSON.parse(readFileSync(join(root, 'build/canonical-fatihah.json'), 'utf8'));
+const A = canon.ayahs;
+if (!Array.isArray(A) || A.length < 7) throw new Error('canonical-fatihah.json missing/short — run build/verify-text.mjs');
+const SPLIT_WORD = 'عَلَيْهِمْ';
+const splitAt = A[6].indexOf(SPLIT_WORD) + SPLIT_WORD.length;
 const LINES = [
-  { ayah: 1, basmalah: true, text: 'بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ' },
-  { ayah: 2, text: 'ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ' },
-  { ayah: 3, text: 'ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ' },
-  { ayah: 4, text: 'مَـٰلِكِ يَوْمِ ٱلدِّينِ' },
-  { ayah: 5, text: 'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ' },
-  { ayah: 6, text: 'ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ' },
-  { ayah: 7, part: 1, text: 'صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ' },
-  { ayah: 7, part: 2, text: 'غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ' },
+  { ayah: 1, basmalah: true, text: A[0] },
+  { ayah: 2, text: A[1] },
+  { ayah: 3, text: A[2] },
+  { ayah: 4, text: A[3] },
+  { ayah: 5, text: A[4] },
+  { ayah: 6, text: A[5] },
+  { ayah: 7, part: 1, text: A[6].slice(0, splitAt) },
+  { ayah: 7, part: 2, text: A[6].slice(splitAt + 1) },
 ];
 
 const fontData = readFileSync(join(root, 'assets/fonts/AmiriQuran-Regular.ttf'));

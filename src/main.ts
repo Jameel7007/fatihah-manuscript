@@ -12,6 +12,7 @@ import { buildRamp, buildStage, type DebugMode } from './look/stage';
 import { createGrade } from './look/grade';
 import { captureFrame, samplePixel, type CaptureFrame } from './qa/capture';
 import { flickProfile, runProbes, runStorm, sampleResidualEnergy, type ProbeReport } from './qa/probes';
+import { WRITING, buildSchedule } from './director/writing';
 
 interface CaptureResult {
   hash: string;
@@ -54,7 +55,8 @@ const spacer = document.querySelector<HTMLDivElement>('#spacer');
 if (!canvas || !hud || !bar || !capEl || !spacer) throw new Error('missing DOM scaffolding');
 
 const coarse = matchMedia('(pointer: coarse)').matches;
-spacer.style.height = isCapture ? '0' : `${(coarse ? 6.5 : 8) * 100 + 100}vh`;
+const flatPage = isCapture || sceneMode === 'proof' || sceneMode === 'reveal';
+spacer.style.height = flatPage ? '0' : `${(coarse ? 6.5 : 8) * 100 + 100}vh`;
 if (isCapture) document.body.classList.add('capture');
 
 const boot = await createRenderer(canvas, {
@@ -77,10 +79,93 @@ if (sceneMode === 'ramp') {
   await runRamp();
 } else if (sceneMode === 'reveal') {
   await runReveal();
+} else if (sceneMode === 'proof') {
+  await runProof();
 } else if (calibrate !== null) {
   await runCalibrate(calibrate);
 } else {
   await runMain();
+}
+
+// --- text proof (?scene=proof) — frozen composition large, dark on white, with āyah
+// numerals; &export=1 additionally posts a 4000-px-wide PNG to the qa-save sink -----------
+
+async function runProof(): Promise<void> {
+  interface PGlyph {
+    x: number;
+    y: number;
+    scale: number;
+    path: string;
+  }
+  interface PLine {
+    ayah: number;
+    part: number;
+    glyphs: PGlyph[];
+    marker: { x: number; y: number; ayah: number } | null;
+  }
+  const comp = (await (await fetch('/text/composition.json')).json()) as {
+    checksums: { svg: string };
+    lines: PLine[];
+  };
+  (canvas as HTMLCanvasElement).style.display = 'none';
+  document.body.style.overflow = 'auto';
+
+  const AR_DIGITS = '٠١٢٣٤٥٦٧٨٩';
+  const arNum = (n: number): string => String(n).split('').map((d) => AR_DIGITS[+d] ?? d).join('');
+
+  const draw = (cv: HTMLCanvasElement | OffscreenCanvas, widthPx: number): void => {
+    const S = widthPx / 0.78;
+    const H = Math.round(S * 1.0);
+    cv.width = widthPx;
+    cv.height = H;
+    const ctx = cv.getContext('2d') as CanvasRenderingContext2D;
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, widthPx, H);
+    const X = (wx: number): number => (wx + 0.39) * S;
+    const Y = (wy: number): number => wy * S;
+    for (const l of comp.lines) {
+      ctx.fillStyle = '#14100C';
+      for (const g of l.glyphs) {
+        ctx.save();
+        ctx.translate(X(g.x), Y(g.y));
+        ctx.scale(g.scale * S, -g.scale * S);
+        ctx.fill(new Path2D(g.path));
+        ctx.restore();
+      }
+      if (l.marker) {
+        ctx.strokeStyle = '#8A6D3F';
+        ctx.lineWidth = 0.0016 * S;
+        ctx.beginPath();
+        ctx.arc(X(l.marker.x), Y(l.marker.y), 0.0063 * S, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = '#8A6D3F';
+        ctx.font = `${0.0085 * S}px "Amiri Quran", "Noto Naskh Arabic", serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(arNum(l.marker.ayah), X(l.marker.x), Y(l.marker.y) + 0.0008 * S);
+      }
+    }
+  };
+
+  const view = document.createElement('canvas');
+  const W = Math.max(360, Math.min(window.innerWidth - 32, 1100));
+  view.style.cssText = 'display:block;margin:24px auto;border:1px solid #999;max-width:calc(100vw - 32px)';
+  draw(view, W * Math.min(devicePixelRatio, 2));
+  view.style.width = `${W}px`;
+  document.body.style.background = '#666';
+  document.body.appendChild(view);
+  hud!.textContent = `text proof — frozen composition · svg ${comp.checksums.svg.slice(0, 12)}`;
+
+  if (q.get('export') !== null) {
+    const hi = document.createElement('canvas');
+    draw(hi, 4000);
+    const blob = await new Promise<Blob | null>((res) => hi.toBlob(res, 'image/png'));
+    if (blob) {
+      const r = await fetch('/qa-save?name=fatihah-proof-4000', { method: 'POST', body: blob });
+      console.info(`[proof] 4000px export posted: ${r.ok}, ${blob.size} bytes`);
+      (window as unknown as { __proofExport?: unknown }).__proofExport = { ok: r.ok, bytes: blob.size };
+    }
+  }
 }
 
 // --- §17 stroke-order reveal check (?scene=reveal) — M2 DoD item -------------------------
@@ -106,13 +191,12 @@ async function runReveal(): Promise<void> {
     lines: Array<{ baseline: number; glyphs: GlyphRec[]; marker: { x: number; y: number } | null }>;
   };
   const lines = comp.lines.slice(0, 2);
-  const glyphs = lines.flatMap((l) => l.glyphs);
-  const orders = glyphs.map((g) => g.order);
-  const minOrder = Math.min(...orders);
-  const maxOrder = Math.max(...orders);
+  const glyphs = lines.flatMap((l, li) => l.glyphs.map((g) => ({ ...g, line: li })));
+  // §17 pacing — shared with M3's ink reveal (director/writing.ts)
+  const { items: sched, span } = buildSchedule(glyphs);
 
   const c2 = document.createElement('canvas');
-  const W = Math.min(window.innerWidth - 32, 1280);
+  const W = Math.max(360, Math.min(window.innerWidth - 32, 1280));
   const H = Math.round(W * 0.34);
   c2.width = W * devicePixelRatio;
   c2.height = H * devicePixelRatio;
@@ -135,20 +219,18 @@ async function runReveal(): Promise<void> {
   const paths = new Map<GlyphRec, Path2D>();
   for (const g of glyphs) paths.set(g, new Path2D(g.path));
 
-  const DURATION = 12; // seconds per loop, then holds 2 s
+  const DURATION = span / WRITING.unitsPerSecond; // pacing-derived loop length
   const fixedT = q.get('rt'); // freeze the reveal at a given second (static, screenshotable)
   const draw = (t: number): void => {
     ctx.clearRect(0, 0, W, H);
-    const loopT = fixedT !== null ? Number(fixedT) : (t / 1000) % (DURATION + 2);
-    // marks pause 1.5 order-units after their word's bases (demo mapping of Δp 0.003)
-    const pos = (g: GlyphRec): number => g.order - minOrder + (g.delay > 0 ? 1.5 : 0);
-    const span = maxOrder - minOrder + 3;
-    const wp = Math.min(1, loopT / DURATION) * span;
+    const loopT = fixedT !== null ? Number(fixedT) : (t / 1000) % (DURATION + 2.5);
+    const wp = loopT * WRITING.unitsPerSecond;
     for (const g of glyphs) {
-      const p0 = pos(g);
-      const f = Math.max(0, Math.min(1, wp - p0)); // within-glyph progress
+      const s = sched.get(g.order);
+      if (!s) continue;
+      const f = Math.max(0, Math.min(1, (wp - s.start) / s.dur)); // within-glyph progress
       if (f <= 0) continue;
-      const wet = wp - p0 < 2.5;
+      const wet = wp - (s.start + s.dur) < WRITING.wetUnits;
       ctx.save();
       // RTL wipe: clip from the glyph bbox's right edge leftward
       const bx = X(g.x + g.ext.x);
@@ -165,7 +247,7 @@ async function runReveal(): Promise<void> {
       ctx.restore();
     }
     for (const l of lines) {
-      if (l.marker && wp >= span - 2) {
+      if (l.marker && wp >= span - 0.5) {
         ctx.strokeStyle = '#8F7440';
         ctx.lineWidth = 0.0016 * S;
         ctx.beginPath();
@@ -175,9 +257,10 @@ async function runReveal(): Promise<void> {
     }
     if (fixedT === null) requestAnimationFrame(draw);
   };
-  requestAnimationFrame(draw);
+  if (fixedT !== null) draw(0); // direct draw — rAF may never fire in throttled panes
+  else requestAnimationFrame(draw);
   hud!.textContent = `stroke-order reveal — lines 1–2 (9 words) · svg ${comp.checksums.svg.slice(0, 12)}`;
-  console.info('[reveal] schedule loaded', { glyphs: glyphs.length, span: maxOrder - minOrder + 1 });
+  console.info('[reveal] schedule loaded', { glyphs: glyphs.length, spanUnits: +span.toFixed(1), seconds: +DURATION.toFixed(1) });
 }
 
 // --- M2 calibration harnesses (?calibrate=bg | key) -------------------------------------

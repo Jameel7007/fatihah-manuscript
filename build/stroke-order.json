@@ -1,7 +1,7 @@
 {
  "note": "§17 per-glyph override table. Writing order = shaped glyph sequence per word (RTL), marks delayed Δp 0.003 after their word. Skeleton-derived priors (vertical-stem top-down, CCW loop entry, within-glyph w direction) are applied at atlas build (M3) — entries here are the schedule + hand-override slots.",
  "checksums": {
-  "svg": "5e268db2b3a21361a14182f366d255625be425572dfbedcccfcc18101da72cd7",
+  "svg": "581f2487383289e27b386a4a4e423bc693437b703eeceb3f45065b9723a6aff2",
   "font": "e2a47644762d16bdfb6d33e0d8db8c6ff30beae84150ef5a705316bbd829455c"
  },
  "markDelayDp": 0.003,
@@ -110,7 +110,7 @@
      "handOverride": null
     },
     {
-     "order": 19,
+     "order": 18,
      "gid": 501,
      "word": 2,
      "kind": "base",
@@ -119,16 +119,16 @@
      "handOverride": null
     },
     {
-     "order": 18,
-     "gid": 1229,
+     "order": 23,
+     "gid": 89,
      "word": 2,
-     "kind": "base",
-     "delay": 0,
+     "kind": "mark",
+     "delay": 0.003,
      "skeletonPriors": "pending-atlas (M3)",
      "handOverride": null
     },
     {
-     "order": 23,
+     "order": 22,
      "gid": 65,
      "word": 2,
      "kind": "mark",
@@ -146,7 +146,7 @@
      "handOverride": null
     },
     {
-     "order": 22,
+     "order": 21,
      "gid": 69,
      "word": 2,
      "kind": "mark",
@@ -164,7 +164,7 @@
      "handOverride": null
     },
     {
-     "order": 20,
+     "order": 19,
      "gid": 347,
      "word": 2,
      "kind": "mark",
@@ -173,7 +173,7 @@
      "handOverride": null
     },
     {
-     "order": 21,
+     "order": 20,
      "gid": 68,
      "word": 2,
      "kind": "mark",
@@ -341,7 +341,7 @@
      "handOverride": null
     },
     {
-     "order": 63,
+     "order": 62,
      "gid": 849,
      "word": 3,
      "kind": "base",
@@ -350,7 +350,7 @@
      "handOverride": null
     },
     {
-     "order": 62,
+     "order": 61,
      "gid": 839,
      "word": 3,
      "kind": "base",
@@ -368,7 +368,7 @@
      "handOverride": null
     },
     {
-     "order": 61,
+     "order": 60,
      "gid": 773,
      "word": 3,
      "kind": "base",
@@ -386,7 +386,7 @@
      "handOverride": null
     },
     {
-     "order": 60,
+     "order": 59,
      "gid": 772,
      "word": 3,
      "kind": "base",
@@ -395,16 +395,16 @@
      "handOverride": null
     },
     {
-     "order": 59,
-     "gid": 1229,
+     "order": 65,
+     "gid": 89,
      "word": 3,
-     "kind": "base",
-     "delay": 0,
+     "kind": "mark",
+     "delay": 0.003,
      "skeletonPriors": "pending-atlas (M3)",
      "handOverride": null
     },
     {
-     "order": 65,
+     "order": 64,
      "gid": 65,
      "word": 3,
      "kind": "mark",
@@ -422,7 +422,7 @@
      "handOverride": null
     },
     {
-     "order": 64,
+     "order": 63,
      "gid": 69,
      "word": 3,
      "kind": "mark",
@@ -743,7 +743,7 @@
      "handOverride": null
     },
     {
-     "order": 75,
+     "order": 74,
      "gid": 501,
      "word": 0,
      "kind": "base",
@@ -752,16 +752,16 @@
      "handOverride": null
     },
     {
-     "order": 74,
-     "gid": 1229,
+     "order": 79,
+     "gid": 89,
      "word": 0,
-     "kind": "base",
-     "delay": 0,
+     "kind": "mark",
+     "delay": 0.003,
      "skeletonPriors": "pending-atlas (M3)",
      "handOverride": null
     },
     {
-     "order": 79,
+     "order": 78,
      "gid": 65,
      "word": 0,
      "kind": "mark",
@@ -779,7 +779,7 @@
      "handOverride": null
     },
     {
-     "order": 78,
+     "order": 77,
      "gid": 69,
      "word": 0,
      "kind": "mark",
@@ -797,7 +797,7 @@
      "handOverride": null
     },
     {
-     "order": 76,
+     "order": 75,
      "gid": 347,
      "word": 0,
      "kind": "mark",
@@ -806,7 +806,7 @@
      "handOverride": null
     },
     {
-     "order": 77,
+     "order": 76,
      "gid": 68,
      "word": 0,
      "kind": "mark",
@@ -983,7 +983,7 @@
      "handOverride": null
     },
     {
-     "order": 94,
+     "order": 93,
      "gid": 1157,
      "word": 0,
      "kind": "base",
@@ -1001,7 +1001,7 @@
      "handOverride": null
     },
     {
-     "order": 93,
+     "order": 92,
      "gid": 1154,
      "word": 0,
      "kind": "base",
@@ -1010,16 +1010,16 @@
      "handOverride": null
     },
     {
-     "order": 92,
-     "gid": 1229,
+     "order": 95,
+     "gid": 89,
      "word": 0,
-     "kind": "base",
-     "delay": 0,
+     "kind": "mark",
+     "delay": 0.003,
      "skeletonPriors": "pending-atlas (M3)",
      "handOverride": null
     },
     {
-     "order": 95,
+     "order": 94,
      "gid": 65,
      "word": 0,
      "kind": "mark",
