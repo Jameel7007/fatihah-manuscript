@@ -9,33 +9,33 @@
   "frames": [
     {
       "id": "R-0.00-T1",
-      "milestone": "M1 v1.3.1 (tightened: 82% wrapped, 4.2 turns, draped one-diameter tongue)",
+      "milestone": "M1 v1.3.2 (extent-driven unroll dolly)",
       "url": "/?capture=0.0&tier=1",
       "sha256": {
-        "webgpu": "e942e6d1fa69ce68544aae6f524cd373af0c1480ed1de00ead48c40635d0b77c",
+        "webgpu": "3bf805829194c773befdc5ab9f6d191a632bb2dad9de1db88418458d793a5d09",
         "webgl2": "pending CI re-bless — dev pane throttling stalls webgl2 captures; cross-backend field equivalence proven by probes"
       },
-      "verified": "2026-08-25, webgpu hash-identical across two cold loads"
+      "verified": "2026-08-25, webgpu hash-identical across two cold loads (post-dolly)"
     },
     {
       "id": "R-0.21-T1",
-      "milestone": "M1 v1.3.1",
+      "milestone": "M1 v1.3.2",
       "url": "/?capture=0.21&tier=1",
       "sha256": {
-        "webgpu": "2e04125c83da6b7b100720b0a64474e19130c6509ccdd00b9cfa770d024e9d22",
+        "webgpu": "012e512b3658cc9a8b27214acad7bcd65d71f5eba4e0774fcfb8fb77d2e4a2b5",
         "webgl2": "pending CI re-bless (see R-0.00 note)"
       },
-      "verified": "2026-08-25"
+      "verified": "2026-08-25 (post-dolly)"
     },
     {
       "id": "R-0.34-T1",
-      "milestone": "M1 v1.3.1",
+      "milestone": "M1 v1.3.2",
       "url": "/?capture=0.34&tier=1",
       "sha256": {
-        "webgpu": "5950edb640b0cc84dbedb004afa206cfd0d6c048d8ff7e504b0ca69c1e79a484",
+        "webgpu": "8058259842db6853f2e6033a16ed12950dcd4d7f9a224eee58d6fa09a3a6c90f",
         "webgl2": "pending CI re-bless (see R-0.00 note)"
       },
-      "verified": "2026-08-25"
+      "verified": "2026-08-25 (post-dolly)"
     },
     {
       "id": "R-0.50-T1 (M0 gray-box, superseded by M1 field)",
@@ -50,16 +50,53 @@
   ],
   "probes": {
     "url": "/?probe=1&p={0.0|0.21|0.34}&tier=1[&backend=webgl2]",
-    "tolerance": { "position": 0.0015, "normalDeg": 2.0 },
+    "tolerance": {
+      "position": 0.0015,
+      "normalDeg": 2.0
+    },
     "results": {
-      "webgpu": { "p0.00": { "maxPos": "1.1e-7", "maxNormDeg": 1.08 }, "p0.21": { "maxPos": "7.7e-8", "maxNormDeg": 1.14 }, "p0.34": { "maxPos": "1.5e-7", "maxNormDeg": 1.1 }, "p0.38": { "contract": "0.0153 / 0.0136" } },
-      "webgl2": { "p0.00 (v1.3 pose)": { "maxPos": "2.3e-7", "maxNormDeg": 1.18 } }
+      "webgpu": {
+        "p0.00": {
+          "maxPos": "1.1e-7",
+          "maxNormDeg": 1.08
+        },
+        "p0.21": {
+          "maxPos": "7.7e-8",
+          "maxNormDeg": 1.14
+        },
+        "p0.34": {
+          "maxPos": "1.5e-7",
+          "maxNormDeg": 1.1
+        },
+        "p0.38": {
+          "contract": "0.0153 / 0.0136"
+        }
+      },
+      "webgl2": {
+        "p0.00 (v1.3 pose)": {
+          "maxPos": "2.3e-7",
+          "maxNormDeg": 1.18
+        }
+      }
     },
     "derived_model_values": {
-      "p0.00": { "turns": 4.2, "topRollOuterR": 0.0468, "botTipLift": 0.0182 },
-      "p0.21": { "turns": 2.02 },
-      "p0.34": { "turns": 0.276, "botTipLift": 0.0156 },
-      "p0.38": { "turns": 0.121, "topTipLift": 0.0153, "botTipLift": 0.0136 }
+      "p0.00": {
+        "turns": 4.2,
+        "topRollOuterR": 0.0468,
+        "botTipLift": 0.0182
+      },
+      "p0.21": {
+        "turns": 2.02
+      },
+      "p0.34": {
+        "turns": 0.276,
+        "botTipLift": 0.0156
+      },
+      "p0.38": {
+        "turns": 0.121,
+        "topTipLift": 0.0153,
+        "botTipLift": 0.0136
+      }
     },
     "verified": "2026-08-25 (v1.3.1 tightened) — GPU field == CPU oracle to float precision; terminal residual-curl contract exact (bottom 0.0136)"
   },

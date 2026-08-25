@@ -143,7 +143,7 @@
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.3.1 · tightened rolled start</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.3.2 · extent-driven unroll dolly</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -744,6 +744,7 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
   <div class="tw"><table>
     <thead><tr><th>Camera subsystem</th><th class="n">Value</th></tr></thead>
     <tbody>
+      <tr><td>Extent-driven dolly (states 1–2, v1.3.2)</td><td class="n">across p &lt; 0.47 the camera DISTANCE comes from the sheet's posed extent, not the anchors: sample the pose (5 u × 33 v via the CPU oracle, tilt applied), closed-form smallest d along the anchors' ¾ direction such that every point projects inside the viewport — d ≥ r_z + |r_xy|/(T·(1−m)) per point, authored margin m = 0.09 (realizes ≥ 5% after sampling/smoothing slack) · per-aspect curve, 64 samples over p ∈ [0, 0.5], running-max (never dollies back in) + 2× Gaussian smooth floored at the raw constraint (the ease never eats the margin) · blends to the anchor distances over [0.38, 0.47] (E1) · direction, look-at, focal, and trail unchanged · portrait aspects phase in a side-overflow allowance (up to 35%/side by p ≈ 0.25, E1 from 0.10): the roll fits at p = 0, the opening sheet crops the sides per §12's mobile arc, vertical stays strict</td></tr>
       <tr><td>Pointer / gyro parallax</td><td class="n">orbit gimbal ±0.35°, spring ω 12.6 rad/s, ζ 0.9; applied after spline, before look-at damper; off in reduced motion</td></tr>
       <tr><td>Depth of field</td><td class="n">none (no DoF pass) — dust quieting done by size + opacity falloff (§15); saves a full-res CoC chain on mobile</td></tr>
       <tr><td>Near / far</td><td class="n">0.05 / 4.0 · reversed-Z on WebGPU (default), logarithmic off</td></tr>
@@ -1299,7 +1300,7 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
   </div>
 
   <p style="margin-top:34px;border-top:1px solid var(--line);padding-top:18px;font-size:12.5px;color:var(--faint)">
-  Al-Fātiḥah 3D Manuscript · specification v1.3.1 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
+  Al-Fātiḥah 3D Manuscript · specification v1.3.2 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
   authoritative and untouchable · no bloom, no aura, no spectacle — the light does the reverence.</p>
 </section>
 
@@ -1373,6 +1374,13 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     (tip 0.018); a = π at the terminal keeps the residual-curl contract exact (probe 0.0153 / 0.0136).
     p = 0 camera in to d ≈ 0.92. Probes pass at p = 0 / 0.21 / 0.34 / 0.38 (≤ 1.5e-7, ≤ 1.14°);
     turns 4.2 → 2.0 (p 0.21) → 0.28 (p 0.34).</li>
+    <li><b>v1.3.2 — extent-driven unroll dolly (M1 exit review)</b> — across states 1–2 the camera
+    distance is a pure function of the sheet's posed extent (closed-form viewport fit along the ¾
+    direction; §9 subsystem table), replacing anchor-interpolated distances that let the opening
+    sheet outgrow the frame near p ≈ 0.20. Constant framing share with authored 9% margin, running-max
+    + smoothed for a slow pull-back, blended to anchors over [0.38, 0.47]. Portrait aspects phase in
+    §12's side-overflow (roll fits at p = 0; the opening sheet crops the sides). Verified at
+    p ∈ {0, 0.10, 0.20, 0.30, 0.38} on 1440×900 and 390×844; R-frames re-blessed.</li>
   </ol>
 </section>
 

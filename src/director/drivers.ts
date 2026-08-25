@@ -9,6 +9,13 @@ export function poseTiltDeg(p: number): number {
   return settled * (1 - E2(span(p, 0.54, 0.64)));
 }
 
+/** World transform of the sheet root: tilt pivoted at the moving top curl line. Single
+ *  source of truth — used by the scene (sheetRoot) and by the camera's extent sampler. */
+export function poseTransform(p: number, zTopCurl: number): { rotX: number; offY: number; offZ: number } {
+  const t = (poseTiltDeg(p) * Math.PI) / 180;
+  return { rotX: t, offY: zTopCurl * Math.sin(t), offZ: zTopCurl * (1 - Math.cos(t)) };
+}
+
 /** State label for the HUD — ranges from §1 (overlaps resolve to the later state). */
 const STATES: ReadonlyArray<readonly [string, number]> = [
   ['1 · rolled', 0.0],

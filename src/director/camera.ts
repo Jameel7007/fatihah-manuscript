@@ -1,9 +1,26 @@
 // Camera rig — §9. Position and look-at ride centripetal Catmull-Rom splines through the
 // anchor table; the look-at consumes a separately lagged p (τ = 80 ms) so gaze trails the
-// dolly. M0 maps p linearly inside each anchor segment; per-segment feel is tuned in M4,
-// which owns the pose-tolerance validation.
+// dolly. Across states 1–2 the DISTANCE is not the anchors' — it is driven by the sheet's
+// actual posed extent (§9 v1.3.2): a closed-form fit of the sampled sheet bounds inside the
+// viewport at constant margin, along the anchors' ¾ direction, precomputed over p per
+// aspect, running-max'd and Gaussian-smoothed so it reads as one slow pull-back. The rule
+// blends back to the anchor distances across [0.38, 0.47]; states 3+ are pure anchors.
+// M4 owns the final feel pass and the spec-table sync.
 
 import { CatmullRomCurve3, PerspectiveCamera, Vector3 } from 'three/webgpu';
+import { evalDeform, pchip } from '../field/deform';
+import { cpuPose } from '../field/cpuPose';
+import { poseTransform } from './drivers';
+import { E1, clamp01 } from './easing';
+
+// Authored per-side margin. Sampling interval, curve smoothing, and PCHIP interval lag eat
+// ~3–4% of it, so 0.09 authored realizes ≥5% on screen everywhere (verified at p 0.20 on
+// both aspects); d(0) grows ~3% vs the approved frame — imperceptible.
+const DOLLY_MARGIN = 0.09;
+const DOLLY_P_MAX = 0.5;
+const DOLLY_SAMPLES = 64;
+const BLEND_START = 0.38;
+const BLEND_END = 0.47;
 
 interface Anchor {
   p: number;
@@ -75,10 +92,39 @@ export class CameraRig {
   );
   private pLook = 0;
   private readonly lookTarget = new Vector3();
+  private readonly anchorPos = new Vector3();
+  private readonly lookNow = new Vector3();
+  private readonly dir = new Vector3();
+
+  private dollyCurve: ((p: number) => number) | null = null;
+  private dollyAspect = 0;
 
   update(p: number, dt: number): void {
     this.pLook += (p - this.pLook) * (dt > 0 ? 1 - Math.exp(-dt / 0.08) : 0);
-    this.posCurve.getPoint(curveT(p), this.camera.position);
+    this.posCurve.getPoint(curveT(p), this.anchorPos);
+    this.lookCurve.getPoint(curveT(p), this.lookNow);
+
+    if (p < BLEND_END) {
+      if (this.dollyAspect !== this.camera.aspect) {
+        this.dollyCurve = buildDollyCurve(this.camera.aspect, this.posCurve, this.lookCurve);
+        this.dollyAspect = this.camera.aspect;
+      }
+      const dAnchor = this.anchorPos.distanceTo(this.lookNow);
+      const dRule = this.dollyCurve ? this.dollyCurve(Math.min(p, DOLLY_P_MAX)) : dAnchor;
+      const blend = E1(clamp01((p - BLEND_START) / (BLEND_END - BLEND_START)));
+      const d = dRule + (dAnchor - dRule) * blend;
+      (window as unknown as { __dolly?: unknown }).__dolly = {
+        p: +p.toFixed(3),
+        dRule: +dRule.toFixed(3),
+        dAnchor: +dAnchor.toFixed(3),
+        blend: +blend.toFixed(3),
+      };
+      this.dir.copy(this.anchorPos).sub(this.lookNow).normalize();
+      this.camera.position.copy(this.lookNow).addScaledVector(this.dir, d);
+    } else {
+      this.camera.position.copy(this.anchorPos);
+    }
+
     this.lookCurve.getPoint(curveT(this.pLook), this.lookTarget);
     this.camera.lookAt(this.lookTarget);
     this.camera.fov = (2 * Math.atan(12 / focalAt(p)) * 180) / Math.PI;
@@ -90,4 +136,84 @@ export class CameraRig {
     this.pLook = p;
     this.update(p, 0);
   }
+}
+
+/** Closed-form extent fit: smallest distance along `dir` from the look point such that all
+ *  sampled sheet points project inside the viewport with DOLLY_MARGIN per side. In the
+ *  camera basis (z along dir), each point demands d ≥ r_z + |r_xy| / (T·(1 − margin)). */
+function buildDollyCurve(
+  aspect: number,
+  posCurve: CatmullRomCurve3,
+  lookCurve: CatmullRomCurve3,
+): (p: number) => number {
+  const ps: number[] = [];
+  const ds: number[] = [];
+  const pos = new Vector3();
+  const look = new Vector3();
+  const dir = new Vector3();
+  const xAxis = new Vector3();
+  const yAxis = new Vector3();
+  const up = new Vector3(0, 1, 0);
+  const rel = new Vector3();
+
+  for (let i = 0; i < DOLLY_SAMPLES; i++) {
+    const p = (i / (DOLLY_SAMPLES - 1)) * DOLLY_P_MAX;
+    const d0 = evalDeform(p);
+    const tr = poseTransform(p, d0.zTopCurl);
+    const cosT = Math.cos(tr.rotX);
+    const sinT = Math.sin(tr.rotX);
+
+    posCurve.getPoint(curveT(p), pos);
+    lookCurve.getPoint(curveT(p), look);
+    dir.copy(pos).sub(look).normalize();
+    xAxis.crossVectors(up, dir).normalize();
+    yAxis.crossVectors(dir, xAxis);
+
+    const Ty = 12 / focalAt(p);
+    const Tx = Ty * aspect;
+    // Portrait aspects: fitting a ¾-view sheet's full diagonal into a phone's width forces
+    // absurd distances. §12's own mobile arc is "roll floats (fits) → sheet overflows the
+    // sides (intentional)" — so on aspect < 1 a side-overflow allowance phases in with the
+    // unroll: the roll fits fully at p = 0, the opening sheet may crop up to 35%/side by
+    // p ≈ 0.25. Vertical stays strict; desktop (aspect ≥ 1) is unaffected.
+    const sideAllow = aspect < 1 ? 0.35 * E1(clamp01((p - 0.1) / 0.15)) : 0;
+    const kx = Tx * (1 - DOLLY_MARGIN + sideAllow);
+    const ky = Ty * (1 - DOLLY_MARGIN);
+
+    let dFit = 0.2;
+    for (const u of [-0.5, -0.25, 0, 0.25, 0.5]) {
+      for (let j = 0; j <= 32; j++) {
+        const q = cpuPose(u, j / 32, d0);
+        // object → world (tilt about the moving curl line)
+        const wy = q.y * cosT - q.z * sinT + tr.offY;
+        const wz = q.y * sinT + q.z * cosT + tr.offZ;
+        rel.set(q.x - look.x, wy - look.y, wz - look.z);
+        const rx = rel.dot(xAxis);
+        const ry = rel.dot(yAxis);
+        const rz = rel.dot(dir);
+        dFit = Math.max(dFit, rz + Math.abs(rx) / kx, rz + Math.abs(ry) / ky);
+      }
+    }
+    ps.push(p);
+    ds.push(dFit);
+  }
+
+  // one slow pull-back: never dolly back in mid-unroll, then smooth the constraint kinks —
+  // and floor the smoothed curve at the raw constraint so the ease never eats the margin
+  for (let i = 1; i < ds.length; i++) ds[i] = Math.max(ds[i] ?? 0, ds[i - 1] ?? 0);
+  const raw = [...ds];
+  const K = [0.06, 0.24, 0.4, 0.24, 0.06];
+  for (let pass = 0; pass < 2; pass++) {
+    const src = [...ds];
+    for (let i = 0; i < ds.length; i++) {
+      let acc = 0;
+      for (let k = -2; k <= 2; k++) {
+        const idx = Math.min(ds.length - 1, Math.max(0, i + k));
+        acc += (src[idx] ?? 0) * (K[k + 2] ?? 0);
+      }
+      ds[i] = acc;
+    }
+  }
+  for (let i = 0; i < ds.length; i++) ds[i] = Math.max(ds[i] ?? 0, raw[i] ?? 0);
+  return pchip(ps, ds);
 }

@@ -2,7 +2,7 @@ import { REVISION } from 'three/webgpu';
 import { createRenderer } from './core/renderer';
 import { DPR_CAP, detectTier } from './core/tiers';
 import { CameraRig } from './director/camera';
-import { poseTiltDeg, stateLabel } from './director/drivers';
+import { poseTransform, stateLabel } from './director/drivers';
 import { ScrollDriver } from './director/scroll';
 import { evalDeform } from './field/deform';
 import { Field } from './field/field';
@@ -107,10 +107,9 @@ async function runMain(): Promise<void> {
     field.run(renderer);
     // Pose tilt pivots about the moving top curl line, not the origin — with the rolled
     // mass far from origin (v1.3 start pose), an origin pivot would swing the composition.
-    const tilt = (poseTiltDeg(p) * Math.PI) / 180;
-    const zPivot = d.zTopCurl;
-    sheetRoot.rotation.x = tilt;
-    sheetRoot.position.set(0, zPivot * Math.sin(tilt), zPivot * (1 - Math.cos(tilt)));
+    const tr = poseTransform(p, d.zTopCurl);
+    sheetRoot.rotation.x = tr.rotX;
+    sheetRoot.position.set(0, tr.offY, tr.offZ);
   };
 
   // ---- capture / probe mode (deterministic, sim off) ----
@@ -120,6 +119,11 @@ async function runMain(): Promise<void> {
     scroll.forced = p;
     scroll.update(1 / 60);
     rig.snap(p);
+    (window as unknown as { __cam?: unknown }).__cam = {
+      pos: rig.camera.position.toArray().map((x) => +x.toFixed(4)),
+      fov: +rig.camera.fov.toFixed(2),
+      aspect: +rig.camera.aspect.toFixed(4),
+    };
     try {
       // Render through the same loop machinery as live mode; the loop keeps running while
       // async readbacks are in flight — WebGL fence-based readbacks need a pumping queue.
