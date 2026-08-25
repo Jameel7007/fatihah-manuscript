@@ -1,7 +1,16 @@
 // p-drivers: every animated quantity is a pure function of the smoothed scroll uniform.
 // M0 carries only the drivers the gray-box needs; the full DeformUBO set lands with M1.
 
-import { E2, span } from './easing';
+import { E1, E2, span } from './easing';
+
+/** Environment yaw in degrees — §10 schedule: +12° through the unroll, sweeping to −38° as
+ *  the text rises so the window reflection travels along the gold (idle drift is M6's). */
+export function envYawDeg(p: number): number {
+  if (p < 0.36) return 12;
+  if (p < 0.6) return 12 * (1 - E1(span(p, 0.36, 0.6)));
+  if (p < 0.86) return -20 * E1(span(p, 0.6, 0.86));
+  return -20 - 18 * E1(span(p, 0.86, 1));
+}
 
 /** Sheet pose tilt in degrees — §4/§10: +14° → +6° over [0.06, 0.36], → 0° over [0.54, 0.64]. */
 export function poseTiltDeg(p: number): number {

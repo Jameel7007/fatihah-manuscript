@@ -2,7 +2,7 @@ import { Color, PerspectiveCamera, REVISION } from 'three/webgpu';
 import { createRenderer } from './core/renderer';
 import { DPR_CAP, detectTier } from './core/tiers';
 import { CameraRig } from './director/camera';
-import { poseTransform, stateLabel } from './director/drivers';
+import { envYawDeg, poseTransform, stateLabel } from './director/drivers';
 import { ScrollDriver } from './director/scroll';
 import { evalDeform } from './field/deform';
 import { Field } from './field/field';
@@ -88,7 +88,8 @@ if (sceneMode === 'ramp') {
 async function runCalibrate(mode: string): Promise<void> {
   const sil = buildSilhouette();
   const field = new Field(sil);
-  const { scene, sheetRoot, key } = buildStage(field, sil, debugMode);
+  const { scene, sheetRoot, key } = buildStage(renderer, field, sil, debugMode);
+  if (calibrate === 'key') scene.environmentIntensity = 0; // card under key alone
   const size = fitViewport();
 
   const cam = new PerspectiveCamera((2 * Math.atan(12 / 40) * 180) / Math.PI, size.w / size.h, 0.05, 4);
@@ -180,7 +181,7 @@ async function runMain(): Promise<void> {
   const sil = buildSilhouette();
   const residual = new Residual();
   const field = new Field(sil);
-  const { scene, sheetRoot } = buildStage(field, sil, debugMode);
+  const { scene, sheetRoot } = buildStage(renderer, field, sil, debugMode);
   const rig = new CameraRig();
   const scroll = new ScrollDriver();
   const size = fitViewport();
@@ -207,6 +208,7 @@ async function runMain(): Promise<void> {
     const tr = poseTransform(p, d.zTopCurl);
     sheetRoot.rotation.x = tr.rotX;
     sheetRoot.position.set(0, tr.offY, tr.offZ);
+    scene.environmentRotation.y = (envYawDeg(p) * Math.PI) / 180;
   };
 
   // ---- capture / probe mode (deterministic, sim off) ----

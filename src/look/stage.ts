@@ -15,7 +15,6 @@ import {
   DirectionalLight,
   DoubleSide,
   Group,
-  HemisphereLight,
   Mesh,
   MeshBasicNodeMaterial,
   MeshPhysicalNodeMaterial,
@@ -27,10 +26,32 @@ import {
   Sphere,
   Vector3,
 } from 'three/webgpu';
-import { attribute, faceDirection, ivec2, textureLoad, transformNormalToView, vec3, vec4, vertexIndex } from 'three/tsl';
+import {
+  Fn,
+  attribute,
+  color,
+  faceDirection,
+  float,
+  interleavedGradientNoise,
+  ivec2,
+  screenCoordinate,
+  texture,
+  textureLoad,
+  transformNormalToView,
+  modelWorldMatrix,
+  positionWorld,
+  uniform,
+  varying,
+  vec2,
+  vec3,
+  vec4,
+  vertexIndex,
+  vogelDiskSample,
+} from 'three/tsl';
 import type { Field } from '../field/field';
 import { GRID_H, GRID_W, type SilhouetteData } from '../field/silhouette';
 import { THICKNESS } from '../field/deform';
+import { buildEnvironment, buildFiberTexture, buildUtilTexture } from './textures';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type N = any;
@@ -54,25 +75,84 @@ export interface Stage {
   key: SpotLight;
 }
 
-export function buildStage(field: Field, sil: SilhouetteData, debug: DebugMode): Stage {
+// key world position — shared by the light and the translucency term
+const KEY_POS: [number, number, number] = [-0.55, 1.3, 0.85];
+
+/** §8 PCSS — contact-hardening filter on the key's shadow map. Blocker search (16 Vogel
+ *  taps, IGN-rotated) estimates the average occluder depth; the penumbra radius follows
+ *  lightSize·(zR − zB)/zB, clamped [1, 28] texels; 25-tap Vogel PCF at that radius. Depth
+ *  ratios use the shadow map's nonlinear depth — the near/far span is tight (0.6–2.6), and
+ *  the residual distortion folds into the tuned light-size constant. */
+const MAP_SIZE = 2048;
+const LIGHT_SIZE_UV = 0.05;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const pcssFilter: any = Fn(({ depthTexture, shadowCoord }: { depthTexture: never; shadowCoord: N }) => {
+  const texel = 1 / MAP_SIZE;
+  const zRec: N = shadowCoord.z;
+  const phi: N = interleavedGradientNoise(screenCoordinate.xy).mul(Math.PI * 2);
+
+  // blocker search
+  const searchR = LIGHT_SIZE_UV * 0.5;
+  let blockerSum: N = float(0);
+  let blockerCnt: N = float(0);
+  for (let i = 0; i < 16; i++) {
+    const d: N = (texture as N)(depthTexture, shadowCoord.xy.add((vogelDiskSample as N)(i, 16, phi).mul(searchR))).r;
+    const isB: N = d.lessThan(zRec).select(float(1), float(0));
+    blockerSum = blockerSum.add(d.mul(isB));
+    blockerCnt = blockerCnt.add(isB);
+  }
+  const zB: N = blockerSum.div(blockerCnt.max(1));
+  const penumbra: N = zRec.sub(zB).div(zB.max(1e-4)).mul(LIGHT_SIZE_UV).mul(8.0);
+  const radius: N = penumbra.clamp(texel, 28 * texel);
+
+  // 25-tap PCF at the penumbra radius
+  let lit: N = float(0);
+  for (let i = 0; i < 25; i++) {
+    lit = lit.add(
+      (texture as N)(depthTexture, shadowCoord.xy.add((vogelDiskSample as N)(i, 25, phi).mul(radius))).compare(zRec),
+    );
+  }
+  const pcf: N = lit.mul(1 / 25);
+  // no blockers found → fully lit
+  return blockerCnt.lessThan(0.5).select(float(1), pcf);
+});
+
+export function buildStage(
+  renderer: import('three/webgpu').WebGPURenderer,
+  field: Field,
+  sil: SilhouetteData,
+  debug: DebugMode,
+): Stage {
   const scene = new Scene();
   scene.background = new Color().setRGB(BG_LINEAR[0], BG_LINEAR[1], BG_LINEAR[2]);
+
+  // §8 authored environment (procedural bake) — replaces the M1 hemisphere stand-in.
+  // Yaw schedule is driven per frame from §10 via scene.environmentRotation.
+  scene.environment = buildEnvironment(renderer);
+  scene.environmentIntensity = 0.32;
+
+  const maps = { fiber: buildFiberTexture(renderer), util: buildUtilTexture(renderer) };
 
   const sheetRoot = new Group();
   scene.add(sheetRoot);
 
-  sheetRoot.add(buildSheet(field, debug));
-  sheetRoot.add(buildRibbon(field, sil, debug));
+  sheetRoot.add(buildSheet(field, maps, debug));
+  sheetRoot.add(buildRibbon(field, sil, maps, debug));
 
-  // §8 rig — positions, colors, and ratios per the table; the key cone stays widened to 26°
-  // for the rolled states (the spec's 24° is restated per-state when PCSS lands). Shadows,
-  // HDRI environment, and the rim's state schedule are the remaining M2 lighting work.
+  // §8 rig
   const key = new SpotLight(0xffd2a0, KEY_INTENSITY, 0, (26 * Math.PI) / 180, 0.5, 2);
-  key.position.set(-0.55, 1.3, 0.85);
+  key.position.set(...KEY_POS);
   key.target.position.set(0, 0.04, 0.2);
+  key.castShadow = true;
+  key.shadow.mapSize.set(MAP_SIZE, MAP_SIZE);
+  key.shadow.camera.near = 0.6;
+  key.shadow.camera.far = 2.6;
+  key.shadow.bias = -0.00015;
+  key.shadow.normalBias = 0.0005;
+  (key.shadow as unknown as { filterNode: unknown }).filterNode = pcssFilter;
   scene.add(key, key.target);
 
-  const fill = new DirectionalLight(0xc7d8ee, 0.13 * 2.2); // §8 ratio 0.13 vs key ≈ 1.0 (directional-vs-spot units differ; ratio re-anchored at HDRI time)
+  const fill = new DirectionalLight(0xc7d8ee, 0.13 * 2.2); // ratio re-anchored against the env at grade time
   fill.position.set(0.85, 0.55, -0.45);
   scene.add(fill);
 
@@ -81,19 +161,24 @@ export function buildStage(field: Field, sil: SilhouetteData, debug: DebugMode):
   rim.target.position.set(0, 0, 0);
   scene.add(rim, rim.target);
 
-  // stand-in ambience until the authored HDRI lands (then removed)
-  const hemi = new HemisphereLight(0x8a7a5c, 0x14100a, 0.35);
-  scene.add(hemi);
-
   return { scene, sheetRoot, key };
 }
 
-/** Shared vertex-stage fetch + debug/material wiring. `kind` picks the §7 material row. */
+interface Maps {
+  fiber: import('three/webgpu').Texture;
+  util: import('three/webgpu').Texture;
+}
+
+/** Shared vertex-stage fetch + debug/material wiring. `kind` picks the §7 material row.
+ *  `suv` is the sheet uv as a varying (computed in the vertex stage alongside the fetch). */
 function fieldMaterial(
   field: Field,
+  maps: Maps,
   debug: DebugMode,
   positionNode: N,
   normalObj: N,
+  tangentObj: N,
+  suv: N,
   kind: 'parchment' | 'edge',
 ): MeshBasicNodeMaterial | MeshStandardNodeMaterial | MeshPhysicalNodeMaterial {
   if (debug === 'normal' || debug === 'matcap') {
@@ -126,17 +211,61 @@ function fieldMaterial(
     m.normalNode = transformNormalToView(normalObj).mul(faceDirection);
     return m;
   }
-  // §7 parchment recto base: color/rough/sheen; fiber maps, verso tint, wear, and the wrap
-  // translucency land with the texture + PCSS passes of M2
+
+  // §7 parchment: recto/verso via face direction, fiber-perturbed normals, macro wear,
+  // analytic edge darkening, and the thin-surface wrap translucency (§7 pseudocode).
   const m = new MeshPhysicalNodeMaterial();
   m.side = DoubleSide;
-  m.color.set('#E6D5AF');
-  m.roughness = 0.62;
+
+  const fib: N = texture(maps.fiber, suv);
+  const det: N = texture(maps.fiber, suv.mul(6.0));
+  const util: N = texture(maps.util, suv);
+  const fn: N = fib.xy.add(det.xy.mul(0.5)); // fiber slope
+  const height: N = fib.z.mul(0.7).add(det.z.mul(0.3));
+  const rmod: N = fib.w.mul(0.65).add(det.w.mul(0.35));
+
+  const fd: N = faceDirection;
+  const backAmt: N = fd.mul(-0.5).add(0.5); // 1 on verso
+
+  // albedo: base → edge-zone tint → macro discoloration ±6% → blotch → stains → verso
+  const dEdge: N = suv.x.min(float(1).sub(suv.x)).mul(0.78).min(suv.y.min(float(1).sub(suv.y)));
+  const edgeZone: N = float(1).sub(dEdge.div(0.07).clamp(0, 1));
+  let col: N = color('#E6D5AF');
+  col = col.mix(color('#C9AE7E'), edgeZone.mul(0.55));
+  col = col.mul(util.x.sub(0.5).mul(0.12).add(1));
+  col = col.mul(float(1).sub(util.y.mul(0.05)));
+  col = col.mul(float(1).sub(util.w.mul(0.12)));
+  col = col.mix(color('#DCC79A').mul(util.z.sub(0.5).mul(0.1).add(1)), backAmt.mul(0.85));
+  m.colorNode = col;
+
+  // roughness: §7 0.62 ± 0.14 via fiber mod; verso +0.09
+  m.roughnessNode = rmod.sub(0.5).mul(0.28).add(0.62).add(backAmt.mul(0.09));
+
   m.sheen = 0.18;
   m.sheenColor.set('#E8DCC0');
   m.sheenRoughness = 0.55;
+
+  // fiber normal perturbation in the field TBN (§7 micro 0.55)
+  const Nv: N = transformNormalToView(normalObj).mul(fd);
+  const Tv: N = transformNormalToView(tangentObj);
+  const Bv: N = Nv.cross(Tv);
+  const k = 0.00055; // §7 micro 0.55 at parchment scale — tuned against 41 cm sheet analog
+  m.normalNode = Nv.add(Tv.mul(fn.x.mul(k))).add(Bv.mul(fn.y.mul(k))).normalize();
+
+  // thin-surface wrap translucency — §7: light from behind glows through, gated by local
+  // thickness (fiber height + macro). Emissive-approximated until it joins the shadowed
+  // light loop; the curl states are where it reads (inner wraps lighting up amber).
+  const keyPos: N = uniform(vec3(...KEY_POS));
+  const nW: N = modelWorldMatrix.mul(vec4(normalObj, 0)).xyz.normalize().mul(fd);
+  const L: N = keyPos.sub(positionWorld).normalize();
+  const backLit: N = nW.mul(-1).dot(L).add(0.4).div(1.4).clamp(0, 1);
+  const thick: N = height.mul(0.6).add(util.x.mul(0.4));
+  m.emissiveNode = color('#B08D52')
+    .mul(backLit.mul(backLit))
+    .mul(float(1).sub(thick).mul(0.18))
+    .mul(2.2);
+
   m.positionNode = positionNode;
-  m.normalNode = transformNormalToView(normalObj).mul(faceDirection);
   return m;
 }
 
@@ -147,7 +276,7 @@ function matcapShade(n: N): N {
   return vec3(l1.mul(l1).add(l2));
 }
 
-function buildSheet(field: Field, debug: DebugMode): Mesh {
+function buildSheet(field: Field, maps: Maps, debug: DebugMode): Mesh {
   const count = GRID_W * GRID_H;
   const geo = new BufferGeometry();
   geo.setAttribute('position', new BufferAttribute(new Float32Array(count * 3), 3));
@@ -166,16 +295,21 @@ function buildSheet(field: Field, debug: DebugMode): Mesh {
 
   const vi: N = vertexIndex.toInt();
   const tj: N = vi.div(GRID_W);
-  const texel: N = ivec2(vi.sub(tj.mul(GRID_W)), tj);
+  const ti: N = vi.sub(tj.mul(GRID_W));
+  const texel: N = ivec2(ti, tj);
   const pos: N = textureLoad(field.posRT.texture, texel).xyz;
   const nrm: N = textureLoad(field.nrmRT.texture, texel).xyz;
+  const tan: N = textureLoad(field.tanRT.texture, texel).xyz;
+  const suv: N = varying(vec2(ti.toFloat().div(GRID_W - 1), tj.toFloat().div(GRID_H - 1)));
 
-  const mesh = new Mesh(geo, fieldMaterial(field, debug, pos, nrm, 'parchment'));
+  const mesh = new Mesh(geo, fieldMaterial(field, maps, debug, pos, nrm, tan, suv, 'parchment'));
   mesh.frustumCulled = false;
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
   return mesh;
 }
 
-function buildRibbon(field: Field, sil: SilhouetteData, debug: DebugMode): Mesh {
+function buildRibbon(field: Field, sil: SilhouetteData, maps: Maps, debug: DebugMode): Mesh {
   const ring = sil.ring;
   const n = ring.length;
   const geo = new BufferGeometry();
@@ -210,10 +344,14 @@ function buildRibbon(field: Field, sil: SilhouetteData, debug: DebugMode): Mesh 
   const texel: N = ivec2(ax.toInt(), ay.toInt());
   const pos: N = textureLoad(field.posRT.texture, texel).xyz;
   const nrm: N = textureLoad(field.nrmRT.texture, texel).xyz;
+  const tan: N = textureLoad(field.tanRT.texture, texel).xyz;
   const offset: N = nrm.mul(-THICKNESS).mul(attribute('side', 'float'));
+  const suv: N = varying(vec2(ax.div(GRID_W - 1), ay.div(GRID_H - 1)));
 
-  const mesh = new Mesh(geo, fieldMaterial(field, debug, pos.add(offset), nrm, 'edge'));
+  const mesh = new Mesh(geo, fieldMaterial(field, maps, debug, pos.add(offset), nrm, tan, suv, 'edge'));
   mesh.frustumCulled = false;
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
   return mesh;
 }
 

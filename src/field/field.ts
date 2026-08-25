@@ -71,6 +71,14 @@ export class Field {
     magFilter: NearestFilter,
     depthBuffer: false,
   });
+  // tangent (∂P/∂u, normalized) — M2 addition: the fiber normal perturbation needs a TBN
+  readonly tanRT = new RenderTarget(GRID_W, GRID_H, {
+    format: RGBAFormat,
+    type: FloatType,
+    minFilter: NearestFilter,
+    magFilter: NearestFilter,
+    depthBuffer: false,
+  });
 
   // pose uniforms (CPU-evaluated per frame from DeformState)
   private uWt: N = uniform(0.75);
@@ -90,6 +98,7 @@ export class Field {
 
   private evalScene: Scene;
   private nrmScene: Scene;
+  private tanScene!: Scene;
   private cam = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
   private simNode: N;
 
@@ -149,6 +158,14 @@ export class Field {
     const dPdv: N = load(0, 1).sub(load(0, -1));
     nrmMat.outputNode = vec4(normalize(cross(dPdv, dPdu)), 0.0);
     this.nrmScene = passScene(nrmMat);
+
+    // ---- P2b: tangent pass -----------------------------------------------------------
+    const tanMat = new MeshBasicNodeMaterial();
+    tanMat.toneMapped = false;
+    tanMat.fog = false;
+    const tanN: N = normalize(dPdu);
+    tanMat.outputNode = vec4(tanN, 0.0);
+    this.tanScene = passScene(tanMat);
   }
 
   /** Branchless analytic pose: top Archimedean roll / sagging web / 3-arc bottom curl.
@@ -256,6 +273,8 @@ export class Field {
     renderer.render(this.evalScene, this.cam);
     renderer.setRenderTarget(this.nrmRT);
     renderer.render(this.nrmScene, this.cam);
+    renderer.setRenderTarget(this.tanRT);
+    renderer.render(this.tanScene, this.cam);
     renderer.setRenderTarget(prev);
   }
 }

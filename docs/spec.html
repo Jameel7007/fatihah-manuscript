@@ -1377,6 +1377,13 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     (tip 0.018); a = π at the terminal keeps the residual-curl contract exact (probe 0.0153 / 0.0136).
     p = 0 camera in to d ≈ 0.92. Probes pass at p = 0 / 0.21 / 0.34 / 0.38 (≤ 1.5e-7, ≤ 1.14°);
     turns 4.2 → 2.0 (p 0.21) → 0.28 (p 0.34).</li>
+    <li><b>M2 progress note</b> — fiber pack, utility pack, and the §8 environment currently ship as
+    <b>deterministic procedural GPU bakes</b> (boot-once RTT; sinless-hash noise; same channel
+    contracts as §7/§18) — the authored-KTX2 swap is an asset-pipeline drop-in. Wrap translucency is
+    emissive-approximated pending its move into the shadowed light loop. PCSS runs via the renderer's
+    shadow <code>filterNode</code> hook exactly as §8 specifies (16-tap Vogel blocker search + 25-tap
+    Vogel PCF, IGN-rotated, penumbra clamped [1, 28] texels); the quantitative 3-height penumbra
+    check waits for M5's risen glyphs — the roll-onto-tongue shadow is the interim visual check.</li>
     <li><b>v1.3.2 — extent-driven unroll dolly (M1 exit review)</b> — across states 1–2 the camera
     distance is a pure function of the sheet's posed extent (closed-form viewport fit along the ¾
     direction; §9 subsystem table), replacing anchor-interpolated distances that let the opening

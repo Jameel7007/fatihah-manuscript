@@ -9,33 +9,33 @@
   "frames": [
     {
       "id": "R-0.00-T1",
-      "milestone": "M1 v1.3.2 (extent-driven unroll dolly)",
+      "milestone": "M2 look-dev (procedural fiber/util maps, translucency, env, PCSS)",
       "url": "/?capture=0.0&tier=1",
       "sha256": {
-        "webgpu": "3bf805829194c773befdc5ab9f6d191a632bb2dad9de1db88418458d793a5d09",
+        "webgpu": "ab5e5e7ba760b931c053d5e47499ffc44abff04bd0183830e1e1143920ceb83c",
         "webgl2": "pending CI re-bless — dev pane throttling stalls webgl2 captures; cross-backend field equivalence proven by probes"
       },
-      "verified": "2026-08-25, webgpu hash-identical across two cold loads (post-dolly)"
+      "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads"
     },
     {
       "id": "R-0.21-T1",
-      "milestone": "M1 v1.3.2",
+      "milestone": "M2 look-dev (procedural fiber/util maps, translucency, env, PCSS)",
       "url": "/?capture=0.21&tier=1",
       "sha256": {
-        "webgpu": "012e512b3658cc9a8b27214acad7bcd65d71f5eba4e0774fcfb8fb77d2e4a2b5",
+        "webgpu": "1419c6efd7982b38208bd1b3952113d977204908ca21d99b437cf4adff61a831",
         "webgl2": "pending CI re-bless (see R-0.00 note)"
       },
-      "verified": "2026-08-25 (post-dolly)"
+      "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads"
     },
     {
       "id": "R-0.34-T1",
-      "milestone": "M1 v1.3.2",
+      "milestone": "M2 look-dev (procedural fiber/util maps, translucency, env, PCSS)",
       "url": "/?capture=0.34&tier=1",
       "sha256": {
-        "webgpu": "8058259842db6853f2e6033a16ed12950dcd4d7f9a224eee58d6fa09a3a6c90f",
+        "webgpu": "615247ae1e3f9b9b291b50f6bd4d2f74d46a9c1b9a6d9d38c8d6a57b15a42580",
         "webgl2": "pending CI re-bless (see R-0.00 note)"
       },
-      "verified": "2026-08-25 (post-dolly)"
+      "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads"
     },
     {
       "id": "R-0.50-T1 (M0 gray-box, superseded by M1 field)",
