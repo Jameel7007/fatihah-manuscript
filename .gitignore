@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+.env
+.env.*
+
+# build-time asset intermediates (regenerated from sources)
+build/cache/
+qa/output/
+
+# large authored sources tracked elsewhere until LFS is decided
+*.exr
+*.blend
+*.blend1

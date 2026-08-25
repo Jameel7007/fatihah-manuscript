@@ -1,0 +1,1168 @@
+<meta charset="utf-8">
+<title>Al-Fātiḥah Manuscript</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,340;9..144,420;9..144,560&family=IBM+Plex+Sans:wght@400;450;600&family=IBM+Plex+Mono:wght@400;500&family=Amiri+Quran&family=Amiri&display=swap">
+<style>
+  :root{
+    --bg:#100D09; --surface:#171209; --surface2:#1D1810; --line:#2C2517; --line-soft:#221C11;
+    --text:#E7DDC6; --muted:#A2957A; --faint:#6E6350;
+    --gold:#C9A45B; --gold-dim:#8F7440; --gold-faint:#4A3D26;
+    --code-bg:#0B0906; --warn:#C98B5B;
+    --serif:"Fraunces",Georgia,"Times New Roman",serif;
+    --sans:"IBM Plex Sans","Helvetica Neue",Arial,system-ui,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --arabic:"Amiri Quran","Amiri","Noto Naskh Arabic",serif;
+  }
+  html{color-scheme:dark}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:400;
+       font-size:15.5px;line-height:1.68;margin:0;padding:0;
+       -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  .frame{display:flex;justify-content:center;gap:48px;padding:0 24px}
+  nav.toc{display:none}
+  @media(min-width:1280px){
+    nav.toc{display:block;width:196px;flex:0 0 196px;position:sticky;top:0;align-self:flex-start;
+            max-height:100vh;overflow-y:auto;padding:56px 0 48px;font-size:11.5px;line-height:1.5}
+    nav.toc a{display:block;color:var(--faint);text-decoration:none;padding:2.5px 0 2.5px 10px;
+              border-left:1px solid var(--line-soft)}
+    nav.toc a:hover,nav.toc a:focus-visible{color:var(--gold);border-left-color:var(--gold-dim);outline:none}
+    nav.toc .toc-h{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+                   color:var(--gold-dim);margin:0 0 10px;padding-left:10px}
+  }
+  main{max-width:880px;min-width:0;flex:1 1 auto;padding:0 0 120px}
+  a{color:var(--gold)}
+  /* ---------- header ---------- */
+  header.masthead{padding:76px 0 44px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+           color:var(--gold);margin:0 0 22px}
+  h1{font-family:var(--serif);font-weight:420;font-size:clamp(34px,5.2vw,54px);line-height:1.08;
+     margin:0 0 10px;text-wrap:balance;letter-spacing:.002em}
+  h1 .amp{color:var(--gold)}
+  .dek{font-size:16.5px;color:var(--muted);max-width:62ch;margin:14px 0 0;line-height:1.6}
+  .meta-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+  .chip{font-family:var(--mono);font-size:11px;color:var(--muted);border:1px solid var(--line);
+        border-radius:2px;padding:4px 10px;background:var(--surface)}
+  .chip b{color:var(--text);font-weight:500}
+  /* ---------- sections ---------- */
+  section{margin-top:78px}
+  .sec-head{display:flex;align-items:baseline;gap:16px;border-bottom:1px solid var(--line);
+            padding-bottom:12px;margin-bottom:26px}
+  .sec-num{font-family:var(--mono);font-size:13px;color:var(--gold);letter-spacing:.06em;flex:0 0 auto}
+  h2{font-family:var(--serif);font-weight:420;font-size:27px;line-height:1.2;margin:0;text-wrap:balance}
+  h3{font-family:var(--sans);font-weight:600;font-size:14px;letter-spacing:.03em;margin:34px 0 10px;color:var(--text)}
+  h3 .tag{font-family:var(--mono);font-weight:400;font-size:11px;color:var(--gold-dim);margin-left:8px}
+  p{margin:0 0 14px;max-width:72ch}
+  ul,ol{margin:0 0 16px;padding-left:22px;max-width:72ch}
+  li{margin-bottom:6px}
+  li::marker{color:var(--gold-dim)}
+  strong{font-weight:600;color:var(--text)}
+  em{color:var(--muted)}
+  code{font-family:var(--mono);font-size:.86em;background:var(--code-bg);border:1px solid var(--line-soft);
+       border-radius:2px;padding:1px 5px;color:#D8CBA8}
+  pre{background:var(--code-bg);border:1px solid var(--line-soft);border-radius:3px;padding:14px 16px;
+      overflow-x:auto;font-size:12.5px;line-height:1.55;margin:0 0 16px}
+  pre code{background:none;border:none;padding:0}
+  /* ---------- tables ---------- */
+  .tw{overflow-x:auto;margin:0 0 18px;border:1px solid var(--line);border-radius:3px;background:var(--surface)}
+  table{border-collapse:collapse;width:100%;font-size:12.3px;line-height:1.5;min-width:640px}
+  th{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
+     color:var(--gold);text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);
+     background:var(--surface2);white-space:nowrap}
+  td{padding:8px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top;color:var(--text)}
+  tr:last-child td{border-bottom:none}
+  tbody tr:nth-child(even) td{background:rgba(255,240,210,.018)}
+  td.n,th.n{font-family:var(--mono);font-size:11.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
+  td .sub{color:var(--faint);font-size:11px;display:block}
+  .tw.wide table{min-width:900px}
+  /* ---------- figures ---------- */
+  figure{margin:26px 0 30px;padding:0}
+  figure svg{max-width:100%;height:auto;display:block}
+  figcaption{font-size:12px;color:var(--muted);margin-top:10px;max-width:72ch;line-height:1.55}
+  figcaption b{color:var(--text);font-weight:600}
+  .figbox{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:22px}
+  .svg-label{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+  .svg-label-g{font-family:var(--mono);font-size:11px;fill:var(--gold)}
+  .svg-small{font-family:var(--mono);font-size:9.5px;fill:var(--faint)}
+  /* ---------- callouts ---------- */
+  .callout{border:1px solid var(--line);border-left:2px solid var(--gold-dim);background:var(--surface);
+           border-radius:2px;padding:14px 18px;margin:18px 0;font-size:14px;max-width:none}
+  .callout .co-t{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+                 color:var(--gold);margin:0 0 6px}
+  .callout p{font-size:14px;margin-bottom:8px}
+  .callout p:last-child{margin-bottom:0}
+  .callout.deviate{border-left-color:var(--warn)}
+  .callout.deviate .co-t{color:var(--warn)}
+  /* ---------- ayah layout figure ---------- */
+  .sheet-fig{position:relative;margin:0 auto;background:#191309;border:1px solid var(--line);
+             width:min(390px,88%);aspect-ratio:0.78/1;border-radius:2px}
+  .sheet-fig .margin-box{position:absolute;left:14.74%;right:14.74%;top:15%;bottom:13.5%;
+             border:1px dashed var(--gold-faint)}
+  .ayah-line{position:absolute;left:0;right:0;text-align:center;font-family:var(--arabic);
+             color:#D9CBA4;direction:rtl;line-height:1;white-space:nowrap}
+  .ayah-line .marker{display:inline-block;font-family:var(--mono);font-size:.42em;color:var(--gold);
+             border:1px solid var(--gold-dim);border-radius:50%;width:1.55em;height:1.55em;line-height:1.5em;
+             text-align:center;vertical-align:middle;margin-right:.5em}
+  .dim-note{position:absolute;font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:.04em}
+  mark{background:var(--gold-faint);color:var(--text);padding:0 3px;border-radius:2px}
+  ::selection{background:var(--gold-faint);color:#F2EAD5}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  @media(max-width:640px){
+    body{font-size:15px}
+    header.masthead{padding:52px 0 36px}
+    section{margin-top:60px}
+    .figbox{padding:14px}
+  }
+  @media(prefers-reduced-motion:no-preference){
+    html{scroll-behavior:smooth}
+  }
+</style>
+
+<div class="frame">
+<nav class="toc" aria-label="Sections">
+  <p class="toc-h">Sections</p>
+  <a href="#s1">1 · Overall composition</a>
+  <a href="#s2">2 · Parchment dimensions</a>
+  <a href="#s3">3 · Layout of the seven āyāt</a>
+  <a href="#s4">4 · Rolled silhouette</a>
+  <a href="#s5">5 · Flat silhouette</a>
+  <a href="#s6">6 · Extrusion &amp; bevel</a>
+  <a href="#s7">7 · Materials</a>
+  <a href="#s8">8 · Lighting rig</a>
+  <a href="#s9">9 · Camera sequence</a>
+  <a href="#s10">10 · Scroll keyframes</a>
+  <a href="#s11">11 · Desktop composition</a>
+  <a href="#s12">12 · Mobile composition</a>
+  <a href="#s13">13 · Easing &amp; timing</a>
+  <a href="#s14">14 · Ink → geometry</a>
+  <a href="#s15">15 · Premium details</a>
+  <a href="#s16">16 · Rendering architecture</a>
+  <a href="#s17">17 · Simulation design</a>
+  <a href="#s18">18 · Assets &amp; payload</a>
+  <a href="#s19">19 · Performance plan</a>
+  <a href="#s20">20 · Implementation handoff</a>
+</nav>
+<main>
+
+<header class="masthead">
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.0</p>
+  <h1>Al-Fātiḥah 3D Manuscript</h1>
+  <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
+  rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
+  not interpreted. Stack: Three.js <code>WebGPURenderer</code> + TSL node materials, WebGL2 fallback from the same node graph.</p>
+  <div class="meta-chips">
+    <span class="chip">axis <b>p ∈ [0, 1]</b>, deterministic scrub</span>
+    <span class="chip">tone <b>AgX</b>, linear pipeline</span>
+    <span class="chip">payload <b>≤ 8.5 MB</b> target</span>
+    <span class="chip">60 fps desktop · iPhone 15 <b>60</b> · iPhone 12 <b>30</b></span>
+    <span class="chip">three.js <b>r182+ pinned</b> · TypeScript strict</span>
+  </div>
+</header>
+
+<!-- ================================================================ -->
+<section id="s1">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Overall composition</h2></div>
+
+  <p>A single portrait sheet (0.78 × 1.00 world units) floats near the origin in a warm near-black void
+  (<code>#0D0906</code>). The sheet lies in the world XZ plane when flat, +Y up, top of the text toward −Z.
+  It is the only bright object; everything else — dust, fog, faint construction traces — sits at least
+  20× darker. Historic register: broad Abbasid–Mamluk folio proportions, iron-gall ink, gilding over red
+  bole. Suggestive, never a facsimile of any extant manuscript.</p>
+
+  <p>All animation is a pure function of one smoothed scroll uniform <code>uP</code>. The only
+  non-deterministic element is a residual inertia field that decays to zero and is disabled for
+  regression capture (§17). The seven states share one axis with explicit overlap zones — every boundary
+  is a crossfade, never a cut:</p>
+
+  <figure>
+    <div class="figbox">
+    <svg viewBox="0 0 860 300" role="img" aria-label="Timeline of the seven states across scroll progress p from 0 to 1, showing overlapping ranges">
+      <!-- axis -->
+      <line x1="60" y1="262" x2="840" y2="262" stroke="#4A3D26" stroke-width="1"/>
+      <g class="svg-small">
+        <text x="60" y="280" text-anchor="middle">0.00</text><text x="216" y="280" text-anchor="middle">0.20</text>
+        <text x="372" y="280" text-anchor="middle">0.40</text><text x="528" y="280" text-anchor="middle">0.60</text>
+        <text x="684" y="280" text-anchor="middle">0.80</text><text x="840" y="280" text-anchor="middle">1.00</text>
+      </g>
+      <g stroke="#2C2517" stroke-width="1">
+        <line x1="60" y1="30" x2="60" y2="262"/><line x1="216" y1="30" x2="216" y2="262"/>
+        <line x1="372" y1="30" x2="372" y2="262"/><line x1="528" y1="30" x2="528" y2="262"/>
+        <line x1="684" y1="30" x2="684" y2="262"/><line x1="840" y1="30" x2="840" y2="262"/>
+      </g>
+      <!-- bars: x = 60 + p*780 -->
+      <g font-family="IBM Plex Mono,monospace" font-size="11">
+        <rect x="60"  y="34"  width="62.4" height="22" fill="#4A3D26"/><text x="128" y="49" fill="#A2957A">1 · Rolled 0.00–0.08</text>
+        <rect x="106.8" y="66" width="249.6" height="22" fill="#57431F"/><text x="362" y="81" fill="#A2957A">2 · Unrolling 0.06–0.38</text>
+        <rect x="309.6" y="98" width="202.8" height="22" fill="#4A3D26"/><text x="518" y="113" fill="#A2957A">3 · Ink 0.32–0.58 (+dry→0.625)</text>
+        <rect x="481.2" y="130" width="93.6" height="22" fill="#57431F"/><text x="580" y="145" fill="#A2957A">4 · Presenting 0.54–0.66</text>
+        <rect x="559.2" y="162" width="62.4" height="22" fill="#4A3D26"/><text x="627" y="177" fill="#A2957A">5 · Relief 0.64–0.72</text>
+        <rect x="606"  y="194" width="143.5" height="22" fill="#57431F"/><text x="662" y="188" fill="#A2957A"></text><text x="755" y="209" fill="#A2957A">6 · Rising 0.70–0.884</text>
+        <rect x="715.2" y="226" width="124.8" height="22" fill="#8F7440"/><text x="710" y="241" fill="#C9A45B" text-anchor="end">7 · Facing 0.84–1.00</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption><b>The scroll axis.</b> Adjacent bars overlap by 0.02–0.06 of p; in every overlap the
+    outgoing state's driver eases out while the incoming driver eases in (per-driver curves in §10/§13,
+    never a global blend factor).</figcaption>
+  </figure>
+
+  <div class="tw wide"><table>
+    <thead><tr><th>State</th><th class="n">p range</th><th>Geometry</th><th>Simulation</th><th>Camera</th><th>Light</th><th>Rendering technique</th><th class="n">Overlap</th></tr></thead>
+    <tbody>
+    <tr><td><b>1 Rolled</b></td><td class="n">0.00–0.08</td><td>Top spiral holds 34% of length, bottom C-curl 26%, sagging web between; pose tilt +14°</td><td>Analytic curl field only; idle micro-breathing via residual field, amp 2.5e-4</td><td>¾ view, 40 mm, sheet 0.54 of frame height</td><td>Key 1.0, rim 0.30, env yaw +12°</td><td>Curl evaluated in surface-field compute pass (§17); edge ribbon sells wrap layers</td><td class="n">0.06–0.08 → S2</td></tr>
+    <tr><td><b>2 Unrolling</b></td><td class="n">0.06–0.38</td><td>Wrapped fractions pay out, center flattens first, edges lag; residual curl kept at ends</td><td>Analytic pose + XPBD residual lattice excited by dp/dt (§17); settle ripple decays 0.34–0.38</td><td>Dolly left→center, rising, 40→46 mm</td><td>Unchanged; shadow penumbra narrows as sheet flattens</td><td>Arc-length-preserving spiral wrap; Jacobian normals, no approximation</td><td class="n">0.32–0.38 → S3</td></tr>
+    <tr><td><b>3 Ink written</b></td><td class="n">0.32–0.58</td><td>Sheet flat with kept imperfections; cup +0.004, sag −0.0035</td><td>Residual decays to floor; writing gated to lines with local velocity &lt; 0.002 u/s</td><td>High oblique, 50 mm, text column 0.68 of height</td><td>Key dims to 0.88 so wet sheen reads from spec only</td><td>MTSDF threshold sweep along stroke-order field; wet channel → roughness/color/bleed (§14, §17)</td><td class="n">0.54–0.58 → S4</td></tr>
+    <tr><td><b>4 Presenting</b></td><td class="n">0.54–0.66</td><td>Pose tilt 6°→0°; sheet fully settled</td><td>Residual asleep (force gate closed)</td><td>Rises to near-overhead: 83° elevation at p 0.60, 55 mm; 7° off pure top-down preserved</td><td>Key elevates (−0.55,1.30,0.55)→(−0.42,1.52,0.38); env yaw →0°</td><td>Camera spline only; no geometry change — legibility state</td><td class="n">0.64–0.66 → S5</td></tr>
+    <tr><td><b>5 Relief</b></td><td class="n">0.64–0.72</td><td>Ink gains height: emboss normal 0.640–0.695; glyph mesh enters at matching 0.0009 depth at 0.68; uniform lift → 0.0012</td><td>None (sheet still)</td><td>Holds overhead, starts retreat at 0.70</td><td>Rim 0.30→0.42 to catch newborn edges</td><td>SDF-derived puff-height normal crossfades to true geometry; silhouettes identical by construction (§14)</td><td class="n">0.70–0.72 → S6</td></tr>
+    <tr><td><b>6 Rising</b></td><td class="n">0.70–0.884</td><td>Per-āyah staggered extrusion 0.0012→0.0115 (0.55 x-height); bevel, sidewalls, separation</td><td>None; contact-shadow field re-rendered per frame</td><td>Pulls back and down, 55→58 mm</td><td>Rim →0.52; contact blob ramps 0.72–0.80; env yaw →−20°</td><td>Merged extrusion rides surface frame; ortho height-field contact shadow + PCSS (§8, §15)</td><td class="n">0.84–0.884 → S7</td></tr>
+    <tr><td><b>7 Facing</b></td><td class="n">0.84–1.00</td><td>Text assembly lifts to y 0.185, pivots to 12° off camera-frontal; parchment recedes (−0.02 y, −0.10 z), keeps 8% ink ghost</td><td>Idle micro-motion re-armed after 4 s stillness</td><td>Settles at 62 mm, text 0.66 of frame width</td><td>Fill 0.13→0.20, parchment key mask →0.55, env yaw →−38°</td><td>Anchor-frame → presentation-frame blend in glyph vertex stage; risen text casts PCSS shadow onto the empty page</td><td class="n">terminal hold</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout">
+    <p class="co-t">Tone &amp; color commitment</p>
+    <p><b>AgX tone mapping</b> (<code>THREE.AgXToneMapping</code>), not ACES. The palette lives in warm
+    ambers under a 3400 K key; ACES skews saturated warm highlights toward yellow-white and clips gold
+    speculars harshly. AgX's slower shoulder keeps gilt highlights <em>gold</em> and holds the near-black
+    floor without crushing. Cost: mild mid-tone desaturation — compensated with a fixed +0.05 saturation
+    in the grade pass (§16), not by pushing texture chroma. Linear workflow throughout;
+    <code>outputColorSpace = SRGBColorSpace</code>; all hex values in this document are sRGB with linear
+    conversions given where a uniform is set from them.</p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<section id="s2">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Parchment dimensions and proportions</h2></div>
+  <p>World unit: <b>long side = 1.0</b>, physical analog 41 cm (a large Qur'anic folio; 1 unit ≡ 410 mm).
+  All lengths below are world units unless labeled px.</p>
+
+  <div class="tw"><table>
+    <thead><tr><th>Property</th><th class="n">Value</th><th>Reasoning</th></tr></thead>
+    <tbody>
+      <tr><td>Sheet size (w × h)</td><td class="n">0.78 × 1.00</td><td>1 : 1.28 portrait — inside the historical folio band (2:3…3:4), fills a 390 px portrait viewport without cropping</td></tr>
+      <tr><td>Thickness</td><td class="n">0.0009</td><td>≈ 0.37 mm vellum; rendered as an <b>edge ribbon</b> strip (below), not a solid</td></tr>
+      <tr><td>Local coordinates</td><td class="n">u ∈ [−0.39, 0.39], v ∈ [0, 1]</td><td>u across width, v along length, v = 0 at top edge; flat map: x = u, z = v − 0.5, y = 0</td></tr>
+      <tr><td>Grid resolution (T1/T2/T3)</td><td class="n">192×256 / 128×176 / 96×128</td><td>256 segments along v resolve the tightest curl (r 0.0285 → 9 verts per quarter-wrap at T1)</td></tr>
+      <tr><td>Edge ribbon</td><td class="n">perimeter × 0.0009, 2 segs</td><td>Catches light on the roll's layered wraps and at grazing angles; material row in §7</td></tr>
+      <tr><td>Corner radii (TL/TR/BR/BL)</td><td class="n">0.016 / 0.010 / 0.008 / 0.019</td><td>Four different radii — handmade, not die-cut; TL carries a 0.004 nick</td></tr>
+      <tr><td>UV mapping</td><td class="n">(u+0.39)/0.78, v — 0.0035 gutter</td><td>Planar; 0.0035 texel bleed border keeps mip edges clean on the deckle</td></tr>
+      <tr><td>Micro-displacement</td><td class="n">fiber height amp 0.00055</td><td>Applied as 8-step parallax-occlusion on T1 only, normal-only on T2/T3 — the 192×256 grid cannot carry fiber-scale vertex displacement honestly</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ================================================================ -->
+<section id="s3">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Layout of the seven āyāt</h2></div>
+
+  <p>Uthmani text, Ḥafṣ ʿan ʿĀṣim, Basmalah counted as āyah 1. The supplied SVG composition is
+  authoritative — the pipeline verifies it by checksum and never re-shapes, re-spaces, or detaches
+  (§17, §18). This section defines the <em>container</em> the supplied artwork is placed into.</p>
+
+  <div class="tw"><table>
+    <thead><tr><th>Property</th><th class="n">Value</th><th>Reasoning</th></tr></thead>
+    <tbody>
+      <tr><td>Line count</td><td class="n">8</td><td>Basmalah + āyāt 2–6 on one line each + āyah 7 broken across two lines at its natural pause</td></tr>
+      <tr><td>Margins (top / bottom / sides)</td><td class="n">0.150 / 0.135 / 0.115</td><td>Head margin largest, per manuscript convention; text column width 0.55 = 70.5% of sheet width</td></tr>
+      <tr><td>Line pitch</td><td class="n">0.0875</td><td>Baselines at v = 0.196 + i · 0.0875, i = 0…7 (last baseline 0.8085)</td></tr>
+      <tr><td>Em size (lines 2–8)</td><td class="n">0.058</td><td><b>Rule:</b> scale supplied art so the longest line spans ≤ 0.55; accept em ∈ [0.052, 0.060], else re-break āyah 7 — never re-kern</td></tr>
+      <tr><td>Basmalah scale</td><td class="n">0.82 ×</td><td>Traditional subordination of the opening line; centered, extra side inset 0.045</td></tr>
+      <tr><td>x-height reference</td><td class="n">≈ 0.021 (0.36 em)</td><td><b>Rule:</b> measured from source as median tooth-glyph band height; drives extrusion depth &amp; bevel width (§6)</td></tr>
+      <tr><td>Line body / breathing</td><td class="n">0.070 / 0.0175</td><td>Ascender–descender envelope 80% of pitch; block bottom at 0.8385 leaves 0.0265 spare above the bottom margin</td></tr>
+      <tr><td>Alignment</td><td class="n">column right edge x = +0.275</td><td>Lines placed exactly as supplied, right-anchored; if source is a justified block, center it — <b>rule, not a guess</b></td></tr>
+      <tr><td>Āyah markers</td><td class="n">ring ∅ 0.0126, stroke 0.0016</td><td>0.60 × x-height hollow gold ring with center dot, 0.012 after the final glyph, centered at half x-height; after every āyah incl. Basmalah; rises with text at 0.6 × letter depth</td></tr>
+    </tbody>
+  </table></div>
+
+  <figure>
+    <div class="sheet-fig" role="img" aria-label="Layout diagram: eight text lines of Al-Fatihah placed on the parchment with margins marked">
+      <div class="margin-box"></div>
+      <span class="dim-note" style="top:6.5%;left:50%;transform:translateX(-50%)">top 0.150</span>
+      <span class="dim-note" style="bottom:5.5%;left:50%;transform:translateX(-50%)">bottom 0.135</span>
+      <span class="dim-note" style="top:50%;left:1.5%;writing-mode:vertical-rl;transform:translateY(-50%)">side 0.115</span>
+      <div class="ayah-line" style="top:16.8%;font-size:clamp(11px,3.65vw,15px)">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ<span class="marker">١</span></div>
+      <div class="ayah-line" style="top:25.9%;font-size:clamp(13px,4.4vw,18px)">ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ<span class="marker">٢</span></div>
+      <div class="ayah-line" style="top:34.9%;font-size:clamp(13px,4.4vw,18px)">ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ<span class="marker">٣</span></div>
+      <div class="ayah-line" style="top:43.9%;font-size:clamp(13px,4.4vw,18px)">مَـٰلِكِ يَوْمِ ٱلدِّينِ<span class="marker">٤</span></div>
+      <div class="ayah-line" style="top:52.9%;font-size:clamp(13px,4.4vw,18px)">إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ<span class="marker">٥</span></div>
+      <div class="ayah-line" style="top:61.9%;font-size:clamp(13px,4.4vw,18px)">ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ<span class="marker">٦</span></div>
+      <div class="ayah-line" style="top:70.9%;font-size:clamp(13px,4.4vw,18px)">صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ</div>
+      <div class="ayah-line" style="top:79.9%;font-size:clamp(13px,4.4vw,18px)">غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ<span class="marker">٧</span></div>
+    </div>
+    <figcaption><b>Placement diagram only.</b> Rendered here in a stand-in face; the piece uses the
+    supplied calligraphic SVG geometry verbatim. Āyah 7 breaks after the first
+    <span dir="rtl" style="font-family:var(--arabic)">عَلَيْهِمْ</span> — the classic division. Diacritics
+    are welded to their base clusters at atlas-build time and share every transform.</figcaption>
+  </figure>
+
+  <p><b>Writing order</b> (drives the ink reveal and the rise stagger): strict reading order, line by
+  line top to bottom, RTL within each line, diacritics revealed with their base cluster. Per-āyah timing
+  windows are in §10.</p>
+</section>
+<!-- ================================================================ -->
+<section id="s4">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Rolled silhouette <span style="font-family:var(--mono);font-size:13px;color:var(--gold-dim)">(spline control points)</span></h2></div>
+
+  <p>The curl is analytic and arc-length preserving: material beyond a moving <em>curl line</em> wraps
+  onto an Archimedean spiral whose radius grows outward by one sheet thickness per wrap,
+  <code>r(θ) = r_core + (t/2π)·θ</code>, t = 0.0009. Spirals are given by parameters (exact by
+  construction); the free web between them is a centripetal Catmull-Rom through the control points below.
+  Units: sheet-local, long side = 1.0; side profile in (z, y) at u = 0, pose tilt removed.</p>
+
+  <div class="tw"><table>
+    <thead><tr><th>Element @ p = 0</th><th class="n">Parameters</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>Top roll (recto-out, sits above sheet plane)</td><td class="n">holds s ∈ [0, 0.34] · r_core 0.0285 · 1.93 wraps · r_outer 0.0301 · axis (z −0.245, y +0.0301)</td><td>Opens away from viewer; roll rests on the web's tangent plane</td></tr>
+      <tr><td>Bottom C-curl (verso-out, curls up toward viewer)</td><td class="n">holds s ∈ [0.74, 1.0] · opening spiral r 0.055 → 0.085 · 0.55 wraps · edge apex y +0.0619</td><td>A lifted crescent, not a closed roll — asymmetry keeps it handmade</td></tr>
+      <tr><td>Free web CR points (z, y)</td><td class="n">(−0.215, 0.0000) · (−0.110, −0.0075) · (0.000, −0.0118) · (0.100, −0.0092) · (0.160, 0.0000)</td><td>Catenary-like sag, max −0.0118 at s ≈ 0.55</td></tr>
+      <tr><td>Cross-sheet cup (anticlastic)</td><td class="n">edges +0.009 at u = ±0.39, quadratic in u</td><td>Dry parchment cups across the roll axis; corners lift most</td></tr>
+      <tr><td>Pose tilt</td><td class="n">+14° pitch (top away)</td><td>Lectern presentation for the ¾ camera</td></tr>
+    </tbody>
+  </table></div>
+
+  <figure>
+    <div class="figbox">
+    <svg viewBox="0 0 860 250" role="img" aria-label="Side profile of the rolled parchment: top spiral at left, sagging web, lifted C-curl at right">
+      <defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8F7440"/></marker></defs>
+      <!-- ground line = flat sheet plane -->
+      <line x1="40" y1="170" x2="820" y2="170" stroke="#2C2517" stroke-width="1" stroke-dasharray="3 5"/>
+      <text x="822" y="174" class="svg-small">y = 0</text>
+      <!-- map: z -0.30..0.30 -> x 80..800 ; y 0..0.09 -> 170..40 -->
+      <!-- top roll spiral approx at z=-0.245 => x=146, y axis 0.0301 => y=126.5; r=0.0301 => 43px -->
+      <path d="M146 83 A43.5 43.5 0 1 1 145.9 83.2" fill="none" stroke="#C9A45B" stroke-width="2"/>
+      <path d="M146 96 A30 30 0 1 1 145.9 96.2" fill="none" stroke="#8F7440" stroke-width="1.4"/>
+      <path d="M146 109 A17 17 0 0 1 163 126" fill="none" stroke="#6E6350" stroke-width="1.2"/>
+      <!-- free web: CR pts z:-0.215..0.16 -->
+      <path d="M182 170 C 250 179, 300 187, 320 187 C 350 187, 400 183, 440 175 C 470 169, 490 166, 512 159"
+            fill="none" stroke="#C9A45B" stroke-width="2"/>
+      <!-- bottom C-curl rising to apex y 0.0619 at z~0.208 => x=580, y=80.6 ; undercurl -->
+      <path d="M512 159 C 545 148, 568 122, 576 96 C 581 79, 573 66, 557 68" fill="none" stroke="#C9A45B" stroke-width="2"/>
+      <!-- CR point dots -->
+      <g fill="#E7DDC6">
+        <circle cx="182" cy="170" r="3"/><circle cx="320" cy="187" r="3"/><circle cx="440" cy="175" r="3"/>
+        <circle cx="512" cy="159" r="3"/><circle cx="576" cy="96" r="3"/>
+      </g>
+      <g class="svg-small">
+        <text x="182" y="205" text-anchor="middle">(−0.215, 0)</text>
+        <text x="320" y="205" text-anchor="middle">(0.000, −0.0118)</text>
+        <text x="452" y="205" text-anchor="middle">(0.100, −0.0092)</text>
+        <text x="530" y="145" >(0.160, 0)</text>
+        <text x="592" y="88">apex +0.0619</text>
+      </g>
+      <!-- radius callout -->
+      <line x1="146" y1="126" x2="189" y2="126" stroke="#8F7440" stroke-width="1" marker-end="url(#arr)"/>
+      <text x="196" y="130" class="svg-label-g">r_core 0.0285 · 1.93 wraps</text>
+      <text x="146" y="60" class="svg-label" text-anchor="middle">top roll · holds 34%</text>
+      <text x="600" y="120" class="svg-label">C-curl · holds 26%</text>
+      <text x="340" y="163" class="svg-label">web sag −0.0118</text>
+    </svg>
+    </div>
+    <figcaption><b>Rolled pose at p = 0</b>, side view at the sheet centerline. Gold = outermost layer;
+    dimmer strokes = inner wraps, drawn by the same spiral with r reduced by t per turn. The edge ribbon
+    (§2) renders each wrap's 0.0009 edge, which is what makes the roll read as layered material.</figcaption>
+  </figure>
+
+  <h3>Unroll evolution <span class="tag">state 2, p 0.06 → 0.38</span></h3>
+  <p>Both wrapped fractions pay out under <code>E-unroll = cubic-bezier(0.42, 0, 0.16, 1)</code>; the
+  bottom lags the top by Δp 0.04 and the roll <em>loosens as it pays out</em> (r_core grows), which is
+  what real parchment does when tension releases. Scroll-velocity coupling and settling live in the
+  residual solver (§17). Checkpoints, in-state normalized:</p>
+
+  <div class="tw"><table>
+    <thead><tr><th class="n">State %</th><th class="n">p</th><th class="n">W_top (wrapped)</th><th class="n">W_bottom</th><th class="n">r_top core</th><th class="n">web sag</th><th class="n">edge lift (top / bottom)</th></tr></thead>
+    <tbody>
+      <tr><td class="n">0</td><td class="n">0.06</td><td class="n">0.340</td><td class="n">0.260</td><td class="n">0.0285</td><td class="n">−0.0118</td><td class="n">— / —</td></tr>
+      <tr><td class="n">25</td><td class="n">0.14</td><td class="n">0.238</td><td class="n">0.221</td><td class="n">0.0334</td><td class="n">−0.0102</td><td class="n">— / —</td></tr>
+      <tr><td class="n">50</td><td class="n">0.22</td><td class="n">0.126</td><td class="n">0.156</td><td class="n">0.0398</td><td class="n">−0.0079</td><td class="n">0.0165 / —</td></tr>
+      <tr><td class="n">75</td><td class="n">0.30</td><td class="n">0.048</td><td class="n">0.078</td><td class="n">0.0465</td><td class="n">−0.0058</td><td class="n">0.0138 / 0.0181</td></tr>
+      <tr><td class="n">100</td><td class="n">0.38</td><td class="n">0.040*</td><td class="n">0.030*</td><td class="n">0.0520</td><td class="n">−0.0035</td><td class="n">0.0110 / 0.0140</td></tr>
+    </tbody>
+  </table></div>
+  <p style="font-size:13px;color:var(--muted)">* Terminal values are <em>residual curl</em>: the last 4% / 3% of
+  each end never fully flattens — the sheet remembers being rolled. Corners add a ±0.006 differential
+  twist (opposite corners paired) that persists through every later state.</p>
+</section>
+
+<!-- ================================================================ -->
+<section id="s5">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Flat silhouette <span style="font-family:var(--mono);font-size:13px;color:var(--gold-dim)">(imperfection profile)</span></h2></div>
+
+  <p>The outline is <b>geometric, not alpha-tested</b> — boundary grid vertices are displaced inward at
+  build time so shadows, translucency, and the edge ribbon stay physically consistent. Perimeter
+  parameter t ∈ [0, 1) runs clockwise from the top-left corner. Profile = 24-point centripetal
+  Catmull-Rom of normal offsets (12 salient points below; intermediate points at offset 0 ± noise), plus
+  two-octave value noise: wavelengths 0.018 / 0.006 of perimeter, amplitudes 0.0016 / 0.0007.</p>
+
+  <div class="tw"><table>
+    <thead><tr><th class="n">t</th><th>Edge</th><th class="n">Normal offset</th><th>Character</th></tr></thead>
+    <tbody>
+      <tr><td class="n">0.045</td><td>top</td><td class="n">−0.0028</td><td>gentle scallop</td></tr>
+      <tr><td class="n">0.130</td><td>top</td><td class="n">−0.0055 over width 0.021</td><td><b>chip</b> — sharp-walled historic loss</td></tr>
+      <tr><td class="n">0.190</td><td>top</td><td class="n">+0.0032</td><td>deckle swell</td></tr>
+      <tr><td class="n">0.300</td><td>right</td><td class="n">−0.0041</td><td>long shallow concavity (trimmed edge)</td></tr>
+      <tr><td class="n">0.415</td><td>right</td><td class="n">+0.0020</td><td>swell</td></tr>
+      <tr><td class="n">0.480</td><td>bottom-right</td><td class="n">−0.0022</td><td>corner erosion into r 0.008</td></tr>
+      <tr><td class="n">0.545</td><td>bottom</td><td class="n">0 (+ crease)</td><td><b>repaired tear</b>: 0.02-long inward crease, normal-map only, no silhouette break</td></tr>
+      <tr><td class="n">0.610</td><td>bottom</td><td class="n">−0.0080 over width 0.034</td><td><b>notch</b> — the sheet's largest single flaw; soft-walled</td></tr>
+      <tr><td class="n">0.700</td><td>bottom-left</td><td class="n">+0.0026</td><td>swell into r 0.019 corner</td></tr>
+      <tr><td class="n">0.800</td><td>left</td><td class="n">−0.0036</td><td>shallow bite</td></tr>
+      <tr><td class="n">0.900</td><td>left</td><td class="n">+0.0018</td><td>swell</td></tr>
+      <tr><td class="n">0.968</td><td>top-left</td><td class="n">−0.0040 nick</td><td>0.004 nick riding the r 0.016 corner</td></tr>
+    </tbody>
+  </table></div>
+  <p>Offset ceiling ±0.011 (≈ 4.5 mm analog) — visible on approach, invisible in the overhead reading
+  state. Restraint rule: no more than two flaws per edge; the two named flaws (chip, notch) are the only
+  ones allowed to break the silhouette by more than 0.005.</p>
+</section>
+
+<!-- ================================================================ -->
+<section id="s6">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Extrusion proportions and bevel profile</h2></div>
+
+  <div class="tw"><table>
+    <thead><tr><th>Property</th><th class="n">Value</th><th>Reasoning</th></tr></thead>
+    <tbody>
+      <tr><td>Full extrusion depth D</td><td class="n">0.0115 = 0.55 × x-height</td><td>4.7 mm analog — deep enough to read as <em>form</em> at 12° viewing, shallow enough to stay an inscription, not signage</td></tr>
+      <tr><td>Bevel width b</td><td class="n">0.0046 = 0.22 × x-height</td><td>Subtends ≈ 2.7 px in the mobile reading frame (§12) — the minimum that still catches a rim-light glint per stroke</td></tr>
+      <tr><td>Bevel profile</td><td class="n">8 segments, 9 points (below)</td><td>Concave root fillet → drafted wall → convex burnish crown → flat lip; not ExtrudeGeometry defaults</td></tr>
+      <tr><td>Sidewall draft</td><td class="n">7° inward</td><td>Keeps sidewalls out of pure silhouette at overhead view; darkens them naturally under the key</td></tr>
+      <tr><td>Diacritic depth</td><td class="n">0.80 × D</td><td>Base letterforms dominate the relief plane; diacritics remain welded to their cluster</td></tr>
+      <tr><td>Āyah marker depth</td><td class="n">0.60 × D</td><td>Punctuation stays subordinate</td></tr>
+      <tr><td>Flattening tolerance (T1/T2/T3)</td><td class="n">0.0008 / 0.0016 / 0.0028</td><td>≈ 780k / 430k / 190k triangles for the merged assembly (rule-derived; recount from supplied SVG at build)</td></tr>
+      <tr><td>Draw calls</td><td class="n">1 (merged, single material)</td><td>All clusters + markers merged with per-vertex cluster attributes; instancing is useless here — every glyph is unique geometry</td></tr>
+    </tbody>
+  </table></div>
+
+  <figure>
+    <div class="figbox">
+    <svg viewBox="0 0 860 320" role="img" aria-label="Bevel cross-section profile: nine control points from parchment surface to letter top face">
+      <!-- plot area: inset 0..0.0046 -> x 120..580 (100px per 0.001); height 0..0.0115 -> y 270..40 (20px per 0.001) -->
+      <line x1="80" y1="270" x2="820" y2="270" stroke="#2C2517"/>
+      <line x1="120" y1="290" x2="120" y2="30" stroke="#2C2517"/>
+      <g class="svg-small" fill="#6E6350">
+        <text x="120" y="286" text-anchor="middle">0</text>
+        <text x="320" y="286" text-anchor="middle">inset 0.002</text>
+        <text x="520" y="286" text-anchor="middle">0.004</text>
+        <text x="96" y="274">y 0</text><text x="78" y="154">0.006</text><text x="78" y="44">0.0115</text>
+      </g>
+      <!-- profile: pts (inset,height)*: (0,0)(0.0004,0.0002)(0.0007,0.0009)(0.0013,0.0058)(0.0018,0.0079)(0.0026,0.0098)(0.0035,0.0110)(0.0042,0.0114)(0.0046,0.0115) -->
+      <!-- x=120+inset*100000 ; y=270-height*20000 -->
+      <polygon points="120,270 160,266 190,252 250,154 300,112 380,74 470,50 540,42 580,40 820,40 820,270"
+               fill="#221A0E"/>
+      <polyline points="120,270 160,266 190,252 250,154 300,112 380,74 470,50 540,42 580,40 820,40"
+                fill="none" stroke="#C9A45B" stroke-width="2.2"/>
+      <g fill="#E7DDC6">
+        <circle cx="120" cy="270" r="3.2"/><circle cx="160" cy="266" r="3.2"/><circle cx="190" cy="252" r="3.2"/>
+        <circle cx="250" cy="154" r="3.2"/><circle cx="300" cy="112" r="3.2"/><circle cx="380" cy="74" r="3.2"/>
+        <circle cx="470" cy="50" r="3.2"/><circle cx="540" cy="42" r="3.2"/><circle cx="580" cy="40" r="3.2"/>
+      </g>
+      <g class="svg-small">
+        <text x="112" y="262" text-anchor="end">P0 (0, 0)</text>
+        <text x="168" y="282">P1 (.0004, .0002)</text>
+        <text x="198" y="244">P2 (.0007, .0009)</text>
+        <text x="242" y="148" text-anchor="end">P3 (.0013, .0058)</text>
+        <text x="292" y="106" text-anchor="end">P4 (.0018, .0079)</text>
+        <text x="372" y="68" text-anchor="end">P5 (.0026, .0098)</text>
+        <text x="436" y="30">P6 (.0035, .0110)</text>
+        <text x="524" y="20">P7 (.0042, .0114)</text>
+        <text x="600" y="32">P8 (.0046, .0115)</text>
+      </g>
+      <g class="svg-label-g">
+        <text x="150" y="230" transform="rotate(-72 150 230)">root fillet (concave)</text>
+        <text x="243" y="205" transform="rotate(-62 250 200)">wall · 7° draft</text>
+        <text x="430" y="90" transform="rotate(-15 430 90)">burnish crown (convex)</text>
+        <text x="812" y="60" text-anchor="end">top face → flat ink SDF UVs</text>
+      </g>
+      <text x="700" y="258" class="svg-label">parchment surface</text>
+    </svg>
+    </div>
+    <figcaption><b>Bevel profile</b> — 9 points, 8 segments, world units. The concave root makes letters
+    read as <em>grown from</em> the sheet rather than glued on; the wide convex crown is the surface the
+    rim light travels along (§15). During the rise, the profile scales in height only — inset stays
+    fixed so the plan-view contour never moves against the ink SDF.</figcaption>
+  </figure>
+
+  <h3>Thin-stroke guard <span class="tag">rule, derived from supplied geometry</span></h3>
+  <p>Calligraphic hairlines (~0.03 em ≈ 0.0017) are narrower than 2b, so an unguarded bevel
+  self-intersects. Per boundary vertex, sample interior half-width w from the SDF's
+  distance-to-skeleton channel, then:</p>
+  <pre><code>wScale = clamp(w / (b + 0.0004), 0.25, 1.0)   // shrink profile inset
+hScale = clamp(sqrt(wScale), 0.55, 1.0)        // partial height follow
+profile' = profile × (inset: wScale, height: hScale)</code></pre>
+  <p>Hairlines become rounded gilded beads at 55–100% depth — exactly how burnished gesso relief behaves
+  on thin strokes. The guard is computed at build time and baked into the mesh.</p>
+</section>
+
+<!-- ================================================================ -->
+<section id="s7">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Material specification</h2></div>
+  <p>All materials are TSL node materials sharing the lighting model in §16. Linear values are exact
+  sRGB→linear conversions rounded to 3 significant figures — set uniforms from these, never from hex.
+  Compression: KTX2/Basis, <b>UASTC</b> where gradients matter, <b>ETC1S</b> where flagged acceptable.</p>
+
+  <div class="tw wide"><table>
+    <thead><tr><th>Material</th><th class="n">Base color sRGB → linear</th><th class="n">Rough</th><th class="n">Metal</th><th class="n">Normal / disp</th><th>Texture channels</th><th>Light behavior</th></tr></thead>
+    <tbody>
+      <tr><td><b>Parchment recto</b></td>
+          <td class="n">#E6D5AF → (0.797, 0.673, 0.436)<span class="sub">discolor range ±6% V, edge zones → #C9AE7E</span></td>
+          <td class="n">0.62 ± 0.14<span class="sub">crests 0.52 · valleys 0.74</span></td><td class="n">0</td>
+          <td class="n">micro 0.55<span class="sub">POM amp 0.00055, 8 steps T1</span></td>
+          <td>Albedo 2048² UASTC · Fiber pack 2048² UASTC (normal XY / height / rough-mod) · tiling 1×1 + detail 6×6 lum overlay</td>
+          <td>Sheen 0.18 (color #E8DCC0, sheenRough 0.55) gives the dry-skin grazing lift; thin-translucency below</td></tr>
+      <tr><td><b>Parchment verso</b></td>
+          <td class="n">#DCC79A → (0.723, 0.579, 0.330)</td>
+          <td class="n">0.71</td><td class="n">0</td><td class="n">micro 0.45</td>
+          <td>Verso tint + wear in the 1024² ETC1S utility pack (low-frequency, ETC1S acceptable)</td>
+          <td>Flesh side: matter, yellower; visible inside curls — the roll must change tone as it turns</td></tr>
+      <tr><td><b>Edge ribbon</b></td>
+          <td class="n">#B08F5C → (0.442, 0.280, 0.106)</td>
+          <td class="n">0.80</td><td class="n">0</td><td class="n">—</td>
+          <td>1D wear strip 512×4 ETC1S, tiled by perimeter t</td>
+          <td>Darker cut-fiber edge; reads the roll's layer stack and grazing rim</td></tr>
+      <tr><td><b>Ink — wet</b></td>
+          <td class="n">#17110D → (0.0050, 0.0026, 0.0014)</td>
+          <td class="n">0.09</td><td class="n">0</td><td class="n">sink −0.0006 into fiber valleys</td>
+          <td>MTSDF atlas 2048² RGBA UASTC (RGB msdf + A true SDF) · progression atlas 2048² RGB UASTC (R stroke-order w, G āyah id, B bleed weight)</td>
+          <td>Fresh iron-gall: near-black with a tight specular lane from the key only (key dimmed to 0.88 in S3 so sheen never doubles)</td></tr>
+      <tr><td><b>Ink — dry</b></td>
+          <td class="n">#2A211B → (0.0190, 0.0110, 0.0072)</td>
+          <td class="n">0.58</td><td class="n">0</td><td class="n">—</td>
+          <td>Same atlases; dry state is the wet state's channels at wet = 0</td>
+          <td>Warm brown-black, fully matte; absorption edge width 0.0009 + bleed model (§17)</td></tr>
+      <tr><td><b>Gold — face</b></td>
+          <td class="n">#C29B52 → (0.548, 0.335, 0.082)</td>
+          <td class="n">0.21–0.47<span class="sub">burnish crests 0.21 · mid 0.33 · valleys 0.47</span></td>
+          <td class="n">1.0 leaf<span class="sub">→ 0.12 in wear</span></td>
+          <td class="n">leaf wrinkle 0.25</td>
+          <td>Burnish/wear pack 1024² UASTC: R burnish, G wear→bole, B aniso rotation · aniso strength 0.25</td>
+          <td>Aged gilding: anisotropy follows stroke direction (rotation = progression-atlas gradient, baked); <b>no clearcoat, no uniform metalness</b></td></tr>
+      <tr><td><b>Gold — wear → bole</b></td>
+          <td class="n">#7A4630 → (0.197, 0.058, 0.025)</td>
+          <td class="n">0.62</td><td class="n">0.12</td><td class="n">—</td>
+          <td>Driven by wear channel G; ~8% of face area, biased to crown fillet where handling wears leaf first</td>
+          <td>Red-brown bole showing through is what says <em>gilded by hand, centuries ago</em></td></tr>
+      <tr><td><b>Gold — sidewall</b></td>
+          <td class="n">#8F6B2E → (0.280, 0.148, 0.023)</td>
+          <td class="n">0.52</td><td class="n">0.85</td><td class="n">—</td>
+          <td>Vertex-color darkening ×0.72 toward root, baked AO in vertex alpha</td>
+          <td>Noticeably darker so extrusion depth reads even in flat frontal light</td></tr>
+      <tr><td><b>Āyah markers</b></td>
+          <td class="n">as gold face</td><td class="n">+0.05 rough bias</td><td class="n">1.0</td><td class="n">—</td>
+          <td>Shares merged mesh + atlases</td><td>Slightly duller than letters — hierarchy through material, not size</td></tr>
+      <tr><td><b>Ink ghost</b> (post-rise stain)</td>
+          <td class="n">#4A3826 → (0.0656, 0.0357, 0.0152)</td>
+          <td class="n">0.66</td><td class="n">0</td><td class="n">—</td>
+          <td>Ink SDF at opacity 0.08</td>
+          <td>The page remembers the inscription after the text rises (§15)</td></tr>
+      <tr><td><b>Dust</b></td>
+          <td class="n">#E8DCC2, opacity 0.030–0.045</td><td class="n">—</td><td class="n">—</td><td class="n">—</td>
+          <td>16² soft-disc alpha, generated</td>
+          <td>Lit billboards (key only), normal = view; never additive, never glowing</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Parchment thin-surface translucency <span class="tag">TSL, single pass</span></h3>
+  <pre><code>// wrap-lit back-transmission; no refraction pass needed at 0.37 mm
+backLit  = saturate((dot(-N, L) + 0.4) / 1.4)                 // wrap w = 0.4
+thick01  = fiberHeight * 0.6 + macroThickness * 0.4            // from fiber pack A + utility pack
+trans    = backLit * transColor * (1.0 - thick01) * 0.18       // transColor #B08D52 → (0.442, 0.271, 0.083)
+diffuse += trans * keyColor                                    // key + rim only; env excluded (too flat)</code></pre>
+  <p>Justification: at 0.37 mm true SSS is invisible except against the light — the wrap term reproduces
+  the one observable phenomenon (glowing edges and curls when the rim light crosses behind) for the cost
+  of three MADs. The curl states are where it earns its place: inner wraps light up amber.</p>
+</section>
+
+<!-- ================================================================ -->
+<section id="s8">
+  <div class="sec-head"><span class="sec-num">08</span><h2>Lighting rig</h2></div>
+  <p>Three-point rig + authored HDR environment. Positions relative to parchment center, sheet in the XZ
+  plane, +Y up. Intensities relative to key = 1.0; calibration anchor: an 18% gray card at sheet center
+  under key alone renders at 0.18 ± 0.01 scene-linear before tone mapping.</p>
+
+  <div class="tw wide"><table>
+    <thead><tr><th>Light</th><th>Type</th><th class="n">Position → target</th><th class="n">Color / temp</th><th class="n">Intensity</th><th>Shadows</th><th>State changes</th></tr></thead>
+    <tbody>
+      <tr><td><b>Key</b></td><td>Spot, cone 24°, penumbra 0.45</td>
+          <td class="n">(−0.55, 1.30, 0.55) → sheet center<span class="sub">S4–6: → (−0.42, 1.52, 0.38) · S7: (−0.30, 1.40, 0.55) → text centroid</span></td>
+          <td class="n">#FFD2A0 · 3400 K<span class="sub">lin (1.0, 0.653, 0.359)</span></td>
+          <td class="n">1.00<span class="sub">0.88 in S3</span></td>
+          <td><b>PCSS</b> — map 2048/1024/512 by tier · light radius 0.075 · blocker 16 taps · PCF 25 Poisson, IGN-rotated · depth bias −1.5e-4 · normal bias 2.5 texels (0.0005)</td>
+          <td>Elevates through S4–6 to shorten letter shadows; retargets to text centroid in S7; parchment-only mask dims it to 0.55 in S7</td></tr>
+      <tr><td><b>Fill</b></td><td>RectArea 0.9 × 0.6 (LTC)</td>
+          <td class="n">(0.85, 0.55, −0.45) → center</td>
+          <td class="n">#C7D8EE · 5600 K<span class="sub">lin (0.579, 0.694, 0.859)</span></td>
+          <td class="n">0.13<span class="sub">0.20 in S7</span></td>
+          <td>none — fill must never double shadows</td>
+          <td>Rises in S7 so risen sidewalls separate from the void; cool tone gives the museum dual-temperature read</td></tr>
+      <tr><td><b>Rim</b></td><td>Spot, cone 28°, penumbra 0.6</td>
+          <td class="n">(−0.35, 0.18, −1.05) → center<span class="sub">grazing ≈ 9° across sheet</span></td>
+          <td class="n">#FFBE83 · 2900 K<span class="sub">lin (1.0, 0.523, 0.231)</span></td>
+          <td class="n">0.30<span class="sub">0.42 in S5 → 0.52 in S6+</span></td>
+          <td>none</td>
+          <td>The bevel-crown light: intensity climbs exactly when edges are born (S5–6); powers fiber sparkle and translucent curl edges before that</td></tr>
+      <tr><td><b>Environment</b></td><td>Authored HDRI 1024×512 (below)</td>
+          <td class="n">yaw +12° at p 0 (rotation schedule §10)</td>
+          <td class="n">scene-referred HDR</td>
+          <td class="n">0.32</td>
+          <td>n/a</td>
+          <td>Yaw sweeps +12° → −38° across the piece so the window reflection <em>travels along</em> the gold as the text rises; ±2° / 14 s drift at idle</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>PCSS softness law <span class="tag">required formula</span></h3>
+  <pre><code>penumbra_world  = lightRadius · (zReceiver − zBlocker) / zBlocker      // lightRadius 0.075
+penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texelWorld ≈ 2.1e-4 @ 2048
+// letters at h = 0.0115 over the sheet → ≈ 0.0011 world penumbra: hard birth-shadow
+// risen plane at h = 0.185           → ≈ 0.018 world: broad soft pool — hardening is the depth cue</code></pre>
+
+  <h3>Authored environment map</h3>
+  <p>A dark room holding one warm light: near-black walls (#050403 base, +0.5 EV brown gradient toward
+  the floor), one tall 2.2:1 <b>warm window</b> (3200 K, luminance 6× diffuse white) placed 35° left of
+  +Z at 20° elevation — its vertical rectangle is the signature shape the gold bevels reflect. A cool
+  4500 K floor-bounce card opposite at 3% window luminance, and three 0.5%-area 3000 K pinpoints
+  (distant lamps) scattered right hemisphere for bevel sparkle variety. Authored in Blender at 2048×1024
+  EXR, shipped at 1024×512. PMREM at load; roughness-prefiltered mips are what the burnish map indexes.</p>
+
+  <div class="callout">
+    <p class="co-t">Contact shadows — the signature moment, named</p>
+    <p>Two cooperating techniques. <b>(a) PCSS</b> above gives the directional, contact-hardening
+    component. <b>(b) A height-field blob pass</b>: glyphs only, rendered orthographically from below
+    (frustum 0.9 × 1.15, 512² R16F storing height-above-sheet), blurred by two separable passes with
+    radius_texels = 2 + 640·h, then composited into the parchment BRDF as
+    <code>×(1 − 0.75 · C · exp(−h / 0.12))</code>. Authored blur, zero sampling noise — this is what
+    survives a 390 px viewport, where PCSS alone dissolves into its filter. As letters leave the sheet in
+    S7, the blob decays exponentially while PCSS takes over: the risen text leaves a faint soft pool,
+    then a long soft cast shadow across the empty page.</p>
+  </div>
+</section>
+<!-- ================================================================ -->
+<section id="s9">
+  <div class="sec-head"><span class="sec-num">09</span><h2>Camera sequence <span style="font-family:var(--mono);font-size:13px;color:var(--gold-dim)">(table with spline points)</span></h2></div>
+
+  <p>Position and look-at each run on a centripetal Catmull-Rom (α = 0.5) through the anchors below,
+  parameterized by p through the per-segment eases in §13. The look-at consumes a
+  <b>separately smoothed</b> parameter (p filtered with an extra τ = 80 ms) so the gaze always trails
+  the dolly by a breath — mechanical look-at is the fastest way to feel like a demo. Focal lengths are
+  35 mm-equivalent; vfov = 2·atan(12/f) at 1440×900. No focal shorter than 40 mm ever — no fisheye.</p>
+
+  <div class="tw wide"><table>
+    <thead><tr><th class="n">p</th><th class="n">f (mm) / vfov</th><th class="n">Position (x, y, z)</th><th class="n">Look-at</th><th class="n">Height over sheet</th><th class="n">View angle from plane</th><th class="n">Framing</th></tr></thead>
+    <tbody>
+      <tr><td class="n">0.00</td><td class="n">40 / 33.4°</td><td class="n">(0.44, 0.33, 0.64)</td><td class="n">(0.01, 0.04, −0.05)</td><td class="n">0.33</td><td class="n">~23°</td><td>roll 0.54 of frame height, ¾ view</td></tr>
+      <tr><td class="n">0.21</td><td class="n">42 / 31.9°</td><td class="n">(0.27, 0.46, 0.55)</td><td class="n">(0.00, 0.02, 0.01)</td><td class="n">0.46</td><td class="n">~34°</td><td>opening web fills 0.62 width</td></tr>
+      <tr><td class="n">0.34</td><td class="n">46 / 29.3°</td><td class="n">(0.10, 0.60, 0.42)</td><td class="n">(0.00, 0.012, 0.03)</td><td class="n">0.60</td><td class="n">~52°</td><td>full sheet 0.78 height</td></tr>
+      <tr><td class="n">0.47</td><td class="n">50 / 27.0°</td><td class="n">(0.02, 0.74, 0.26)</td><td class="n">(0.00, 0.008, 0.045)</td><td class="n">0.74</td><td class="n">~68°</td><td>text column 0.68 height — writing overwatch</td></tr>
+      <tr><td class="n">0.60</td><td class="n">55 / 24.7°</td><td class="n">(0.00, 0.88, 0.09)</td><td class="n">(0.00, 0.00, 0.018)</td><td class="n">0.88</td><td class="n">83°</td><td>sheet 0.86 height — reading state, 7° off pure overhead</td></tr>
+      <tr><td class="n">0.70</td><td class="n">55 / 24.7°</td><td class="n">(0.00, 0.76, 0.24)</td><td class="n">(0.00, 0.02, 0.01)</td><td class="n">0.76</td><td class="n">~72°</td><td>retreat begins as relief forms</td></tr>
+      <tr><td class="n">0.80</td><td class="n">57 / 23.8°</td><td class="n">(0.00, 0.52, 0.47)</td><td class="n">(0.00, 0.09, −0.01)</td><td class="n">0.52</td><td class="n">~48°</td><td>rising letters + contact shadows fill 0.7 width</td></tr>
+      <tr><td class="n">0.90</td><td class="n">60 / 22.6°</td><td class="n">(0.00, 0.33, 0.60)</td><td class="n">(0.00, 0.15, −0.03)</td><td class="n">0.33</td><td class="n">~25°</td><td>pivoting text dominant, parchment receding</td></tr>
+      <tr><td class="n">1.00</td><td class="n">62 / 21.9°</td><td class="n">(0.00, 0.255, 0.66)</td><td class="n">(0.00, 0.185, −0.045)</td><td class="n">0.255</td><td class="n">12° off text-frontal</td><td>text plane 0.66 frame width; parchment low behind</td></tr>
+    </tbody>
+  </table></div>
+
+  <figure>
+    <div class="figbox">
+    <svg viewBox="0 0 860 300" role="img" aria-label="Side view of the camera path from three-quarter view up over the sheet and back down to face the risen text">
+      <defs><marker id="arr2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8F7440"/></marker></defs>
+      <!-- map: z -0.2..0.8 -> x 60..820 ; y 0..0.95 -> 270..30 -->
+      <!-- sheet: z -0.5..0.5 clipped -> line y=270 from x60? sheet spans z -0.5..0.5 -> x -168..441 -> clip 60..441 -->
+      <line x1="60" y1="270" x2="441" y2="270" stroke="#C9A45B" stroke-width="3"/>
+      <text x="70" y="288" class="svg-label-g">parchment (side)</text>
+      <!-- risen text plane at p1: y 0.185 center, tilted; draw near z -0.045 -> x=194, y=270-0.185*252=223 -->
+      <line x1="176" y1="238" x2="208" y2="200" stroke="#C9A45B" stroke-width="3"/>
+      <text x="140" y="192" class="svg-label-g">risen text</text>
+      <!-- camera path pts: (z,y)->(x,ypix): p0(.64,.33)->(546,187); .21(.55,.46)->(478,154); .34(.42,.60)->(379,119); .47(.26,.74)->(258,84); .60(.09,.88)->(128,48); .70(.24,.76)->(242,79); .80(.47,.52)->(417,139); .90(.60,.33)->(516,187); 1.0(.66,.255)->(562,206) -->
+      <path d="M546 187 C 510 168, 512 172, 478 154 C 430 128, 428 136, 379 119 C 320 98, 310 100, 258 84 C 200 66, 150 44, 128 48 C 150 52, 200 62, 242 79 C 310 106, 360 116, 417 139 C 470 158, 496 176, 516 187 C 534 196, 552 200, 562 206"
+            fill="none" stroke="#8F7440" stroke-width="1.8" marker-end="url(#arr2)"/>
+      <g fill="#E7DDC6">
+        <circle cx="546" cy="187" r="3.4"/><circle cx="478" cy="154" r="3"/><circle cx="379" cy="119" r="3"/>
+        <circle cx="258" cy="84" r="3"/><circle cx="128" cy="48" r="3.4"/><circle cx="242" cy="79" r="3"/>
+        <circle cx="417" cy="139" r="3"/><circle cx="516" cy="187" r="3"/><circle cx="562" cy="206" r="3.4"/>
+      </g>
+      <g class="svg-small">
+        <text x="558" y="180">p 0.00 · 40mm</text>
+        <text x="490" y="146">0.21</text><text x="391" y="111">0.34</text><text x="270" y="78">0.47</text>
+        <text x="96" y="38">0.60 · overhead</text><text x="228" y="98">0.70</text>
+        <text x="429" y="132">0.80</text><text x="500" y="204">0.90</text><text x="574" y="222">1.00 · 62mm</text>
+      </g>
+      <!-- gaze lines -->
+      <g stroke="#4A3D26" stroke-width="1" stroke-dasharray="2 4">
+        <line x1="546" y1="187" x2="403" y2="260"/>
+        <line x1="128" y1="48" x2="335" y2="265"/>
+        <line x1="562" y1="206" x2="194" y2="223"/>
+      </g>
+    </svg>
+    </div>
+    <figcaption><b>Camera path, side elevation.</b> One continuous arc: approach → climb to the 83°
+    reading pose → descend and settle facing the risen text. Dashed lines are gaze at p 0.00 / 0.60 /
+    1.00. The path never crosses the sheet plane and never enters the object's 0.18 near-shell
+    (close enough for fiber, never inside).</figcaption>
+  </figure>
+
+  <div class="tw"><table>
+    <thead><tr><th>Camera subsystem</th><th class="n">Value</th></tr></thead>
+    <tbody>
+      <tr><td>Pointer / gyro parallax</td><td class="n">orbit gimbal ±0.35°, spring ω 12.6 rad/s, ζ 0.9; applied after spline, before look-at damper; off in reduced motion</td></tr>
+      <tr><td>Depth of field</td><td class="n">none (no DoF pass) — dust quieting done by size + opacity falloff (§15); saves a full-res CoC chain on mobile</td></tr>
+      <tr><td>Near / far</td><td class="n">0.05 / 4.0 · reversed-Z on WebGPU (default), logarithmic off</td></tr>
+      <tr><td>Mobile overrides</td><td class="n">distance × 1.30 (S1–2), × 0.94 (S3), × 1.00 (S4–5), × 1.12 (S6–7) — see §12</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ================================================================ -->
+<section id="s10">
+  <div class="sec-head"><span class="sec-num">10</span><h2>Scroll keyframe table</h2></div>
+  <p>The master timing sheet. Every column is a pure function of smoothed p; camera cells reference the
+  §9 spline anchors. Ease names are defined in §13. Depth values are world units; the extrusion column
+  lists leading āyah → trailing āyah where the stagger spreads them.</p>
+
+  <div class="tw wide"><table>
+    <thead><tr><th class="n">p</th><th>State</th><th>Parchment deformation</th><th>Ink progress</th><th class="n">Extrusion depth</th><th class="n">Text rotation</th><th>Camera</th><th>Key light</th><th class="n">Env yaw</th><th>Easing</th></tr></thead>
+    <tbody>
+      <tr><td class="n">0.00</td><td>1</td><td>W 0.34/0.26 · sag −0.0118 · tilt +14°</td><td>—</td><td class="n">0</td><td class="n">—</td><td>anchor A0, 40 mm</td><td>1.00 @ base pos</td><td class="n">+12°</td><td>idle breathing only</td></tr>
+      <tr><td class="n">0.06</td><td>1→2</td><td>unroll begins (seal breaks)</td><td>—</td><td class="n">0</td><td class="n">—</td><td>dolly starts</td><td>1.00</td><td class="n">+12°</td><td>E1 in</td></tr>
+      <tr><td class="n">0.14</td><td>2</td><td>W 0.238/0.221 · r_top 0.0334</td><td>—</td><td class="n">0</td><td class="n">—</td><td>A0→A1</td><td>1.00</td><td class="n">+12°</td><td>E1</td></tr>
+      <tr><td class="n">0.22</td><td>2</td><td>W 0.126/0.156 · sag −0.0079</td><td>—</td><td class="n">0</td><td class="n">—</td><td>A1, 42 mm</td><td>1.00</td><td class="n">+12°</td><td>E1 · bottom lags Δp 0.04 (E3)</td></tr>
+      <tr><td class="n">0.30</td><td>2</td><td>W 0.048/0.078 · residual ripple active</td><td>—</td><td class="n">0</td><td class="n">—</td><td>A1→A2</td><td>1.00</td><td class="n">+12°</td><td>E1 out</td></tr>
+      <tr><td class="n">0.34</td><td>2/3</td><td>terminal curl reached; ripple decaying (τ 0.29 s)</td><td>A1 basmalah 60% written, wet</td><td class="n">0</td><td class="n">—</td><td>A2, 46 mm</td><td>0.88 (S3 dim)</td><td class="n">+12°</td><td>ink E5 per glyph</td></tr>
+      <tr><td class="n">0.38</td><td>3</td><td>settled: sag −0.0035, cup +0.004 <em>(held to p 1)</em></td><td>A1 done · A2 writing</td><td class="n">0</td><td class="n">—</td><td>A2→A3</td><td>0.88</td><td class="n">+11°</td><td>E5</td></tr>
+      <tr><td class="n">0.45</td><td>3</td><td>still</td><td>A4 writing (window 0.424–0.451)</td><td class="n">0</td><td class="n">—</td><td>A3, 50 mm</td><td>0.88</td><td class="n">+8°</td><td>E5</td></tr>
+      <tr><td class="n">0.52</td><td>3/4</td><td>tilt 6°→ easing to 0°</td><td>A6 finishing · A7 pending</td><td class="n">0</td><td class="n">—</td><td>A3→A4 climb</td><td>0.88 · pos morph starts</td><td class="n">+4°</td><td>E2 (tilt), E1 (cam)</td></tr>
+      <tr><td class="n">0.56</td><td>3/4</td><td>flat</td><td>A7 line 8 writing</td><td class="n">0</td><td class="n">—</td><td>climbing, 53 mm</td><td>0.92</td><td class="n">+2°</td><td>E5</td></tr>
+      <tr><td class="n">0.60</td><td>4</td><td>flat, tilt 0°</td><td>A7 done 0.58 · trail drying</td><td class="n">0</td><td class="n">—</td><td>A4 overhead, 55 mm</td><td>0.95 @ elevated pos</td><td class="n">0°</td><td>E1 settles</td></tr>
+      <tr><td class="n">0.64</td><td>4/5</td><td>flat</td><td>all dry by 0.625 · emboss begins</td><td class="n">emboss n 0→</td><td class="n">—</td><td>hold overhead</td><td>0.95 · rim 0.30→0.42</td><td class="n">−2°</td><td>E2 (emboss)</td></tr>
+      <tr><td class="n">0.68</td><td>5</td><td>flat</td><td>emboss 100% @ 0.695</td><td class="n">geo enters 0.0009</td><td class="n">—</td><td>hold</td><td>0.95</td><td class="n">−6°</td><td>linear lift</td></tr>
+      <tr><td class="n">0.72</td><td>5/6</td><td>flat</td><td>flat-ink emboss fully handed off</td><td class="n">uniform 0.0012 · A1 stagger starts</td><td class="n">—</td><td>A5 retreat begins</td><td>0.95 · contact ramp starts</td><td class="n">−8°</td><td>E4 per āyah</td></tr>
+      <tr><td class="n">0.76</td><td>6</td><td>flat</td><td>ink layer occluded under caps</td><td class="n">A1 0.0071 → A3 0.0025</td><td class="n">—</td><td>A5→A6</td><td>0.95 · rim 0.52</td><td class="n">−12°</td><td>E4 + gold E2 lag 0.25 w</td></tr>
+      <tr><td class="n">0.80</td><td>6</td><td>flat</td><td>ghost fade begins 0.78</td><td class="n">A1 full 0.0115 → A5 0.0049</td><td class="n">—</td><td>A6, 57 mm</td><td>0.95 · contact 100%</td><td class="n">−15°</td><td>E4</td></tr>
+      <tr><td class="n">0.84</td><td>6/7</td><td>flat · ghost 0.08 set</td><td>ghost only</td><td class="n">A1–A4 full · A7 0.0068</td><td class="n">pivot starts</td><td>A6→A7</td><td>0.95</td><td class="n">−18°</td><td>E6 (pivot)</td></tr>
+      <tr><td class="n">0.90</td><td>7</td><td>recede: Δy −0.012, Δz −0.06</td><td>ghost</td><td class="n">all full @ 0.884</td><td class="n">pitch 46° · lift y 0.075</td><td>A7, 60 mm</td><td>mask →0.78 · fill 0.16</td><td class="n">−25°</td><td>E6</td></tr>
+      <tr><td class="n">0.95</td><td>7</td><td>recede Δy −0.018, Δz −0.09</td><td>ghost</td><td class="n">full</td><td class="n">pitch 74° · y 0.140</td><td>A7→A8</td><td>mask 0.62 · fill 0.19</td><td class="n">−32°</td><td>E6 out</td></tr>
+      <tr><td class="n">1.00</td><td>7</td><td>rest: Δy −0.02, Δz −0.10</td><td>ghost</td><td class="n">full</td><td class="n">12° off frontal · y 0.185</td><td>A8, 62 mm</td><td>mask 0.55 · fill 0.20</td><td class="n">−38°</td><td>settle + idle arm</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Per-āyah ink windows <span class="tag">state 3 · pen-lift gaps 0.004</span></h3>
+  <div class="tw"><table>
+    <thead><tr><th>Āyah</th><th class="n">1 (Basmalah)</th><th class="n">2</th><th class="n">3</th><th class="n">4</th><th class="n">5</th><th class="n">6</th><th class="n">7 (L7 · L8)</th></tr></thead>
+    <tbody>
+      <tr><td>write window (p)</td><td class="n">0.320–0.352</td><td class="n">0.356–0.389</td><td class="n">0.393–0.420</td><td class="n">0.424–0.451</td><td class="n">0.455–0.488</td><td class="n">0.492–0.522</td><td class="n">0.526–0.556 · 0.558–0.580</td></tr>
+      <tr><td>rise window (p)</td><td class="n">0.700–0.800</td><td class="n">0.714–0.814</td><td class="n">0.728–0.828</td><td class="n">0.742–0.842</td><td class="n">0.756–0.856</td><td class="n">0.770–0.870</td><td class="n">0.784–0.884</td></tr>
+    </tbody>
+  </table></div>
+  <p>Windows are proportional to each line's total stroke arc length (rule: computed from the supplied
+  SVG at build, table regenerated). Wet-to-dry lag: each point on a stroke dries Δp = 0.045 after the
+  pen passes (≈ 1.8 s at the 40 s design pace) — leading edge wet-black with sheen, trail relaxing to
+  matte brown. Rise stagger: āyah offset Δp 0.014, duration 0.10 each; within an āyah, clusters lead by
+  RTL reading order × Δp 0.0012 — <b>the text rises in the order it was written</b>. Gold transmutation
+  (§14) lags each cluster's rise by 0.25 of its window.</p>
+</section>
+
+<!-- ================================================================ -->
+<section id="s11">
+  <div class="sec-head"><span class="sec-num">11</span><h2>Desktop composition <span style="font-family:var(--mono);font-size:13px;color:var(--gold-dim)">1440 × 900</span></h2></div>
+  <div class="tw"><table>
+    <thead><tr><th>Property</th><th class="n">Value</th></tr></thead>
+    <tbody>
+      <tr><td>Canvas</td><td class="n">full viewport, DPR capped 1.75 (T1) — render 2520×1575 max; MSAA 4×</td></tr>
+      <tr><td>Scroll length</td><td class="n">7200 px virtual (8 × vh) · full journey ≈ 40 s at a reading pace</td></tr>
+      <tr><td>Sheet placement</td><td class="n">horizontal center; optical center 0.52 vh (slightly high) in S1–2; text plane center 0.46 vh at p = 1</td></tr>
+      <tr><td>Framing fractions</td><td class="n">per §9 table — roll 0.54 h → sheet 0.86 h (reading) → text 0.66 w (final)</td></tr>
+      <tr><td>UI</td><td class="n">bottom-left: state label, 11 px mono, #A2957A, fades 300 ms on scroll; bottom-right: 2 px progress hairline, gold at 0.35 alpha; first-visit chevron hint, dies on first scroll, never returns (localStorage)</td></tr>
+      <tr><td>Pointer parallax</td><td class="n">±0.35° per §9; additionally ±0.004 world lateral light sway on the key (disabled in reduced motion)</td></tr>
+      <tr><td>Background</td><td class="n">#0D0906 with a 1.5%-amplitude radial warm lift centered under the sheet; dithered (§16) — flat color banding on OLED is the first thing that says “webpage”</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ================================================================ -->
+<section id="s12">
+  <div class="sec-head"><span class="sec-num">12</span><h2>Mobile composition <span style="font-family:var(--mono);font-size:13px;color:var(--gold-dim)">390 × 844 portrait</span></h2></div>
+  <div class="tw"><table>
+    <thead><tr><th>Property</th><th class="n">Value</th></tr></thead>
+    <tbody>
+      <tr><td>Parchment width on screen</td><td class="n">S1–2: 0.66 vw (roll must float, not fill) · S3: text column framed — 0.62 world across 359 px → sheet slightly overflows, intentional · S4–5: sheet 0.92 vw · S7: text plane 0.84 vw</td></tr>
+      <tr><td>Vertical scale</td><td class="n">sheet height ≤ 0.72 vh in any state; camera distance overrides ×1.30 / ×0.94 / ×1.00 / ×1.12 per state group (§9)</td></tr>
+      <tr><td>Minimum rendered x-height</td><td class="n"><b>11.1 CSS px</b> in S3 reading frame · 12.5 px at p = 1 — floor is 10 px; if the supplied art's measured x-height lands lower, the S3 camera distance override tightens first (rule), never the layout</td></tr>
+      <tr><td>DPR / AA</td><td class="n">T2: DPR cap 2.2, MSAA 4× · T3: DPR 1.25, MSAA 4× (tile GPUs resolve MSAA nearly free)</td></tr>
+      <tr><td>Safe-area UI</td><td class="n">progress hairline right edge, inset by env(safe-area-inset-right/top/bottom); state label bottom-center above home indicator (+12 px); no other chrome</td></tr>
+      <tr><td>Swipe-to-scroll mapping</td><td class="n">native scroll on a 5486 px (6.5 × vh) container, p = scrollTop/(H − vh); platform momentum preserved; the p-spring (§13) rides on top; gentle magnetism: when |dp/dt| &lt; 0.004 s⁻¹, drift toward nearest hold point {0.04, 0.60, 1.00} at 0.02 s⁻¹</td></tr>
+      <tr><td>Touch parallax</td><td class="n">gyro-driven ±0.25° where permission already granted; never prompts for sensor access</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Tier-3 simplifications <span class="tag">exact list — iPhone 12 / mid Android target, 30 fps</span></h3>
+  <ul>
+    <li>Grid 96×128; residual XPBD replaced by the analytic damped-wave term (§17); POM off (normal-only fiber).</li>
+    <li>Shadow map 512², PCSS → 9-tap PCF with fixed 1.8-texel radius; contact blob kept (it is the mobile depth cue) but single-pass 5-tap blur at 256².</li>
+    <li>Glyph mesh at tolerance 0.0028 (~190k tris), bevel rings 9 → 5.</li>
+    <li>No temporal accumulation; dust off; background traces off; grain kept (cheapest banding fix).</li>
+    <li>Env 512×256; anisotropy term off (plain GGX); translucency kept (it defines the curl states).</li>
+  </ul>
+</section>
+
+<!-- ================================================================ -->
+<section id="s13">
+  <div class="sec-head"><span class="sec-num">13</span><h2>Easing and timing</h2></div>
+
+  <div class="tw"><table>
+    <thead><tr><th>Name</th><th class="n">Curve</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td class="n">E1</td><td class="n">cubic-bezier(0.65, 0, 0.35, 1)</td><td>camera segment glides, env yaw segments</td></tr>
+      <tr><td class="n">E2</td><td class="n">cubic-bezier(0.22, 0, 0.18, 1)</td><td>emboss growth, pose-tilt settle, gold transmutation</td></tr>
+      <tr><td class="n">E3</td><td class="n">cubic-bezier(0.40, 0, 1.00, 0.80)</td><td>lagging followers (bottom curl, look-at trail)</td></tr>
+      <tr><td class="n">E4</td><td class="n">cubic-bezier(0.22, 0, 0.18, 1) <em>per-cluster, no overshoot</em></td><td>extrusion rise — reverent, zero bounce</td></tr>
+      <tr><td class="n">E5</td><td class="n">smoothstep over Δw 0.012 of stroke-order field</td><td>ink leading edge (per-texel, not per-keyframe)</td></tr>
+      <tr><td class="n">E6</td><td class="n">cubic-bezier(0.30, 0, 0.12, 1)</td><td>text pivot + lift — long committed deceleration</td></tr>
+      <tr><td class="n">E-unroll</td><td class="n">cubic-bezier(0.42, 0, 0.16, 1)</td><td>wrap payout (slow seal-break, long glide)</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="tw"><table>
+    <thead><tr><th>Smoothing constant</th><th class="n">Value</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>Scroll spring (p target → uP)</td><td class="n">k = 110 s⁻², c = 21 s⁻¹ (ζ ≈ 1.0)</td><td>critically damped; ~240 ms settle; never overshoots (overshoot would re-trigger state boundaries)</td></tr>
+      <tr><td>Scroll velocity LPF</td><td class="n">τ = 140 ms</td><td>feeds residual-sim excitation only</td></tr>
+      <tr><td>Look-at trail</td><td class="n">extra τ = 80 ms on p</td><td>gaze lags dolly</td></tr>
+      <tr><td>Parallax spring</td><td class="n">ω = 12.6 rad/s, ζ = 0.9</td><td>pointer/gyro gimbal</td></tr>
+      <tr><td>Design pace</td><td class="n">full journey ≈ 40 s</td><td>reference for all “seconds” figures; everything is actually Δp</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout">
+    <p class="co-t">Reduced motion — defined, not vestigial</p>
+    <p><code>prefers-reduced-motion</code>: the scroll spring hardens to τ = 60 ms with velocity clamp;
+    residual sim, idle micro-motion, parallax, and env drift are off. The journey becomes seven held
+    compositions: scroll (or arrow keys / pager dots, which appear in this mode only) crossfades between
+    state-center poses over 300 ms opacity dissolve with <b>camera cuts, not moves</b>. All seven states
+    remain reachable; ink appears pre-dried; the rise presents at its completed pose per state. Same
+    deterministic uP axis, so regression frames cover this mode too.</p>
+  </div>
+</section>
+<!-- ================================================================ -->
+<section id="s14">
+  <div class="sec-head"><span class="sec-num">14</span><h2>Ink-to-geometry transition mechanism</h2></div>
+
+  <p>The single hardest moment to keep pop-free. Three stages, one invariant: <b>flat SDF and extrusion
+  are generated from the identical flattened polylines</b> (§17), and the extrusion's top face carries
+  the same atlas UVs — so plan-view contours are equal by construction, not by tolerance.</p>
+
+  <ol>
+    <li><b>Flat ink</b> (p &lt; 0.640). Ink is a layer inside the parchment surface shader: MTSDF
+    coverage with analytic <code>fwidth</code> AA, colored by the wet/dry blend, sunk −0.0006 into fiber
+    valleys via the cavity term. No geometry exists.</li>
+    <li><b>Emboss</b> (0.640–0.695, E2). A precomputed <em>puff-height</em> channel
+    (interior-distance<sup>1.6</sup>, clamped, 1.5-texel pre-blur, stored in progression-atlas A) scales
+    from 0 → 0.0009. Its screen-space gradient perturbs the parchment normal; the same height feeds a
+    +8% cavity darkening around stroke borders — fibers compressing under the forming relief. Pure
+    normal-map relief: zero vertices move.</li>
+    <li><b>Geometry handoff</b> (0.680–0.720). The merged glyph mesh appears at depth 0.0009 — exactly
+    the emboss's apparent height — then all clusters lift uniformly to 0.0012 while emboss normal
+    strength runs 1 → 0. <b>No alpha fade anywhere</b>: the mesh enters opaque, and because its
+    silhouette equals the SDF contour and its top-face material samples the same SDF ink color, the only
+    observable change is parallax of ≤ 0.3 px at 1440p (depth 0.0009 under the 83° camera). The flat ink
+    layer keeps rendering beneath the caps, holding the root-fillet crevices ink-dark.</li>
+  </ol>
+
+  <p><b>Material transmutation.</b> The mesh is born <em>ink</em>: top face uses the flat-ink color and
+  roughness at emergence. During each cluster's rise window (lagging rise by 0.25 of the window, ease
+  E2), base color, metalness, roughness, and anisotropy blend to the §7 gold set — sidewalls resolve
+  from wet-dark to patina gold. The written word does not get gilded by a crossfade; it
+  <em>turns into</em> gold as it takes form. Depth resolution:
+  <code>depth(cluster) = max(uniformLift(p), stagger_i(p))</code> so the handoff and the stagger can
+  overlap without a discontinuity. After the caps fully occlude the flat layer, the flat ink fades
+  0.78–0.84 to the 8% ghost stain (§7) — never visible as a fade because it is occluded while it
+  happens; it reappears only when the text lifts away in S7.</p>
+</section>
+
+<!-- ================================================================ -->
+<section id="s15">
+  <div class="sec-head"><span class="sec-num">15</span><h2>Premium details</h2></div>
+
+  <div class="tw"><table>
+    <thead><tr><th>Detail</th><th>Specification</th></tr></thead>
+    <tbody>
+      <tr><td><b>Stroke AA</b></td><td>Flat ink: analytic — <code>smoothstep(0.5 − w, 0.5 + w, sdf)</code>, <code>w = 0.5·length(vec2(dFdx(sdf), dFdy(sdf)))</code>; resolution-independent, MSAA-independent. Geometry edges: MSAA 4×. This split is why thin naskh hairlines stay clean at every zoom.</td></tr>
+      <tr><td><b>Gold shimmer prevention</b></td><td>Three layers: (1) geometric specular AA — Kaplanyan-style roughness kernel from screen-space normal derivatives, <code>r′ = sqrt(r² + min(2·σ²(N), 0.18))</code>, in the gold BRDF always; (2) curvature-baked roughness floor 0.28 on the crown-fillet ring (baked per-vertex at build); (3) idle temporal supersample — 8-tap Halton jitter, exponential α 0.15, luma-clamped, engaged only when camera + scroll velocity ≈ 0, faded over 120 ms on motion. No TAA while moving → no ghosting, ever; MSAA + specular AA carry motion.</td></tr>
+      <tr><td><b>Bevel rim choreography</b></td><td>The crown fillet's normal fan spans ~55°, so the 9°-grazing rim light always finds a ~2 px band somewhere on every stroke; the env-yaw sweep (§8) walks the window reflection along that band as the text rises. This is the “gold catches the light” moment and it is authored, not lucky.</td></tr>
+      <tr><td><b>Micro-imperfections</b></td><td>Residual end-curl and paired corner twist (§4); crease at t 0.545 (§5); ±6% albedo discoloration; 0.04-alpha historic stains (two, lower-left quadrant, ∅ 0.06/0.09); leaf wrinkle normal 0.25 on gold; one deliberately weaker gilding pass on āyah 5's marker (wear channel ×1.6) — the human error that proves the hand.</td></tr>
+      <tr><td><b>Contact shadow</b></td><td>Height-field blob + PCSS union per §8; ramps 0.72–0.80; opacity 0.75, radius 2 + 640·h texels; decays exp(−h/0.12) as text departs — the letters' “lift-off” reads on a 390 px screen because the blob is noise-free by construction.</td></tr>
+      <tr><td><b>Designed first frame</b></td><td>Inline 1.1 KB blur-up LQIP → 42 KB 1600×1000 poster JPEG of regression frame R-p0.00-T1, color-managed through the same AgX grade. Behind it, all WebGPU pipelines pre-compile against dummy draws; canvas crossfades in over 420 ms only after 3 real frames have presented. First scroll never hitches.</td></tr>
+      <tr><td><b>Idle micro-motion</b></td><td>Arms after 4 s still, 2 s ramp-in: parchment breath via residual field (amp 2.5e-4, 0.10 Hz), key intensity ±1.5% over 9 s, env yaw ±2° over 14 s, camera position simplex drift 0.002 @ 0.07 Hz. All zeroed in reduced motion; all excluded from capture mode.</td></tr>
+      <tr><td><b>p = 1 (the held ending)</b></td><td>Risen gold text at 12°, filling 0.66 frame width, window reflection slowly traversing the bevels; parchment low and behind at 55% key, carrying the 8% ghost of its own inscription and the text's long soft PCSS shadow; two dust motes per second crossing the key beam; total luminance flux drift ≤ 2% — quiet, present, finished. Nothing pulses, nothing glows.</td></tr>
+      <tr><td><b>Reduced motion</b></td><td>Per §13 — seven held compositions, 300 ms dissolves, pager dots, pre-dried ink.</td></tr>
+      <tr><td><b>Failure grace</b></td><td>No WebGPU and no usable WebGL2 → the poster frame stays, with the seven states as a static swipeable sequence of prerendered captures (280 KB). The piece degrades to a folio of plates, never to a broken canvas.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ================================================================ -->
+<section id="s16">
+  <div class="sec-head"><span class="sec-num">16</span><h2>Rendering architecture</h2></div>
+
+  <h3>Pass list <span class="tag">per frame, in order · T1 budgets @ 2520×1575</span></h3>
+  <div class="tw wide"><table>
+    <thead><tr><th class="n">#</th><th>Pass</th><th>Kind</th><th class="n">Target / format</th><th class="n">Budget ms</th><th>Skipped when</th></tr></thead>
+    <tbody>
+      <tr><td class="n">P0</td><td>Residual integrate + constraints</td><td>compute ×(1+6)</td><td class="n">storage buffer 48×64 vec4 ×2 (ping-pong)</td><td class="n">0.05</td><td>T3 (analytic wave instead) · reduced motion · capture</td></tr>
+      <tr><td class="n">P1</td><td>Surface field eval</td><td>compute 256×192</td><td class="n">rgba16f ×3 (pos / normal / tangent)</td><td class="n">0.10</td><td>never (this is the piece)</td></tr>
+      <tr><td class="n">P2</td><td>Normal resolve (central diff over P1 pos)</td><td>compute</td><td class="n">writes into P1 normal/tangent</td><td class="n">0.05</td><td>never</td></tr>
+      <tr><td class="n">P3</td><td>Contact height field</td><td>raster ortho, glyphs only</td><td class="n">512² r16f</td><td class="n">0.15</td><td>p &lt; 0.68</td></tr>
+      <tr><td class="n">P4</td><td>Contact blur H+V (radius from height)</td><td>fullscreen ×2</td><td class="n">512² r16f ×2</td><td class="n">0.20</td><td>p &lt; 0.68 · T3: single 5-tap @ 256²</td></tr>
+      <tr><td class="n">P5</td><td>Key shadow depth</td><td>raster</td><td class="n">2048² depth32</td><td class="n">1.10</td><td>—</td></tr>
+      <tr><td class="n">P6</td><td>Main forward</td><td>raster MSAA 4×</td><td class="n">rgba16f + reversed-Z depth</td><td class="n">6.80</td><td>—</td></tr>
+      <tr><td class="n">P7</td><td>Temporal accumulate</td><td>fullscreen</td><td class="n">rgba16f history ×2</td><td class="n">0.50</td><td>any motion · T3</td></tr>
+      <tr><td class="n">P8</td><td>Grade: AgX → sat 1.05 → black lift 0.004 → vignette −0.35 EV @ r&gt;0.55 → grain 1.2% blue-noise 8 Hz → dither → sRGB</td><td>fullscreen</td><td class="n">swapchain</td><td class="n">0.90</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>There is no bloom pass.</b> Highlight discipline comes from AgX's shoulder and the authored env.
+  Total T1 ≈ 9.9 ms — headroom for thermal drift.</p>
+
+  <h3>Shader responsibility matrix</h3>
+  <div class="tw wide"><table>
+    <thead><tr><th>Program (TSL Fn)</th><th>Stage</th><th>Reads</th><th>Writes / lights</th><th>Key math</th></tr></thead>
+    <tbody>
+      <tr><td class="n">simIntegrate / simConstrain</td><td>compute</td><td>lattice ping, uVel, uTime-free forces</td><td>lattice pong</td><td>XPBD stretch+bend, 6 iters, damping exp(−3.5·dt)</td></tr>
+      <tr><td class="n">surfaceEval</td><td>compute</td><td>uP drivers, silhouette profile, lattice (bilinear)</td><td>posTex</td><td>spiral wrap + CR web + cup + tilt + residual add</td></tr>
+      <tr><td class="n">normalResolve</td><td>compute</td><td>posTex</td><td>nrmTex, tanTex</td><td>central differences + Gram-Schmidt; analytic Jacobian fallback at boundary texels</td></tr>
+      <tr><td class="n">parchmentSurface</td><td>vertex+fragment</td><td>P1 textures, fiber pack, utility pack, ink atlases, contact, shadow</td><td>main target</td><td>vertex: fetch pos/nrm by grid UV. fragment: PBR + sheen + wrap translucency + ink layer (SDF, wet, bleed, emboss) + contact term + PCSS</td></tr>
+      <tr><td class="n">glyphSurface</td><td>vertex+fragment</td><td>P1 textures (anchor UV), cluster attrs, burnish pack, atlases, shadow</td><td>main target</td><td>vertex: surface-frame × rise(p) × pivot-blend. fragment: ink→gold transmuted aniso GGX + specular-AA kernel + PCSS + baked AO</td></tr>
+      <tr><td class="n">contactHeight / contactBlur</td><td>raster / fullscreen</td><td>glyph verts / height tex</td><td>r16f chain</td><td>ortho height write; variable-radius separable Gaussian</td></tr>
+      <tr><td class="n">dustBillboard</td><td>vertex+fragment</td><td>uP, uTime(idle), key</td><td>main target</td><td>curl-noise drift, size/opacity falloff by |Δfocus|</td></tr>
+      <tr><td class="n">gradeComposite</td><td>fullscreen</td><td>P6/P7 resolve</td><td>swapchain</td><td>AgX, grade chain, blue-noise grain + 8-bit dither</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Uniform / buffer table <span class="tag">bind group layout</span></h3>
+  <div class="tw wide"><table>
+    <thead><tr><th class="n">Group</th><th>Name</th><th class="n">Type / format</th><th class="n">Size</th><th>Update</th><th>Contents</th></tr></thead>
+    <tbody>
+      <tr><td class="n">0</td><td class="n">FrameUBO</td><td class="n">uniform</td><td class="n">96 B</td><td>per frame</td><td>uP, uPLookat, uVel, uTimeIdle, uTier, uViewport, uDPR, flags (capture / reduced / simEnabled)</td></tr>
+      <tr><td class="n">0</td><td class="n">CameraUBO</td><td class="n">uniform</td><td class="n">208 B</td><td>per frame</td><td>view, proj, inv, prevViewProj (temporal), jitter</td></tr>
+      <tr><td class="n">0</td><td class="n">LightUBO</td><td class="n">uniform</td><td class="n">256 B</td><td>per frame</td><td>key (pos/dir/color/intensity/shadow params), fill LTC, rim, envIntensity, envYaw</td></tr>
+      <tr><td class="n">1</td><td class="n">DeformUBO</td><td class="n">uniform</td><td class="n">128 B</td><td>per frame</td><td>W_top, W_bot, r_top, sag, cup, tilt, edgeLift ×2, residual gains — all pre-evaluated on CPU from p (single source of truth in TS)</td></tr>
+      <tr><td class="n">1</td><td class="n">latticeA/B</td><td class="n">storage vec4[3072]</td><td class="n">48 KB ×2</td><td>compute</td><td>xyz = residual offset, w = inv-mass (pinned border = 0)</td></tr>
+      <tr><td class="n">1</td><td class="n">posTex / nrmTex / tanTex</td><td class="n">storage tex rgba16f</td><td class="n">256×192 ×3</td><td>compute</td><td>world pos / normal / tangent of the surface field</td></tr>
+      <tr><td class="n">2</td><td class="n">InkUBO</td><td class="n">uniform</td><td class="n">64 B</td><td>per frame</td><td>uPWrite per-āyah 8×(start, invWidth) packed, wetLag, embossK, ghostMix</td></tr>
+      <tr><td class="n">2</td><td class="n">atlasMTSDF / atlasProg</td><td class="n">tex rgba8 (UASTC→BC7/ASTC)</td><td class="n">2048² ×2</td><td>static</td><td>§7 channel map</td></tr>
+      <tr><td class="n">3</td><td class="n">RiseUBO</td><td class="n">uniform</td><td class="n">96 B</td><td>per frame</td><td>uniformLift, stagger base/step, goldLag, pivotQuat, liftY, recede</td></tr>
+      <tr><td class="n">3</td><td class="n">clusterBuf</td><td class="n">storage vec4[~160]</td><td class="n">2.5 KB</td><td>static</td><td>per cluster: anchorUV, āyahId, rtlIndex, wScale — indexed by vertex attr clusterId (uint16)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Scene graph</h3>
+  <figure>
+    <div class="figbox">
+    <pre class="mermaid">%%{init: {"theme":"base","themeVariables":{"primaryColor":"#1D1810","primaryTextColor":"#E7DDC6","primaryBorderColor":"#57431F","lineColor":"#8F7440","fontSize":"12.5px","fontFamily":"IBM Plex Mono, monospace"}}}%%
+graph TD
+  SC[Scene · bg 0D0906 · FogExp2 0.22] --> ENV[EnvRotator · yaw f p]
+  SC --> SR[SheetRoot · pose tilt + recede f p]
+  SR --> PM[ParchmentMesh · 192x256 grid · reads posTex/nrmTex]
+  SR --> ER[EdgeRibbon · perimeter strip]
+  SR --> GA[GlyphAssembly · merged mesh · anchor→presentation frame blend]
+  SC --> CSR[ContactShadowRig · ortho −Y camera]
+  SC --> LK[Key spot · PCSS]
+  SC --> LF[Fill RectArea LTC]
+  SC --> LR[Rim spot]
+  SC --> DS[DustSystem · ≤900 pts]
+  SC --> BG[BackgroundPlane · traces ≤0.022 α]
+  SC --> CR[CameraRig]
+  CR --> D1[SplineDolly f p] --> D2[LookAtDamper τ80ms] --> D3[ParallaxGimbal ±0.35°] --> CAM[PerspectiveCamera 40–62mm]</pre>
+    </div>
+    <figcaption><b>Scene graph.</b> The glyph assembly is a child of SheetRoot until S7's pivot, which is
+    a vertex-stage frame blend, not a re-parent — the graph never mutates at runtime.</figcaption>
+  </figure>
+
+  <div class="callout deviate">
+    <p class="co-t">WebGL2 fallback — same node graph, different plumbing</p>
+    <p>Compiled from the identical TSL graph. Surface field + normal resolve become MRT fragment passes
+    into float render targets; the residual lattice becomes ping-pong RGBA16F textures; MSAA via
+    multisampled renderbuffer + explicit resolve; POM off; timestamp queries →
+    <code>EXT_disjoint_timer_query_webgl2</code> where present, else CPU pacing stats. UASTC-HDR env →
+    prebuilt RGBM8 PNG fallback (shipped, +180 KB, lazy). The only inline-GLSL exceptions permitted in
+    the codebase: none currently — variable-radius blur and IGN rotation are expressible in TSL; if a
+    driver bug forces raw WGSL/GLSL, it lands behind a single <code>RawShaderIsland</code> wrapper with
+    an issue link.</p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<section id="s17">
+  <div class="sec-head"><span class="sec-num">17</span><h2>Simulation design</h2></div>
+
+  <div class="callout deviate">
+    <p class="co-t">Deliberate deviation — sim as residual, not primary</p>
+    <p>The brief offers PBD cloth <em>or</em> analytic curl. A free-running PBD unroll is
+    history-dependent: scrubbing backward cannot revisit the same shapes, violating the deterministic-p
+    requirement. So: <b>the analytic curl field is the pose; XPBD contributes only a residual
+    displacement</b> excited by scroll velocity and decaying to zero. Determinism at rest, physicality
+    in motion, and the residual is exactly the part regression capture turns off.</p>
+  </div>
+
+  <h3>Parchment solver</h3>
+  <ul>
+    <li><b>Pose:</b> <code>surfaceEval</code> computes flat map → cup → CR web sag → spiral wrap per end
+    (arc-length preserving, §4) → pose tilt → recede, all closed-form in p. Boundary silhouette (§5)
+    baked as a per-vertex inset mask.</li>
+    <li><b>Residual lattice:</b> 48×64 XPBD points over (u, v). Constraints: stretch (compliance 0,
+    inextensible) + bending (compliance 1e-5). 6 iterations, dt clamped to 1/60, velocity damping
+    <code>exp(−3.5·dt)</code>, border pinned. Excitation: <code>a = −n̂ · 0.35 · v_scroll_lpf</code>,
+    clamped |a| ≤ 2.0, applied strongest where wrap curvature is highest (the paying-out region carries
+    the inertia). Settle to &lt; 0.5 px in ≈ 0.9 s. The mesh samples the lattice bilinearly and adds it
+    along the pose normal.</li>
+    <li><b>Normals:</b> P2 central-differences the <em>final</em> position texture (pose + residual), so
+    lighting always sees true geometry; analytic Jacobian only at the two boundary rings where the
+    stencil is one-sided. Nothing is approximated from the undeformed mesh.</li>
+    <li><b>T3 substitute:</b> residual replaced by a traveling damped wave
+    <code>0.004 · v_lpf · sin(28(v − v_front)) · exp(−9|v − v_front|)</code> behind the unroll front —
+    same visual grammar, zero dispatches.</li>
+  </ul>
+
+  <h3>Ink SDF pipeline</h3>
+  <ul>
+    <li><b>Build:</b> supplied SVG → checksum gate → adaptive flattening (tolerance 0.0015 em) →
+    per-cluster MTSDF via msdfgen (<code>mtsdf</code> mode: RGB multi-channel + A true SDF), 64 px/em,
+    pxrange 6. <b>Resolution rule per glyph:</b> texels/em = clamp(⌈6 / minStrokeWidth_em⌉, 48, 96).</li>
+    <li><b>Stroke-order field w:</b> rasterize cluster at 4× → Zhang-Suen skeleton → geodesic distance
+    from the cluster's RTL entry point, normalized, dilated outward to fill the glyph → progression
+    atlas R. Supplied path order (digitized stroke order) breaks ties between branches. G = āyah id,
+    B = bleed weight (fiber-map response baked at the glyph's sheet position — ink bleeds along fibers,
+    so bleed is precomputed <em>from the same fiber map the surface renders</em>).</li>
+    <li><b>Runtime reveal:</b> <code>edge = uPWrite_āyah</code>; coverage threshold sweeps w with
+    smoothstep width 0.012 (E5). Wetness <code>wet = 1 − clamp((edge − w)/0.045, 0, 1)</code> drives
+    color (wet→dry), roughness (0.09→0.58), and bleed: iso-offset
+    <code>0.35·(fiber−0.5)·wet + 0.12·(fiber−0.5)</code> in SDF units — edges wander ≤ 1.6 atlas px
+    along fibers while wet and freeze at 35% of that. No history buffer; wetness is closed-form in p,
+    hence scrub-safe.</li>
+  </ul>
+
+  <h3>Extrusion generation <span class="tag">build time — never on mobile at runtime</span></h3>
+  <ol>
+    <li>Same flattened polylines as the SDF step (the alignment guarantee).</li>
+    <li>Self-intersection cleanup (even-odd resolve), winding normalization, cluster grouping (letters +
+    their diacritics + marker per āyah share cluster ids).</li>
+    <li>Thin-stroke guard sampling (§6) against the SDF interior-distance field.</li>
+    <li>Bevel sweep: 9-point profile × contour, 8 rings + cap; caps earcut-triangulated; top-face UVs =
+    atlas UVs; per-vertex: clusterId, bevel-ring index, baked root AO, curvature-roughness floor.</li>
+    <li>Merge all clusters → one indexed mesh; quantized attributes (pos 14-bit, normal oct8, uv 12-bit);
+    meshopt compress → glTF. Draco rejected: meshopt decodes 5–10× faster on mobile and streams.</li>
+  </ol>
+</section>
+<!-- ================================================================ -->
+<section id="s18">
+  <div class="sec-head"><span class="sec-num">18</span><h2>Asset pipeline and payload budget</h2></div>
+
+  <pre><code>SVG (shaped, kerned — authoritative, checksum-gated)
+ ├─ svgo → flatten (tol 0.0015em) ─┬─ msdfgen mtsdf 64px/em ──→ atlasMTSDF.ktx2 (UASTC+zstd)
+ │                                 ├─ skeleton + geodesic w ──→ atlasProg.ktx2  (UASTC+zstd)
+ │                                 └─ bevel extruder + merge ─→ glyphs.glb      (meshopt)
+ ├─ parchment maps (authored) ────→ toktx: UASTC color/normal · ETC1S utility
+ │      └─ Toksvig step: normal-map variance → roughness mip flow-down (kills sparkle at distance)
+ └─ HDRI (Blender EXR 2k) ───────→ 1024×512 UASTC-HDR ktx2  (+RGBM8 PNG fallback for WebGL2)</code></pre>
+
+  <div class="tw"><table>
+    <thead><tr><th>Asset</th><th class="n">Format</th><th class="n">Transfer (br/gz)</th><th>Load phase</th></tr></thead>
+    <tbody>
+      <tr><td>App JS (three r182 WebGPU build, tree-shaken + app)</td><td class="n">ES module, brotli</td><td class="n">≈ 650 KB</td><td>A</td></tr>
+      <tr><td>Transcoder WASM (basis + meshopt)</td><td class="n">wasm</td><td class="n">≈ 210 KB</td><td>A</td></tr>
+      <tr><td>Poster + LQIP</td><td class="n">JPEG + inline base64</td><td class="n">43 KB</td><td>inline / A</td></tr>
+      <tr><td>Parchment proxy set (512² albedo + fiber)</td><td class="n">KTX2</td><td class="n">≈ 190 KB</td><td>A</td></tr>
+      <tr><td>Parchment full: albedo 2048 · fiber pack 2048 · utility 1024</td><td class="n">UASTC ×2 + ETC1S</td><td class="n">≈ 3.15 MB</td><td>B</td></tr>
+      <tr><td>Ink atlases (MTSDF + progression, 2048² ×2)</td><td class="n">UASTC</td><td class="n">≈ 1.8 MB</td><td>B</td></tr>
+      <tr><td>Environment 1024×512</td><td class="n">UASTC-HDR</td><td class="n">≈ 0.55 MB</td><td>B</td></tr>
+      <tr><td>Glyph mesh (merged, quantized)</td><td class="n">glb + meshopt</td><td class="n">≈ 1.9 MB</td><td>C</td></tr>
+      <tr><td>Static-plates fallback set</td><td class="n">JPEG ×7</td><td class="n">280 KB</td><td>lazy, only on renderer failure</td></tr>
+      <tr><td><b>Total (happy path)</b></td><td class="n">—</td><td class="n"><b>≈ 8.5 MB target · 10 MB hard cap</b></td><td>—</td></tr>
+    </tbody>
+  </table></div>
+
+  <p><b>Loading strategy.</b> Phase A (≈ 1.1 MB) reaches the live rolled parchment — proxies + analytic
+  curl need no glyph data. Poster → live crossfade at ≤ 2.2 s on a 10 Mbps connection, pipelines
+  pre-compiled behind the poster (§15). Phase B streams immediately after first present; textures hot-swap
+  at mip boundaries (never mid-state — swaps queue for the next state boundary crossing). Phase C
+  (glyph mesh) must resolve before p = 0.55; scroll past 0.50 without it shows the ink state
+  indefinitely (writing is SDF-only) — the piece never blocks, the rise simply waits. Everything hashed
+  + immutable-cached; a service worker is optional and ships off by default.</p>
+</section>
+
+<!-- ================================================================ -->
+<section id="s19">
+  <div class="sec-head"><span class="sec-num">19</span><h2>Performance plan</h2></div>
+
+  <div class="tw wide"><table>
+    <thead><tr><th>Budget</th><th class="n">T1 · desktop dGPU / Apple Si</th><th class="n">T2 · iPhone 15 class</th><th class="n">T3 · iPhone 12 / mid Android</th></tr></thead>
+    <tbody>
+      <tr><td>Target</td><td class="n">60 fps @ DPR ≤ 1.75</td><td class="n">60 fps @ DPR ≤ 2.2 (390 pt)</td><td class="n">30 fps @ DPR 1.25</td></tr>
+      <tr><td>Triangles (peak, S6)</td><td class="n">≤ 1.05 M (890k planned)</td><td class="n">≤ 620k</td><td class="n">≤ 330k</td></tr>
+      <tr><td>Draw calls / render passes</td><td class="n">≤ 14 / 9</td><td class="n">≤ 12 / 8</td><td class="n">≤ 10 / 6</td></tr>
+      <tr><td>Texture memory (resident)</td><td class="n">≤ 120 MB (≈ 100 planned)</td><td class="n">≤ 80 MB</td><td class="n">≤ 48 MB</td></tr>
+      <tr><td>Compute dispatch</td><td class="n">≤ 0.35 ms</td><td class="n">≤ 0.45 ms</td><td class="n">0 (analytic wave)</td></tr>
+      <tr><td>Frame total</td><td class="n">≤ 12 ms p95</td><td class="n">≤ 14 ms p95</td><td class="n">≤ 27 ms p95</td></tr>
+      <tr><td>Grid / shadow / atlas res</td><td class="n">192×256 / 2048 / 2048</td><td class="n">128×176 / 1024 / 2048</td><td class="n">96×128 / 512 PCF / 2048 (atlases never drop — text is sacred)</td></tr>
+      <tr><td>Dust / temporal / POM</td><td class="n">900 / idle-8-tap / on</td><td class="n">500 / idle-8-tap / off</td><td class="n">0 / off / off</td></tr>
+    </tbody>
+  </table></div>
+
+  <p><b>Tier logic.</b> Initial: WebGPU adapter info + <code>deviceMemory</code> + physical resolution
+  heuristic. Demote when p95 frame time exceeds 1.25× budget over a 3 s window; 10 s hysteresis; tier
+  changes apply only at state-boundary crossings so nothing pops mid-composition. Never auto-promote
+  during a session. Thermal guard: two consecutive demote triggers at T3 → halve DPR once more and stop
+  measuring.</p>
+
+  <h3>Profiling checklist <span class="tag">every milestone exit</span></h3>
+  <ol>
+    <li>GPU timestamp queries per pass (where exposed) reconciled against the §16 budget table; CPU frame pacing histogram otherwise.</li>
+    <li>Chrome tracing: no main-thread task &gt; 4 ms during steady scroll; zero per-frame allocations after warmup (heap snapshot diff over 30 s).</li>
+    <li>Xcode GPU capture on iPhone 12 + 15: overdraw view (dust must stay &lt; 1.15× fill), bandwidth counters, MSAA resolve cost.</li>
+    <li>Scrub storm: synthetic 120 Hz wheel + flick reversals for 60 s — no missed state boundary, no residual-sim divergence (energy monitor), no &gt; 2-frame hitch.</li>
+    <li>Thermal soak: 5 min at p oscillating 0.6–0.9 (worst pass set) on device — tier system engages before the OS throttles.</li>
+    <li>renderer.info audit: draw calls / tris vs budget at p = {0.05, 0.35, 0.55, 0.78, 1.0}.</li>
+    <li>Shader compile audit: all pipelines compiled behind poster; zero mid-scroll compiles (WebGPU <code>pipeline-creation</code> tracing).</li>
+    <li>Memory ceiling: adapter limits respected at T3 floor devices (2 GB Androids): resident ≤ 48 MB textures verified via estimator + native capture.</li>
+    <li>WebGL2 fallback parity run of the full checklist on Intel UHD 620.</li>
+    <li>Battery/energy note per release: 10-min session drain on iPhone 15 ≤ 4%.</li>
+  </ol>
+</section>
+
+<!-- ================================================================ -->
+<section id="s20">
+  <div class="sec-head"><span class="sec-num">20</span><h2>Implementation handoff</h2></div>
+  <p>Ordered milestones; each lands behind the regression rig (capture mode: <code>uSimEnabled = 0</code>,
+  idle clocks frozen at 0, fixed seed, poster pipeline bypassed). A frame passes at SSIM ≥ 0.995 against
+  its blessed reference plus ΔE00 p95 ≤ 1.5 inside gold/ink ROI masks. Full matrix: p ∈ {0.00, 0.08,
+  0.21, 0.34, 0.45, 0.56, 0.645, 0.70, 0.76, 0.86, 0.93, 1.00} × {desktop-T1 1440×900, mobile-T2 390×844,
+  mobile-T3 390×844} = 36 frames, run on WebGPU and WebGL2 backends. Repo: TypeScript strict; modules
+  <code>/core</code> (renderer, tiers, loader), <code>/field</code> (deform + solver), <code>/ink</code>,
+  <code>/glyphs</code>, <code>/look</code> (materials, lights, grade), <code>/director</code> (p-drivers,
+  camera, states), <code>/build</code> (asset pipeline), <code>/qa</code> (rig).</p>
+
+  <div class="tw wide"><table>
+    <thead><tr><th class="n">M</th><th>Scope</th><th>Definition of done</th><th class="n">Regression frame</th></tr></thead>
+    <tbody>
+      <tr><td class="n">M0</td><td>Harness: WebGPU/WebGL2 boot, AgX pipeline, scroll spring, DPR/resize, tier detect, capture rig</td><td>Gray-box sheet scrubs deterministically; two consecutive rig runs produce hash-identical frames; AgX verified against a ramp chart</td><td class="n">R-0.50-T1 (gray)</td></tr>
+      <tr><td class="n">M1</td><td>Surface field: curl, silhouette, ribbon, compute normals, residual lattice</td><td>Readback probes at 20 sample points match §4 checkpoint tables within 0.002; matcap shows no faceting &gt; 2°; scrub storm passes</td><td class="n">R-0.00 / 0.21 / 0.34-T1</td></tr>
+      <tr><td class="n">M2</td><td>Parchment look: PBR, translucency, HDRI, PCSS, grade</td><td>Material values match §7; 18% gray calibration holds ±0.01; measured penumbra within 15% of §8 law at 3 probe heights</td><td class="n">R-0.08-T1, R-0.34-T2</td></tr>
+      <tr><td class="n">M3</td><td>Ink: atlas build, reveal, wet, bleed</td><td>RTL order audited vs source on 10 clusters; wet trail Δp 0.045 ± 10%; no reveal shimmer at 4× scrub speed (recorded capture reviewed)</td><td class="n">R-0.45-T1, R-0.45-T3</td></tr>
+      <tr><td class="n">M4</td><td>Presenting + relief: full camera spline, emboss stage</td><td>Camera passes §9 poses within 0.01; emboss→geometry silhouette diff ≤ 0.8 px at 1440p across the crossfade window (ROI image diff)</td><td class="n">R-0.56 / 0.645 / 0.70-T1</td></tr>
+      <tr><td class="n">M5</td><td>Rise: extrusion pipeline, merged mesh, stagger, contact shadow, transmutation</td><td>1 draw call verified; SDF/geometry alignment ≤ 0.5 px; contact shadow legible on a 390 px capture at 50 cm equivalent; thin-stroke guard shows no self-intersection on full text</td><td class="n">R-0.76-T1 / T2 / T3</td></tr>
+      <tr><td class="n">M6</td><td>Facing + finish: pivot, env sweep, idle motion, p = 1 hold, reduced motion</td><td>Reduced-motion mode passes an axe + manual audit; idle amplitudes within §15; p = 1 luminance drift ≤ 2% over 60 s</td><td class="n">R-0.93 / 1.00-T1, R-1.00-T2</td></tr>
+      <tr><td class="n">M7</td><td>Performance: tiers, loading phases, poster, thermal</td><td>60 fps p95 M1 Air + iPhone 15 Safari; 30 fps p95 iPhone 12; poster→live ≤ 2.2 s @ 10 Mbps cold; payload report ≤ 8.5 MB; checklist §19 green</td><td class="n">full 36-frame matrix</td></tr>
+      <tr><td class="n">M8</td><td>Ship QA: cross-browser (Chrome, Edge, Safari, Firefox-WebGL2), fallback plates, content sign-off</td><td>36-frame matrix green on both backends; SVG checksum sign-off recorded; scholarly review of rendered text confirmed against source — <b>release gate</b></td><td class="n">matrix + plates set</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout">
+    <p class="co-t">Browser-support caveats, stated once</p>
+    <p>WebGPU: Chrome/Edge stable; Safari 18.2+/26 device-dependent — detect, never UA-sniff; the WebGL2
+    path is a first-class citizen, not an apology. UASTC-HDR needs basis ≥ 1.60 transcoder (shipped) with
+    the RGBM fallback wired. RectAreaLight relies on LTC tables (+90 KB, phase B). Timestamp queries are
+    flag-gated in some browsers — the profiling harness must not assume them. iOS Safari caps device
+    pixel buffers aggressively: the DPR caps in §19 are load-bearing, not stylistic.</p>
+  </div>
+
+  <p style="margin-top:34px;border-top:1px solid var(--line);padding-top:18px;font-size:12.5px;color:var(--faint)">
+  Al-Fātiḥah 3D Manuscript · specification v1.0 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
+  authoritative and untouchable · no bloom, no aura, no spectacle — the light does the reverence.</p>
+</section>
+
+</main>
+</div>
