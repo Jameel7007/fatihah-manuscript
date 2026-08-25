@@ -59,8 +59,8 @@ export function cpuPose(u: number, v: number, d: DeformState): PosePoint {
     const webLen = 1 - wEff - d.wBot;
     const xw = Math.max(0, Math.min(1, (v - wEff) / webLen));
     z = v - 0.5;
-    y = d.sag * Math.sin(Math.PI * xw) ** 2;
-    a = (d.sag * Math.PI * Math.sin(2 * Math.PI * xw)) / webLen;
+    y = d.sag * Math.sin(d.sagA * xw) ** 2;
+    a = (d.sag * d.sagA * Math.sin(2 * d.sagA * xw)) / webLen;
   }
 
   const nz = -Math.sin(a);

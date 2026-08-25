@@ -76,8 +76,9 @@ export class Field {
   private uWt: N = uniform(0.75);
   private uWb: N = uniform(0.1);
   private uWLag: N = uniform(0);
-  private uRc: N = uniform(0.0302);
-  private uSag: N = uniform(-0.004);
+  private uRc: N = uniform(0.0153);
+  private uSag: N = uniform(-0.01);
+  private uSagA: N = uniform(Math.PI * 0.72);
   private uCup: N = uniform(0.009);
   private uTwist: N = uniform(0.006);
   // bottom curl phases: (start z, start y, start angle, curvature) ×3
@@ -170,12 +171,13 @@ export class Field {
     const yTop: N = Cy.sub(rho.mul(cos(psi)));
     const aTop: N = psi.negate(); // profile tangent angle ≈ −ψ (spiral growth term ≪ ρ)
 
-    // --- web: z = v − 0.5, y = sag·sin²(π·x̃) (zero slope at both curl lines)
+    // --- web: z = v − 0.5, y = sag·sin²(a·x̃) — a < π drapes the tongue (ends low with an
+    // upward slope handed C1 into the lip chain); a = π at the terminal (symmetric bump)
     const webLen: N = float(1).sub(Weff).sub(Wb);
     const xw: N = clamp(v.sub(Weff).div(webLen), 0, 1);
     const zWeb: N = v.sub(0.5);
-    const yWeb: N = this.uSag.mul(sin(xw.mul(Math.PI)).pow(2));
-    const aWeb: N = this.uSag.mul(Math.PI).mul(sin(xw.mul(2 * Math.PI))).div(webLen);
+    const yWeb: N = this.uSag.mul(sin(xw.mul(this.uSagA)).pow(2));
+    const aWeb: N = this.uSag.mul(this.uSagA).mul(sin(xw.mul(this.uSagA).mul(2))).div(webLen);
 
     // --- bottom curl: chained circular arcs; phase-start poses precomputed on CPU
     const sB: N = clamp(v.sub(float(1).sub(Wb)), 0, 1);
@@ -226,6 +228,7 @@ export class Field {
     this.uWLag.value = d.wLag;
     this.uRc.value = d.rCore;
     this.uSag.value = d.sag;
+    this.uSagA.value = d.sagA;
     this.uCup.value = d.cup;
     this.uTwist.value = d.twist;
     const uPh: N[] = [this.uB0, this.uB1, this.uB2];

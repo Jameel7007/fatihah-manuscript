@@ -52,14 +52,14 @@ export function pchip(xs: readonly number[], ys: readonly number[]): (x: number)
   };
 }
 
-// §4 checkpoint drivers (columns of the table, exact). v1.3 rederivation (user direction):
-// the manuscript starts MOSTLY ROLLED — 75% of the length wrapped in a 3.5-turn top roll,
-// with a 25% tongue (15% web + 10% lip) exposed below. The unroll pays the turns out across
-// state 2; terminal residual-curl values are the unchanged contract.
-const wTop = pchip(CHECKPOINT_P, [0.75, 0.56, 0.33, 0.12, 0.04]);
-const wBot = pchip(CHECKPOINT_P, [0.1, 0.088, 0.068, 0.045, 0.03]);
-const rCore = pchip(CHECKPOINT_P, [0.0302, 0.033, 0.038, 0.045, 0.052]);
-const sagD = pchip(CHECKPOINT_P, [-0.004, -0.009, -0.011, -0.0075, -0.0035]);
+// §4 checkpoint drivers (columns of the table, exact). v1.3.1 (user direction, tightened):
+// the manuscript starts at 82% wrapped — a 4.2-turn roll (outer r 0.0468) with only an
+// 18% tongue exposed (10% draped web ≈ one roll diameter + 8% lip). The unroll pays the
+// turns out across state 2; terminal residual-curl values are the unchanged contract.
+const wTop = pchip(CHECKPOINT_P, [0.82, 0.63, 0.38, 0.13, 0.04]);
+const wBot = pchip(CHECKPOINT_P, [0.08, 0.075, 0.062, 0.044, 0.03]);
+const rCore = pchip(CHECKPOINT_P, [0.0153, 0.019, 0.026, 0.038, 0.052]);
+const sagD = pchip(CHECKPOINT_P, [-0.01, -0.011, -0.011, -0.0075, -0.0035]);
 
 // Bottom C-curl model — three chained circular arcs (ramp → curl → edge). The ramp share
 // shrinks as the sheet pays out: the terminal residual is all tight edge-memory curl. Radii
@@ -75,11 +75,21 @@ const edgeR = pchip(CHECKPOINT_P, [0.026, 0.026, 0.027, 0.028, 0.028]);
 
 export const THICKNESS = 0.0009; // §2
 
-// The top roll is a RELAXED spiral: layer spacing 0.0045 (5× sheet thickness), so the
-// spiral cross-section reads as visibly stacked layers at the roll ends. The terminal
-// residual curl (Φ < 1 rad) is insensitive to the gap, so the §4 contract holds.
-export const SPIRAL_GAP = 0.0045;
+// The top roll is a RELAXED spiral: layer spacing 0.0075 (8.3× sheet thickness), so the
+// spiral cross-section reads as clearly stacked layers at the roll ends — and the wider
+// gap is what lets 4.2 turns still grow the OUTER radius. The terminal residual curl
+// (Φ < 1 rad) is insensitive to the gap, so the §4 contract holds.
+export const SPIRAL_GAP = 0.0075;
 const K_SPIRAL = SPIRAL_GAP / (2 * Math.PI); // Archimedean growth per radian
+
+/** Web sag profile phase — y = sag·sin²(a·x̃) with a = π·(0.72 + 0.28·s). At p = 0 the
+ *  profile ends DROOPED (y = 0.593·sag) with an upward slope that hands off C1 into the
+ *  lip — the tongue drapes rather than lying flat. At the terminal a = π restores the
+ *  symmetric bump (end y = 0), keeping the residual-curl contract exact. */
+export function sagPhaseOf(p: number): number {
+  const s = Math.max(0, Math.min(1, (p - 0.06) / 0.32));
+  return Math.PI * (0.72 + 0.28 * s);
+}
 
 /** “Center opens first, sides lag” (§4/state 2): extra wrap held at the sheet edges,
  *  W_eff(u) = W_top + wLag·(2u)², windowed to the unroll so p = 0 and terminal are exact. */
@@ -120,6 +130,8 @@ export interface DeformState {
   /** z of the bottom curl line (= 0.5 − wBot) */
   zBotCurl: number;
   sag: number;
+  /** web sag profile phase a — y = sag·sin²(a·x̃) */
+  sagA: number;
   cup: number;
   twist: number;
   bottom: ArcPhase[];
@@ -161,16 +173,23 @@ export function evalDeform(p: number): DeformState {
   const zTopCurl = wt - 0.5;
   const topC: [number, number] = [zTopCurl, rOuter]; // center sits one outer radius above the curl line
 
-  // Bottom curl: three chained arcs starting at the curl line, tangent to the flat web.
+  // Bottom curl: three chained arcs starting at the curl line, C1 with the draped web —
+  // the chain inherits the web profile's end height and end slope (u = 0; the lag term is
+  // zero at the curl-line handoff scale and the lip is u-uniform by design).
   const zBotCurl = 0.5 - wb;
+  const sag = sagD(p);
+  const sagA = sagPhaseOf(p);
+  const webLen = Math.max(1e-4, 1 - wt - wb);
+  const webEndY = sag * Math.sin(sagA) ** 2;
+  const webEndSlope = (sag * sagA * Math.sin(2 * sagA)) / webLen;
   const fr = Math.max(0, Math.min(1, rampFrac(p)));
   const lRamp = fr * wb;
   const lCurl = (1 - fr) * 0.6 * wb;
   const lEdge = (1 - fr) * 0.4 * wb;
   const phases: ArcPhase[] = [];
   let cz = zBotCurl;
-  let cy = 0;
-  let ca = 0;
+  let cy = webEndY;
+  let ca = Math.atan(webEndSlope);
   let s0 = 0;
   const defs: Array<[number, number]> = [
     [lRamp, 1 / rampR(p)],
@@ -211,7 +230,8 @@ export function evalDeform(p: number): DeformState {
     topC,
     zTopCurl,
     zBotCurl,
-    sag: sagD(p),
+    sag,
+    sagA,
     cup,
     twist: 0.006,
     bottom: phases,

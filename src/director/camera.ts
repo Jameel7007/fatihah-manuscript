@@ -18,9 +18,10 @@ interface Anchor {
 // are scaled so each state meets its §9 FRAMING FRACTION (the fractions are the contract).
 // M4 owns the designed pass, per-segment eases, mobile overrides, and the spec-table sync.
 const ANCHORS: readonly Anchor[] = [
-  // p=0 (v1.3): the mostly-rolled scroll is a compact object at z ≈ +0.33 — the camera moves
-  // in close on a LOW three-quarter so the roll reads as a body and the spiral end shows.
-  { p: 0.0, focal: 40, pos: new Vector3(0.54, 0.31, 1.19), look: new Vector3(0.0, 0.035, 0.31) },
+  // p=0 (v1.3.1): 82% wrapped — the roll is the object. Camera in at d ≈ 0.8 on a low
+  // three-quarter, aimed at the roll axis; the near spiral end reads, the far end may
+  // graze the frame edge (it should feel big).
+  { p: 0.0, focal: 40, pos: new Vector3(0.42, 0.27, 1.13), look: new Vector3(0.0, 0.04, 0.34) },
   { p: 0.21, focal: 42, pos: new Vector3(0.36, 0.59, 1.05), look: new Vector3(0.0, 0.02, 0.18) },
   { p: 0.34, focal: 46, pos: new Vector3(0.33, 1.952, 1.317), look: new Vector3(0.0, 0.012, 0.03) },
   { p: 0.47, focal: 50, pos: new Vector3(0.06, 2.204, 0.69), look: new Vector3(0.0, 0.008, 0.045) },

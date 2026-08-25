@@ -143,7 +143,7 @@
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.3 · mostly-rolled start pose</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.3.1 · tightened rolled start</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -207,8 +207,8 @@
   <div class="tw wide"><table>
     <thead><tr><th>State</th><th class="n">p range</th><th>Geometry</th><th>Simulation</th><th>Camera</th><th>Light</th><th>Rendering technique</th><th class="n">Overlap</th></tr></thead>
     <tbody>
-    <tr><td><b>1 Rolled</b></td><td class="n">0.00–0.08</td><td>Mostly rolled (v1.3): top roll holds <b>75%</b> of the length in 3.2 relaxed turns (layer gap 5× thickness — the spiral cross-section reads at the ends); a 25% tongue exposed below (15% web + 10% lip); pose tilt +14° about the curl line</td><td>Analytic curl field only; idle micro-breathing via residual field, amp 2.5e-4</td><td>Low ¾ close-up, 40 mm — the rolled object ≈ ½ frame height, both roll ends in frame</td><td>Key 1.0, rim 0.30, env yaw +12°</td><td>Curl evaluated in the surface-field pass (§17); edge ribbon traces the stacked layer edges at the roll ends</td><td class="n">0.06–0.08 → S2</td></tr>
-    <tr><td><b>2 Unrolling</b></td><td class="n">0.06–0.38</td><td>The turns unwind 3.2 → 0.1 across the state; center opens first, edges lag (u-dependent wrap, §4); residual curl kept at ends</td><td>Analytic pose + residual lattice excited by dp/dt (§17); settle ripple decays 0.34–0.38</td><td>Pulls back and rises as the sheet grows, 40→46 mm</td><td>Unchanged; shadow penumbra narrows as sheet flattens</td><td>Arc-length-preserving spiral wrap; FD normals over the final field, no approximation</td><td class="n">0.32–0.38 → S3</td></tr>
+    <tr><td><b>1 Rolled</b></td><td class="n">0.00–0.08</td><td>Mostly rolled (v1.3.1): top roll holds <b>82%</b> of the length in 4.2 relaxed turns (layer gap 0.0075 = 8.3× thickness — the spiral stacks clearly at the ends; ∅ 0.094); an 18% tongue below — 10% web ≈ one roll diameter, draping to −0.010 and rising into the 8% lip; pose tilt +14° about the curl line</td><td>Analytic curl field only; idle micro-breathing via residual field, amp 2.5e-4</td><td>Low ¾ close-up, 40 mm — the rolled object ≈ ½ frame height, both roll ends in frame</td><td>Key 1.0, rim 0.30, env yaw +12°</td><td>Curl evaluated in the surface-field pass (§17); edge ribbon traces the stacked layer edges at the roll ends</td><td class="n">0.06–0.08 → S2</td></tr>
+    <tr><td><b>2 Unrolling</b></td><td class="n">0.06–0.38</td><td>The turns unwind 4.2 → 0.12 across the state; center opens first, edges lag (u-dependent wrap, §4); residual curl kept at ends</td><td>Analytic pose + residual lattice excited by dp/dt (§17); settle ripple decays 0.34–0.38</td><td>Pulls back and rises as the sheet grows, 40→46 mm</td><td>Unchanged; shadow penumbra narrows as sheet flattens</td><td>Arc-length-preserving spiral wrap; FD normals over the final field, no approximation</td><td class="n">0.32–0.38 → S3</td></tr>
     <tr><td><b>3 Ink written</b></td><td class="n">0.32–0.58</td><td>Sheet flat with kept imperfections; cup +0.004, sag −0.0035</td><td>Residual decays to floor; writing gated to lines with local velocity &lt; 0.002 u/s</td><td>High oblique, 50 mm, text column 0.68 of height</td><td>Key dims to 0.88 so wet sheen reads from spec only</td><td>MTSDF threshold sweep along stroke-order field; wet channel → roughness/color/bleed (§14, §17)</td><td class="n">0.54–0.58 → S4</td></tr>
     <tr><td><b>4 Presenting</b></td><td class="n">0.54–0.66</td><td>Pose tilt 6°→0°; sheet fully settled</td><td>Residual asleep (force gate closed)</td><td>Rises to near-overhead: 83° elevation at p 0.60, 55 mm; 7° off pure top-down preserved</td><td>Key elevates (−0.55,1.30,0.55)→(−0.42,1.52,0.38); env yaw →0°</td><td>Camera spline only; no geometry change — legibility state</td><td class="n">0.64–0.66 → S5</td></tr>
     <tr><td><b>5 Relief</b></td><td class="n">0.64–0.73</td><td>Emboss normal 0.640–0.690; handoff overlap 0.690–0.730: geometry grows 0.00045→0.0012 while emboss strength fades 1→0 (§14)</td><td>None (sheet still)</td><td>Holds overhead, starts retreat at 0.70</td><td>Rim 0.30→0.42 to catch newborn edges</td><td>SDF-derived puff-height normal hands off to true geometry inside an explicit overlap window; silhouettes identical by construction (§14)</td><td class="n">0.722–0.730 → S6</td></tr>
@@ -324,9 +324,9 @@
   <div class="tw"><table>
     <thead><tr><th>Element @ p = 0</th><th class="n">Parameters</th><th>Note</th></tr></thead>
     <tbody>
-      <tr><td>Top roll (recto-out, sits above sheet plane)</td><td class="n">holds s ∈ [0, 0.75] · 3.2 turns · r_core 0.0302 · r_outer 0.0446 · layer gap 0.0045 (5× thickness) · curl line z +0.25</td><td>v1.3: a substantial rolled body, ∅ ≈ 0.089; the relaxed gap makes the spiral cross-section read as stacked layers at the ends</td></tr>
-      <tr><td>Bottom lip (verso-out, curls up toward viewer)</td><td class="n">holds s ∈ [0.90, 1.0] · 3-arc chain (§ footnote) · tip lift 0.011</td><td>The tongue's terminal flourish — the slighter hook tuned 2026-08-25, scaled to the shorter W_b</td></tr>
-      <tr><td>Tongue web CR points (z, y)</td><td class="n">(0.250, 0.0000) · (0.325, −0.0040) · (0.400, 0.0000)</td><td>A short 15% reading tongue with subtle sag; static anchor z = v − 0.5 — the tongue stays put, the roll pays out away from the reader</td></tr>
+      <tr><td>Top roll (recto-out, sits above sheet plane)</td><td class="n">holds s ∈ [0, 0.82] · 4.2 turns · r_core 0.0153 · r_outer 0.0468 · layer gap 0.0075 (8.3× thickness) · curl line z +0.32</td><td>v1.3.1: the roll IS the object, ∅ ≈ 0.094; the wide relaxed gap is what lets 4+ turns still grow the outer radius, and stacks ~5 visible layers at the ends</td></tr>
+      <tr><td>Bottom lip (verso-out, curls up toward viewer)</td><td class="n">holds s ∈ [0.92, 1.0] · 3-arc chain (§ footnote) · tip lift 0.018</td><td>Inherits the draped web's end height and slope (C1) — the tongue droops, then the lip rises out of the droop</td></tr>
+      <tr><td>Tongue web CR points (z, y)</td><td class="n">(0.320, 0.0000) · (0.389, −0.0100) · (0.420, −0.0059)</td><td>One-roll-diameter reading tongue, draped (profile min at 69% of the web); static anchor z = v − 0.5 — the tongue stays put, the roll pays out away from the reader</td></tr>
       <tr><td>Cross-sheet cup (anticlastic)</td><td class="n">edges +0.009 at u = ±0.39, quadratic in u</td><td>Dry parchment cups across the roll axis; corners lift most</td></tr>
       <tr><td>Pose tilt</td><td class="n">+14° pitch (top away)</td><td>Lectern presentation for the ¾ camera</td></tr>
     </tbody>
@@ -339,43 +339,44 @@
       <!-- equal scale 1440 px/world · x = 80 + 1440(z − 0.05) · y_px = 300 − 1440·y -->
       <line x1="40" y1="300" x2="820" y2="300" stroke="#2C2517" stroke-width="1" stroke-dasharray="3 5"/>
       <text x="822" y="304" class="svg-small">y = 0</text>
-      <!-- roll: center (0.25, 0.0446) → (368, 236); core r 43.5px, outer r 64px, gap ≈ 6.5px -->
-      <circle cx="368" cy="236" r="45" fill="none" stroke="#6E6350" stroke-width="1.2"/>
-      <circle cx="368" cy="236" r="51.5" fill="none" stroke="#8F7440" stroke-width="1.4"/>
-      <circle cx="368" cy="236" r="58" fill="none" stroke="#A98A58" stroke-width="1.6"/>
-      <path d="M368 172 A64 64 0 1 0 368.4 300" fill="none" stroke="#C9A45B" stroke-width="2.2"/>
-      <circle cx="368" cy="236" r="2.5" fill="#6E6350"/>
-      <!-- tongue: (0.25,0)→(0.40,0) with sag −0.004 at midpoint -->
-      <path d="M368 300 Q 476 307.5, 584 300" fill="none" stroke="#C9A45B" stroke-width="2.2"/>
-      <!-- lip: rises to tip +0.011 near z 0.48 (x 699, y 284), quiet ~48° hook -->
-      <path d="M584 300 C 622 300, 662 296, 682 291 C 694 288, 700 286, 699 284" fill="none" stroke="#C9A45B" stroke-width="2.2"/>
+      <!-- roll: center (0.32, 0.047) → (397, 232); core r 22px → outer r 67px, gap ≈ 10.8px -->
+      <circle cx="397" cy="232" r="22" fill="none" stroke="#6E6350" stroke-width="1.2"/>
+      <circle cx="397" cy="232" r="33" fill="none" stroke="#8F7440" stroke-width="1.3"/>
+      <circle cx="397" cy="232" r="44.5" fill="none" stroke="#A98A58" stroke-width="1.5"/>
+      <circle cx="397" cy="232" r="56" fill="none" stroke="#B99B68" stroke-width="1.7"/>
+      <path d="M397 165 A67.4 67.4 0 1 0 397.4 300" fill="none" stroke="#C9A45B" stroke-width="2.2"/>
+      <circle cx="397" cy="232" r="2.5" fill="#6E6350"/>
+      <!-- tongue: (0.32,0)→(0.42,−0.0059), draped — min −0.010 at 69% of the web -->
+      <path d="M397 300 C 440 302, 470 314.5, 496 314.5 C 512 314.5, 528 311.5, 541 308.5" fill="none" stroke="#C9A45B" stroke-width="2.2"/>
+      <!-- lip: rises out of the droop to tip +0.018 (x 649, y 274) -->
+      <path d="M541 308.5 C 570 302, 610 290, 632 282 C 644 277, 650 275, 649 274" fill="none" stroke="#C9A45B" stroke-width="2.2"/>
       <!-- CR dots -->
       <g fill="#E7DDC6">
-        <circle cx="368" cy="300" r="3"/><circle cx="476" cy="307.5" r="3"/>
-        <circle cx="584" cy="300" r="3"/><circle cx="699" cy="284" r="3"/>
+        <circle cx="397" cy="300" r="3"/><circle cx="496" cy="314.5" r="3"/>
+        <circle cx="541" cy="308.5" r="3"/><circle cx="649" cy="274" r="3"/>
       </g>
       <g class="svg-small">
-        <text x="368" y="322" text-anchor="middle">(0.250, 0)</text>
-        <text x="476" y="326" text-anchor="middle">(0.325, −0.004)</text>
-        <text x="584" y="322" text-anchor="middle">(0.400, 0)</text>
-        <text x="712" y="280">tip +0.011</text>
+        <text x="397" y="322" text-anchor="middle">(0.320, 0)</text>
+        <text x="496" y="332" text-anchor="middle">(0.389, −0.010)</text>
+        <text x="565" y="326" text-anchor="middle">(0.420, −0.0059)</text>
+        <text x="662" y="270">tip +0.018</text>
       </g>
       <!-- radius callouts -->
-      <line x1="368" y1="236" x2="411" y2="223" stroke="#8F7440" stroke-width="1" marker-end="url(#arr)"/>
-      <line x1="368" y1="236" x2="431" y2="255" stroke="#8F7440" stroke-width="1" marker-end="url(#arr)"/>
-      <text x="418" y="219" class="svg-label-g">r_core 0.0302</text>
-      <text x="438" y="262" class="svg-label-g">r_outer 0.0446</text>
-      <text x="368" y="150" class="svg-label" text-anchor="middle">top roll · holds 75% · 3.2 turns · layer gap 0.0045</text>
-      <text x="476" y="290" class="svg-label" text-anchor="middle">tongue 0.15</text>
-      <text x="660" y="318" class="svg-label">lip 0.10</text>
+      <line x1="397" y1="232" x2="418" y2="225" stroke="#8F7440" stroke-width="1" marker-end="url(#arr)"/>
+      <line x1="397" y1="232" x2="461" y2="252" stroke="#8F7440" stroke-width="1" marker-end="url(#arr)"/>
+      <text x="424" y="220" class="svg-label-g">r_core 0.0153</text>
+      <text x="468" y="259" class="svg-label-g">r_outer 0.0468</text>
+      <text x="397" y="146" class="svg-label" text-anchor="middle">top roll · holds 82% · 4.2 turns · layer gap 0.0075</text>
+      <text x="470" y="290" class="svg-label" text-anchor="middle">tongue 0.10 (≈ 1 ∅)</text>
+      <text x="600" y="318" class="svg-label">lip 0.08</text>
       <text x="180" y="296" class="svg-small">roll pays out away from reader (−z) →</text>
     </svg>
     </div>
-    <figcaption><b>Rolled pose at p = 0 (v1.3)</b>, side view at the sheet centerline, equal-scale axes.
-    Gold = outermost layer; dimmer strokes = inner wraps at the 0.0045 relaxed spiral gap — the stacked
-    layers the roll shows at its ends, each edge rendered by the ribbon (§2). The outer layer leaves the
-    roll tangent at the curl line and becomes the 15% tongue, ending in the 10% lip with its 0.011 tip
-    lift.</figcaption>
+    <figcaption><b>Rolled pose at p = 0 (v1.3.1)</b>, side view at the sheet centerline, equal-scale
+    axes. Gold = outermost layer; dimmer strokes = inner wraps at the 0.0075 relaxed spiral gap — the
+    ~5 stacked layers the roll shows at its ends, each edge rendered by the ribbon (§2). The outer
+    layer leaves the roll tangent at the curl line, drapes as the one-diameter tongue (min −0.010 at
+    69% of the web), and rises C1 into the lip's 0.018 tip.</figcaption>
   </figure>
 
   <h3>Unroll evolution <span class="tag">state 2, p 0.06 → 0.38</span></h3>
@@ -388,25 +389,29 @@
   <div class="tw"><table>
     <thead><tr><th class="n">State %</th><th class="n">p</th><th class="n">W_top (wrapped)</th><th class="n">W_bottom</th><th class="n">r_top core</th><th class="n">web sag</th><th class="n">tip lift top / bottom (derived†)</th></tr></thead>
     <tbody>
-      <tr><td class="n">0</td><td class="n">0.06</td><td class="n">0.750</td><td class="n">0.100</td><td class="n">0.0302</td><td class="n">−0.0040</td><td class="n">— / —</td></tr>
-      <tr><td class="n">25</td><td class="n">0.14</td><td class="n">0.560</td><td class="n">0.088</td><td class="n">0.0330</td><td class="n">−0.0090</td><td class="n">— / —</td></tr>
-      <tr><td class="n">50</td><td class="n">0.22</td><td class="n">0.330</td><td class="n">0.068</td><td class="n">0.0380</td><td class="n">−0.0110</td><td class="n">— / —</td></tr>
-      <tr><td class="n">75</td><td class="n">0.30</td><td class="n">0.120</td><td class="n">0.045</td><td class="n">0.0450</td><td class="n">−0.0075</td><td class="n">— / ≈0.018</td></tr>
-      <tr><td class="n">100</td><td class="n">0.38</td><td class="n">0.040*</td><td class="n">0.030*</td><td class="n">0.0520</td><td class="n">−0.0035</td><td class="n">0.0150 / 0.0136</td></tr>
+      <tr><td class="n">0</td><td class="n">0.06</td><td class="n">0.820</td><td class="n">0.080</td><td class="n">0.0153</td><td class="n">−0.0100</td><td class="n">— / —</td></tr>
+      <tr><td class="n">25</td><td class="n">0.14</td><td class="n">0.630</td><td class="n">0.075</td><td class="n">0.0190</td><td class="n">−0.0110</td><td class="n">— / —</td></tr>
+      <tr><td class="n">50</td><td class="n">0.22</td><td class="n">0.380</td><td class="n">0.062</td><td class="n">0.0260</td><td class="n">−0.0110</td><td class="n">— / —</td></tr>
+      <tr><td class="n">75</td><td class="n">0.30</td><td class="n">0.130</td><td class="n">0.044</td><td class="n">0.0380</td><td class="n">−0.0075</td><td class="n">— / ≈0.017</td></tr>
+      <tr><td class="n">100</td><td class="n">0.38</td><td class="n">0.040*</td><td class="n">0.030*</td><td class="n">0.0520</td><td class="n">−0.0035</td><td class="n">0.0153 / 0.0136</td></tr>
     </tbody>
   </table></div>
   <p style="font-size:13px;color:var(--muted)">† The last column is <b>derived from the implemented
   model</b> (probe-recorded), not driven — tip height above the plane where the residual wrap is
   &lt; ~1 rad, “—” while a rolled end still wraps past that. The driver columns (W, r, sag) are the
   contract and are checkpoint-splined exactly. Derived turn count across the unroll:
-  <b>3.2 → 2.3 → 1.3 → 0.4 → 0.12</b>. The spiral layer gap is 0.0045 (5× thickness — a relaxed old
-  roll; the terminal residual curl at Φ &lt; 1 rad is insensitive to it, preserving the contract).
-  “Center opens first, sides lag” is deterministic: <code>W_eff(u) = W_top + wLag·(2u)²</code>,
-  wLag = 0.035·sin(π·(p−0.06)/0.32) — zero at p = 0 and at the terminal, peak mid-unroll (the roll
-  ends trumpet slightly, as real scrolls do). The bottom lip is <b>three chained circular arcs</b>
-  (ramp → curl → edge; ramp share 0.76 → 0, radii 1.8→0.36 / 0.033→0.031 / 0.026→0.028): a near-flat
-  entry ramp keeps the hook quiet (~125° max). The web is <b>statically anchored</b> (z = v − 0.5):
-  the tongue stays put and the roll pays out away from the reader.</p>
+  <b>4.2 → 3.2 → 1.8 → 0.5 → 0.12</b>. The spiral layer gap is 0.0075 (8.3× thickness — a relaxed
+  old roll; the terminal residual curl at Φ &lt; 1 rad is insensitive to it, preserving the
+  contract). “Center opens first, sides lag” is deterministic:
+  <code>W_eff(u) = W_top + wLag·(2u)²</code>, wLag = 0.035·sin(π·(p−0.06)/0.32) — zero at p = 0 and
+  at the terminal, peak mid-unroll (the roll ends trumpet slightly, as real scrolls do). The web sag
+  profile is <code>y = sag·sin²(a·x̃)</code> with a = π·(0.72 + 0.28·s): at p = 0 the tongue
+  <b>drapes</b> (ends at 0.593·sag with an upward slope handed C1 into the lip, which rises out of
+  the droop to its 0.018 tip); at the terminal a = π restores the symmetric bump, keeping the
+  residual-curl contract exact. The bottom lip is <b>three chained circular arcs</b>
+  (ramp → curl → edge; ramp share 0.76 → 0, radii 1.8→0.36 / 0.033→0.031 / 0.026→0.028). The web is
+  <b>statically anchored</b> (z = v − 0.5): the tongue stays put and the roll pays out away from the
+  reader.</p>
   <p style="font-size:13px;color:var(--muted)">* Terminal values are <em>residual curl</em>: the last 4% / 3% of
   each end never fully flattens — the sheet remembers being rolled. Corners add a ±0.006 differential
   twist (opposite corners paired) that persists through every later state.</p>
@@ -685,7 +690,7 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
   <div class="tw wide"><table>
     <thead><tr><th class="n">p</th><th class="n">f (mm) / vfov</th><th class="n">Position (x, y, z)</th><th class="n">Look-at</th><th class="n">Height over sheet</th><th class="n">View angle from plane</th><th class="n">Framing</th></tr></thead>
     <tbody>
-      <tr><td class="n">0.00</td><td class="n">40 / 33.4°</td><td class="n">(0.54, 0.31, 1.19)</td><td class="n">(0.00, 0.035, 0.31)</td><td class="n">0.31</td><td class="n">~15° (low ¾)</td><td>rolled object ≈ ½ frame height, both roll ends in frame, spiral end readable (v1.3)</td></tr>
+      <tr><td class="n">0.00</td><td class="n">40 / 33.4°</td><td class="n">(0.42, 0.27, 1.13)</td><td class="n">(0.00, 0.04, 0.34)</td><td class="n">0.27</td><td class="n">~14° (low ¾)</td><td>the roll spans the frame (d ≈ 0.92); near spiral end in frame, draped tongue below (v1.3.1)</td></tr>
       <tr><td class="n">0.21</td><td class="n">42 / 31.9°</td><td class="n">(0.36, 0.59, 1.05)</td><td class="n">(0.00, 0.02, 0.18)</td><td class="n">0.59</td><td class="n">~33°</td><td>opening sheet fills ~0.7 width (v1.3)</td></tr>
       <tr><td class="n">0.34</td><td class="n">46 / 29.3°</td><td class="n">(0.10, 0.60, 0.42)</td><td class="n">(0.00, 0.012, 0.03)</td><td class="n">0.60</td><td class="n">~52°</td><td>full sheet 0.78 height</td></tr>
       <tr><td class="n">0.47</td><td class="n">50 / 27.0°</td><td class="n">(0.02, 0.74, 0.26)</td><td class="n">(0.00, 0.008, 0.045)</td><td class="n">0.74</td><td class="n">~68°</td><td>text column 0.68 height — writing overwatch</td></tr>
@@ -757,11 +762,11 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
   <div class="tw wide"><table>
     <thead><tr><th class="n">p</th><th>State</th><th>Parchment deformation</th><th>Ink progress</th><th class="n">Extrusion depth</th><th class="n">Text rotation</th><th>Camera</th><th>Key light</th><th class="n">Env yaw</th><th>Easing</th></tr></thead>
     <tbody>
-      <tr><td class="n">0.00</td><td>1</td><td>W 0.75/0.10 · 3.2 turns · sag −0.004 · tilt +14°</td><td>—</td><td class="n">0</td><td class="n">—</td><td>anchor A0, 40 mm</td><td>1.00 @ base pos</td><td class="n">+12°</td><td>idle breathing only</td></tr>
+      <tr><td class="n">0.00</td><td>1</td><td>W 0.82/0.08 · 4.2 turns · sag −0.010 (draped) · tilt +14°</td><td>—</td><td class="n">0</td><td class="n">—</td><td>anchor A0, 40 mm</td><td>1.00 @ base pos</td><td class="n">+12°</td><td>idle breathing only</td></tr>
       <tr><td class="n">0.06</td><td>1→2</td><td>unroll begins (seal breaks)</td><td>—</td><td class="n">0</td><td class="n">—</td><td>dolly starts</td><td>1.00</td><td class="n">+12°</td><td>E1 in</td></tr>
-      <tr><td class="n">0.14</td><td>2</td><td>W 0.56/0.088 · 2.3 turns · r_core 0.0330</td><td>—</td><td class="n">0</td><td class="n">—</td><td>A0→A1</td><td>1.00</td><td class="n">+12°</td><td>E1</td></tr>
-      <tr><td class="n">0.22</td><td>2</td><td>W 0.33/0.068 · 1.3 turns · sag −0.011 · edges-lag peak</td><td>—</td><td class="n">0</td><td class="n">—</td><td>A1, 42 mm</td><td>1.00</td><td class="n">+12°</td><td>E1</td></tr>
-      <tr><td class="n">0.30</td><td>2</td><td>W 0.12/0.045 · 0.4 turns · residual ripple active</td><td>—</td><td class="n">0</td><td class="n">—</td><td>A1→A2</td><td>1.00</td><td class="n">+12°</td><td>E1 out</td></tr>
+      <tr><td class="n">0.14</td><td>2</td><td>W 0.63/0.075 · 3.2 turns · r_core 0.0190</td><td>—</td><td class="n">0</td><td class="n">—</td><td>A0→A1</td><td>1.00</td><td class="n">+12°</td><td>E1</td></tr>
+      <tr><td class="n">0.22</td><td>2</td><td>W 0.38/0.062 · 1.8 turns · sag −0.011 · edges-lag peak</td><td>—</td><td class="n">0</td><td class="n">—</td><td>A1, 42 mm</td><td>1.00</td><td class="n">+12°</td><td>E1</td></tr>
+      <tr><td class="n">0.30</td><td>2</td><td>W 0.13/0.044 · 0.5 turns · residual ripple active</td><td>—</td><td class="n">0</td><td class="n">—</td><td>A1→A2</td><td>1.00</td><td class="n">+12°</td><td>E1 out</td></tr>
       <tr><td class="n">0.34</td><td>2/3</td><td>final quarter-turn releasing; ripple decaying (τ 0.29 s)</td><td>A1 basmalah 60% written, wet</td><td class="n">0</td><td class="n">—</td><td>A2, 46 mm</td><td>0.88 (S3 dim)</td><td class="n">+12°</td><td>ink E5 per glyph</td></tr>
       <tr><td class="n">0.38</td><td>3</td><td>settled: sag −0.0035, cup +0.004 <em>(held to p 1)</em></td><td>A1 done · A2 writing</td><td class="n">0</td><td class="n">—</td><td>A2→A3</td><td>0.88</td><td class="n">+11°</td><td>E5</td></tr>
       <tr><td class="n">0.45</td><td>3</td><td>still</td><td>A4 writing (window 0.424–0.451)</td><td class="n">0</td><td class="n">—</td><td>A3, 50 mm</td><td>0.88</td><td class="n">+8°</td><td>E5</td></tr>
@@ -1294,7 +1299,7 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
   </div>
 
   <p style="margin-top:34px;border-top:1px solid var(--line);padding-top:18px;font-size:12.5px;color:var(--faint)">
-  Al-Fātiḥah 3D Manuscript · specification v1.3 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
+  Al-Fātiḥah 3D Manuscript · specification v1.3.1 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
   authoritative and untouchable · no bloom, no aura, no spectacle — the light does the reverence.</p>
 </section>
 
@@ -1361,6 +1366,13 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     <li><b>QA</b> — probes re-run at p = 0 / 0.21 / 0.34 / 0.38 (GPU == oracle ≤ 2.3e-7, normals
     ≤ 1.18°, webgl2 verified at p = 0); R-0.00 / 0.21 / 0.34 re-blessed from cold loads on a restarted
     server per the blessing policy.</li>
+    <li><b>v1.3.1 (tightened, same day)</b> — wrapped fraction 0.75 → 0.82; 4.2 turns at layer gap
+    0.0075 (wider gap grows the outer radius to 0.0468 while adding a turn; ~5 layers stack at the
+    ends); tongue shortened to one roll diameter (10% web + 8% lip) and <b>draped</b> — sag profile
+    y = sag·sin²(a·x̃), a = π·(0.72 + 0.28·s), ends low with an upward slope handed C1 into the lip
+    (tip 0.018); a = π at the terminal keeps the residual-curl contract exact (probe 0.0153 / 0.0136).
+    p = 0 camera in to d ≈ 0.92. Probes pass at p = 0 / 0.21 / 0.34 / 0.38 (≤ 1.5e-7, ≤ 1.14°);
+    turns 4.2 → 2.0 (p 0.21) → 0.28 (p 0.34).</li>
   </ol>
 </section>
 
