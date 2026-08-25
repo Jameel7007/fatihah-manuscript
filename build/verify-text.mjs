@@ -15,15 +15,17 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CANON_PATH = join(root, 'build/canonical-fatihah.json');
 const SOURCE_URL = 'https://api.alquran.cloud/v1/surah/1/quran-uthmani';
 
-// The text the pipeline ACTUALLY presents: read the frozen composition's presentation
-// strings (post line-breaking, post kashida-justification), strip the presentation-only
-// U+0640 kashida runs, and reassemble the continuous text — this must recover the pinned
-// canonical āyāt byte-identically. Kashida is applied AFTER verification by design; this
-// check proves it only ever inserts U+0640 and nothing else.
-function shapedInput(pinned) {
-  const compPath = join(root, 'public/text/composition.json');
+// Every frozen composition variant is verified: read its presentation strings (post
+// line-breaking, post kashida-justification), strip the presentation-only U+0640 kashida
+// runs, and reassemble the continuous text — this must recover the pinned canonical āyāt
+// byte-identically. Kashida is applied AFTER verification by design; this check proves it
+// only ever inserts U+0640 and nothing else.
+const VARIANT_FILES = ['composition.json', 'composition-8line.json', 'composition-7line.json'];
+
+function shapedInput(pinned, file) {
+  const compPath = join(root, 'public/text', file);
   if (!existsSync(compPath)) {
-    console.warn('!! composition.json missing — verifying the pinned text against source only');
+    console.warn(`!! ${file} missing — verifying the pinned text against source only`);
     return [...pinned.ayahs];
   }
   const comp = JSON.parse(readFileSync(compPath, 'utf8'));
@@ -91,52 +93,68 @@ try {
   console.warn('!! source unreachable — verifying against the pinned copy only');
   canon = pinned;
 }
-const CURRENT = shapedInput(pinned);
-
-let identical = true;
-const report = [];
-for (let i = 0; i < 7; i++) {
-  const ours = (CURRENT[i] ?? '').normalize('NFC');
-  const theirs = (canon.ayahs[i] ?? '').normalize('NFC');
-  if (ours === theirs) {
-    report.push({ ayah: i + 1, result: 'identical' });
-    continue;
-  }
-  identical = false;
-  const a = [...ours];
-  const b = [...theirs];
-  const diffs = [];
-  let ai = 0;
-  let bi = 0;
-  while (ai < a.length || bi < b.length) {
-    if (a[ai] === b[bi]) {
-      ai++;
-      bi++;
+function verifyAyahs(current) {
+  let identical = true;
+  const report = [];
+  for (let i = 0; i < 7; i++) {
+    const ours = (current[i] ?? '').normalize('NFC');
+    const theirs = (canon.ayahs[i] ?? '').normalize('NFC');
+    if (ours === theirs) {
+      report.push({ ayah: i + 1, result: 'identical' });
       continue;
     }
-    // simple resync: try skipping one char on either side
-    if (a[ai + 1] === b[bi]) {
-      diffs.push({ at: ai, ours: `${a[ai]} ${cpName(a[ai])}`, theirs: '(absent)' });
-      ai++;
-    } else if (a[ai] === b[bi + 1]) {
-      diffs.push({ at: bi, ours: '(absent)', theirs: `${b[bi]} ${cpName(b[bi])}` });
-      bi++;
-    } else {
-      diffs.push({ at: ai, ours: a[ai] ? `${a[ai]} ${cpName(a[ai])}` : '(end)', theirs: b[bi] ? `${b[bi]} ${cpName(b[bi])}` : '(end)' });
-      ai++;
-      bi++;
+    identical = false;
+    const a = [...ours];
+    const b = [...theirs];
+    const diffs = [];
+    let ai = 0;
+    let bi = 0;
+    while (ai < a.length || bi < b.length) {
+      if (a[ai] === b[bi]) {
+        ai++;
+        bi++;
+        continue;
+      }
+      // simple resync: try skipping one char on either side
+      if (a[ai + 1] === b[bi]) {
+        diffs.push({ at: ai, ours: `${a[ai]} ${cpName(a[ai])}`, theirs: '(absent)' });
+        ai++;
+      } else if (a[ai] === b[bi + 1]) {
+        diffs.push({ at: bi, ours: '(absent)', theirs: `${b[bi]} ${cpName(b[bi])}` });
+        bi++;
+      } else {
+        diffs.push({ at: ai, ours: a[ai] ? `${a[ai]} ${cpName(a[ai])}` : '(end)', theirs: b[bi] ? `${b[bi]} ${cpName(b[bi])}` : '(end)' });
+        ai++;
+        bi++;
+      }
     }
+    report.push({ ayah: i + 1, result: 'DIFFERS', diffs });
   }
-  report.push({ ayah: i + 1, result: 'DIFFERS', diffs });
+  return { identical, report };
 }
 
 console.log(`\nverification vs ${canon.source} (fetched ${canon.fetched}):`);
-for (const r of report) {
-  console.log(` āyah ${r.ayah}: ${r.result}`);
-  if (r.diffs) for (const d of r.diffs) console.log(`   @${d.at}: ours ${d.ours} · canonical ${d.theirs}`);
+let allIdentical = true;
+const variants = [];
+for (const file of VARIANT_FILES) {
+  if (!existsSync(join(root, 'public/text', file))) {
+    console.log(` ${file}: absent (skipped)`);
+    continue;
+  }
+  const { identical, report } = verifyAyahs(shapedInput(pinned, file));
+  allIdentical &&= identical;
+  variants.push({ file, identical, report });
+  console.log(` ${file}: ${identical ? 'all seven āyāt identical' : 'DIFFERS'}`);
+  if (!identical) {
+    for (const r of report) {
+      if (!r.diffs) continue;
+      console.log(`  āyah ${r.ayah}:`);
+      for (const d of r.diffs) console.log(`   @${d.at}: ours ${d.ours} · canonical ${d.theirs}`);
+    }
+  }
 }
-console.log(identical ? '\nALL SEVEN ĀYĀT IDENTICAL to the canonical source.' : '\nDIFFERENCES FOUND — the pipeline must adopt the canonical text.');
+console.log(allIdentical ? '\nALL VARIANTS: SEVEN ĀYĀT IDENTICAL to the canonical source.' : '\nDIFFERENCES FOUND — the pipeline must adopt the canonical text.');
 writeFileSync(
   join(root, 'build/text-verification.json'),
-  JSON.stringify({ source: canon.source, url: canon.url, fetched: canon.fetched, canonicalSha256: canon.sha256, identical, report }, null, 1),
+  JSON.stringify({ source: canon.source, url: canon.url, fetched: canon.fetched, canonicalSha256: canon.sha256, identical: allIdentical, variants }, null, 1),
 );

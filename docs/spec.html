@@ -143,7 +143,7 @@
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.4 · classical justified layout</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.4.1 · true-rectangle justified block</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -274,14 +274,15 @@
   <div class="tw"><table>
     <thead><tr><th>Property</th><th class="n">Value</th><th>Reasoning</th></tr></thead>
     <tbody>
-      <tr><td>Flow &amp; line count</td><td class="n">8 — emergent</td><td><b>v1.4:</b> the seven āyāt run as one continuous flow (classical manuscript convention), broken greedily at word boundaries against the column; the count is an <em>outcome</em> of the fit, not an input. Currently: Basmalah line + 6 justified flow lines + ragged close. Any future fit conflict re-breaks lines — never shrinks an individual line's em, never re-kerns</td></tr>
+      <tr><td>Flow &amp; line count</td><td class="n">8 or 7 — two frozen variants</td><td><b>v1.4.1:</b> the seven āyāt run as one continuous flow (classical manuscript convention), broken by a <b>minimum-unevenness DP</b> at word boundaries against the column (stretch spread as evenly as the caps allow across all lines — the block is a true rectangle). Two variants are frozen pending the reviewer's choice: the <b>8-line</b> block at em 0.058 and the classical Ottoman <b>7-line</b> block at em 0.0585 (the largest hand the band admits). Fit conflicts re-break lines — never shrink an individual line's em, never re-kern</td></tr>
       <tr><td>Margins (top / bottom / sides)</td><td class="n">0.150 / 0.135 / 0.115</td><td>Head margin largest, per manuscript convention; text column width 0.55 = 70.5% of sheet width</td></tr>
       <tr><td>Line pitch</td><td class="n">0.0875</td><td>Baselines at v = baseline₀ + i · 0.0875; baseline₀ = 0.196 + (8 − N) · 0.0875 / 2 recenters the block if the emergent line count N moves off 8</td></tr>
-      <tr><td>Em size (all lines)</td><td class="n">0.058</td><td>One em for every line <b>including the Basmalah</b> — the references keep a uniform hand and let elongation, not scale, articulate the opening; accept em ∈ [0.052, 0.060] globally, resolve conflicts by re-breaking (row 1)</td></tr>
+      <tr><td>Em size (all lines)</td><td class="n">0.058 / 0.0585</td><td>One em for every line <b>including the Basmalah</b> — the references keep a uniform hand and let elongation, not scale, articulate the opening; accept em ∈ [0.052, 0.060] globally (8-line variant 0.058, 7-line variant 0.0585), resolve conflicts by re-breaking (row 1)</td></tr>
       <tr><td>Basmalah line</td><td class="n">1.0 × em, full column</td><td>Its own line, right-aligned, filling the column edge-to-edge through a <b>single elongation of the sīn joint in بسم</b> — the great sweep of the classical opening; no other joint in the line stretches</td></tr>
       <tr><td>x-height reference</td><td class="n">≈ 0.021 (0.36 em)</td><td><b>Rule:</b> measured from source as median tooth-glyph band height; drives extrusion depth &amp; bevel width (§6)</td></tr>
       <tr><td>Line body / breathing</td><td class="n">0.070 / 0.0175</td><td>Ascender–descender envelope 80% of pitch; block bottom at 0.8385 leaves 0.0265 spare above the bottom margin</td></tr>
-      <tr><td>Block justification</td><td class="n">kashida only</td><td>Every line fills the column x ∈ [−0.275, +0.275] edge-to-edge via <b>kashida elongation at calligraphically permitted joints only</b> — U+0640 inserted and re-shaped through Amiri Quran's contextual kashida forms, so the outline is drawn, not stretched. Prefer 1–2 long elongations per line (sīn-class joints س ش ص ض first, then before-final joints), matching the references. <b>Never</b> letter-spacing, <b>never</b> word-gap inflation. Excluded joints: the لله ligature, lām-alif. The closing line stays ragged when its natural width &lt; 0.40 of the column</td></tr>
+      <tr><td>Block justification</td><td class="n">kashida only, balanced</td><td>Every line fills the column x ∈ [−0.275, +0.275] edge-to-edge via <b>kashida elongation at calligraphically permitted joints only</b> — U+0640 inserted and re-shaped through Amiri Quran's contextual kashida forms, so the outline is drawn, not stretched. <b>Balanced elongation:</b> any single kashida ≤ 1.5 em; slack spreads across 2–3 joints per line in distinct words (sīn/shīn teeth first, then before-final joints, then the flat bases of ص ض ك). <b>Never</b> letter-spacing, <b>never</b> word-gap inflation. Excluded joints: the لله ligature (tested on the <em>bare</em> letters — diacritics sit between them), lām-alif. The Basmalah's great sīn is the one uncapped elongation</td></tr>
+      <tr><td>Closing line</td><td class="n">≥ 3 words, no orphan</td><td>The final line carries at least three words and ends on the āyah-7 marker — <span dir="rtl" style="font-family:var(--arabic)">ٱلضَّآلِّينَ</span> never sits alone, and a single word is never stretched across a line. It fills within the elongation caps when it can (both current variants do — true rectangle); otherwise it stays short and is completed by 2–3 small gold rosette fillers, classical style</td></tr>
       <tr><td>Text integrity</td><td class="n">byte-identical</td><td>The pinned canonical text is immutable; justification is a <em>presentation stage applied after</em> <span style="font-family:var(--mono);font-size:12px">verify-text</span> passes. The verifier then re-reads the frozen presentation strings, strips U+0640, and must recover the canonical flow byte-for-byte — proving justification only ever inserts kashida (green: all seven āyāt identical)</td></tr>
       <tr><td>Āyah markers</td><td class="n">ring ∅ 0.0126, stroke 0.0016</td><td>0.60 × x-height hollow gold ring with center dot, inline in the flow 0.012 after each āyah's final word and <b>glued to it at line-breaking</b> (a marker never opens a line); its slot width 0.0366 participates in justification; centered at half x-height; rises with text at 0.6 × letter depth</td></tr>
     </tbody>
@@ -294,18 +295,19 @@
       <span class="dim-note" style="bottom:5.5%;left:50%;transform:translateX(-50%)">bottom 0.135</span>
       <span class="dim-note" style="top:50%;left:1.5%;writing-mode:vertical-rl;transform:translateY(-50%)">side 0.115</span>
       <div class="ayah-line" style="top:16.8%;font-size:clamp(13px,4.4vw,18px)">بِسْــــــمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ<span class="marker">١</span></div>
-      <div class="ayah-line" style="top:25.9%;font-size:clamp(13px,4.4vw,18px)">ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ<span class="marker">٢</span>ٱلرَّحْمَـٰنِ</div>
-      <div class="ayah-line" style="top:34.9%;font-size:clamp(13px,4.4vw,18px)">ٱلرَّحِيــمِ<span class="marker">٣</span>مَـٰلِكِ يَوْمِ ٱلدِّينِ<span class="marker">٤</span>إِيَّاكَ</div>
-      <div class="ayah-line" style="top:43.9%;font-size:clamp(13px,4.4vw,18px)">نَعْبُدُ وَإِيَّاكَ نَسْــتَعِينُ<span class="marker">٥</span>ٱهْدِنَا</div>
-      <div class="ayah-line" style="top:52.9%;font-size:clamp(13px,4.4vw,18px)">ٱلصِّرَٰطَ ٱلْمُسْــتَقِيمَ<span class="marker">٦</span>صِرَٰطَ</div>
-      <div class="ayah-line" style="top:61.9%;font-size:clamp(13px,4.4vw,18px)">ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْــرِ</div>
-      <div class="ayah-line" style="top:70.9%;font-size:clamp(13px,4.4vw,18px)">ٱلْمَغْضُــوبِ عَلَيْهِــمْ وَلَا</div>
-      <div class="ayah-line" style="top:79.9%;font-size:clamp(13px,4.4vw,18px)">ٱلضَّآلِّينَ<span class="marker">٧</span></div>
+      <div class="ayah-line" style="top:25.9%;font-size:clamp(13px,4.4vw,18px)">ٱلْحَمْــدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِيــنَ<span class="marker">٢</span></div>
+      <div class="ayah-line" style="top:34.9%;font-size:clamp(13px,4.4vw,18px)">ٱلرَّحْمَــٰنِ ٱلرَّحِيــمِ<span class="marker">٣</span>مَـٰلِــكِ يَوْمِ</div>
+      <div class="ayah-line" style="top:43.9%;font-size:clamp(13px,4.4vw,18px)">ٱلدِّيــنِ<span class="marker">٤</span>إِيَّاكَ نَعْبُــدُ وَإِيَّاكَ</div>
+      <div class="ayah-line" style="top:52.9%;font-size:clamp(13px,4.4vw,18px)">نَسْــتَعِينُ<span class="marker">٥</span>ٱهْدِنَــا ٱلصِّــرَٰطَ</div>
+      <div class="ayah-line" style="top:61.9%;font-size:clamp(13px,4.4vw,18px)">ٱلْمُسْــتَقِيمَ<span class="marker">٦</span>صِــرَٰطَ ٱلَّذِيــنَ</div>
+      <div class="ayah-line" style="top:70.9%;font-size:clamp(13px,4.4vw,18px)">أَنْعَمْتَ عَلَيْهِمْ غَيْــرِ ٱلْمَغْضُوبِ</div>
+      <div class="ayah-line" style="top:79.9%;font-size:clamp(13px,4.4vw,18px)">عَلَيْــهِمْ وَلَا ٱلضَّــآلِّيــنَ<span class="marker">٧</span></div>
     </div>
-    <figcaption><b>Placement diagram only</b> — the current emergent flow, rendered in the source face
+    <figcaption><b>Placement diagram only</b> — the 8-line variant's flow, rendered in the source face
     (Amiri Quran) with indicative elongations where the build places them; the piece uses the frozen,
-    fully-justified SVG composition verbatim (proof render:
-    <span style="font-family:var(--mono);font-size:12px">qa/proofs/fatihah-proof-4000.png</span>).
+    fully-justified SVG composition verbatim. The 7-line variant compresses the same flow into six
+    body lines at em 0.0585, most of them filling naturally. Proof renders (plain + parchment ground):
+    <span style="font-family:var(--mono);font-size:12px">qa/proofs/fatihah-proof-{8line,7line}[-parchment]-4000.png</span>.
     Line breaks are emergent from the flow, not authored per āyah. Diacritics are welded to their base
     clusters at atlas-build time and share every transform.</figcaption>
   </figure>
@@ -1308,7 +1310,7 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
   </div>
 
   <p style="margin-top:34px;border-top:1px solid var(--line);padding-top:18px;font-size:12.5px;color:var(--faint)">
-  Al-Fātiḥah 3D Manuscript · specification v1.4 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
+  Al-Fātiḥah 3D Manuscript · specification v1.4.1 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
   authoritative and untouchable · no bloom, no aura, no spectacle — the light does the reverence.</p>
 </section>
 
@@ -1437,6 +1439,35 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     0.35</span> (vs 1.0): an elongation reveals as one continuous pen sweep of proportional length,
     not discrete letter steps. Lines 1–2 of the justified flow loop ≈ 29 s at the approved per-word
     pacing.</li>
+  </ol>
+
+  <h3>v1.4.1 — true-rectangle block, layout variants <span class="tag">user direction, 2026-08-25</span></h3>
+  <ol>
+    <li><b>§3 no orphan close</b> — greedy breaking is replaced by a <b>minimum-unevenness DP</b> over
+    exactly N body lines (exact shaped measures, memoized; kashida can only add width, so a line's
+    natural width may never exceed the column). The final line must carry ≥ 3 words and end on the
+    āyah-7 marker; a single word is never stretched across a line. Preference order honored: em within
+    the band → re-breaking (the DP) → short close + 2–3 gold rosette fillers. Both shipped variants
+    close <em>fully justified</em> — the rosette path is implemented but unused.</li>
+    <li><b>§3 balanced elongation</b> — per-joint kashida hard-capped at 1.5 em, slack spread across
+    2–3 joints per line in distinct words; joint preference re-ranked: sīn/shīn teeth (3) →
+    before-final joints (2.5) → flat bases of ص ض ك (2) → other permitted joints (1). The Basmalah's
+    great sīn remains the single uncapped elongation. Fixed in passing: the لله exclusion now tests
+    the <em>bare</em> letters — the vocalized form hid the ligature from a plain substring test and
+    v1.4 had elongated inside <span dir="rtl" style="font-family:var(--arabic)">لِلَّهِ</span> once.</li>
+    <li><b>§3 seven-line option</b> — the classical Ottoman 7-line setting <b>fits</b>: em 0.0585
+    (inside the band, the largest feasible hand — larger than the 8-line's), caps respected, most body
+    lines filling naturally, same 3-word close. Frozen alongside the 8-line block as
+    <span style="font-family:var(--mono);font-size:12px">composition-{8line,7line}.{json,svg}</span>
+    (svg shas cc193c23… / 8190602e…), each verified byte-identical to the canonical after U+0640
+    stripping, each with its own stroke-order table; the 8-line copy stays active pending the
+    reviewer's choice.</li>
+    <li><b>QA proofs</b> — <span style="font-family:var(--mono);font-size:12px">?scene=proof</span>
+    gains <span style="font-family:var(--mono);font-size:12px">&amp;layout=8|7</span> and
+    <span style="font-family:var(--mono);font-size:12px">&amp;bg=parchment</span> (a 2D port of the
+    §7/§15 parchment recipe — fbm fiber grain 340×280, undulation, macro/blotch discoloration, the
+    two historic stains, aged edges — so the block can be judged against the sheet); four 4000-px
+    renders under <span style="font-family:var(--mono);font-size:12px">qa/proofs/</span>.</li>
   </ol>
 </section>
 

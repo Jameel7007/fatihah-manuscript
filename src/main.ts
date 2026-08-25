@@ -99,18 +99,98 @@ async function runProof(): Promise<void> {
   }
   interface PLine {
     ayahs: number[];
+    em: number;
     glyphs: PGlyph[];
     markers: Array<{ x: number; y: number; ayah: number }>;
+    fillers?: Array<{ x: number; y: number; r: number }>;
   }
-  const comp = (await (await fetch('/text/composition.json')).json()) as {
+  const layoutQ = q.get('layout'); // 7 | 8 | (absent = active composition)
+  const compFile = layoutQ === '7' ? 'composition-7line.json' : layoutQ === '8' ? 'composition-8line.json' : 'composition.json';
+  const comp = (await (await fetch(`/text/${compFile}`)).json()) as {
+    layout: string;
     checksums: { svg: string };
+    em: number;
     lines: PLine[];
   };
+  const parchment = q.get('bg') === 'parchment';
   (canvas as HTMLCanvasElement).style.display = 'none';
   document.body.style.overflow = 'auto';
 
   const AR_DIGITS = '٠١٢٣٤٥٦٧٨٩';
   const arNum = (n: number): string => String(n).split('').map((d) => AR_DIGITS[+d] ?? d).join('');
+
+  // §7-recipe parchment ground, ported to 2D for the judgment proof: value-noise fbm —
+  // fiber grain (340, 280) + undulation (36, 30) + macro discoloration 3.1 + blotch 7.0 +
+  // the two §15 stains, over the base #E6D5AF. Computed once at 2000 px and rescaled.
+  let parchCache: HTMLCanvasElement | null = null;
+  const parchmentCanvas = (): HTMLCanvasElement => {
+    if (parchCache) return parchCache;
+    const NW = 2000;
+    const NH = Math.round(NW / 0.78);
+    const cv = document.createElement('canvas');
+    cv.width = NW;
+    cv.height = NH;
+    const c2 = cv.getContext('2d')!;
+    const img = c2.createImageData(NW, NH);
+    const hash = (xi: number, yi: number): number => {
+      let h = (Math.imul(xi, 374761393) + Math.imul(yi, 668265263)) ^ 0x5bf03635;
+      h = Math.imul(h ^ (h >>> 13), 1274126177);
+      return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+    };
+    const sm = (t: number): number => t * t * (3 - 2 * t);
+    const vnoise = (x: number, y: number): number => {
+      const xi = Math.floor(x);
+      const yi = Math.floor(y);
+      const fx = sm(x - xi);
+      const fy = sm(y - yi);
+      const a = hash(xi, yi);
+      const b = hash(xi + 1, yi);
+      const c = hash(xi, yi + 1);
+      const d = hash(xi + 1, yi + 1);
+      return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy;
+    };
+    const fbm4 = (x: number, y: number): number => {
+      let v = 0;
+      let amp = 0.5;
+      let fx = x;
+      let fy = y;
+      for (let o = 0; o < 4; o++) {
+        v += amp * vnoise(fx, fy);
+        fx = fx * 2.03 + 11.31;
+        fy = fy * 2.03 + 7.77;
+        amp *= 0.5;
+      }
+      return v;
+    };
+    const data = img.data;
+    for (let py = 0; py < NH; py++) {
+      const v = py / NH;
+      for (let px = 0; px < NW; px++) {
+        const u = px / NW;
+        const grain = fbm4(u * 340, v * 280);
+        const undul = fbm4(u * 36 + 7.7, v * 30 + 7.7);
+        const macro = fbm4(u * 3.1, v * 3.1);
+        const blotch = fbm4(u * 7 + 11.7, v * 7 + 11.7);
+        const h = grain * 0.6 + undul * 0.32;
+        let tone = 1 + (macro - 0.5) * 0.13 + (blotch - 0.5) * 0.07 - (h - 0.5) * 0.09;
+        // §15 stains (lower-left quadrant), soft warm-brown multiply
+        const d1 = Math.hypot(u - 0.26, v - 0.71);
+        const d2 = Math.hypot(u - 0.37, v - 0.79);
+        const st = Math.max(Math.max(0, 1 - d1 / 0.062), 0.8 * Math.max(0, 1 - d2 / 0.09));
+        // aged edges
+        const e = Math.min(u, 1 - u, v, 1 - v);
+        tone *= 1 - 0.1 * (1 - Math.min(1, e / 0.045));
+        const i = (py * NW + px) * 4;
+        data[i] = 230 * tone * (1 - 0.14 * st);
+        data[i + 1] = 213 * tone * (1 - 0.2 * st);
+        data[i + 2] = 175 * tone * (1 - 0.28 * st);
+        data[i + 3] = 255;
+      }
+    }
+    c2.putImageData(img, 0, 0);
+    parchCache = cv;
+    return cv;
+  };
 
   const draw = (cv: HTMLCanvasElement | OffscreenCanvas, widthPx: number): void => {
     const S = widthPx / 0.78;
@@ -118,12 +198,17 @@ async function runProof(): Promise<void> {
     cv.width = widthPx;
     cv.height = H;
     const ctx = cv.getContext('2d') as CanvasRenderingContext2D;
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, widthPx, H);
+    if (parchment) {
+      ctx.drawImage(parchmentCanvas(), 0, 0, widthPx, H);
+    } else {
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, widthPx, H);
+    }
     const X = (wx: number): number => (wx + 0.39) * S;
     const Y = (wy: number): number => wy * S;
+    const em = comp.em;
     for (const l of comp.lines) {
-      ctx.fillStyle = '#14100C';
+      ctx.fillStyle = parchment ? '#2A211B' : '#14100C';
       for (const g of l.glyphs) {
         ctx.save();
         ctx.translate(X(g.x), Y(g.y));
@@ -133,15 +218,32 @@ async function runProof(): Promise<void> {
       }
       for (const mk of l.markers ?? []) {
         ctx.strokeStyle = '#8A6D3F';
-        ctx.lineWidth = 0.0016 * S;
+        ctx.lineWidth = 0.0276 * em * S;
         ctx.beginPath();
-        ctx.arc(X(mk.x), Y(mk.y), 0.0063 * S, 0, Math.PI * 2);
+        ctx.arc(X(mk.x), Y(mk.y), 0.1086 * em * S, 0, Math.PI * 2);
         ctx.stroke();
         ctx.fillStyle = '#8A6D3F';
-        ctx.font = `${0.0085 * S}px "Amiri Quran", "Noto Naskh Arabic", serif`;
+        ctx.font = `${0.1466 * em * S}px "Amiri Quran", "Noto Naskh Arabic", serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(arNum(mk.ayah), X(mk.x), Y(mk.y) + 0.0008 * S);
+        ctx.fillText(arNum(mk.ayah), X(mk.x), Y(mk.y) + 0.0138 * em * S);
+      }
+      for (const f of l.fillers ?? []) {
+        // gold rosette filler: 8 round-capped petals + center dot
+        ctx.strokeStyle = '#8A6D3F';
+        ctx.fillStyle = '#8A6D3F';
+        ctx.lineWidth = f.r * 0.34 * S;
+        ctx.lineCap = 'round';
+        for (let k = 0; k < 8; k++) {
+          const a = (k * Math.PI) / 4;
+          ctx.beginPath();
+          ctx.moveTo(X(f.x) + Math.cos(a) * f.r * 0.42 * S, Y(f.y) + Math.sin(a) * f.r * 0.42 * S);
+          ctx.lineTo(X(f.x) + Math.cos(a) * f.r * S, Y(f.y) + Math.sin(a) * f.r * S);
+          ctx.stroke();
+        }
+        ctx.beginPath();
+        ctx.arc(X(f.x), Y(f.y), f.r * 0.24 * S, 0, Math.PI * 2);
+        ctx.fill();
       }
     }
   };
@@ -153,16 +255,17 @@ async function runProof(): Promise<void> {
   view.style.width = `${W}px`;
   document.body.style.background = '#666';
   document.body.appendChild(view);
-  hud!.textContent = `text proof — frozen composition · svg ${comp.checksums.svg.slice(0, 12)}`;
+  hud!.textContent = `text proof — ${comp.layout} · svg ${comp.checksums.svg.slice(0, 12)}${parchment ? ' · parchment ground' : ''}`;
 
   if (q.get('export') !== null) {
     const hi = document.createElement('canvas');
     draw(hi, 4000);
+    const name = `fatihah-proof-${layoutQ ?? 'active'}line${parchment ? '-parchment' : ''}-4000`;
     const blob = await new Promise<Blob | null>((res) => hi.toBlob(res, 'image/png'));
     if (blob) {
-      const r = await fetch('/qa-save?name=fatihah-proof-4000', { method: 'POST', body: blob });
-      console.info(`[proof] 4000px export posted: ${r.ok}, ${blob.size} bytes`);
-      (window as unknown as { __proofExport?: unknown }).__proofExport = { ok: r.ok, bytes: blob.size };
+      const r = await fetch(`/qa-save?name=${name}`, { method: 'POST', body: blob });
+      console.info(`[proof] 4000px export posted: ${r.ok}, ${blob.size} bytes → ${name}`);
+      (window as unknown as { __proofExport?: unknown }).__proofExport = { ok: r.ok, bytes: blob.size, name };
     }
   }
 }

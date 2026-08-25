@@ -114,16 +114,29 @@
     "key": "KEY_INTENSITY 9.87 — 18% card R=128 through the full chain"
   },
   "text_pipeline": {
-    "layout": "v1.4 classical justified (2026-08-25): continuous flow, greedy line breaking, kashida-only block justification (U+0640 at permitted joints, <=2 long elongations per line, iterative reshape against Amiri contextual forms); basmalah = full-em own line justified by a single sin elongation in bism; ragged closing line; markers glued to the preceding word; 8 lines, 316 glyphs",
-    "frozen_svg_sha256": "c41855b9ee34f5d375710f3bc06cbaa22aa66abdf95244a5625e4fa309f1df33",
+    "layout": "v1.4.1 classical justified TRUE-RECTANGLE variants (2026-08-25, PENDING USER CHOICE): continuous flow, minimum-unevenness DP line breaking, kashida-only block justification. Balanced elongation: <=1.5 em per joint, slack spread over 2-3 joints per line (sin/shin teeth, then before-final joints, then flat bases of sad/dad/kaf; the Allah ligature and lam-alif are excluded - tested on BARE letters, diacritics sit between them); basmalah = full-em own line filled by the single uncapped sin elongation. No orphan close: the final line carries >=3 words and ends on the ayah-7 marker (rosette-filler fallback implemented, NOT needed - both variants close fully justified).",
+    "variants": {
+      "8line": {
+        "em": 0.058,
+        "svg_sha256": "cc193c23042a1337802bdd7bee8c1f088b6c7a7319244562d2b83f51764a06cd",
+        "glyphs": 291,
+        "close": "justified, 3 words + marker (kashida 1.43+1.43+1.2 em)"
+      },
+      "7line": {
+        "em": 0.0585,
+        "svg_sha256": "8190602e63205515448ea267c4afdae295a1a0d2bfb7d9c7a190e53452e2cc52",
+        "glyphs": 277,
+        "close": "justified, 3 words + marker; largest feasible hand in the band - most lines fill naturally (Ottoman 7-line convention)"
+      },
+      "active": "8line (copied to composition.json until the user chooses)"
+    },
     "font_sha256": "e2a47644762d16bdfb6d33e0d8db8c6ff30beae84150ef5a705316bbd829455c",
-    "em": 0.058,
     "canonical_source": "Tanzil Uthmani (via api.alquran.cloud, edition quran-uthmani)",
     "canonical_url": "https://api.alquran.cloud/v1/surah/1/quran-uthmani",
     "canonical_fetched": "2026-08-25",
     "canonical_sha256": "557e8ef1fe49090221c1dc09304dff792d378ba1b551250fb4fd9a21034a8be4",
-    "verification": "ALL SEVEN AYAT IDENTICAL (build/verify-text.mjs, 2026-08-25, v1.4 chain): the verifier reads the frozen composition's post-justification presentation strings, strips U+0640, reassembles the flow, and matches the pinned canonical byte-for-byte - proving justification only ever inserts kashida. Canonical pin unchanged (U+FEFF feed artifact stripped at pinning).",
-    "proof": "qa/proofs/fatihah-proof-4000.png (4000x5128, from ?scene=proof&export=1, v1.4 justified); live at ?scene=proof",
-    "reveal_pacing": "director/writing.ts WRITING constants (glyphUnit 1.0, kashidaUnit 0.35 - elongations sweep, not step, markUnit 0.65, markLag 1.2, wordGap 2.2, unitsPerSecond 3.45) - lines 1-2 of the justified flow loop ~29 s at the approved per-word feel; M3 maps units to dp"
+    "verification": "ALL VARIANTS: SEVEN AYAT IDENTICAL (build/verify-text.mjs, 2026-08-25): for composition.json, composition-8line.json, composition-7line.json the verifier reads the post-justification presentation strings, strips U+0640, reassembles the flow, and matches the pinned canonical byte-for-byte. Canonical pin unchanged (U+FEFF feed artifact stripped at pinning).",
+    "proofs": "qa/proofs/fatihah-proof-{8line,7line}-4000.png (plain) + fatihah-proof-{8line,7line}-parchment-4000.png (2D port of the SS7/SS15 parchment recipe: fbm grain 340x280 + undulation + macro/blotch + stains + aged edges); live at ?scene=proof&layout=8|7[&bg=parchment]",
+    "reveal_pacing": "director/writing.ts WRITING constants (glyphUnit 1.0, kashidaUnit 0.35 - elongations sweep, not step, markUnit 0.65, markLag 1.2, wordGap 2.2, unitsPerSecond 3.45); M3 maps units to dp"
   }
 }
