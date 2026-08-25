@@ -105,7 +105,12 @@ async function runMain(): Promise<void> {
     }
     field.setDeform(d, simEnabled);
     field.run(renderer);
-    sheetRoot.rotation.x = (poseTiltDeg(p) * Math.PI) / 180;
+    // Pose tilt pivots about the moving top curl line, not the origin — with the rolled
+    // mass far from origin (v1.3 start pose), an origin pivot would swing the composition.
+    const tilt = (poseTiltDeg(p) * Math.PI) / 180;
+    const zPivot = d.zTopCurl;
+    sheetRoot.rotation.x = tilt;
+    sheetRoot.position.set(0, zPivot * Math.sin(tilt), zPivot * (1 - Math.cos(tilt)));
   };
 
   // ---- capture / probe mode (deterministic, sim off) ----

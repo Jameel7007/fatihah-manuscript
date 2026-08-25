@@ -52,11 +52,14 @@ export function pchip(xs: readonly number[], ys: readonly number[]): (x: number)
   };
 }
 
-// §4 checkpoint drivers (columns of the table, exact).
-const wTop = pchip(CHECKPOINT_P, [0.34, 0.238, 0.126, 0.048, 0.04]);
-const wBot = pchip(CHECKPOINT_P, [0.26, 0.221, 0.156, 0.078, 0.03]);
-const rCore = pchip(CHECKPOINT_P, [0.0285, 0.0334, 0.0398, 0.0465, 0.052]);
-const sagD = pchip(CHECKPOINT_P, [-0.0118, -0.0102, -0.0079, -0.0058, -0.0035]);
+// §4 checkpoint drivers (columns of the table, exact). v1.3 rederivation (user direction):
+// the manuscript starts MOSTLY ROLLED — 75% of the length wrapped in a 3.5-turn top roll,
+// with a 25% tongue (15% web + 10% lip) exposed below. The unroll pays the turns out across
+// state 2; terminal residual-curl values are the unchanged contract.
+const wTop = pchip(CHECKPOINT_P, [0.75, 0.56, 0.33, 0.12, 0.04]);
+const wBot = pchip(CHECKPOINT_P, [0.1, 0.088, 0.068, 0.045, 0.03]);
+const rCore = pchip(CHECKPOINT_P, [0.0302, 0.033, 0.038, 0.045, 0.052]);
+const sagD = pchip(CHECKPOINT_P, [-0.004, -0.009, -0.011, -0.0075, -0.0035]);
 
 // Bottom C-curl model — three chained circular arcs (ramp → curl → edge). The ramp share
 // shrinks as the sheet pays out: the terminal residual is all tight edge-memory curl. Radii
@@ -71,7 +74,19 @@ const curlR = pchip(CHECKPOINT_P, [0.033, 0.033, 0.033, 0.033, 0.031]);
 const edgeR = pchip(CHECKPOINT_P, [0.026, 0.026, 0.027, 0.028, 0.028]);
 
 export const THICKNESS = 0.0009; // §2
-const K_SPIRAL = THICKNESS / (2 * Math.PI); // Archimedean growth per radian
+
+// The top roll is a RELAXED spiral: layer spacing 0.0045 (5× sheet thickness), so the
+// spiral cross-section reads as visibly stacked layers at the roll ends. The terminal
+// residual curl (Φ < 1 rad) is insensitive to the gap, so the §4 contract holds.
+export const SPIRAL_GAP = 0.0045;
+const K_SPIRAL = SPIRAL_GAP / (2 * Math.PI); // Archimedean growth per radian
+
+/** “Center opens first, sides lag” (§4/state 2): extra wrap held at the sheet edges,
+ *  W_eff(u) = W_top + wLag·(2u)², windowed to the unroll so p = 0 and terminal are exact. */
+export function wLagOf(p: number): number {
+  const s = Math.max(0, Math.min(1, (p - 0.06) / 0.32));
+  return 0.035 * Math.sin(Math.PI * s);
+}
 
 export interface ArcPhase {
   /** start point in (z, y) */
@@ -91,14 +106,16 @@ export interface DeformState {
   p: number;
   wTop: number;
   wBot: number;
+  /** edges-lag extra wrap coefficient — W_eff(u) = wTop + wLag·(2u)² */
+  wLag: number;
   rCore: number;
-  /** total wrap angle of the top roll */
+  /** total wrap angle of the top roll at u = 0 */
   phiTop: number;
-  /** outer radius of the top roll */
+  /** outer radius of the top roll at u = 0 */
   rOuter: number;
-  /** top roll center in (z, y) */
+  /** top roll center in (z, y) at u = 0 (shader recomputes per-u for the lag term) */
   topC: [number, number];
-  /** z of the top curl line (= wTop − 0.5, static anchor z = v − 0.5) */
+  /** z of the top curl line at u = 0 (= wTop − 0.5, static anchor z = v − 0.5) */
   zTopCurl: number;
   /** z of the bottom curl line (= 0.5 − wBot) */
   zBotCurl: number;
@@ -106,8 +123,8 @@ export interface DeformState {
   cup: number;
   twist: number;
   bottom: ArcPhase[];
-  /** derived: tip heights above the plane (probe / spec record) */
-  derived: { topTipLift: number; botTipLift: number; botApex: number };
+  /** derived: tip heights + turn count (probe / spec record) */
+  derived: { topTipLift: number; botTipLift: number; botApex: number; turns: number };
 }
 
 /** Chain a circular arc: given start (z, y, alpha), curvature k, length L → end pose. */
@@ -187,6 +204,7 @@ export function evalDeform(p: number): DeformState {
     p,
     wTop: wt,
     wBot: wb,
+    wLag: wLagOf(p),
     rCore: rc,
     phiTop,
     rOuter,
@@ -197,6 +215,6 @@ export function evalDeform(p: number): DeformState {
     cup,
     twist: 0.006,
     bottom: phases,
-    derived: { topTipLift, botTipLift, botApex },
+    derived: { topTipLift, botTipLift, botApex, turns: phiTop / (2 * Math.PI) },
   };
 }

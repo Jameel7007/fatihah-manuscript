@@ -9,30 +9,30 @@
   "frames": [
     {
       "id": "R-0.00-T1",
-      "milestone": "M1 (gray-box surface field, slighter bottom curl 2026-08-25)",
+      "milestone": "M1 v1.3 (mostly-rolled start: 75% wrapped, 3.2 turns)",
       "url": "/?capture=0.0&tier=1",
       "sha256": {
-        "webgpu": "1be51e9b088371f2cc712f45ec3245285f94fc1e753d309b6e964524b9289a9c",
+        "webgpu": "d792a7b9aa400d7a5e6acf99bc659b0e8a93592f18947a62a5a6d92caa96de26",
         "webgl2": "pending CI re-bless — dev pane throttling stalls webgl2 captures; cross-backend field equivalence proven by probes"
       },
-      "verified": "2026-08-25, webgpu hash-identical across two cold loads"
+      "verified": "2026-08-25, webgpu hash-identical across two cold loads on a restarted server"
     },
     {
       "id": "R-0.21-T1",
-      "milestone": "M1 (slighter bottom curl)",
+      "milestone": "M1 v1.3",
       "url": "/?capture=0.21&tier=1",
       "sha256": {
-        "webgpu": "7448d689dfbc0be051dfddc863550fa998e578204419ba5c789e7229720ea5f5",
+        "webgpu": "0b3fb06a21e5abaec7ab2c826ef397adf3d638ec1d4645e63dc749e4930b0ec4",
         "webgl2": "pending CI re-bless (see R-0.00 note)"
       },
       "verified": "2026-08-25"
     },
     {
       "id": "R-0.34-T1",
-      "milestone": "M1 (slighter bottom curl)",
+      "milestone": "M1 v1.3",
       "url": "/?capture=0.34&tier=1",
       "sha256": {
-        "webgpu": "5c1281d915629aba5734a5fb62043963f94644e4a2d829cd0b121a8d25684625",
+        "webgpu": "08f22ed6a341c0a34c15a66f3de073e69bd5b381fa9d0fac44ecc23efc0742cd",
         "webgl2": "pending CI re-bless (see R-0.00 note)"
       },
       "verified": "2026-08-25"
@@ -52,15 +52,16 @@
     "url": "/?probe=1&p={0.0|0.21|0.34}&tier=1[&backend=webgl2]",
     "tolerance": { "position": 0.0015, "normalDeg": 2.0 },
     "results": {
-      "webgpu": { "p0.00": { "maxPos": "5.95e-7", "maxNormDeg": 1.18 }, "p0.21": { "maxPos": "8.9e-7", "maxNormDeg": 1.14 }, "p0.34": { "maxPos": "1.2e-6", "maxNormDeg": 1.1 } },
-      "webgl2": { "p0.00": { "maxPos": "5.9e-7", "maxNormDeg": 1.18 } }
+      "webgpu": { "p0.00": { "maxPos": "2.28e-7", "maxNormDeg": 1.18 }, "p0.21": { "maxPos": "1.9e-7", "maxNormDeg": 1.14 }, "p0.34": { "maxPos": "1.4e-7", "maxNormDeg": 1.1 } },
+      "webgl2": { "p0.00": { "maxPos": "2.3e-7", "maxNormDeg": 1.18 } }
     },
     "derived_model_values": {
-      "p0.00": { "topTipLift": 0.0141, "botTipLift": 0.0568, "botApex": 0.0568 },
-      "p0.30": { "topTipLift": 0.0227, "botTipLift": 0.0416, "botApex": 0.0416 },
-      "p0.38": { "topTipLift": 0.0147, "botTipLift": 0.0136, "botApex": 0.0136 }
+      "p0.00": { "turns": 3.19, "topRollOuterR": 0.0446, "botTipLift": 0.0112 },
+      "p0.21": { "turns": 1.41 },
+      "p0.34": { "turns": 0.245, "botTipLift": 0.0158 },
+      "p0.38": { "turns": 0.122, "topTipLift": 0.015, "botTipLift": 0.0136 }
     },
-    "verified": "2026-08-25 (slighter curl) — GPU field == CPU oracle to float precision; cross-backend equivalence established 2026-08-24"
+    "verified": "2026-08-25 (v1.3 mostly-rolled start) — GPU field == CPU oracle to float precision on both backends; terminal residual-curl contract held (0.0150 / 0.0136)"
   },
   "agx_ramp": {
     "url": "/?scene=ramp",

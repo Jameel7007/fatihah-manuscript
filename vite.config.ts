@@ -7,4 +7,9 @@ export default defineConfig({
   // graphs, stale HMR mixes). Serve three from source, deduped.
   resolve: { dedupe: ['three'] },
   optimizeDeps: { exclude: ['three'] },
+  server: {
+    // same-origin route to the qa/review capture sink (receiver.mjs), so capture pages
+    // can save review PNGs without cross-origin fetches
+    proxy: { '/qa-save': { target: 'http://localhost:4599', rewrite: (p) => p.replace(/^\/qa-save/, '/save') } },
+  },
 });

@@ -48,7 +48,7 @@ import {
 } from 'three/tsl';
 import type { Texture } from 'three/webgpu';
 import { GRID_H, GRID_W, type SilhouetteData } from './silhouette';
-import { THICKNESS, type DeformState } from './deform';
+import { SPIRAL_GAP, type DeformState } from './deform';
 
 const SHEET_W = 0.78;
 
@@ -73,12 +73,11 @@ export class Field {
   });
 
   // pose uniforms (CPU-evaluated per frame from DeformState)
-  private uWt: N = uniform(0.34);
-  private uWb: N = uniform(0.26);
-  private uRc: N = uniform(0.0285);
-  private uPhi: N = uniform(11.6);
-  private uTopC: N = uniform(new Vector2(-0.16, 0.03));
-  private uSag: N = uniform(-0.0118);
+  private uWt: N = uniform(0.75);
+  private uWb: N = uniform(0.1);
+  private uWLag: N = uniform(0);
+  private uRc: N = uniform(0.0302);
+  private uSag: N = uniform(-0.004);
   private uCup: N = uniform(0.009);
   private uTwist: N = uniform(0.006);
   // bottom curl phases: (start z, start y, start angle, curvature) ×3
@@ -151,23 +150,29 @@ export class Field {
     this.nrmScene = passScene(nrmMat);
   }
 
-  /** Branchless analytic pose: top Archimedean roll / sagging web / 3-arc bottom curl. */
+  /** Branchless analytic pose: top Archimedean roll / sagging web / 3-arc bottom curl.
+   *  The wrapped fraction is u-dependent (edges lag): W_eff = Wt + wLag·(2u)², so the roll
+   *  wrap angle, outer radius, and curl-line position are all computed per fragment. */
   private poseNodes(u: N, v: N): { position: N; normal: N } {
-    const Wt: N = this.uWt;
     const Wb: N = this.uWb;
+    const lateral: N = u.mul(2); // −1…1 across width
+    const Weff: N = this.uWt.add(this.uWLag.mul(lateral.mul(lateral)));
 
     // --- top roll: arc length from the core is v itself; θ solves rc·θ + K/2·θ² = v
-    const K: N = float(THICKNESS / (2 * Math.PI));
+    const K: N = float(SPIRAL_GAP / (2 * Math.PI));
     const theta: N = this.uRc.negate().add(sqrt(this.uRc.mul(this.uRc).add(K.mul(2).mul(max(v, 0))))).div(K);
     const rho: N = this.uRc.add(K.mul(theta));
-    const psi: N = this.uPhi.sub(theta);
-    const zTop: N = this.uTopC.x.sub(rho.mul(sin(psi)));
-    const yTop: N = this.uTopC.y.sub(rho.mul(cos(psi)));
+    const phiU: N = this.uRc.negate().add(sqrt(this.uRc.mul(this.uRc).add(K.mul(2).mul(Weff)))).div(K);
+    const psi: N = phiU.sub(theta);
+    const Cz: N = Weff.sub(0.5); // roll center rides the moving curl line
+    const Cy: N = this.uRc.add(K.mul(phiU)); // = outer radius at this u
+    const zTop: N = Cz.sub(rho.mul(sin(psi)));
+    const yTop: N = Cy.sub(rho.mul(cos(psi)));
     const aTop: N = psi.negate(); // profile tangent angle ≈ −ψ (spiral growth term ≪ ρ)
 
     // --- web: z = v − 0.5, y = sag·sin²(π·x̃) (zero slope at both curl lines)
-    const webLen: N = float(1).sub(Wt).sub(Wb);
-    const xw: N = clamp(v.sub(Wt).div(webLen), 0, 1);
+    const webLen: N = float(1).sub(Weff).sub(Wb);
+    const xw: N = clamp(v.sub(Weff).div(webLen), 0, 1);
     const zWeb: N = v.sub(0.5);
     const yWeb: N = this.uSag.mul(sin(xw.mul(Math.PI)).pow(2));
     const aWeb: N = this.uSag.mul(Math.PI).mul(sin(xw.mul(2 * Math.PI))).div(webLen);
@@ -194,7 +199,7 @@ export class Field {
     const aBot: N = mix3(g0.a, g1.a, g2.a, in1, in2);
 
     // --- branch select (masks disjoint, seams exact by construction)
-    const mTop: N = float(1).sub(step(Wt, v));
+    const mTop: N = float(1).sub(step(Weff, v));
     const mBot: N = step(float(1).sub(Wb), v);
     const mWeb: N = float(1).sub(mTop).sub(mBot);
     const z: N = zTop.mul(mTop).add(zWeb.mul(mWeb)).add(zBot.mul(mBot));
@@ -205,7 +210,6 @@ export class Field {
     const nz: N = sin(a).negate();
     const ny: N = cos(a);
     const att: N = clamp(float(1).sub(abs(a).div(Math.PI).mul(0.6)), 0.3, 1);
-    const lateral: N = u.mul(2);
     const dn: N = this.uCup
       .mul(lateral.mul(lateral))
       .add(this.uTwist.mul(lateral).mul(v.mul(2).sub(1)))
@@ -219,9 +223,8 @@ export class Field {
   setDeform(d: DeformState, simEnabled: boolean): void {
     this.uWt.value = d.wTop;
     this.uWb.value = d.wBot;
+    this.uWLag.value = d.wLag;
     this.uRc.value = d.rCore;
-    this.uPhi.value = d.phiTop;
-    (this.uTopC.value as Vector2).set(d.topC[0], d.topC[1]);
     this.uSag.value = d.sag;
     this.uCup.value = d.cup;
     this.uTwist.value = d.twist;

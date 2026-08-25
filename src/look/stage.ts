@@ -21,7 +21,7 @@ import {
   Sphere,
   Vector3,
 } from 'three/webgpu';
-import { attribute, ivec2, textureLoad, transformNormalToView, vec3, vec4, vertexIndex } from 'three/tsl';
+import { attribute, faceDirection, ivec2, textureLoad, transformNormalToView, vec3, vec4, vertexIndex } from 'three/tsl';
 import type { Field } from '../field/field';
 import { GRID_H, GRID_W, type SilhouetteData } from '../field/silhouette';
 import { THICKNESS } from '../field/deform';
@@ -50,8 +50,8 @@ export function buildStage(field: Field, sil: SilhouetteData, debug: DebugMode):
   // rolled composition under-covered — M1 widens it for shape work; M2 owns calibration and
   // will restate the per-state cone in the spec.
   const key = new SpotLight(0xffd2a0, 10, 0, (26 * Math.PI) / 180, 0.5, 2);
-  key.position.set(-0.55, 1.3, 0.55);
-  key.target.position.set(0, 0, 0.08);
+  key.position.set(-0.55, 1.3, 0.85);
+  key.target.position.set(0, 0.04, 0.2);
   scene.add(key, key.target);
 
   const fill = new DirectionalLight(0xc7d8ee, 0.5);
@@ -88,7 +88,8 @@ function fieldMaterial(
   m.color.setRGB(gray, gray, gray);
   m.roughness = 0.8;
   m.positionNode = positionNode;
-  m.normalNode = transformNormalToView(normalObj);
+  // two-sided: the sheet normal alternates in/out as the roll wraps — flip per fragment
+  m.normalNode = transformNormalToView(normalObj).mul(faceDirection);
   return m;
 }
 
