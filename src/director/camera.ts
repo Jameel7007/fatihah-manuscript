@@ -12,16 +12,21 @@ interface Anchor {
   look: Vector3;
 }
 
+// M1-rebaked from the §9 table: the published table's focal/distance/framing triples were
+// not mutually consistent against the implemented model's true extents (static web anchor
+// z = v − 0.5; sheet long side 1.0). Directions and look-ats keep the §9 design; distances
+// are scaled so each state meets its §9 FRAMING FRACTION (the fractions are the contract).
+// M4 owns the designed pass, per-segment eases, mobile overrides, and the spec-table sync.
 const ANCHORS: readonly Anchor[] = [
-  { p: 0.0, focal: 40, pos: new Vector3(0.44, 0.33, 0.64), look: new Vector3(0.01, 0.04, -0.05) },
-  { p: 0.21, focal: 42, pos: new Vector3(0.27, 0.46, 0.55), look: new Vector3(0.0, 0.02, 0.01) },
-  { p: 0.34, focal: 46, pos: new Vector3(0.1, 0.6, 0.42), look: new Vector3(0.0, 0.012, 0.03) },
-  { p: 0.47, focal: 50, pos: new Vector3(0.02, 0.74, 0.26), look: new Vector3(0.0, 0.008, 0.045) },
-  { p: 0.6, focal: 55, pos: new Vector3(0.0, 0.88, 0.09), look: new Vector3(0.0, 0.0, 0.018) },
-  { p: 0.7, focal: 55, pos: new Vector3(0.0, 0.76, 0.24), look: new Vector3(0.0, 0.02, 0.01) },
-  { p: 0.8, focal: 57, pos: new Vector3(0.0, 0.52, 0.47), look: new Vector3(0.0, 0.09, -0.01) },
-  { p: 0.9, focal: 60, pos: new Vector3(0.0, 0.33, 0.6), look: new Vector3(0.0, 0.15, -0.03) },
-  { p: 1.0, focal: 62, pos: new Vector3(0.0, 0.255, 0.66), look: new Vector3(0.0, 0.185, -0.045) },
+  { p: 0.0, focal: 40, pos: new Vector3(0.69, 0.77, 1.645), look: new Vector3(0.0, 0.02, 0.07) },
+  { p: 0.21, focal: 42, pos: new Vector3(0.476, 0.834, 1.276), look: new Vector3(0.0, 0.015, 0.03) },
+  { p: 0.34, focal: 46, pos: new Vector3(0.33, 1.952, 1.317), look: new Vector3(0.0, 0.012, 0.03) },
+  { p: 0.47, focal: 50, pos: new Vector3(0.06, 2.204, 0.69), look: new Vector3(0.0, 0.008, 0.045) },
+  { p: 0.6, focal: 55, pos: new Vector3(0.0, 2.64, 0.234), look: new Vector3(0.0, 0.0, 0.018) },
+  { p: 0.7, focal: 55, pos: new Vector3(0.0, 2.092, 0.654), look: new Vector3(0.0, 0.02, 0.01) },
+  { p: 0.8, focal: 57, pos: new Vector3(0.0, 1.036, 1.046), look: new Vector3(0.0, 0.09, -0.01) },
+  { p: 0.9, focal: 60, pos: new Vector3(0.0, 0.474, 1.104), look: new Vector3(0.0, 0.15, -0.03) },
+  { p: 1.0, focal: 62, pos: new Vector3(0.0, 0.325, 1.365), look: new Vector3(0.0, 0.185, -0.045) },
 ];
 
 /** Segment index + local 0..1 position for a given p. */

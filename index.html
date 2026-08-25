@@ -25,7 +25,9 @@
   body.capture { overflow: hidden; }
   body.capture #hud, body.capture #bar { display: none; }
   body.capture #cap { display: block; }
-  body.capture canvas#gl { inset: auto; left: 0; top: 0; }
+  /* capture buffer is a fixed 1440×900 (or per-params) — scale the VIEW to fit the window;
+     readback uses the buffer, so hashes are unaffected */
+  body.capture canvas#gl { inset: auto; left: 0; top: 0; width: 100vw !important; height: auto !important; max-height: 100vh; object-fit: contain; }
 </style>
 </head>
 <body>

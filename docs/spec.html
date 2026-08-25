@@ -143,7 +143,7 @@
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.1 · pre-M0 revision pass</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.2 · M1 model-truth corrections</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -381,15 +381,25 @@
   residual solver (§17). Checkpoints, in-state normalized:</p>
 
   <div class="tw"><table>
-    <thead><tr><th class="n">State %</th><th class="n">p</th><th class="n">W_top (wrapped)</th><th class="n">W_bottom</th><th class="n">r_top core</th><th class="n">web sag</th><th class="n">edge lift (top / bottom)</th></tr></thead>
+    <thead><tr><th class="n">State %</th><th class="n">p</th><th class="n">W_top (wrapped)</th><th class="n">W_bottom</th><th class="n">r_top core</th><th class="n">web sag</th><th class="n">tip lift top / bottom (derived†)</th></tr></thead>
     <tbody>
       <tr><td class="n">0</td><td class="n">0.06</td><td class="n">0.340</td><td class="n">0.260</td><td class="n">0.0285</td><td class="n">−0.0118</td><td class="n">— / —</td></tr>
       <tr><td class="n">25</td><td class="n">0.14</td><td class="n">0.238</td><td class="n">0.221</td><td class="n">0.0334</td><td class="n">−0.0102</td><td class="n">— / —</td></tr>
-      <tr><td class="n">50</td><td class="n">0.22</td><td class="n">0.126</td><td class="n">0.156</td><td class="n">0.0398</td><td class="n">−0.0079</td><td class="n">0.0165 / —</td></tr>
-      <tr><td class="n">75</td><td class="n">0.30</td><td class="n">0.048</td><td class="n">0.078</td><td class="n">0.0465</td><td class="n">−0.0058</td><td class="n">0.0138 / 0.0181</td></tr>
-      <tr><td class="n">100</td><td class="n">0.38</td><td class="n">0.040*</td><td class="n">0.030*</td><td class="n">0.0520</td><td class="n">−0.0035</td><td class="n">0.0110 / 0.0140</td></tr>
+      <tr><td class="n">50</td><td class="n">0.22</td><td class="n">0.126</td><td class="n">0.156</td><td class="n">0.0398</td><td class="n">−0.0079</td><td class="n">— / —</td></tr>
+      <tr><td class="n">75</td><td class="n">0.30</td><td class="n">0.048</td><td class="n">0.078</td><td class="n">0.0465</td><td class="n">−0.0058</td><td class="n">≈0.023 / ≈0.042 apex</td></tr>
+      <tr><td class="n">100</td><td class="n">0.38</td><td class="n">0.040*</td><td class="n">0.030*</td><td class="n">0.0520</td><td class="n">−0.0035</td><td class="n">0.0144 / 0.0136</td></tr>
     </tbody>
   </table></div>
+  <p style="font-size:13px;color:var(--muted)">† M1 correction: the last column is <b>derived from the
+  implemented model</b> (probe-recorded), not driven — tip height above the plane where the residual
+  wrap is &lt; ~1 rad, “—” while a rolled end still wraps past that. The driver columns (W, r, sag) are
+  the contract and are checkpoint-splined exactly. The bottom curl is realized as <b>three chained
+  circular arcs</b> (ramp → curl → edge; ramp share 0.55 → 0 across the unroll, radii
+  0.80→0.36 / 0.034→0.031 / 0.026→0.028) rather than one opening spiral — the residual end-curl
+  tightens as only edge memory remains. At p = 0 the model's bottom tip sits at 0.067 with apex 0.077
+  (the §4 figure's 0.0619 apex is schematic). The web is <b>statically anchored</b> (z = v − 0.5): the
+  roll pays out away from the reader and the reading surface never swims; the figure's roll-axis z is
+  likewise schematic.</p>
   <p style="font-size:13px;color:var(--muted)">* Terminal values are <em>residual curl</em>: the last 4% / 3% of
   each end never fully flattens — the sheet remembers being rolled. Corners add a ±0.006 differential
   twist (opposite corners paired) that persists through every later state.</p>
@@ -938,8 +948,8 @@ embossStr(t)  = 1 − E7(t)                       // E7 = cubic-bezier(0.37, 0, 
     <thead><tr><th class="n">#</th><th>Pass</th><th>Kind</th><th class="n">Target / format</th><th class="n">Budget ms</th><th>Skipped when</th></tr></thead>
     <tbody>
       <tr><td class="n">P0</td><td>Residual integrate + constraints</td><td>compute ×(1+6)</td><td class="n">storage buffer 48×64 vec4 ×2 (ping-pong)</td><td class="n">0.05</td><td>T3 (analytic wave instead) · reduced motion · capture</td></tr>
-      <tr><td class="n">P1</td><td>Surface field eval</td><td>compute 256×192</td><td class="n">rgba16f ×3 (pos / normal / tangent)</td><td class="n">0.10</td><td>never (this is the piece)</td></tr>
-      <tr><td class="n">P2</td><td>Normal resolve (central diff over P1 pos)</td><td>compute</td><td class="n">writes into P1 normal/tangent</td><td class="n">0.05</td><td>never</td></tr>
+      <tr><td class="n">P1</td><td>Surface field eval</td><td>RTT pass 192×256 (both backends; WebGPU compute swap = M7 perf option)</td><td class="n">rgba32f pos (half is too coarse for FD normals — M1 correction)</td><td class="n">0.10</td><td>never (this is the piece)</td></tr>
+      <tr><td class="n">P2</td><td>Normal resolve (central diff over P1 pos)</td><td>RTT pass</td><td class="n">rgba32f normal (tangent joins at M5 for aniso)</td><td class="n">0.05</td><td>never</td></tr>
       <tr><td class="n">P3</td><td>Contact height field</td><td>raster ortho, glyphs only</td><td class="n">512² r16f</td><td class="n">0.15</td><td>p &lt; 0.68</td></tr>
       <tr><td class="n">P4</td><td>Contact blur H+V (radius from height)</td><td>fullscreen ×2</td><td class="n">512² r16f ×2</td><td class="n">0.20</td><td>p &lt; 0.68 · T3: single 5-tap @ 256²</td></tr>
       <tr><td class="n">P5</td><td>Key shadow depth</td><td>raster</td><td class="n">2048² depth32</td><td class="n">1.10</td><td>—</td></tr>
@@ -1275,7 +1285,7 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
   </div>
 
   <p style="margin-top:34px;border-top:1px solid var(--line);padding-top:18px;font-size:12.5px;color:var(--faint)">
-  Al-Fātiḥah 3D Manuscript · specification v1.1 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
+  Al-Fātiḥah 3D Manuscript · specification v1.2 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
   authoritative and untouchable · no bloom, no aura, no spectacle — the light does the reverence.</p>
 </section>
 
@@ -1306,6 +1316,25 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     mapping; regression matrix now spans both backends: 74 frames total (§20).</li>
     <li><b>§3</b> — Glyph source of record confirmed as Amiri Quran (SIL OFL 1.1), shaped once via
     HarfBuzz into a frozen, checksummed SVG; all derived tables regenerate from it on rebuild.</li>
+  </ol>
+
+  <h3>M1 model-truth corrections <span class="tag">v1.1 → v1.2 · implementation is now the source of derived values</span></h3>
+  <ol>
+    <li><b>§4</b> — “Edge lift” column redefined as model-derived tip lift and corrected from the
+    implementation (terminal 0.0144 / 0.0136); bottom curl realized as three chained circular arcs
+    with a shrinking ramp share; web statically anchored at z = v − 0.5 (the roll pays out away from
+    the reader); the figure's roll-axis z and 0.0619 apex are schematic. Driver columns unchanged and
+    validated: GPU field matches the CPU oracle to ≤ 1.2e-6 world at 20 probe points, normals ≤ 1.2°,
+    on <em>both</em> backends.</li>
+    <li><b>§16</b> — Field textures are rgba32f (half-float FD normals fail the 2° gate); P1/P2 run as
+    identical RTT passes on both backends for now (the WebGL2 story unified; WebGPU compute swap is an
+    M7 perf option). Sim lattice stays rgba16f ping-pong.</li>
+    <li><b>§17</b> — Residual solver realized as Jacobi-relaxed PBD (predict + 6 neighbor-averaging
+    passes, pinned border) with the post-relax velocity re-derivation folded into the damping
+    constant; contract preserved: frame-space state, clamps, provable decay to zero.</li>
+    <li><b>§9</b> — The published focal/position/framing triples were not mutually consistent against
+    the model's true extents; anchor distances are rebaked (directions, look-ats, focals kept) so each
+    state meets its §9 framing fraction. M4 re-syncs the printed table from the final tuned rig.</li>
   </ol>
 </section>
 

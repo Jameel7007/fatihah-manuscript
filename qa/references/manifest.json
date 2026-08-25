@@ -1,5 +1,5 @@
 {
-  "note": "Blessed regression references. M0 records frame hashes only; PNG blessing and SSIM/ΔE00 gates land with the CI harness. Hashes are environment-specific — re-bless when the capture environment changes.",
+  "note": "Blessed regression references. Hashes are environment-specific — re-bless when the capture environment changes. PNG blessing and SSIM/ΔE00 gates land with the CI harness.",
   "environment": {
     "machine": "MacBook Pro (Apple Silicon)",
     "browser": "Chromium (Claude Code browser pane)",
@@ -8,19 +8,66 @@
   },
   "frames": [
     {
-      "id": "R-0.50-T1",
-      "milestone": "M0 (gray-box)",
+      "id": "R-0.00-T1",
+      "milestone": "M1 (gray-box surface field)",
+      "url": "/?capture=0.0&tier=1",
+      "sha256": {
+        "webgpu": "85c5ac82f255a0bc1e3ddfad1af5ec114e3afa20eaaa044f10558ce713bcbe66",
+        "webgl2": "eaaf7fe1e3e4c6111f802c6dd8ff27744df91b37fa294dd178d31abb1744ad9e"
+      },
+      "verified": "2026-08-24, webgpu hash-identical across two cold loads"
+    },
+    {
+      "id": "R-0.21-T1",
+      "milestone": "M1",
+      "url": "/?capture=0.21&tier=1",
+      "sha256": {
+        "webgpu": "f84e8b2e90382d9446fd3dbc4e66beba084afa50712c15b82fe0b92999cf90e7",
+        "webgl2": "fdc8676a6461fa769aad7b819d495ca75a7ab12b4aa72a9e7fb2ed0ba2f064be"
+      },
+      "verified": "2026-08-24"
+    },
+    {
+      "id": "R-0.34-T1",
+      "milestone": "M1",
+      "url": "/?capture=0.34&tier=1",
+      "sha256": {
+        "webgpu": "24d62ebd645a76f80e7be545c4498bb0cb0ed6bcd1111e8c8e9bd6dd26676ca3",
+        "webgl2": "3ab5feba0607837ab49f1d6d0c089d157e5288949a42fe98431e64fa81160def"
+      },
+      "verified": "2026-08-24, webgpu hash reproduced across two separate cold loads"
+    },
+    {
+      "id": "R-0.50-T1 (M0 gray-box, superseded by M1 field)",
+      "milestone": "M0",
       "url": "/?capture=0.50&tier=1",
       "sha256": {
-        "webgpu": "62a459cf14f174783d8bf652209806e52073b24886b618e2235986c3a8d795ee",
-        "webgl2": "658bab87e5e10f769f6e6c5a1977c5ccce3a83d0a4bd6a642708e997b0572d50"
+        "webgpu": "62a459cf14f174783d8bf652209806e52073b24886b618e2235986c3a8d795ee (stale — pre-field)",
+        "webgl2": "658bab87e5e10f769f6e6c5a1977c5ccce3a83d0a4bd6a642708e997b0572d50 (stale — pre-field)"
       },
-      "verified": "2026-08-24, two consecutive cold loads per backend, hash-identical"
+      "verified": "2026-08-24 (M0); re-bless at M2 when materials land"
     }
   ],
+  "probes": {
+    "url": "/?probe=1&p={0.0|0.21|0.34}&tier=1[&backend=webgl2]",
+    "tolerance": { "position": 0.0015, "normalDeg": 2.0 },
+    "results": {
+      "webgpu": { "p0.00": { "maxPos": "5.95e-7", "maxNormDeg": 1.18 }, "p0.21": { "maxPos": "8.9e-7", "maxNormDeg": 1.14 }, "p0.34": { "maxPos": "1.2e-6", "maxNormDeg": 1.1 } },
+      "webgl2": { "p0.00": { "maxPos": "5.9e-7", "maxNormDeg": 1.18 } }
+    },
+    "derived_model_values": {
+      "p0.00": { "topTipLift": 0.0141, "botTipLift": 0.0673, "botApex": 0.0772 },
+      "p0.34": { "topTipLift": 0.0178, "botTipLift": 0.0297, "botApex": 0.0297 }
+    },
+    "verified": "2026-08-24 — GPU field == CPU oracle to float precision on both backends"
+  },
   "agx_ramp": {
     "url": "/?scene=ramp",
-    "verified": "2026-08-24",
+    "verified": "2026-08-24 (M0)",
     "result": "neutral (R=G=B all 13 stops), monotonic, linear 0.18 → 128/255, 12.0 linear → 251/255 (shoulder, no clip), floor 2.8e-3 → 2/255"
+  },
+  "manual_qa": {
+    "storm": "?storm=15 — harness implemented; the dev-pane throttles rAF for hidden tabs (3 frames/15 s), so a meaningful run needs a foregrounded browser. Monitor: NaN / p-range / errors.",
+    "flick": "key Q or ?flick=1 — §17 R-flick profile with residual-energy sparkline; visual sign-off is the reviewer's (M1 DoD item, pending user review)"
   }
 }
