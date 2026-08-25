@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Al-Fātiḥah 3D Manuscript — dev</title>
+<style>
+  html { background: #0D0906; }
+  body { margin: 0; background: #0D0906; color: #A2957A; }
+  #spacer { width: 1px; }
+  canvas#gl { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; }
+  #hud {
+    position: fixed; left: 16px; bottom: calc(14px + env(safe-area-inset-bottom));
+    font: 11px/1.5 ui-monospace, Menlo, monospace; letter-spacing: .08em;
+    text-transform: uppercase; color: #A2957A; user-select: none; pointer-events: none;
+  }
+  #bar {
+    position: fixed; top: 0; right: calc(6px + env(safe-area-inset-right));
+    width: 2px; height: 0; background: #C9A45B; opacity: .35;
+  }
+  #cap {
+    position: fixed; left: 16px; top: 14px; display: none;
+    font: 11px/1.6 ui-monospace, Menlo, monospace; color: #C9A45B; white-space: pre;
+  }
+  body.capture { overflow: hidden; }
+  body.capture #hud, body.capture #bar { display: none; }
+  body.capture #cap { display: block; }
+  body.capture canvas#gl { inset: auto; left: 0; top: 0; }
+</style>
+</head>
+<body>
+<div id="spacer"></div>
+<canvas id="gl"></canvas>
+<div id="hud"></div>
+<div id="bar"></div>
+<div id="cap"></div>
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>

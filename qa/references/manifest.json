@@ -1,0 +1,26 @@
+{
+  "note": "Blessed regression references. M0 records frame hashes only; PNG blessing and SSIM/ΔE00 gates land with the CI harness. Hashes are environment-specific — re-bless when the capture environment changes.",
+  "environment": {
+    "machine": "MacBook Pro (Apple Silicon)",
+    "browser": "Chromium (Claude Code browser pane)",
+    "three": "0.185.1",
+    "canvas": "1440x900 @ DPR 1"
+  },
+  "frames": [
+    {
+      "id": "R-0.50-T1",
+      "milestone": "M0 (gray-box)",
+      "url": "/?capture=0.50&tier=1",
+      "sha256": {
+        "webgpu": "62a459cf14f174783d8bf652209806e52073b24886b618e2235986c3a8d795ee",
+        "webgl2": "658bab87e5e10f769f6e6c5a1977c5ccce3a83d0a4bd6a642708e997b0572d50"
+      },
+      "verified": "2026-08-24, two consecutive cold loads per backend, hash-identical"
+    }
+  ],
+  "agx_ramp": {
+    "url": "/?scene=ramp",
+    "verified": "2026-08-24",
+    "result": "neutral (R=G=B all 13 stops), monotonic, linear 0.18 → 128/255, 12.0 linear → 251/255 (shoulder, no clip), floor 2.8e-3 → 2/255"
+  }
+}
