@@ -62,9 +62,12 @@ const sagD = pchip(CHECKPOINT_P, [-0.0118, -0.0102, -0.0079, -0.0058, -0.0035]);
 // shrinks as the sheet pays out: the terminal residual is all tight edge-memory curl. Radii
 // tuned so the terminal tip lift lands at the §4 value (±0.002); mid-unroll apexes are
 // derived and recorded to the spec by the probe harness.
-const rampFrac = pchip(CHECKPOINT_P, [0.55, 0.5, 0.4, 0.2, 0.0]);
-const rampR = pchip(CHECKPOINT_P, [0.8, 0.72, 0.6, 0.45, 0.36]);
-const curlR = pchip(CHECKPOINT_P, [0.034, 0.034, 0.034, 0.033, 0.031]);
+// Tuned slighter (user direction, 2026-08-25): a much flatter entry ramp carries most of
+// W_b at p = 0, so the visible hook tops out near ~125° (apex ≈ 0.054) instead of over-
+// curling past 180° — a quiet C, not a second roll. Terminal values are unchanged.
+const rampFrac = pchip(CHECKPOINT_P, [0.76, 0.68, 0.52, 0.24, 0.0]);
+const rampR = pchip(CHECKPOINT_P, [1.8, 1.5, 1.1, 0.6, 0.36]);
+const curlR = pchip(CHECKPOINT_P, [0.033, 0.033, 0.033, 0.033, 0.031]);
 const edgeR = pchip(CHECKPOINT_P, [0.026, 0.026, 0.027, 0.028, 0.028]);
 
 export const THICKNESS = 0.0009; // §2

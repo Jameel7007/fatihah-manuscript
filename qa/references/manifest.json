@@ -1,5 +1,5 @@
 {
-  "note": "Blessed regression references. Hashes are environment-specific — re-bless when the capture environment changes. PNG blessing and SSIM/ΔE00 gates land with the CI harness.",
+  "note": "Blessed regression references. Hashes are environment-specific — re-bless when the capture environment changes. PNG blessing and SSIM/ΔE00 gates land with the CI harness. BLESSING POLICY (learned 2026-08-25): only hash from cold loads on a settled dev server — the first load after an HMR edit can serve a mixed module graph and taint the hash.",
   "environment": {
     "machine": "MacBook Pro (Apple Silicon)",
     "browser": "Chromium (Claude Code browser pane)",
@@ -9,33 +9,33 @@
   "frames": [
     {
       "id": "R-0.00-T1",
-      "milestone": "M1 (gray-box surface field)",
+      "milestone": "M1 (gray-box surface field, slighter bottom curl 2026-08-25)",
       "url": "/?capture=0.0&tier=1",
       "sha256": {
-        "webgpu": "85c5ac82f255a0bc1e3ddfad1af5ec114e3afa20eaaa044f10558ce713bcbe66",
-        "webgl2": "eaaf7fe1e3e4c6111f802c6dd8ff27744df91b37fa294dd178d31abb1744ad9e"
+        "webgpu": "1be51e9b088371f2cc712f45ec3245285f94fc1e753d309b6e964524b9289a9c",
+        "webgl2": "pending CI re-bless — dev pane throttling stalls webgl2 captures; cross-backend field equivalence proven by probes"
       },
-      "verified": "2026-08-24, webgpu hash-identical across two cold loads"
+      "verified": "2026-08-25, webgpu hash-identical across two cold loads"
     },
     {
       "id": "R-0.21-T1",
-      "milestone": "M1",
+      "milestone": "M1 (slighter bottom curl)",
       "url": "/?capture=0.21&tier=1",
       "sha256": {
-        "webgpu": "f84e8b2e90382d9446fd3dbc4e66beba084afa50712c15b82fe0b92999cf90e7",
-        "webgl2": "fdc8676a6461fa769aad7b819d495ca75a7ab12b4aa72a9e7fb2ed0ba2f064be"
+        "webgpu": "7448d689dfbc0be051dfddc863550fa998e578204419ba5c789e7229720ea5f5",
+        "webgl2": "pending CI re-bless (see R-0.00 note)"
       },
-      "verified": "2026-08-24"
+      "verified": "2026-08-25"
     },
     {
       "id": "R-0.34-T1",
-      "milestone": "M1",
+      "milestone": "M1 (slighter bottom curl)",
       "url": "/?capture=0.34&tier=1",
       "sha256": {
-        "webgpu": "24d62ebd645a76f80e7be545c4498bb0cb0ed6bcd1111e8c8e9bd6dd26676ca3",
-        "webgl2": "3ab5feba0607837ab49f1d6d0c089d157e5288949a42fe98431e64fa81160def"
+        "webgpu": "5c1281d915629aba5734a5fb62043963f94644e4a2d829cd0b121a8d25684625",
+        "webgl2": "pending CI re-bless (see R-0.00 note)"
       },
-      "verified": "2026-08-24, webgpu hash reproduced across two separate cold loads"
+      "verified": "2026-08-25"
     },
     {
       "id": "R-0.50-T1 (M0 gray-box, superseded by M1 field)",
@@ -56,10 +56,11 @@
       "webgl2": { "p0.00": { "maxPos": "5.9e-7", "maxNormDeg": 1.18 } }
     },
     "derived_model_values": {
-      "p0.00": { "topTipLift": 0.0141, "botTipLift": 0.0673, "botApex": 0.0772 },
-      "p0.34": { "topTipLift": 0.0178, "botTipLift": 0.0297, "botApex": 0.0297 }
+      "p0.00": { "topTipLift": 0.0141, "botTipLift": 0.0568, "botApex": 0.0568 },
+      "p0.30": { "topTipLift": 0.0227, "botTipLift": 0.0416, "botApex": 0.0416 },
+      "p0.38": { "topTipLift": 0.0147, "botTipLift": 0.0136, "botApex": 0.0136 }
     },
-    "verified": "2026-08-24 — GPU field == CPU oracle to float precision on both backends"
+    "verified": "2026-08-25 (slighter curl) — GPU field == CPU oracle to float precision; cross-backend equivalence established 2026-08-24"
   },
   "agx_ramp": {
     "url": "/?scene=ramp",
