@@ -9,7 +9,7 @@ scrubbing is deterministic by design.
 
 ## Specification
 
-The complete numeric design + engineering spec (v1.0) lives at [`docs/spec.html`](docs/spec.html)
+The complete numeric design + engineering spec (v1.1, pre-M0 revision pass) lives at [`docs/spec.html`](docs/spec.html)
 (open it in a browser), also published as a private artifact:
 <https://claude.ai/code/artifact/1fe75f9f-9779-4526-b424-bac53ba1143f>
 

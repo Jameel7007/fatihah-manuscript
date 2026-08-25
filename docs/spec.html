@@ -138,11 +138,12 @@
   <a href="#s18">18 · Assets &amp; payload</a>
   <a href="#s19">19 · Performance plan</a>
   <a href="#s20">20 · Implementation handoff</a>
+  <a href="#rev">Δ · Pre-M0 revisions</a>
 </nav>
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.0</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.1 · pre-M0 revision pass</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -192,8 +193,8 @@
         <rect x="106.8" y="66" width="249.6" height="22" fill="#57431F"/><text x="362" y="81" fill="#A2957A">2 · Unrolling 0.06–0.38</text>
         <rect x="309.6" y="98" width="202.8" height="22" fill="#4A3D26"/><text x="518" y="113" fill="#A2957A">3 · Ink 0.32–0.58 (+dry→0.625)</text>
         <rect x="481.2" y="130" width="93.6" height="22" fill="#57431F"/><text x="580" y="145" fill="#A2957A">4 · Presenting 0.54–0.66</text>
-        <rect x="559.2" y="162" width="62.4" height="22" fill="#4A3D26"/><text x="627" y="177" fill="#A2957A">5 · Relief 0.64–0.72</text>
-        <rect x="606"  y="194" width="143.5" height="22" fill="#57431F"/><text x="662" y="188" fill="#A2957A"></text><text x="755" y="209" fill="#A2957A">6 · Rising 0.70–0.884</text>
+        <rect x="559.2" y="162" width="70.2" height="22" fill="#4A3D26"/><text x="635" y="177" fill="#A2957A">5 · Relief 0.64–0.73</text>
+        <rect x="623.2" y="194" width="126.4" height="22" fill="#57431F"/><text x="617" y="209" fill="#A2957A" text-anchor="end">6 · Rising 0.722–0.884</text>
         <rect x="715.2" y="226" width="124.8" height="22" fill="#8F7440"/><text x="710" y="241" fill="#C9A45B" text-anchor="end">7 · Facing 0.84–1.00</text>
       </g>
     </svg>
@@ -210,8 +211,8 @@
     <tr><td><b>2 Unrolling</b></td><td class="n">0.06–0.38</td><td>Wrapped fractions pay out, center flattens first, edges lag; residual curl kept at ends</td><td>Analytic pose + XPBD residual lattice excited by dp/dt (§17); settle ripple decays 0.34–0.38</td><td>Dolly left→center, rising, 40→46 mm</td><td>Unchanged; shadow penumbra narrows as sheet flattens</td><td>Arc-length-preserving spiral wrap; Jacobian normals, no approximation</td><td class="n">0.32–0.38 → S3</td></tr>
     <tr><td><b>3 Ink written</b></td><td class="n">0.32–0.58</td><td>Sheet flat with kept imperfections; cup +0.004, sag −0.0035</td><td>Residual decays to floor; writing gated to lines with local velocity &lt; 0.002 u/s</td><td>High oblique, 50 mm, text column 0.68 of height</td><td>Key dims to 0.88 so wet sheen reads from spec only</td><td>MTSDF threshold sweep along stroke-order field; wet channel → roughness/color/bleed (§14, §17)</td><td class="n">0.54–0.58 → S4</td></tr>
     <tr><td><b>4 Presenting</b></td><td class="n">0.54–0.66</td><td>Pose tilt 6°→0°; sheet fully settled</td><td>Residual asleep (force gate closed)</td><td>Rises to near-overhead: 83° elevation at p 0.60, 55 mm; 7° off pure top-down preserved</td><td>Key elevates (−0.55,1.30,0.55)→(−0.42,1.52,0.38); env yaw →0°</td><td>Camera spline only; no geometry change — legibility state</td><td class="n">0.64–0.66 → S5</td></tr>
-    <tr><td><b>5 Relief</b></td><td class="n">0.64–0.72</td><td>Ink gains height: emboss normal 0.640–0.695; glyph mesh enters at matching 0.0009 depth at 0.68; uniform lift → 0.0012</td><td>None (sheet still)</td><td>Holds overhead, starts retreat at 0.70</td><td>Rim 0.30→0.42 to catch newborn edges</td><td>SDF-derived puff-height normal crossfades to true geometry; silhouettes identical by construction (§14)</td><td class="n">0.70–0.72 → S6</td></tr>
-    <tr><td><b>6 Rising</b></td><td class="n">0.70–0.884</td><td>Per-āyah staggered extrusion 0.0012→0.0115 (0.55 x-height); bevel, sidewalls, separation</td><td>None; contact-shadow field re-rendered per frame</td><td>Pulls back and down, 55→58 mm</td><td>Rim →0.52; contact blob ramps 0.72–0.80; env yaw →−20°</td><td>Merged extrusion rides surface frame; ortho height-field contact shadow + PCSS (§8, §15)</td><td class="n">0.84–0.884 → S7</td></tr>
+    <tr><td><b>5 Relief</b></td><td class="n">0.64–0.73</td><td>Emboss normal 0.640–0.690; handoff overlap 0.690–0.730: geometry grows 0.00045→0.0012 while emboss strength fades 1→0 (§14)</td><td>None (sheet still)</td><td>Holds overhead, starts retreat at 0.70</td><td>Rim 0.30→0.42 to catch newborn edges</td><td>SDF-derived puff-height normal hands off to true geometry inside an explicit overlap window; silhouettes identical by construction (§14)</td><td class="n">0.722–0.730 → S6</td></tr>
+    <tr><td><b>6 Rising</b></td><td class="n">0.722–0.884</td><td>Per-āyah staggered extrusion 0.0012→0.0115 (0.55 x-height); bevel, sidewalls, separation</td><td>None; contact-shadow field re-rendered per frame</td><td>Pulls back and down, 55→58 mm</td><td>Rim →0.52; contact blob ramps 0.72–0.80; env yaw →−20°</td><td>Merged extrusion rides surface frame; ortho height-field contact shadow + PCSS (§8, §15)</td><td class="n">0.84–0.884 → S7</td></tr>
     <tr><td><b>7 Facing</b></td><td class="n">0.84–1.00</td><td>Text assembly lifts to y 0.185, pivots to 12° off camera-frontal; parchment recedes (−0.02 y, −0.10 z), keeps 8% ink ghost</td><td>Idle micro-motion re-armed after 4 s stillness</td><td>Settles at 62 mm, text 0.66 of frame width</td><td>Fill 0.13→0.20, parchment key mask →0.55, env yaw →−38°</td><td>Anchor-frame → presentation-frame blend in glyph vertex stage; risen text casts PCSS shadow onto the empty page</td><td class="n">terminal hold</td></tr>
     </tbody>
   </table></div>
@@ -257,6 +258,19 @@
   authoritative — the pipeline verifies it by checksum and never re-shapes, re-spaces, or detaches
   (§17, §18). This section defines the <em>container</em> the supplied artwork is placed into.</p>
 
+  <div class="callout">
+    <p class="co-t">Glyph source of record — confirmed</p>
+    <p>The single calligraphic source is <b>Amiri Quran</b> (Khaled Hosny), licensed under the
+    <b>SIL Open Font License 1.1</b> — outlines shaped once through HarfBuzz into one fixed,
+    fully-kerned SVG composition, then frozen and checksummed; that SVG, not the font, is what the
+    pipeline consumes. OFL 1.1 permits embedding and derivative artwork of this kind; the “Amiri”
+    reserved font name restricts only redistributed font software, which this project does not do.
+    Everything derived from the source regenerates automatically on rebuild — the per-āyah timing
+    windows (§10), the thin-stroke bevel guard (§6), and the stroke-order override table (§17) — so a
+    later change of hand (e.g. commissioned calligraphy) is a full asset rebuild plus regression
+    re-bless, not a spec change.</p>
+  </div>
+
   <div class="tw"><table>
     <thead><tr><th>Property</th><th class="n">Value</th><th>Reasoning</th></tr></thead>
     <tbody>
@@ -287,8 +301,8 @@
       <div class="ayah-line" style="top:70.9%;font-size:clamp(13px,4.4vw,18px)">صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ</div>
       <div class="ayah-line" style="top:79.9%;font-size:clamp(13px,4.4vw,18px)">غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ<span class="marker">٧</span></div>
     </div>
-    <figcaption><b>Placement diagram only.</b> Rendered here in a stand-in face; the piece uses the
-    supplied calligraphic SVG geometry verbatim. Āyah 7 breaks after the first
+    <figcaption><b>Placement diagram only.</b> Rendered here in the source face (Amiri Quran); the
+    piece uses the frozen SVG composition generated from it verbatim. Āyah 7 breaks after the first
     <span dir="rtl" style="font-family:var(--arabic)">عَلَيْهِمْ</span> — the classic division. Diacritics
     are welded to their base clusters at atlas-build time and share every transform.</figcaption>
   </figure>
@@ -628,9 +642,17 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
     (frustum 0.9 × 1.15, 512² R16F storing height-above-sheet), blurred by two separable passes with
     radius_texels = 2 + 640·h, then composited into the parchment BRDF as
     <code>×(1 − 0.75 · C · exp(−h / 0.12))</code>. Authored blur, zero sampling noise — this is what
-    survives a 390 px viewport, where PCSS alone dissolves into its filter. As letters leave the sheet in
-    S7, the blob decays exponentially while PCSS takes over: the risen text leaves a faint soft pool,
-    then a long soft cast shadow across the empty page.</p>
+    survives a 390 px viewport, where PCSS alone dissolves into its filter. <b>State 7 behavior:</b>
+    the top-down height-field projection stops being meaningful once the letters rotate off the sheet
+    plane, so the blob is <em>faded, not re-projected</em> (re-projecting along the key would
+    double-shadow what PCSS already casts). Full term:
+    <code>×(1 − 0.75 · C · exp(−h / 0.12) · cos²θ)</code>, θ = glyph-assembly pitch from the sheet
+    plane — at 45° tilt the blob is halved, at the final 78° it contributes ≤ 4%. PCSS carries S7
+    alone: the key's shadow frustum auto-fits the risen assembly + parchment with the cone trimmed
+    24° → 18° (texel ≈ 2.5e-4; a 0.0017 hairline spans ≥ 6.8 texels; normal bias tracks texel size at
+    2.5×), so thin strokes stay resolved at the p = 1 camera. Verified by regression frame
+    <b>R-1.00-noblob</b> (captured with <code>uContactBlob = 0</code>, §20): the risen text leaves a
+    faint soft pool, then a long soft cast shadow across the empty page.</p>
   </div>
 </section>
 <!-- ================================================================ -->
@@ -729,12 +751,12 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
       <tr><td class="n">0.52</td><td>3/4</td><td>tilt 6°→ easing to 0°</td><td>A6 finishing · A7 pending</td><td class="n">0</td><td class="n">—</td><td>A3→A4 climb</td><td>0.88 · pos morph starts</td><td class="n">+4°</td><td>E2 (tilt), E1 (cam)</td></tr>
       <tr><td class="n">0.56</td><td>3/4</td><td>flat</td><td>A7 line 8 writing</td><td class="n">0</td><td class="n">—</td><td>climbing, 53 mm</td><td>0.92</td><td class="n">+2°</td><td>E5</td></tr>
       <tr><td class="n">0.60</td><td>4</td><td>flat, tilt 0°</td><td>A7 done 0.58 · trail drying</td><td class="n">0</td><td class="n">—</td><td>A4 overhead, 55 mm</td><td>0.95 @ elevated pos</td><td class="n">0°</td><td>E1 settles</td></tr>
-      <tr><td class="n">0.64</td><td>4/5</td><td>flat</td><td>all dry by 0.625 · emboss begins</td><td class="n">emboss n 0→</td><td class="n">—</td><td>hold overhead</td><td>0.95 · rim 0.30→0.42</td><td class="n">−2°</td><td>E2 (emboss)</td></tr>
-      <tr><td class="n">0.68</td><td>5</td><td>flat</td><td>emboss 100% @ 0.695</td><td class="n">geo enters 0.0009</td><td class="n">—</td><td>hold</td><td>0.95</td><td class="n">−6°</td><td>linear lift</td></tr>
-      <tr><td class="n">0.72</td><td>5/6</td><td>flat</td><td>flat-ink emboss fully handed off</td><td class="n">uniform 0.0012 · A1 stagger starts</td><td class="n">—</td><td>A5 retreat begins</td><td>0.95 · contact ramp starts</td><td class="n">−8°</td><td>E4 per āyah</td></tr>
-      <tr><td class="n">0.76</td><td>6</td><td>flat</td><td>ink layer occluded under caps</td><td class="n">A1 0.0071 → A3 0.0025</td><td class="n">—</td><td>A5→A6</td><td>0.95 · rim 0.52</td><td class="n">−12°</td><td>E4 + gold E2 lag 0.25 w</td></tr>
-      <tr><td class="n">0.80</td><td>6</td><td>flat</td><td>ghost fade begins 0.78</td><td class="n">A1 full 0.0115 → A5 0.0049</td><td class="n">—</td><td>A6, 57 mm</td><td>0.95 · contact 100%</td><td class="n">−15°</td><td>E4</td></tr>
-      <tr><td class="n">0.84</td><td>6/7</td><td>flat · ghost 0.08 set</td><td>ghost only</td><td class="n">A1–A4 full · A7 0.0068</td><td class="n">pivot starts</td><td>A6→A7</td><td>0.95</td><td class="n">−18°</td><td>E6 (pivot)</td></tr>
+      <tr><td class="n">0.64</td><td>4/5</td><td>flat</td><td>all dry by 0.625 · emboss begins</td><td class="n">emboss n 0→ (window 0.640–0.690)</td><td class="n">—</td><td>hold overhead</td><td>0.95 · rim 0.30→0.42</td><td class="n">−2°</td><td>E2 (emboss)</td></tr>
+      <tr><td class="n">0.68</td><td>5</td><td>flat</td><td>emboss ≈93%, peaks @ 0.690</td><td class="n">— (geo enters 0.690 @ 0.00045)</td><td class="n">—</td><td>hold</td><td>0.95</td><td class="n">−6°</td><td>E2</td></tr>
+      <tr><td class="n">0.72</td><td>5</td><td>flat</td><td>handoff: emboss str 0.15</td><td class="n">geo 0.00107 (overlap 0.690–0.730) · A1 rise begins 0.722</td><td class="n">—</td><td>A5 retreat begins</td><td>0.95 · contact ramp starts</td><td class="n">−8°</td><td>E2 growth · E7 fade</td></tr>
+      <tr><td class="n">0.76</td><td>6</td><td>flat</td><td>ink layer occluded under caps</td><td class="n">A1 0.0064 → A3 0.0028</td><td class="n">—</td><td>A5→A6</td><td>0.95 · rim 0.52</td><td class="n">−12°</td><td>E4 + gold E2 lag 0.25 w</td></tr>
+      <tr><td class="n">0.80</td><td>6</td><td>flat</td><td>ghost fade begins 0.78</td><td class="n">A1 0.0110 → A5 0.0055 · A7 0.0021</td><td class="n">—</td><td>A6, 57 mm</td><td>0.95 · contact 100%</td><td class="n">−15°</td><td>E4</td></tr>
+      <tr><td class="n">0.84</td><td>6/7</td><td>flat · ghost 0.08 set</td><td>ghost only</td><td class="n">A1–A3 full · A7 0.0072</td><td class="n">pivot starts</td><td>A6→A7</td><td>0.95</td><td class="n">−18°</td><td>E6 (pivot)</td></tr>
       <tr><td class="n">0.90</td><td>7</td><td>recede: Δy −0.012, Δz −0.06</td><td>ghost</td><td class="n">all full @ 0.884</td><td class="n">pitch 46° · lift y 0.075</td><td>A7, 60 mm</td><td>mask →0.78 · fill 0.16</td><td class="n">−25°</td><td>E6</td></tr>
       <tr><td class="n">0.95</td><td>7</td><td>recede Δy −0.018, Δz −0.09</td><td>ghost</td><td class="n">full</td><td class="n">pitch 74° · y 0.140</td><td>A7→A8</td><td>mask 0.62 · fill 0.19</td><td class="n">−32°</td><td>E6 out</td></tr>
       <tr><td class="n">1.00</td><td>7</td><td>rest: Δy −0.02, Δz −0.10</td><td>ghost</td><td class="n">full</td><td class="n">12° off frontal · y 0.185</td><td>A8, 62 mm</td><td>mask 0.55 · fill 0.20</td><td class="n">−38°</td><td>settle + idle arm</td></tr>
@@ -746,13 +768,14 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
     <thead><tr><th>Āyah</th><th class="n">1 (Basmalah)</th><th class="n">2</th><th class="n">3</th><th class="n">4</th><th class="n">5</th><th class="n">6</th><th class="n">7 (L7 · L8)</th></tr></thead>
     <tbody>
       <tr><td>write window (p)</td><td class="n">0.320–0.352</td><td class="n">0.356–0.389</td><td class="n">0.393–0.420</td><td class="n">0.424–0.451</td><td class="n">0.455–0.488</td><td class="n">0.492–0.522</td><td class="n">0.526–0.556 · 0.558–0.580</td></tr>
-      <tr><td>rise window (p)</td><td class="n">0.700–0.800</td><td class="n">0.714–0.814</td><td class="n">0.728–0.828</td><td class="n">0.742–0.842</td><td class="n">0.756–0.856</td><td class="n">0.770–0.870</td><td class="n">0.784–0.884</td></tr>
+      <tr><td>rise window (p)</td><td class="n">0.722–0.815</td><td class="n">0.7335–0.8265</td><td class="n">0.745–0.838</td><td class="n">0.7565–0.8495</td><td class="n">0.768–0.861</td><td class="n">0.7795–0.8725</td><td class="n">0.791–0.884</td></tr>
     </tbody>
   </table></div>
   <p>Windows are proportional to each line's total stroke arc length (rule: computed from the supplied
   SVG at build, table regenerated). Wet-to-dry lag: each point on a stroke dries Δp = 0.045 after the
   pen passes (≈ 1.8 s at the 40 s design pace) — leading edge wet-black with sheen, trail relaxing to
-  matte brown. Rise stagger: āyah offset Δp 0.014, duration 0.10 each; within an āyah, clusters lead by
+  matte brown. Rise stagger: āyah offset Δp 0.0115, duration 0.093 each — the first rise begins at
+  0.722, inside the handoff tail, which is the S5→S6 overlap; within an āyah, clusters lead by
   RTL reading order × Δp 0.0012 — <b>the text rises in the order it was written</b>. Gold transmutation
   (§14) lags each cluster's rise by 0.25 of its window.</p>
 </section>
@@ -813,6 +836,7 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
       <tr><td class="n">E4</td><td class="n">cubic-bezier(0.22, 0, 0.18, 1) <em>per-cluster, no overshoot</em></td><td>extrusion rise — reverent, zero bounce</td></tr>
       <tr><td class="n">E5</td><td class="n">smoothstep over Δw 0.012 of stroke-order field</td><td>ink leading edge (per-texel, not per-keyframe)</td></tr>
       <tr><td class="n">E6</td><td class="n">cubic-bezier(0.30, 0, 0.12, 1)</td><td>text pivot + lift — long committed deceleration</td></tr>
+      <tr><td class="n">E7</td><td class="n">cubic-bezier(0.37, 0, 0.63, 1)</td><td>emboss-strength fade inside the §14 handoff overlap window</td></tr>
       <tr><td class="n">E-unroll</td><td class="n">cubic-bezier(0.42, 0, 0.16, 1)</td><td>wrap payout (slow seal-break, long glide)</td></tr>
     </tbody>
   </table></div>
@@ -850,17 +874,27 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
     <li><b>Flat ink</b> (p &lt; 0.640). Ink is a layer inside the parchment surface shader: MTSDF
     coverage with analytic <code>fwidth</code> AA, colored by the wet/dry blend, sunk −0.0006 into fiber
     valleys via the cavity term. No geometry exists.</li>
-    <li><b>Emboss</b> (0.640–0.695, E2). A precomputed <em>puff-height</em> channel
+    <li><b>Emboss</b> (0.640–0.690, E2). A precomputed <em>puff-height</em> channel
     (interior-distance<sup>1.6</sup>, clamped, 1.5-texel pre-blur, stored in progression-atlas A) scales
-    from 0 → 0.0009. Its screen-space gradient perturbs the parchment normal; the same height feeds a
-    +8% cavity darkening around stroke borders — fibers compressing under the forming relief. Pure
-    normal-map relief: zero vertices move.</li>
-    <li><b>Geometry handoff</b> (0.680–0.720). The merged glyph mesh appears at depth 0.0009 — exactly
-    the emboss's apparent height — then all clusters lift uniformly to 0.0012 while emboss normal
-    strength runs 1 → 0. <b>No alpha fade anywhere</b>: the mesh enters opaque, and because its
-    silhouette equals the SDF contour and its top-face material samples the same SDF ink color, the only
-    observable change is parallax of ≤ 0.3 px at 1440p (depth 0.0009 under the 83° camera). The flat ink
-    layer keeps rendering beneath the caps, holding the root-fillet crevices ink-dark.</li>
+    from 0 → 0.0009 apparent height. Its screen-space gradient perturbs the parchment normal; the same
+    height feeds a +8% cavity darkening around stroke borders — fibers compressing under the forming
+    relief. Pure normal-map relief: zero vertices move.</li>
+    <li><b>Geometry handoff — explicit overlap window p ∈ [0.690, 0.730]</b>, t = (p − 0.690)/0.040.
+    No hard switch exists. Inside the window, both mechanisms run simultaneously:
+    <pre><code>geoDepth(t)   = 0.00045 + 0.00075 · E2(t)      // grows from HALF the emboss height → 0.0012
+embossStr(t)  = 1 − E7(t)                       // E7 = cubic-bezier(0.37, 0, 0.63, 1)</code></pre>
+    Geometry enters at a <em>sub-emboss</em> depth (0.00045 = 50% of the emboss's apparent height) so
+    the eye never sees relief jump; its true height crosses the fading emboss at p ≈ 0.710, and the
+    combined perceived relief is monotonically non-decreasing through the window. <b>No alpha fade
+    anywhere</b>: the mesh enters opaque, its silhouette equals the SDF contour, and its top face
+    samples the same SDF ink color — the only observable change is parallax ≤ 0.35 px at 1440p under
+    the 83° camera. The flat ink layer keeps rendering beneath the caps, holding the root-fillet
+    crevices ink-dark. <b>Z-guard:</b> geometry depth is floored at 0.00045 (never rendered shallower),
+    the glyph main-pass pipeline carries depthBias −2 / slopeScale −0.5 during this window only
+    (shadow and contact pipelines stay unbiased), and the base ring fetches its position from the same
+    surface-field <code>posTex</code> as the parchment — the seam is watertight by construction, and at
+    ≥ 0.00045 separation reversed-Z float depth has &gt; 3 orders of magnitude of margin against
+    z-fighting. Regression frame <b>R-0.710</b> sits at the window midpoint (§20).</li>
   </ol>
 
   <p><b>Material transmutation.</b> The mesh is born <em>ink</em>: top face uses the flat-ink color and
@@ -868,8 +902,8 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
   E2), base color, metalness, roughness, and anisotropy blend to the §7 gold set — sidewalls resolve
   from wet-dark to patina gold. The written word does not get gilded by a crossfade; it
   <em>turns into</em> gold as it takes form. Depth resolution:
-  <code>depth(cluster) = max(uniformLift(p), stagger_i(p))</code> so the handoff and the stagger can
-  overlap without a discontinuity. After the caps fully occlude the flat layer, the flat ink fades
+  <code>depth(cluster) = max(geoDepth(p), stagger_i(p))</code> so the handoff and the stagger can
+  overlap without a discontinuity (the first āyah's rise begins at 0.722, inside the handoff tail). After the caps fully occlude the flat layer, the flat ink fades
   0.78–0.84 to the 8% ghost stain (§7) — never visible as a fade because it is occluded while it
   happens; it reappears only when the text lifts away in S7.</p>
 </section>
@@ -885,7 +919,7 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
       <tr><td><b>Gold shimmer prevention</b></td><td>Three layers: (1) geometric specular AA — Kaplanyan-style roughness kernel from screen-space normal derivatives, <code>r′ = sqrt(r² + min(2·σ²(N), 0.18))</code>, in the gold BRDF always; (2) curvature-baked roughness floor 0.28 on the crown-fillet ring (baked per-vertex at build); (3) idle temporal supersample — 8-tap Halton jitter, exponential α 0.15, luma-clamped, engaged only when camera + scroll velocity ≈ 0, faded over 120 ms on motion. No TAA while moving → no ghosting, ever; MSAA + specular AA carry motion.</td></tr>
       <tr><td><b>Bevel rim choreography</b></td><td>The crown fillet's normal fan spans ~55°, so the 9°-grazing rim light always finds a ~2 px band somewhere on every stroke; the env-yaw sweep (§8) walks the window reflection along that band as the text rises. This is the “gold catches the light” moment and it is authored, not lucky.</td></tr>
       <tr><td><b>Micro-imperfections</b></td><td>Residual end-curl and paired corner twist (§4); crease at t 0.545 (§5); ±6% albedo discoloration; 0.04-alpha historic stains (two, lower-left quadrant, ∅ 0.06/0.09); leaf wrinkle normal 0.25 on gold; one deliberately weaker gilding pass on āyah 5's marker (wear channel ×1.6) — the human error that proves the hand.</td></tr>
-      <tr><td><b>Contact shadow</b></td><td>Height-field blob + PCSS union per §8; ramps 0.72–0.80; opacity 0.75, radius 2 + 640·h texels; decays exp(−h/0.12) as text departs — the letters' “lift-off” reads on a 390 px screen because the blob is noise-free by construction.</td></tr>
+      <tr><td><b>Contact shadow</b></td><td>Height-field blob + PCSS union per §8; ramps 0.72–0.80; opacity 0.75, radius 2 + 640·h texels; decays exp(−h/0.12)·cos²(tilt) as text departs and pivots (§8) — the letters' “lift-off” reads on a 390 px screen because the blob is noise-free by construction.</td></tr>
       <tr><td><b>Designed first frame</b></td><td>Inline 1.1 KB blur-up LQIP → 42 KB 1600×1000 poster JPEG of regression frame R-p0.00-T1, color-managed through the same AgX grade. Behind it, all WebGPU pipelines pre-compile against dummy draws; canvas crossfades in over 420 ms only after 3 real frames have presented. First scroll never hitches.</td></tr>
       <tr><td><b>Idle micro-motion</b></td><td>Arms after 4 s still, 2 s ramp-in: parchment breath via residual field (amp 2.5e-4, 0.10 Hz), key intensity ±1.5% over 9 s, env yaw ±2° over 14 s, camera position simplex drift 0.002 @ 0.07 Hz. All zeroed in reduced motion; all excluded from capture mode.</td></tr>
       <tr><td><b>p = 1 (the held ending)</b></td><td>Risen gold text at 12°, filling 0.66 frame width, window reflection slowly traversing the bevels; parchment low and behind at 55% key, carrying the 8% ghost of its own inscription and the text's long soft PCSS shadow; two dust motes per second crossing the key beam; total luminance flux drift ≤ 2% — quiet, present, finished. Nothing pulses, nothing glows.</td></tr>
@@ -917,6 +951,22 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
   <p><b>There is no bloom pass.</b> Highlight discipline comes from AgX's shoulder and the authored env.
   Total T1 ≈ 9.9 ms — headroom for thermal drift.</p>
 
+  <h3>Background through AgX <span class="tag">calibrated, not hoped for</span></h3>
+  <p>AgX's toe plus the grade's +0.004 black lift would render a naively-set #0D0906 clear color
+  lighter and greyer than designed. Decision: the background stays <b>inside</b> the tone-mapped pass
+  (rendering it outside would seam the fog and dust blending against it), and the clear color is
+  <b>pre-compensated</b>: a build step numerically inverts the fixed AgX + grade chain (3-channel
+  Newton solve; the chain is monotonic with a near-diagonal Jacobian, converges in &lt; 6 iterations)
+  so the displayed background at frame center is <b>#0D0906 exactly</b>. Indicative authored value:
+  linear (0.00102, 0.00046, 0.00020) ≈ sRGB #030201 — the build-step output is authoritative, these
+  are printed for review only. Vignette is excluded from the calibration by definition; corners sit
+  −0.35 EV darker by design. Grain + dither apply after the calibrated value, centered on it.</p>
+  <p><b>Cross-backend parity:</b> AgX and the grade are one shared TSL node graph compiled to both WGSL
+  and GLSL — same inset matrix, same sigmoid, same constants; the tone-map stage forces
+  <code>highp</code> on GLSL to kill mediump drift on mobile. Acceptance tolerance between backends on
+  matched tier + frame: SSIM ≥ 0.995 and ΔE00 p95 ≤ 1.0 over the full frame (tighter than the ≤ 1.5
+  ROI gate used against blessed references).</p>
+
   <h3>Shader responsibility matrix</h3>
   <div class="tw wide"><table>
     <thead><tr><th>Program (TSL Fn)</th><th>Stage</th><th>Reads</th><th>Writes / lights</th><th>Key math</th></tr></thead>
@@ -936,7 +986,7 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
   <div class="tw wide"><table>
     <thead><tr><th class="n">Group</th><th>Name</th><th class="n">Type / format</th><th class="n">Size</th><th>Update</th><th>Contents</th></tr></thead>
     <tbody>
-      <tr><td class="n">0</td><td class="n">FrameUBO</td><td class="n">uniform</td><td class="n">96 B</td><td>per frame</td><td>uP, uPLookat, uVel, uTimeIdle, uTier, uViewport, uDPR, flags (capture / reduced / simEnabled)</td></tr>
+      <tr><td class="n">0</td><td class="n">FrameUBO</td><td class="n">uniform</td><td class="n">96 B</td><td>per frame</td><td>uP, uPLookat, uVel, uTimeIdle, uTier, uViewport, uDPR, flags (capture / reduced / simEnabled / uContactBlob)</td></tr>
       <tr><td class="n">0</td><td class="n">CameraUBO</td><td class="n">uniform</td><td class="n">208 B</td><td>per frame</td><td>view, proj, inv, prevViewProj (temporal), jitter</td></tr>
       <tr><td class="n">0</td><td class="n">LightUBO</td><td class="n">uniform</td><td class="n">256 B</td><td>per frame</td><td>key (pos/dir/color/intensity/shadow params), fill LTC, rim, envIntensity, envYaw</td></tr>
       <tr><td class="n">1</td><td class="n">DeformUBO</td><td class="n">uniform</td><td class="n">128 B</td><td>per frame</td><td>W_top, W_bot, r_top, sag, cup, tilt, edgeLift ×2, residual gains — all pre-evaluated on CPU from p (single source of truth in TS)</td></tr>
@@ -1003,18 +1053,42 @@ graph TD
     <li><b>Pose:</b> <code>surfaceEval</code> computes flat map → cup → CR web sag → spiral wrap per end
     (arc-length preserving, §4) → pose tilt → recede, all closed-form in p. Boundary silhouette (§5)
     baked as a per-vertex inset mask.</li>
-    <li><b>Residual lattice:</b> 48×64 XPBD points over (u, v). Constraints: stretch (compliance 0,
-    inextensible) + bending (compliance 1e-5). 6 iterations, dt clamped to 1/60, velocity damping
-    <code>exp(−3.5·dt)</code>, border pinned. Excitation: <code>a = −n̂ · 0.35 · v_scroll_lpf</code>,
-    clamped |a| ≤ 2.0, applied strongest where wrap curvature is highest (the paying-out region carries
-    the inertia). Settle to &lt; 0.5 px in ≈ 0.9 s. The mesh samples the lattice bilinearly and adds it
-    along the pose normal.</li>
+    <li><b>Residual lattice:</b> 48×64 XPBD points over (u, v), <b>expressed and solved entirely in the
+    local tangent frame of the analytic pose — never world space</b>. Each lattice point stores
+    <code>r = (r_t, r_b, r_n)</code>; the world offset is reconstructed per frame as
+    <pre><code>T = normalize(∂P/∂u)                    // analytic pose Jacobian, before residual
+N = normalize(∂P/∂u × ∂P/∂v)
+B = N × T
+world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
+    Because the frame rotates with the wrap, a stored residual rides the roll surface at high curvature
+    and <em>cannot</em> express a world-space offset that pierces an inner layer. Penetration clamps:
+    <code>|r_n| ≤ 0.0027 (3 t)</code>, <code>|r_t|, |r_b| ≤ 0.004</code>. Constraints: stretch
+    (compliance 0) on frame-space neighbor differences with rest length 0, bending as a discrete
+    Laplacian toward 0 (compliance 1e-5) — the residual is a decaying elastic field that provably
+    vanishes at rest. 6 iterations, dt clamped to 1/60, velocity damping <code>exp(−3.5·dt)</code>,
+    border pinned. Excitation acts along frame N only: <code>a_n = −0.35 · v_scroll_lpf</code>, clamped
+    |a| ≤ 2.0, weighted by wrap curvature (the paying-out region carries the inertia). Settle to
+    &lt; 0.5 px in ≈ 0.9 s. The mesh samples the lattice bilinearly.</li>
+    <li><b>Residual availability by platform:</b> T1/T2 WebGPU — compute path above. T1/T2 WebGL2 —
+    same solver as ping-pong RGBA16F fragment passes (12 tiny 48×64 passes/frame, cost negligible); if
+    renderable float targets are missing (<code>EXT_color_buffer_float</code> family absent), the
+    lattice is <b>dropped</b>, not approximated, and the T3 wave below takes over. T3 on any backend —
+    lattice never runs; the wave term is the substitute.</li>
+    <li><b>Manual QA — the “R-flick” profile</b> (regression capture disables the residual, so this
+    layer is reviewed by eye). Dev builds bind key <code>Q</code> to a scripted target-p profile:
+    hold p = 0.10 for 1.0 s → linear ramp to 0.30 over 0.5 s (dp/dt = 0.4 s⁻¹) → hold 1.5 s →
+    three alternating flicks 0.30→0.22, 0.22→0.34, 0.34→0.26, each 180 ms (E1) → hold 3 s.
+    Reviewer confirms: (1) trailing-edge lag is visible during the ramp; (2) ripple decays smoothly,
+    dead by ≈ 1 s into each hold, no residual oscillation; (3) the web never penetrates the roll during
+    flicks; (4) motion reads along the surface normal — no lateral “swimming”. Sign-off is part of
+    M1's definition of done (§20).</li>
     <li><b>Normals:</b> P2 central-differences the <em>final</em> position texture (pose + residual), so
     lighting always sees true geometry; analytic Jacobian only at the two boundary rings where the
     stencil is one-sided. Nothing is approximated from the undeformed mesh.</li>
-    <li><b>T3 substitute:</b> residual replaced by a traveling damped wave
-    <code>0.004 · v_lpf · sin(28(v − v_front)) · exp(−9|v − v_front|)</code> behind the unroll front —
-    same visual grammar, zero dispatches.</li>
+    <li><b>Wave substitute (T3, and any backend without renderable float targets):</b> displacement
+    <code>0.004 · v_lpf · sin(28(v − v_front)) · exp(−9|v − v_front|)</code> applied along the same
+    frame N inside the surface-field evaluation pass, behind the unroll front — same visual grammar,
+    zero extra passes.</li>
   </ul>
 
   <h3>Ink SDF pipeline</h3>
@@ -1022,11 +1096,31 @@ graph TD
     <li><b>Build:</b> supplied SVG → checksum gate → adaptive flattening (tolerance 0.0015 em) →
     per-cluster MTSDF via msdfgen (<code>mtsdf</code> mode: RGB multi-channel + A true SDF), 64 px/em,
     pxrange 6. <b>Resolution rule per glyph:</b> texels/em = clamp(⌈6 / minStrokeWidth_em⌉, 48, 96).</li>
-    <li><b>Stroke-order field w:</b> rasterize cluster at 4× → Zhang-Suen skeleton → geodesic distance
-    from the cluster's RTL entry point, normalized, dilated outward to fill the glyph → progression
-    atlas R. Supplied path order (digitized stroke order) breaks ties between branches. G = āyah id,
-    B = bleed weight (fiber-map response baked at the glyph's sheet position — ink bleeds along fibers,
-    so bleed is precomputed <em>from the same fiber map the surface renders</em>).</li>
+    <li><b>Stroke-order field w:</b> rasterize cluster at 4× → Zhang-Suen skeleton → segment into
+    branches at junctions → geodesic distance from the cluster's RTL entry point, normalized, dilated
+    outward to fill the glyph → progression atlas R. Supplied path order (digitized stroke order)
+    breaks remaining ties. G = āyah id, B = bleed weight (fiber-map response baked at the glyph's
+    sheet position — ink bleeds along fibers, so bleed is precomputed <em>from the same fiber map the
+    surface renders</em>). Three corrections are applied to the raw geodesic order:
+      <ul>
+        <li><b>Vertical-stem prior:</b> a branch whose bounding box has height/width &gt; 1.6 and arc
+        length &gt; 0.35 em (alif, lām, the ascenders of kāf, ṭāʾ, ẓāʾ, both stems of lām-alif) is
+        re-parameterized <b>top to bottom</b> regardless of geodesic entry, then spliced back with a
+        constant offset so w stays continuous at the junction.</li>
+        <li><b>Closed-loop tie-break</b> (hāʾ, ṣād, ḍād, fāʾ, qāf, wāw, mīm): entry at the loop's
+        upper-right; of the two candidate arcs at the junction, the arc whose initial tangent best
+        aligns with (−0.71, +0.71) in page coordinates (y up) is traversed first — over the top
+        leftward, returning along the bottom, matching the pen's counter-clockwise loop.</li>
+        <li><b>Diacritic scheduling:</b> dots, harakat, and all detached marks of a word start
+        Δp = 0.003 after the word's base-stroke group completes (≈ 0.12 s at design pace), ordered
+        RTL then top-to-bottom within the word, spanning ≤ Δp 0.004 total. Baked into w at atlas
+        build — no runtime branching.</li>
+      </ul>
+    The build emits a <b>per-glyph override table</b> (<code>build/stroke-order.json</code>:
+    clusterId → applied priors, loop entries, diacritic offsets, plus any hand overrides) — hand
+    overrides are edits to this file, never to the atlas. An animated reveal of at least five words
+    (one loop letter, one alif/lām stem, one diacritic-heavy word among them) is visually reviewed as
+    part of M2's definition of done (§20).</li>
     <li><b>Runtime reveal:</b> <code>edge = uPWrite_āyah</code>; coverage threshold sweeps w with
     smoothstep width 0.012 (E5). Wetness <code>wet = 1 − clamp((edge − w)/0.045, 0, 1)</code> drives
     color (wet→dry), roughness (0.09→0.58), and bleed: iso-offset
@@ -1108,6 +1202,25 @@ graph TD
   during a session. Thermal guard: two consecutive demote triggers at T3 → halve DPR once more and stop
   measuring.</p>
 
+  <h3>Platform floor <span class="tag">WebGPU vs WebGL2, stated</span></h3>
+  <div class="tw"><table>
+    <thead><tr><th>Platform</th><th class="n">WebGPU path requires</th><th>Below that</th></tr></thead>
+    <tbody>
+      <tr><td>iOS / iPadOS Safari</td><td class="n">iOS 26 / Safari 26+ (WebGPU default-on)</td><td>WebGL2 path, same tier by device class</td></tr>
+      <tr><td>macOS</td><td class="n">Safari 26+ · Chrome/Edge 113+</td><td>WebGL2</td></tr>
+      <tr><td>Windows</td><td class="n">Chrome/Edge 113+ · Firefox 141+</td><td>WebGL2</td></tr>
+      <tr><td>Android</td><td class="n">Chrome 121+</td><td>WebGL2</td></tr>
+    </tbody>
+  </table></div>
+  <p>Selection is <b>capability detection only</b> — <code>navigator.gpu</code> present <em>and</em>
+  <code>requestAdapter()</code> resolving — never UA sniffing; version numbers above are for planning
+  and QA device matrices, and get re-verified at kickoff. Target-list mapping: <b>iPhone 15</b> on
+  iOS 26+ runs WebGPU at T2, on older iOS runs WebGL2 at T2 (same budgets — 60 fps holds on both
+  backends); <b>iPhone 12</b> on iOS 26+ runs WebGPU at T3, otherwise WebGL2 at T3 (30 fps target
+  either way). Devices that cannot reach iOS 26 (iPhone X/8 class) are outside the target list:
+  best-effort WebGL2 T3, else the static-plates fallback (§15). Every performance budget in this
+  section applies to whichever backend the device actually runs.</p>
+
   <h3>Profiling checklist <span class="tag">every milestone exit</span></h3>
   <ol>
     <li>GPU timestamp queries per pass (where exposed) reconciled against the §16 budget table; CPU frame pacing histogram otherwise.</li>
@@ -1129,8 +1242,10 @@ graph TD
   <p>Ordered milestones; each lands behind the regression rig (capture mode: <code>uSimEnabled = 0</code>,
   idle clocks frozen at 0, fixed seed, poster pipeline bypassed). A frame passes at SSIM ≥ 0.995 against
   its blessed reference plus ΔE00 p95 ≤ 1.5 inside gold/ink ROI masks. Full matrix: p ∈ {0.00, 0.08,
-  0.21, 0.34, 0.45, 0.56, 0.645, 0.70, 0.76, 0.86, 0.93, 1.00} × {desktop-T1 1440×900, mobile-T2 390×844,
-  mobile-T3 390×844} = 36 frames, run on WebGPU and WebGL2 backends. Repo: TypeScript strict; modules
+  0.21, 0.34, 0.45, 0.56, 0.645, <b>0.710</b>, 0.76, 0.86, 0.93, 1.00} × {desktop-T1 1440×900,
+  mobile-T2 390×844, mobile-T3 390×844} × <b>{webgpu, webgl2}</b> = 72 frames, plus R-1.00-noblob (§8)
+  on both backends = <b>74 frames — every frame exists for both renderers</b>, backend forced via the
+  rig's <code>?backend=</code> parameter, cross-backend parity gated per §16. Repo: TypeScript strict; modules
   <code>/core</code> (renderer, tiers, loader), <code>/field</code> (deform + solver), <code>/ink</code>,
   <code>/glyphs</code>, <code>/look</code> (materials, lights, grade), <code>/director</code> (p-drivers,
   camera, states), <code>/build</code> (asset pipeline), <code>/qa</code> (rig).</p>
@@ -1139,29 +1254,59 @@ graph TD
     <thead><tr><th class="n">M</th><th>Scope</th><th>Definition of done</th><th class="n">Regression frame</th></tr></thead>
     <tbody>
       <tr><td class="n">M0</td><td>Harness: WebGPU/WebGL2 boot, AgX pipeline, scroll spring, DPR/resize, tier detect, capture rig</td><td>Gray-box sheet scrubs deterministically; two consecutive rig runs produce hash-identical frames; AgX verified against a ramp chart</td><td class="n">R-0.50-T1 (gray)</td></tr>
-      <tr><td class="n">M1</td><td>Surface field: curl, silhouette, ribbon, compute normals, residual lattice</td><td>Readback probes at 20 sample points match §4 checkpoint tables within 0.002; matcap shows no faceting &gt; 2°; scrub storm passes</td><td class="n">R-0.00 / 0.21 / 0.34-T1</td></tr>
-      <tr><td class="n">M2</td><td>Parchment look: PBR, translucency, HDRI, PCSS, grade</td><td>Material values match §7; 18% gray calibration holds ±0.01; measured penumbra within 15% of §8 law at 3 probe heights</td><td class="n">R-0.08-T1, R-0.34-T2</td></tr>
+      <tr><td class="n">M1</td><td>Surface field: curl, silhouette, ribbon, compute normals, residual lattice</td><td>Readback probes at 20 sample points match §4 checkpoint tables within 0.002; matcap shows no faceting &gt; 2°; scrub storm passes; manual R-flick residual review (§17) signed off</td><td class="n">R-0.00 / 0.21 / 0.34-T1</td></tr>
+      <tr><td class="n">M2</td><td>Parchment look: PBR, translucency, HDRI, PCSS, grade</td><td>Material values match §7; 18% gray calibration holds ±0.01; background lands at #0D0906 via the §16 pre-compensation; measured penumbra within 15% of §8 law at 3 probe heights; stroke-order override table generated from the source SVG and an animated reveal of ≥ 5 words (one loop letter, one alif/lām stem, one diacritic-heavy) visually approved — pulled forward from M3 (§17)</td><td class="n">R-0.08-T1, R-0.34-T2</td></tr>
       <tr><td class="n">M3</td><td>Ink: atlas build, reveal, wet, bleed</td><td>RTL order audited vs source on 10 clusters; wet trail Δp 0.045 ± 10%; no reveal shimmer at 4× scrub speed (recorded capture reviewed)</td><td class="n">R-0.45-T1, R-0.45-T3</td></tr>
-      <tr><td class="n">M4</td><td>Presenting + relief: full camera spline, emboss stage</td><td>Camera passes §9 poses within 0.01; emboss→geometry silhouette diff ≤ 0.8 px at 1440p across the crossfade window (ROI image diff)</td><td class="n">R-0.56 / 0.645 / 0.70-T1</td></tr>
+      <tr><td class="n">M4</td><td>Presenting + relief: full camera spline, emboss stage</td><td>Camera passes §9 poses within 0.01; emboss→geometry silhouette diff ≤ 0.8 px at 1440p across the full handoff overlap window (ROI image diff)</td><td class="n">R-0.56 / 0.645 / 0.710-T1</td></tr>
       <tr><td class="n">M5</td><td>Rise: extrusion pipeline, merged mesh, stagger, contact shadow, transmutation</td><td>1 draw call verified; SDF/geometry alignment ≤ 0.5 px; contact shadow legible on a 390 px capture at 50 cm equivalent; thin-stroke guard shows no self-intersection on full text</td><td class="n">R-0.76-T1 / T2 / T3</td></tr>
-      <tr><td class="n">M6</td><td>Facing + finish: pivot, env sweep, idle motion, p = 1 hold, reduced motion</td><td>Reduced-motion mode passes an axe + manual audit; idle amplitudes within §15; p = 1 luminance drift ≤ 2% over 60 s</td><td class="n">R-0.93 / 1.00-T1, R-1.00-T2</td></tr>
-      <tr><td class="n">M7</td><td>Performance: tiers, loading phases, poster, thermal</td><td>60 fps p95 M1 Air + iPhone 15 Safari; 30 fps p95 iPhone 12; poster→live ≤ 2.2 s @ 10 Mbps cold; payload report ≤ 8.5 MB; checklist §19 green</td><td class="n">full 36-frame matrix</td></tr>
-      <tr><td class="n">M8</td><td>Ship QA: cross-browser (Chrome, Edge, Safari, Firefox-WebGL2), fallback plates, content sign-off</td><td>36-frame matrix green on both backends; SVG checksum sign-off recorded; scholarly review of rendered text confirmed against source — <b>release gate</b></td><td class="n">matrix + plates set</td></tr>
+      <tr><td class="n">M6</td><td>Facing + finish: pivot, env sweep, idle motion, p = 1 hold, reduced motion</td><td>Reduced-motion mode passes an axe + manual audit; idle amplitudes within §15; p = 1 luminance drift ≤ 2% over 60 s; R-1.00-noblob confirms PCSS carries state 7 alone (§8)</td><td class="n">R-0.93 / 1.00-T1, R-1.00-T2, R-1.00-noblob</td></tr>
+      <tr><td class="n">M7</td><td>Performance: tiers, loading phases, poster, thermal</td><td>60 fps p95 M1 Air + iPhone 15 Safari; 30 fps p95 iPhone 12; poster→live ≤ 2.2 s @ 10 Mbps cold; payload report ≤ 8.5 MB; checklist §19 green</td><td class="n">full 74-frame matrix</td></tr>
+      <tr><td class="n">M8</td><td>Ship QA: cross-browser (Chrome, Edge, Safari, Firefox-WebGL2), fallback plates, content sign-off</td><td>74-frame matrix green on both backends; SVG checksum sign-off recorded; scholarly review of rendered text confirmed against source — <b>release gate</b></td><td class="n">matrix + plates set</td></tr>
     </tbody>
   </table></div>
 
   <div class="callout">
     <p class="co-t">Browser-support caveats, stated once</p>
-    <p>WebGPU: Chrome/Edge stable; Safari 18.2+/26 device-dependent — detect, never UA-sniff; the WebGL2
-    path is a first-class citizen, not an apology. UASTC-HDR needs basis ≥ 1.60 transcoder (shipped) with
+    <p>WebGPU: Chrome/Edge stable; Safari from Safari 26 (platform floor table, §19) — detect, never
+    UA-sniff; the WebGL2 path is a first-class citizen, not an apology. UASTC-HDR needs basis ≥ 1.60 transcoder (shipped) with
     the RGBM fallback wired. RectAreaLight relies on LTC tables (+90 KB, phase B). Timestamp queries are
     flag-gated in some browsers — the profiling harness must not assume them. iOS Safari caps device
     pixel buffers aggressively: the DPR caps in §19 are load-bearing, not stylistic.</p>
   </div>
 
   <p style="margin-top:34px;border-top:1px solid var(--line);padding-top:18px;font-size:12.5px;color:var(--faint)">
-  Al-Fātiḥah 3D Manuscript · specification v1.0 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
+  Al-Fātiḥah 3D Manuscript · specification v1.1 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
   authoritative and untouchable · no bloom, no aura, no spectacle — the light does the reverence.</p>
+</section>
+
+<!-- ================================================================ -->
+<section id="rev">
+  <div class="sec-head"><span class="sec-num">Δ</span><h2>Pre-M0 revisions</h2></div>
+  <p>Seven-point revision pass (v1.0 → v1.1), requested before implementation start. Each point is
+  resolved in place in the section named; implementation is gated on review of this revision.</p>
+  <ol>
+    <li><b>§17</b> — Residual layer now solved and stored in the analytic pose's tangent frame
+    (transform given), with per-platform availability (WebGL2 ping-pong / T3 wave substitute) and the
+    manual “R-flick” QA profile added to M1's DoD.</li>
+    <li><b>§16</b> — Background clear color is pre-compensated through an inverted AgX + grade chain so
+    the displayed background is #0D0906 exactly; WebGL2 shares the identical tone nodes, cross-backend
+    tolerance stated (SSIM ≥ 0.995, ΔE00 p95 ≤ 1.0).</li>
+    <li><b>§14</b> — Hard emboss→geometry switch replaced by an explicit overlap window p 0.690–0.730
+    (geometry 0.00045→0.0012 on E2, emboss 1→0 on E7), depth floor + depth-bias z-guard specified, new
+    regression frame R-0.710 at the window midpoint; rise stagger retimed to 0.722 + 0.0115·i × 0.093
+    (§1, §10 updated).</li>
+    <li><b>§17</b> — Stroke-order field gains a vertical-stem top-down prior, a counter-clockwise loop
+    tie-break, diacritic scheduling at Δp 0.003 after base completion, and a build-emitted per-glyph
+    override table; ≥ 5-word visual reveal check pulled forward into M2's DoD.</li>
+    <li><b>§8</b> — Contact blob fades by ×cos²(tilt) during the S7 pivot (not re-projected); PCSS
+    carries S7 alone with the shadow cone trimmed to 18° (hairlines ≥ 6.8 texels), verified by new
+    frame R-1.00-noblob.</li>
+    <li><b>§19</b> — Platform floor stated (WebGPU: iOS 26 / Safari 26+, Chrome/Edge 113+,
+    Firefox 141+, Chrome Android 121+; capability-detected, never sniffed) with per-model fallback
+    mapping; regression matrix now spans both backends: 74 frames total (§20).</li>
+    <li><b>§3</b> — Glyph source of record confirmed as Amiri Quran (SIL OFL 1.1), shaped once via
+    HarfBuzz into a frozen, checksummed SVG; all derived tables regenerate from it on rebuild.</li>
+  </ol>
 </section>
 
 </main>
