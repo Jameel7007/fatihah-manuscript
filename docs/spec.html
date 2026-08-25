@@ -978,12 +978,15 @@ embossStr(t)  = 1 − E7(t)                       // E7 = cubic-bezier(0.37, 0, 
   <p>AgX's toe plus the grade's +0.004 black lift would render a naively-set #0D0906 clear color
   lighter and greyer than designed. Decision: the background stays <b>inside</b> the tone-mapped pass
   (rendering it outside would seam the fog and dust blending against it), and the clear color is
-  <b>pre-compensated</b>: a build step numerically inverts the fixed AgX + grade chain (3-channel
-  Newton solve; the chain is monotonic with a near-diagonal Jacobian, converges in &lt; 6 iterations)
-  so the displayed background at frame center is <b>#0D0906 exactly</b>. Indicative authored value:
-  linear (0.00102, 0.00046, 0.00020) ≈ sRGB #030201 — the build-step output is authoritative, these
-  are printed for review only. Vignette is excluded from the calibration by definition; corners sit
-  −0.35 EV darker by design. Grain + dither apply after the calibrated value, centered on it.</p>
+  <b>pre-compensated</b>: the <code>?calibrate=bg</code> harness solves the clear color against the
+  LIVE pipeline (render → readback, damped 3×3 Newton with a numerical Jacobian — AgX's inset matrix
+  mixes channels near black, so per-channel iteration cannot converge) until the displayed background
+  is <b>#0D0906 exactly</b>. Solved 2026-08-25 against AgX + sRGB: linear
+  <b>(0.00798, 0.00648, 0.00504)</b> — note ~6–15× the naive hex→linear conversion; AgX's toe crushes
+  near-black, which is this section's whole premise. The harness re-runs whenever the tone/grade
+  chain changes (it IS the build step, and stays correct by construction). Vignette is excluded from
+  the calibration by definition; corners sit −0.35 EV darker by design. Grain + dither apply after
+  the calibrated value, centered on it.</p>
   <p><b>Cross-backend parity:</b> AgX and the grade are one shared TSL node graph compiled to both WGSL
   and GLSL — same inset matrix, same sigmoid, same constants; the tone-map stage forces
   <code>highp</code> on GLSL to kill mediump drift on mobile. Acceptance tolerance between backends on

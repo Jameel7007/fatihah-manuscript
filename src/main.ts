@@ -1,4 +1,4 @@
-import { REVISION } from 'three/webgpu';
+import { Color, PerspectiveCamera, REVISION } from 'three/webgpu';
 import { createRenderer } from './core/renderer';
 import { DPR_CAP, detectTier } from './core/tiers';
 import { CameraRig } from './director/camera';
@@ -37,10 +37,11 @@ const captureP = q.get('capture');
 const probeP = q.get('probe');
 const stormS = q.get('storm');
 const flickOn = q.get('flick') !== null;
+const calibrate = q.get('calibrate'); // 'bg' | 'key' — M2 calibration harnesses
 const sceneMode = q.get('scene') ?? 'main';
-const debugMode = (q.get('debug') ?? 'none') as DebugMode;
+const debugMode = (calibrate === 'key' ? 'graycard' : (q.get('debug') ?? 'none')) as DebugMode;
 const tier = detectTier(q.get('tier'));
-const isCapture = captureP !== null || probeP !== null || sceneMode === 'ramp';
+const isCapture = captureP !== null || probeP !== null || sceneMode === 'ramp' || calibrate !== null;
 const capW = Number(q.get('w') ?? 1440);
 const capH = Number(q.get('h') ?? 900);
 
@@ -73,8 +74,104 @@ function fitViewport(): { w: number; h: number } {
 
 if (sceneMode === 'ramp') {
   await runRamp();
+} else if (calibrate !== null) {
+  await runCalibrate(calibrate);
 } else {
   await runMain();
+}
+
+// --- M2 calibration harnesses (?calibrate=bg | key) -------------------------------------
+// Empirical end-to-end solves against the LIVE pipeline (render → readback), so the baked
+// constants stay correct whatever the tone/grade chain contains. Results are printed and
+// baked by hand into look/stage.ts (BG_LINEAR, KEY_INTENSITY).
+
+async function runCalibrate(mode: string): Promise<void> {
+  const sil = buildSilhouette();
+  const field = new Field(sil);
+  const { scene, sheetRoot, key } = buildStage(field, sil, debugMode);
+  const size = fitViewport();
+
+  const cam = new PerspectiveCamera((2 * Math.atan(12 / 40) * 180) / Math.PI, size.w / size.h, 0.05, 4);
+  cam.position.set(0, 0.9, 0.02);
+  cam.lookAt(0, 0, 0.02);
+
+  const d = evalDeform(0.5);
+  field.setDeform(d, false);
+
+  const renderOnce = async (): Promise<[number, number, number]> => {
+    await new Promise<void>((resolve) => {
+      let n = 0;
+      renderer.setAnimationLoop(() => {
+        field.run(renderer);
+        renderer.render(scene, cam);
+        if (++n >= 2) {
+          renderer.setAnimationLoop(null);
+          resolve();
+        }
+      });
+    });
+    const frame = await captureFrame(canvas as HTMLCanvasElement);
+    const px = samplePixel(frame, frame.width / 2, frame.height / 2);
+    return [px[0], px[1], px[2]];
+  };
+
+  if (mode === 'bg') {
+    sheetRoot.visible = false;
+    const target = [13, 9, 6]; // #0D0906
+    const bg = scene.background as Color;
+    // Damped 3×3 Newton with numerical Jacobian — AgX's inset matrix mixes channels near
+    // black, so per-channel iteration cannot converge. 4 renders per iteration.
+    const lin = [0.002, 0.001, 0.0006];
+    const evalAt = async (v: number[]): Promise<[number, number, number]> => {
+      bg.setRGB(Math.max(0, v[0] ?? 0), Math.max(0, v[1] ?? 0), Math.max(0, v[2] ?? 0));
+      return renderOnce();
+    };
+    let got = await evalAt(lin);
+    for (let it = 0; it < 8; it++) {
+      const err = [0, 1, 2].map((c) => (target[c] ?? 0) - (got[c] ?? 0));
+      if (err.every((e) => Math.abs(e) <= 0.5)) break;
+      const J: number[][] = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+      for (let c = 0; c < 3; c++) {
+        const h = Math.max(1e-5, (lin[c] ?? 0) * 0.25);
+        const v = [...lin];
+        v[c] = (v[c] ?? 0) + h;
+        const g2 = await evalAt(v);
+        for (let r = 0; r < 3; r++) (J[r] as number[])[c] = ((g2[r] ?? 0) - (got[r] ?? 0)) / h;
+      }
+      const dx = solve3(J, err);
+      for (let c = 0; c < 3; c++) {
+        const step = Math.max(-2 * (lin[c] ?? 1e-4), Math.min(2 * (lin[c] ?? 1e-4), (dx[c] ?? 0) * 0.8));
+        lin[c] = Math.max(1e-6, (lin[c] ?? 0) + step);
+      }
+      got = await evalAt(lin);
+    }
+    const out = { mode, linear: lin.map((x) => +x.toExponential(4)), displayed: got, target };
+    (window as unknown as { __calib?: unknown }).__calib = out;
+    capEl!.textContent = `CALIB bg → linear (${lin.map((x) => x.toExponential(3)).join(', ')}) displays rgb(${got.join(',')}) target rgb(${target.join(',')})`;
+    console.info('[calibrate]', out);
+    return;
+  }
+
+  // mode === 'key': 18% gray card under key alone → displayed 128/255 (AgX of 0.18)
+  scene.traverse((o) => {
+    const l = o as { isLight?: boolean; intensity?: number };
+    if (l.isLight && o !== key) l.intensity = 0;
+  });
+  let lo = 1;
+  let hi = 60;
+  let got: [number, number, number] = [0, 0, 0];
+  for (let it = 0; it < 14; it++) {
+    key.intensity = (lo + hi) / 2;
+    got = await renderOnce();
+    const lum = got[0]; // neutral card, neutral-ish key channel R is the anchor
+    if (Math.abs(lum - 128) <= 0.5) break;
+    if (lum > 128) hi = key.intensity;
+    else lo = key.intensity;
+  }
+  const out = { mode, keyIntensity: +key.intensity.toFixed(3), displayed: got };
+  (window as unknown as { __calib?: unknown }).__calib = out;
+  capEl!.textContent = `CALIB key → intensity ${key.intensity.toFixed(3)} displays rgb(${got.join(',')}) target R≈128`;
+  console.info('[calibrate]', out);
 }
 
 // --- main scene -------------------------------------------------------------------------
@@ -276,6 +373,32 @@ async function runMain(): Promise<void> {
       },
     };
   }
+}
+
+/** Solve 3×3 J·x = b (Gaussian elimination with partial pivoting). */
+function solve3(J: number[][], b: number[]): number[] {
+  const a = J.map((row, i) => [...row, b[i] ?? 0]);
+  for (let col = 0; col < 3; col++) {
+    let piv = col;
+    for (let r = col + 1; r < 3; r++) {
+      if (Math.abs(a[r]?.[col] ?? 0) > Math.abs(a[piv]?.[col] ?? 0)) piv = r;
+    }
+    if (piv !== col) {
+      const t = a[col];
+      a[col] = a[piv] as number[];
+      a[piv] = t as number[];
+    }
+    const p = a[col]?.[col] ?? 1e-9;
+    for (let r = 0; r < 3; r++) {
+      if (r === col) continue;
+      const f = (a[r]?.[col] ?? 0) / (Math.abs(p) < 1e-9 ? 1e-9 : p);
+      for (let c = col; c < 4; c++) (a[r] as number[])[c] = (a[r]?.[c] ?? 0) - f * (a[col]?.[c] ?? 0);
+    }
+  }
+  return [0, 1, 2].map((i) => {
+    const p = a[i]?.[i] ?? 1e-9;
+    return (a[i]?.[3] ?? 0) / (Math.abs(p) < 1e-9 ? 1e-9 : p);
+  });
 }
 
 // --- AgX ramp verification (?scene=ramp) — unchanged from M0 ----------------------------
