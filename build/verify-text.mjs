@@ -15,16 +15,43 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CANON_PATH = join(root, 'build/canonical-fatihah.json');
 const SOURCE_URL = 'https://api.alquran.cloud/v1/surah/1/quran-uthmani';
 
-// The strings the pipeline ACTUALLY shapes: the pinned canonical āyāt run through the same
-// derivation shape-text.mjs uses (āyah 7 split at the first عَلَيْهِمْ, then rejoined here) —
-// so this verifies the whole input chain, not a copy of it.
+// The text the pipeline ACTUALLY presents: read the frozen composition's presentation
+// strings (post line-breaking, post kashida-justification), strip the presentation-only
+// U+0640 kashida runs, and reassemble the continuous text — this must recover the pinned
+// canonical āyāt byte-identically. Kashida is applied AFTER verification by design; this
+// check proves it only ever inserts U+0640 and nothing else.
 function shapedInput(pinned) {
-  const SPLIT_WORD = 'عَلَيْهِمْ';
-  const a7 = pinned.ayahs[6] ?? '';
-  const splitAt = a7.indexOf(SPLIT_WORD) + SPLIT_WORD.length;
-  const l7a = a7.slice(0, splitAt);
-  const l7b = a7.slice(splitAt + 1);
-  return [...pinned.ayahs.slice(0, 6), `${l7a} ${l7b}`];
+  const compPath = join(root, 'public/text/composition.json');
+  if (!existsSync(compPath)) {
+    console.warn('!! composition.json missing — verifying the pinned text against source only');
+    return [...pinned.ayahs];
+  }
+  const comp = JSON.parse(readFileSync(compPath, 'utf8'));
+  const flow = comp.lines
+    .flatMap((l) => l.presentation ?? [])
+    .join(' ')
+    .replaceAll('ـ', '') // strip kashida (U+0640) — presentation-only
+    .replace(/ +/g, ' ')
+    .trim()
+    .normalize('NFC');
+  const joined = pinned.ayahs.join(' ').normalize('NFC');
+  // re-split the recovered flow at the canonical āyah boundaries for per-āyah reporting
+  const out = [];
+  let rest = flow;
+  for (let i = 0; i < 7; i++) {
+    const target = pinned.ayahs[i] ?? '';
+    if (rest.startsWith(target)) {
+      out.push(target);
+      rest = rest.slice(target.length).replace(/^ /, '');
+    } else {
+      // misalignment — return the raw remainder so the diff shows where it broke
+      out.push(rest.split(' ').slice(0, (target.match(/ /g) || []).length + 1).join(' '));
+      rest = rest.split(' ').slice((target.match(/ /g) || []).length + 1).join(' ');
+    }
+  }
+  if (rest.length) out[6] = `${out[6]} ${rest}`;
+  void joined;
+  return out;
 }
 
 const cpName = (ch) => {

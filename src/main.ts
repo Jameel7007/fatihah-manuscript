@@ -98,10 +98,9 @@ async function runProof(): Promise<void> {
     path: string;
   }
   interface PLine {
-    ayah: number;
-    part: number;
+    ayahs: number[];
     glyphs: PGlyph[];
-    marker: { x: number; y: number; ayah: number } | null;
+    markers: Array<{ x: number; y: number; ayah: number }>;
   }
   const comp = (await (await fetch('/text/composition.json')).json()) as {
     checksums: { svg: string };
@@ -132,17 +131,17 @@ async function runProof(): Promise<void> {
         ctx.fill(new Path2D(g.path));
         ctx.restore();
       }
-      if (l.marker) {
+      for (const mk of l.markers ?? []) {
         ctx.strokeStyle = '#8A6D3F';
         ctx.lineWidth = 0.0016 * S;
         ctx.beginPath();
-        ctx.arc(X(l.marker.x), Y(l.marker.y), 0.0063 * S, 0, Math.PI * 2);
+        ctx.arc(X(mk.x), Y(mk.y), 0.0063 * S, 0, Math.PI * 2);
         ctx.stroke();
         ctx.fillStyle = '#8A6D3F';
         ctx.font = `${0.0085 * S}px "Amiri Quran", "Noto Naskh Arabic", serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(arNum(l.marker.ayah), X(l.marker.x), Y(l.marker.y) + 0.0008 * S);
+        ctx.fillText(arNum(mk.ayah), X(mk.x), Y(mk.y) + 0.0008 * S);
       }
     }
   };
@@ -178,6 +177,7 @@ async function runReveal(): Promise<void> {
   interface GlyphRec {
     word: number;
     kind: string;
+    kashida?: boolean;
     order: number;
     delay: number;
     x: number;
@@ -188,7 +188,7 @@ async function runReveal(): Promise<void> {
   }
   const comp = (await (await fetch('/text/composition.json')).json()) as {
     checksums: { svg: string };
-    lines: Array<{ baseline: number; glyphs: GlyphRec[]; marker: { x: number; y: number } | null }>;
+    lines: Array<{ baseline: number; glyphs: GlyphRec[]; markers: Array<{ x: number; y: number }> }>;
   };
   const lines = comp.lines.slice(0, 2);
   const glyphs = lines.flatMap((l, li) => l.glyphs.map((g) => ({ ...g, line: li })));
@@ -247,11 +247,12 @@ async function runReveal(): Promise<void> {
       ctx.restore();
     }
     for (const l of lines) {
-      if (l.marker && wp >= span - 0.5) {
+      if (wp < span - 0.5) continue;
+      for (const mk of l.markers ?? []) {
         ctx.strokeStyle = '#8F7440';
         ctx.lineWidth = 0.0016 * S;
         ctx.beginPath();
-        ctx.arc(X(l.marker.x), Y(l.marker.y), 0.0063 * S, 0, Math.PI * 2);
+        ctx.arc(X(mk.x), Y(mk.y), 0.0063 * S, 0, Math.PI * 2);
         ctx.stroke();
       }
     }

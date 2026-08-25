@@ -6,6 +6,10 @@
 export const WRITING = {
   /** one base glyph's reveal length, in writing units */
   glyphUnit: 1.0,
+  /** kashida elongation glyphs (v1.4 justification) — a continuous pen sweep, not
+   *  discrete letters: each tatweel glyph costs a fraction of a base glyph so a long
+   *  elongation reads as one deliberate stroke of proportional length */
+  kashidaUnit: 0.35,
   /** marks are quicker strokes */
   markUnit: 0.65,
   /** pause after a word's base group before its marks begin */
@@ -13,7 +17,8 @@ export const WRITING = {
   /** breath between words — deliberately longer than any intra-word step */
   wordGap: 2.2,
   /** demo pacing for ?scene=reveal (units/s). M3 ignores this and maps units → Δp.
-   *  Lines 1–2 span ≈ 82.5 units → ≈ 24 s per loop, 2.0× the first cut. */
+   *  Lines 1–2 of the v1.4 justified flow span ≈ 99.3 units → ≈ 29 s per loop
+   *  (same per-word feel as the approved 2.0×-slower cut; these lines carry more words). */
   unitsPerSecond: 3.45,
   /** how long a glyph reads as wet after its reveal completes, in units */
   wetUnits: 3.0,
@@ -34,6 +39,8 @@ interface GlyphIn {
   kind: string;
   /** line index — word indices restart per line, so words are keyed (line, word) */
   line: number;
+  /** presentation-only tatweel glyph from the justification stage */
+  kashida?: boolean;
 }
 
 /** Build per-glyph start/duration in writing units from frozen-composition glyphs. */
@@ -56,8 +63,9 @@ export function buildSchedule(glyphs: GlyphIn[]): { items: Map<number, ScheduleI
       wordEnd = cursor;
     }
     if (g.kind === 'base') {
-      items.set(g.order, { order: g.order, start: cursor, dur: WRITING.glyphUnit });
-      cursor += WRITING.glyphUnit;
+      const unit = g.kashida ? WRITING.kashidaUnit : WRITING.glyphUnit;
+      items.set(g.order, { order: g.order, start: cursor, dur: unit });
+      cursor += unit;
       baseGroupEnd = cursor;
       wordEnd = Math.max(wordEnd, cursor);
     } else {

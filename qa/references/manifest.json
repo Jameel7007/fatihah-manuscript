@@ -114,15 +114,16 @@
     "key": "KEY_INTENSITY 9.87 — 18% card R=128 through the full chain"
   },
   "text_pipeline": {
-    "frozen_svg_sha256": "581f2487383289e27b386a4a4e423bc693437b703eeceb3f45065b9723a6aff2",
+    "layout": "v1.4 classical justified (2026-08-25): continuous flow, greedy line breaking, kashida-only block justification (U+0640 at permitted joints, <=2 long elongations per line, iterative reshape against Amiri contextual forms); basmalah = full-em own line justified by a single sin elongation in bism; ragged closing line; markers glued to the preceding word; 8 lines, 316 glyphs",
+    "frozen_svg_sha256": "c41855b9ee34f5d375710f3bc06cbaa22aa66abdf95244a5625e4fa309f1df33",
     "font_sha256": "e2a47644762d16bdfb6d33e0d8db8c6ff30beae84150ef5a705316bbd829455c",
-    "em": 0.0534,
+    "em": 0.058,
     "canonical_source": "Tanzil Uthmani (via api.alquran.cloud, edition quran-uthmani)",
     "canonical_url": "https://api.alquran.cloud/v1/surah/1/quran-uthmani",
     "canonical_fetched": "2026-08-25",
     "canonical_sha256": "557e8ef1fe49090221c1dc09304dff792d378ba1b551250fb4fd9a21034a8be4",
-    "verification": "ALL SEVEN AYAT IDENTICAL to canonical (build/verify-text.mjs, 2026-08-25). Adopted canonical verbatim: removed 4x U+0640 tatweel carriers (presentation-only) from the prior input; the source feed prepends a U+FEFF BOM to ayah 1 which is stripped at pinning as a serialization artifact.",
-    "proof": "qa/proofs/fatihah-proof-4000.png (4000x5128, from ?scene=proof&export=1); live at ?scene=proof",
-    "reveal_pacing": "director/writing.ts WRITING constants (glyphUnit 1.0, markUnit 0.65, markLag 1.2, wordGap 2.2, unitsPerSecond 3.45) — lines 1-2 loop ~24 s (2.0x first cut); M3 maps units to dp"
+    "verification": "ALL SEVEN AYAT IDENTICAL (build/verify-text.mjs, 2026-08-25, v1.4 chain): the verifier reads the frozen composition's post-justification presentation strings, strips U+0640, reassembles the flow, and matches the pinned canonical byte-for-byte - proving justification only ever inserts kashida. Canonical pin unchanged (U+FEFF feed artifact stripped at pinning).",
+    "proof": "qa/proofs/fatihah-proof-4000.png (4000x5128, from ?scene=proof&export=1, v1.4 justified); live at ?scene=proof",
+    "reveal_pacing": "director/writing.ts WRITING constants (glyphUnit 1.0, kashidaUnit 0.35 - elongations sweep, not step, markUnit 0.65, markLag 1.2, wordGap 2.2, unitsPerSecond 3.45) - lines 1-2 of the justified flow loop ~29 s at the approved per-word feel; M3 maps units to dp"
   }
 }
