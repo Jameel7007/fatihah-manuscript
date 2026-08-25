@@ -9,6 +9,7 @@ import { Field } from './field/field';
 import { Residual } from './field/residual';
 import { buildSilhouette } from './field/silhouette';
 import { buildRamp, buildStage, type DebugMode } from './look/stage';
+import { createGrade } from './look/grade';
 import { captureFrame, samplePixel, type CaptureFrame } from './qa/capture';
 import { flickProfile, runProbes, runStorm, sampleResidualEnergy, type ProbeReport } from './qa/probes';
 
@@ -74,10 +75,109 @@ function fitViewport(): { w: number; h: number } {
 
 if (sceneMode === 'ramp') {
   await runRamp();
+} else if (sceneMode === 'reveal') {
+  await runReveal();
 } else if (calibrate !== null) {
   await runCalibrate(calibrate);
 } else {
   await runMain();
+}
+
+// --- §17 stroke-order reveal check (?scene=reveal) — M2 DoD item -------------------------
+// Animates the writing schedule from the frozen composition over lines 1–2 (nine words:
+// loop letters, lām/alif stems, heavy diacritics) on a 2D canvas: bases per word RTL, then
+// the word's marks after the Δp delay; within-glyph reveal is an RTL wipe (the true
+// skeleton-geodesic w direction arrives with the atlas, M3). Reviewer approves by eye.
+
+async function runReveal(): Promise<void> {
+  interface GlyphRec {
+    word: number;
+    kind: string;
+    order: number;
+    delay: number;
+    x: number;
+    y: number;
+    scale: number;
+    ext: { x: number; y: number; w: number; h: number };
+    path: string;
+  }
+  const comp = (await (await fetch('/text/composition.json')).json()) as {
+    checksums: { svg: string };
+    lines: Array<{ baseline: number; glyphs: GlyphRec[]; marker: { x: number; y: number } | null }>;
+  };
+  const lines = comp.lines.slice(0, 2);
+  const glyphs = lines.flatMap((l) => l.glyphs);
+  const orders = glyphs.map((g) => g.order);
+  const minOrder = Math.min(...orders);
+  const maxOrder = Math.max(...orders);
+
+  const c2 = document.createElement('canvas');
+  const W = Math.min(window.innerWidth - 32, 1280);
+  const H = Math.round(W * 0.34);
+  c2.width = W * devicePixelRatio;
+  c2.height = H * devicePixelRatio;
+  c2.style.cssText = `position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:${W}px;height:${H}px;background:#E6D5AF;border:1px solid #2C2517`;
+  document.body.appendChild(c2);
+  (canvas as HTMLCanvasElement).style.display = 'none';
+  const ctx = c2.getContext('2d');
+  if (!ctx) throw new Error('2d context unavailable');
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+
+  // world window around lines 1–2
+  const wx0 = -0.33;
+  const wx1 = 0.33;
+  const wy0 = 0.13;
+  const wy1 = 0.13 + (wx1 - wx0) * (H / W);
+  const S = W / (wx1 - wx0);
+  const X = (x: number): number => (x - wx0) * S;
+  const Y = (y: number): number => (y - wy0) * S;
+
+  const paths = new Map<GlyphRec, Path2D>();
+  for (const g of glyphs) paths.set(g, new Path2D(g.path));
+
+  const DURATION = 12; // seconds per loop, then holds 2 s
+  const fixedT = q.get('rt'); // freeze the reveal at a given second (static, screenshotable)
+  const draw = (t: number): void => {
+    ctx.clearRect(0, 0, W, H);
+    const loopT = fixedT !== null ? Number(fixedT) : (t / 1000) % (DURATION + 2);
+    // marks pause 1.5 order-units after their word's bases (demo mapping of Δp 0.003)
+    const pos = (g: GlyphRec): number => g.order - minOrder + (g.delay > 0 ? 1.5 : 0);
+    const span = maxOrder - minOrder + 3;
+    const wp = Math.min(1, loopT / DURATION) * span;
+    for (const g of glyphs) {
+      const p0 = pos(g);
+      const f = Math.max(0, Math.min(1, wp - p0)); // within-glyph progress
+      if (f <= 0) continue;
+      const wet = wp - p0 < 2.5;
+      ctx.save();
+      // RTL wipe: clip from the glyph bbox's right edge leftward
+      const bx = X(g.x + g.ext.x);
+      const by = Y(g.y + g.ext.y);
+      const bw = g.ext.w * S;
+      const bh = g.ext.h * S;
+      ctx.beginPath();
+      ctx.rect(bx + bw * (1 - f) - 1, by - 2, bw * f + 3, bh + 4);
+      ctx.clip();
+      ctx.translate(X(g.x), Y(g.y));
+      ctx.scale(g.scale * S, -g.scale * S);
+      ctx.fillStyle = wet ? '#17110D' : '#2A211B';
+      ctx.fill(paths.get(g) as Path2D);
+      ctx.restore();
+    }
+    for (const l of lines) {
+      if (l.marker && wp >= span - 2) {
+        ctx.strokeStyle = '#8F7440';
+        ctx.lineWidth = 0.0016 * S;
+        ctx.beginPath();
+        ctx.arc(X(l.marker.x), Y(l.marker.y), 0.0063 * S, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+    if (fixedT === null) requestAnimationFrame(draw);
+  };
+  requestAnimationFrame(draw);
+  hud!.textContent = `stroke-order reveal — lines 1–2 (9 words) · svg ${comp.checksums.svg.slice(0, 12)}`;
+  console.info('[reveal] schedule loaded', { glyphs: glyphs.length, span: maxOrder - minOrder + 1 });
 }
 
 // --- M2 calibration harnesses (?calibrate=bg | key) -------------------------------------
@@ -88,60 +188,81 @@ if (sceneMode === 'ramp') {
 async function runCalibrate(mode: string): Promise<void> {
   const sil = buildSilhouette();
   const field = new Field(sil);
-  const { scene, sheetRoot, key } = buildStage(renderer, field, sil, debugMode);
+  const { scene, sheetRoot, key, setBackground } = buildStage(renderer, field, sil, debugMode);
   if (calibrate === 'key') scene.environmentIntensity = 0; // card under key alone
   const size = fitViewport();
 
-  const cam = new PerspectiveCamera((2 * Math.atan(12 / 40) * 180) / Math.PI, size.w / size.h, 0.05, 4);
+  const cam = new PerspectiveCamera((2 * Math.atan(12 / 40) * 180) / Math.PI, size.w / size.h, 0.05, 8);
   cam.position.set(0, 0.9, 0.02);
   cam.lookAt(0, 0, 0.02);
 
   const d = evalDeform(0.5);
   field.setDeform(d, false);
 
+  // Calibrations run through the FULL grade chain — the solves invert whatever it holds.
+  const grade = createGrade(renderer, scene, cam);
+  grade.setAspect(size.w / size.h);
+
   const renderOnce = async (): Promise<[number, number, number]> => {
     await new Promise<void>((resolve) => {
       let n = 0;
       renderer.setAnimationLoop(() => {
         field.run(renderer);
-        renderer.render(scene, cam);
-        if (++n >= 2) {
+        grade.render();
+        if (++n >= 1) {
           renderer.setAnimationLoop(null);
           resolve();
         }
       });
     });
     const frame = await captureFrame(canvas as HTMLCanvasElement);
-    const px = samplePixel(frame, frame.width / 2, frame.height / 2);
-    return [px[0], px[1], px[2]];
+    // 3×3 average around center — cancels the zero-mean grain/dither
+    const acc = [0, 0, 0];
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dx = -1; dx <= 1; dx++) {
+        const px = samplePixel(frame, frame.width / 2 + dx, frame.height / 2 + dy);
+        acc[0] = (acc[0] ?? 0) + (px[0] ?? 0);
+        acc[1] = (acc[1] ?? 0) + (px[1] ?? 0);
+        acc[2] = (acc[2] ?? 0) + (px[2] ?? 0);
+      }
+    }
+    return [(acc[0] ?? 0) / 9, (acc[1] ?? 0) / 9, (acc[2] ?? 0) / 9];
   };
 
   if (mode === 'bg') {
     sheetRoot.visible = false;
     const target = [13, 9, 6]; // #0D0906
-    const bg = scene.background as Color;
     // Damped 3×3 Newton with numerical Jacobian — AgX's inset matrix mixes channels near
-    // black, so per-channel iteration cannot converge. 4 renders per iteration.
+    // black, so per-channel iteration cannot converge.
     const lin = [0.002, 0.001, 0.0006];
     const evalAt = async (v: number[]): Promise<[number, number, number]> => {
-      bg.setRGB(Math.max(0, v[0] ?? 0), Math.max(0, v[1] ?? 0), Math.max(0, v[2] ?? 0));
+      setBackground(Math.max(0, v[0] ?? 0), Math.max(0, v[1] ?? 0), Math.max(0, v[2] ?? 0));
       return renderOnce();
     };
     let got = await evalAt(lin);
-    for (let it = 0; it < 8; it++) {
+    let J: number[][] | null = null;
+    for (let it = 0; it < 12; it++) {
       const err = [0, 1, 2].map((c) => (target[c] ?? 0) - (got[c] ?? 0));
-      if (err.every((e) => Math.abs(e) <= 0.5)) break;
-      const J: number[][] = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-      for (let c = 0; c < 3; c++) {
-        const h = Math.max(1e-5, (lin[c] ?? 0) * 0.25);
-        const v = [...lin];
-        v[c] = (v[c] ?? 0) + h;
-        const g2 = await evalAt(v);
-        for (let r = 0; r < 3; r++) (J[r] as number[])[c] = ((g2[r] ?? 0) - (got[r] ?? 0)) / h;
+      if (err.every((e) => Math.abs(e) <= 0.75)) break;
+      // (Re)build the Jacobian every 4th iteration with probe steps large enough to move
+      // the 8-bit readback by whole counts — tiny probes quantize to zero rows and the
+      // solve goes singular. Levenberg damping tames the rest.
+      if (it % 4 === 0 || J === null) {
+        J = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+        for (let c = 0; c < 3; c++) {
+          const h = Math.max(5e-4, (lin[c] ?? 0) * 0.5);
+          const v = [...lin];
+          v[c] = (v[c] ?? 0) + h;
+          const g2 = await evalAt(v);
+          for (let r = 0; r < 3; r++) (J[r] as number[])[c] = ((g2[r] ?? 0) - (got[r] ?? 0)) / h;
+        }
+        const lam = 0.25 * (Math.abs(J[0]?.[0] ?? 0) + Math.abs(J[1]?.[1] ?? 0) + Math.abs(J[2]?.[2] ?? 0)) / 3 + 1e-3;
+        for (let c = 0; c < 3; c++) (J[c] as number[])[c] = (J[c]?.[c] ?? 0) + lam;
       }
       const dx = solve3(J, err);
       for (let c = 0; c < 3; c++) {
-        const step = Math.max(-2 * (lin[c] ?? 1e-4), Math.min(2 * (lin[c] ?? 1e-4), (dx[c] ?? 0) * 0.8));
+        const cap = 0.6 * Math.max(lin[c] ?? 0, 5e-4);
+        const step = Math.max(-cap, Math.min(cap, (dx[c] ?? 0) * 0.7));
         lin[c] = Math.max(1e-6, (lin[c] ?? 0) + step);
       }
       got = await evalAt(lin);
@@ -186,12 +307,15 @@ async function runMain(): Promise<void> {
   const scroll = new ScrollDriver();
   const size = fitViewport();
   rig.camera.aspect = size.w / size.h;
+  const grade = createGrade(renderer, scene, rig.camera);
+  grade.setAspect(size.w / size.h);
 
   window.addEventListener('resize', () => {
     if (isCapture) return;
     const s = fitViewport();
     rig.camera.aspect = s.w / s.h;
     rig.camera.updateProjectionMatrix();
+    grade.setAspect(s.w / s.h);
   });
 
   const applyFrame = (p: number, dt: number, simEnabled: boolean): void => {
@@ -232,7 +356,7 @@ async function runMain(): Promise<void> {
         let finished = false;
         renderer.setAnimationLoop(() => {
           applyFrame(p, 1 / 60, false);
-          renderer.render(scene, rig.camera);
+          grade.render(); // grain seed stays 0 in capture — deterministic
           n++;
           if (n >= 3 && !started) {
             started = true;
@@ -297,7 +421,8 @@ async function runMain(): Promise<void> {
     scroll.update(dt);
     applyFrame(scroll.p, dt, true);
     rig.update(scroll.p, dt);
-    renderer.render(scene, rig.camera);
+    grade.setGrainSeed(Math.floor(now / 125)); // 8 Hz grain phase (§16)
+    grade.render();
     hud!.textContent = `${stateLabel(scroll.p)} · p ${scroll.p.toFixed(3)}`;
     bar!.style.height = `${scroll.p * 100}%`;
   });

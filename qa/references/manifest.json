@@ -9,33 +9,33 @@
   "frames": [
     {
       "id": "R-0.00-T1",
-      "milestone": "M2 look-dev (procedural fiber/util maps, translucency, env, PCSS)",
+      "milestone": "M2 complete look (grade pass, specular AA, graded calibrations)",
       "url": "/?capture=0.0&tier=1",
       "sha256": {
-        "webgpu": "ab5e5e7ba760b931c053d5e47499ffc44abff04bd0183830e1e1143920ceb83c",
+        "webgpu": "80a1f5e1ea991d3c0c9b6e08a1c14c88daf8799e42a35581e616152367305e65",
         "webgl2": "pending CI re-bless — dev pane throttling stalls webgl2 captures; cross-backend field equivalence proven by probes"
       },
-      "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads"
+      "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
     },
     {
       "id": "R-0.21-T1",
-      "milestone": "M2 look-dev (procedural fiber/util maps, translucency, env, PCSS)",
+      "milestone": "M2 complete look (grade pass, specular AA, graded calibrations)",
       "url": "/?capture=0.21&tier=1",
       "sha256": {
-        "webgpu": "1419c6efd7982b38208bd1b3952113d977204908ca21d99b437cf4adff61a831",
+        "webgpu": "0828669cdc20aa2d05aefab7ca4e04d6f483e363e5bff2c80eb950659d7c7cdd",
         "webgl2": "pending CI re-bless (see R-0.00 note)"
       },
-      "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads"
+      "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
     },
     {
       "id": "R-0.34-T1",
-      "milestone": "M2 look-dev (procedural fiber/util maps, translucency, env, PCSS)",
+      "milestone": "M2 complete look (grade pass, specular AA, graded calibrations)",
       "url": "/?capture=0.34&tier=1",
       "sha256": {
-        "webgpu": "615247ae1e3f9b9b291b50f6bd4d2f74d46a9c1b9a6d9d38c8d6a57b15a42580",
+        "webgpu": "2c29c06e1a09a15669fb33bf2b92dad4c191f75c26a5bb004789b546d97aaf9a",
         "webgl2": "pending CI re-bless (see R-0.00 note)"
       },
-      "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads"
+      "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
     },
     {
       "id": "R-0.50-T1 (M0 gray-box, superseded by M1 field)",
@@ -108,5 +108,15 @@
   "manual_qa": {
     "storm": "?storm=15 — harness implemented; the dev-pane throttles rAF for hidden tabs (3 frames/15 s), so a meaningful run needs a foregrounded browser. Monitor: NaN / p-range / errors.",
     "flick": "key Q or ?flick=1 — §17 R-flick profile with residual-energy sparkline; visual sign-off is the reviewer's (M1 DoD item, pending user review)"
+  },
+  "calibrations": {
+    "bg": "graded-chain floor displays (13.6, 9.8, 6.6) at zero background — #0D0906 within a count; BG_LINEAR ~0; +0.5-count warm floor residue tracked",
+    "key": "KEY_INTENSITY 9.87 — 18% card R=128 through the full chain"
+  },
+  "text_pipeline": {
+    "frozen_svg_sha256": "5e268db2b3a21361a14182f366d255625be425572dfbedcccfcc18101da72cd7",
+    "font_sha256": "e2a47644762d16bdfb6d33e0d8db8c6ff30beae84150ef5a705316bbd829455c",
+    "em": 0.0534,
+    "note": "em scaled 0.058→0.0534 by the §3 fit rule (āyah 7b at 0.598); 262 glyphs, 8 lines; reveal check at ?scene=reveal (rt= freezes)"
   }
 }

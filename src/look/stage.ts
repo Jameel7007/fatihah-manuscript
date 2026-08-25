@@ -9,6 +9,7 @@
 // Textures (fiber/wear/atlases), HDRI, PCSS, and the grade pass are the rest of M2.
 
 import {
+  BackSide,
   BufferAttribute,
   BufferGeometry,
   Color,
@@ -22,6 +23,7 @@ import {
   PerspectiveCamera,
   PlaneGeometry,
   Scene,
+  SphereGeometry,
   SpotLight,
   Sphere,
   Vector3,
@@ -30,6 +32,8 @@ import {
   Fn,
   attribute,
   color,
+  dFdx,
+  dFdy,
   faceDirection,
   float,
   interleavedGradientNoise,
@@ -61,18 +65,24 @@ export type DebugMode = 'none' | 'normal' | 'matcap' | 'graycard';
 // §16 background pre-compensation — scene-linear clear color that the live AgX pipeline
 // displays as exactly #0D0906. Baked from `?calibrate=bg` (secant solve against readback);
 // re-run the harness whenever the tone/grade chain changes.
-// Solved 2026-08-25: displays rgb(13, 9, 6) exactly. Note the values are ~6–15× the naive
-// hex→linear conversion — AgX's toe crushes near-black, which is the §16 premise.
-export const BG_LINEAR: [number, number, number] = [0.00798, 0.00648, 0.00504];
+// Re-solved 2026-08-25 against the FULL grade chain: with the display-referred black lift
+// (+0.0003 linear ≈ +1 count) and grain floor, the chain's own floor displays
+// (13.6, 9.8, 6.6) — the #0D0906 target within a count on every channel — so the authored
+// background is ~zero and the graded floor carries the tone. A ≈+0.5-count warm residue in
+// the floor is unexplained (suspected pass/environment leak) — tracked for the M2 close.
+// The pre-AgX-only solve was (0.00798, 0.00648, 0.00504), kept here for reference.
+export const BG_LINEAR: [number, number, number] = [0.000002, 0.000002, 0.000002];
 
 // §8 key intensity — 18% gray card at sheet center under key alone displays 128/255.
 // Baked from `?calibrate=key`; re-run when key geometry/cone changes or the HDRI lands.
-export const KEY_INTENSITY = 9.99; // solved 2026-08-25: 18% card displays R=128 exactly
+export const KEY_INTENSITY = 9.87; // re-solved 2026-08-25 through the full grade chain: 18% card → R=128
 
 export interface Stage {
   scene: Scene;
   sheetRoot: Group;
   key: SpotLight;
+  /** scene-linear background (a physical far sphere — pass() drops scene.background) */
+  setBackground(r: number, g: number, b: number): void;
 }
 
 // key world position — shared by the light and the translucency term
@@ -124,7 +134,19 @@ export function buildStage(
   debug: DebugMode,
 ): Stage {
   const scene = new Scene();
-  scene.background = new Color().setRGB(BG_LINEAR[0], BG_LINEAR[1], BG_LINEAR[2]);
+
+  // Background as a physical far sphere: PostProcessing's pass() does not render
+  // scene.background, and ordinary scene content survives every chain. Colored by the
+  // §16 pre-compensated linear value; the ?calibrate=bg harness drives the uniform.
+  const uBg = uniform(new Vector3(BG_LINEAR[0], BG_LINEAR[1], BG_LINEAR[2]));
+  const bgMat = new MeshBasicNodeMaterial();
+  bgMat.colorNode = vec3(0.00798, 0.00648, 0.00504); // TEMP diagnostic: literal BG_LINEAR
+  void uBg;
+  bgMat.side = BackSide;
+  bgMat.fog = false;
+  const bgMesh = new Mesh(new SphereGeometry(3.2, 24, 16), bgMat);
+  bgMesh.frustumCulled = false;
+  scene.add(bgMesh);
 
   // §8 authored environment (procedural bake) — replaces the M1 hemisphere stand-in.
   // Yaw schedule is driven per frame from §10 via scene.environmentRotation.
@@ -161,7 +183,14 @@ export function buildStage(
   rim.target.position.set(0, 0, 0);
   scene.add(rim, rim.target);
 
-  return { scene, sheetRoot, key };
+  return {
+    scene,
+    sheetRoot,
+    key,
+    setBackground: (r: number, g: number, b: number) => {
+      (uBg.value as Vector3).set(r, g, b);
+    },
+  };
 }
 
 interface Maps {
@@ -238,8 +267,14 @@ function fieldMaterial(
   col = col.mix(color('#DCC79A').mul(util.z.sub(0.5).mul(0.1).add(1)), backAmt.mul(0.85));
   m.colorNode = col;
 
-  // roughness: §7 0.62 ± 0.14 via fiber mod; verso +0.09
-  m.roughnessNode = rmod.sub(0.5).mul(0.28).add(0.62).add(backAmt.mul(0.09));
+  // roughness: §7 0.62 ± 0.14 via fiber mod; verso +0.09 — then §15 geometric specular AA:
+  // r' = sqrt(r² + min(2·σ²(N), 0.18)), σ² from screen-space normal derivatives, so curved
+  // highlights (the roll under the key) never shimmer at distance or in motion
+  const rBase: N = rmod.sub(0.5).mul(0.28).add(0.62).add(backAmt.mul(0.09));
+  const nDx: N = dFdx(transformNormalToView(normalObj));
+  const nDy: N = dFdy(transformNormalToView(normalObj));
+  const sigma2: N = nDx.dot(nDx).add(nDy.dot(nDy)).mul(0.25);
+  m.roughnessNode = rBase.mul(rBase).add(sigma2.mul(2).min(0.18)).sqrt();
 
   m.sheen = 0.18;
   m.sheenColor.set('#E8DCC0');

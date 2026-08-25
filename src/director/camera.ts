@@ -78,7 +78,7 @@ function focalAt(p: number): number {
 }
 
 export class CameraRig {
-  readonly camera = new PerspectiveCamera(30, 16 / 9, 0.05, 4.0);
+  readonly camera = new PerspectiveCamera(30, 16 / 9, 0.05, 8.0); // far covers the background sphere from every pose
 
   private readonly posCurve = new CatmullRomCurve3(
     ANCHORS.map((a) => a.pos),

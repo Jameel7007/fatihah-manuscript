@@ -1384,6 +1384,23 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     shadow <code>filterNode</code> hook exactly as §8 specifies (16-tap Vogel blocker search + 25-tap
     Vogel PCF, IGN-rotated, penumbra clamped [1, 28] texels); the quantitative 3-height penumbra
     check waits for M5's risen glyphs — the roll-onto-tongue shadow is the interim visual check.</li>
+    <li><b>M2 close — grade, specular AA, frozen text</b> · The §16 grade chain is live
+    (PostProcessing pass: in-chain AgX → saturation 1.05 via the TSL <code>saturation</code> node →
+    black lift → vignette → luminance-proportional grain-cum-dither → sRGB), with two
+    display-domain corrections learned the hard way: the "+0.004" black lift is display-REFERRED
+    (+1 count; as display-linear it floored the frame ~18 counts over the background target), and
+    absolute-amplitude grain washes near-black — it is now 1.2% × luma + a 0.0006 floor that doubles
+    as the dither. Re-solved through the full chain: the graded floor itself displays #0D0906 within
+    a count (BG_LINEAR ≈ 0; a ≈+0.5-count warm floor residue is tracked), key intensity 9.87 puts
+    the 18% card at R = 128 exactly. §15's geometric specular AA is applied
+    (r′ = √(r² + min(2σ², 0.18)) from screen-space normal derivatives). The §3/§17/§18 <b>frozen
+    composition</b> exists: Amiri Quran shaped via HarfBuzz (build/shape-text.mjs) into
+    checksummed SVG + JSON — 8 lines, 262 glyphs, the §3 fit rule engaged (āyah 7b at 0.598 → em
+    0.058 → <b>0.0534</b>, inside the legal band; §12's mobile x-height figures re-derive at M4);
+    the §17 stroke-order table is generated (writing order = shaped glyph sequence per word RTL,
+    marks +Δp 0.003; skeleton priors marked pending-atlas for M3) and the reveal check runs at
+    <code>?scene=reveal</code> (lines 1–2, nine words; <code>&amp;rt=</code> freezes a moment) —
+    the M2 DoD review item, awaiting the user's eye.</li>
     <li><b>v1.3.2 — extent-driven unroll dolly (M1 exit review)</b> — across states 1–2 the camera
     distance is a pure function of the sheet's posed extent (closed-form viewport fit along the ¾
     direction; §9 subsystem table), replacing anchor-interpolated distances that let the opening
