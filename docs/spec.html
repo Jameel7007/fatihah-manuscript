@@ -143,7 +143,7 @@
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.4.1 · true-rectangle justified block</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.4.2 · measured leading</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -274,13 +274,13 @@
   <div class="tw"><table>
     <thead><tr><th>Property</th><th class="n">Value</th><th>Reasoning</th></tr></thead>
     <tbody>
-      <tr><td>Flow &amp; line count</td><td class="n">8 or 7 — two frozen variants</td><td><b>v1.4.1:</b> the seven āyāt run as one continuous flow (classical manuscript convention), broken by a <b>minimum-unevenness DP</b> at word boundaries against the column (stretch spread as evenly as the caps allow across all lines — the block is a true rectangle). Two variants are frozen pending the reviewer's choice: the <b>8-line</b> block at em 0.058 and the classical Ottoman <b>7-line</b> block at em 0.0585 (the largest hand the band admits). Fit conflicts re-break lines — never shrink an individual line's em, never re-kern</td></tr>
+      <tr><td>Flow &amp; line count</td><td class="n">8 or 7 — two frozen variants</td><td><b>v1.4.1:</b> the seven āyāt run as one continuous flow (classical manuscript convention), broken by a <b>minimum-unevenness DP</b> at word boundaries against the column (stretch spread as evenly as the caps allow across all lines — the block is a true rectangle). Two variants are frozen pending the reviewer's choice: the <b>8-line</b> and the classical Ottoman <b>7-line</b> block, both currently at the band-floor em 0.052 (see the leading row — the clearance rule sets the hand). Fit conflicts re-break lines — never shrink an individual line's em, never re-kern</td></tr>
       <tr><td>Margins (top / bottom / sides)</td><td class="n">0.150 / 0.135 / 0.115</td><td>Head margin largest, per manuscript convention; text column width 0.55 = 70.5% of sheet width</td></tr>
-      <tr><td>Line pitch</td><td class="n">0.0875</td><td>Baselines at v = baseline₀ + i · 0.0875; baseline₀ = 0.196 + (8 − N) · 0.0875 / 2 recenters the block if the emergent line count N moves off 8</td></tr>
-      <tr><td>Em size (all lines)</td><td class="n">0.058 / 0.0585</td><td>One em for every line <b>including the Basmalah</b> — the references keep a uniform hand and let elongation, not scale, articulate the opening; accept em ∈ [0.052, 0.060] globally (8-line variant 0.058, 7-line variant 0.0585), resolve conflicts by re-breaking (row 1)</td></tr>
+      <tr><td>Leading (v1.4.2 rule)</td><td class="n">measured, band-clamped</td><td><b>Rule:</b> the vertical clearance between the lowest ink of line n and the highest ink of line n+1 — measured on the shaped glyph boxes, per horizontal position (ink over ink) — must be ≥ <b>0.35 em</b>; the pitch is the smallest value satisfying every pair, then ×<b>1.10</b> for the relief/extrusion stages whose shadows fall into the gap. The pitch is clamped to what the text band admits and the ink block is centered in the band. <b>Status:</b> the rule pitch (≈ 2.33 em) exceeds what the band admits at every legal em — both variants are frozen at the band-clamped maximum: 8-line pitch 0.0885 (1.70 em, ink daylight −0.06 em — still touching), 7-line pitch 0.1033 (1.99 em, daylight +0.22 em). The constraint conflict (band vs em band vs clearance) is before the reviewer</td></tr>
+      <tr><td>Em size (all lines)</td><td class="n">0.052 / 0.052</td><td>One em for every line <b>including the Basmalah</b> — the references keep a uniform hand and let elongation, not scale, articulate the opening; accept em ∈ [0.052, 0.060] globally; both variants currently sit at the band floor, where the clamped leading buys the most ink daylight; resolve fit conflicts by re-breaking (row 1)</td></tr>
       <tr><td>Basmalah line</td><td class="n">1.0 × em, full column</td><td>Its own line, right-aligned, filling the column edge-to-edge through a <b>single elongation of the sīn joint in بسم</b> — the great sweep of the classical opening; no other joint in the line stretches</td></tr>
       <tr><td>x-height reference</td><td class="n">≈ 0.021 (0.36 em)</td><td><b>Rule:</b> measured from source as median tooth-glyph band height; drives extrusion depth &amp; bevel width (§6)</td></tr>
-      <tr><td>Line body / breathing</td><td class="n">0.070 / 0.0175</td><td>Ascender–descender envelope 80% of pitch; block bottom at 0.8385 leaves 0.0265 spare above the bottom margin</td></tr>
+      <tr><td>Text band</td><td class="n">v ∈ [0.150, 0.865]</td><td>The §3 margins as a hard vertical container: the leading clamp and the block centering both derive from it; the ink block currently fills it exactly (height 0.715) in both variants</td></tr>
       <tr><td>Block justification</td><td class="n">kashida only, balanced</td><td>Every line fills the column x ∈ [−0.275, +0.275] edge-to-edge via <b>kashida elongation at calligraphically permitted joints only</b> — U+0640 inserted and re-shaped through Amiri Quran's contextual kashida forms, so the outline is drawn, not stretched. <b>Balanced elongation:</b> any single kashida ≤ 1.5 em; slack spreads across 2–3 joints per line in distinct words (sīn/shīn teeth first, then before-final joints, then the flat bases of ص ض ك). <b>Never</b> letter-spacing, <b>never</b> word-gap inflation. Excluded joints: the لله ligature (tested on the <em>bare</em> letters — diacritics sit between them), lām-alif. The Basmalah's great sīn is the one uncapped elongation</td></tr>
       <tr><td>Closing line</td><td class="n">≥ 3 words, no orphan</td><td>The final line carries at least three words and ends on the āyah-7 marker — <span dir="rtl" style="font-family:var(--arabic)">ٱلضَّآلِّينَ</span> never sits alone, and a single word is never stretched across a line. It fills within the elongation caps when it can (both current variants do — true rectangle); otherwise it stays short and is completed by 2–3 small gold rosette fillers, classical style</td></tr>
       <tr><td>Text integrity</td><td class="n">byte-identical</td><td>The pinned canonical text is immutable; justification is a <em>presentation stage applied after</em> <span style="font-family:var(--mono);font-size:12px">verify-text</span> passes. The verifier then re-reads the frozen presentation strings, strips U+0640, and must recover the canonical flow byte-for-byte — proving justification only ever inserts kashida (green: all seven āyāt identical)</td></tr>
@@ -1310,7 +1310,7 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
   </div>
 
   <p style="margin-top:34px;border-top:1px solid var(--line);padding-top:18px;font-size:12.5px;color:var(--faint)">
-  Al-Fātiḥah 3D Manuscript · specification v1.4.1 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
+  Al-Fātiḥah 3D Manuscript · specification v1.4.2 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
   authoritative and untouchable · no bloom, no aura, no spectacle — the light does the reverence.</p>
 </section>
 
@@ -1468,6 +1468,29 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     §7/§15 parchment recipe — fbm fiber grain 340×280, undulation, macro/blotch discoloration, the
     two historic stains, aged edges — so the block can be judged against the sheet); four 4000-px
     renders under <span style="font-family:var(--mono);font-size:12px">qa/proofs/</span>.</li>
+  </ol>
+
+  <h3>v1.4.2 — measured leading <span class="tag">user direction, 2026-08-25 · constraint conflict open</span></h3>
+  <ol>
+    <li><b>§3 leading rule</b> — pitch is no longer an authored constant: the pipeline measures, on
+    the shaped glyph boxes of each frozen variant, the per-x ink-over-ink clearance between adjacent
+    lines (extremes at different x never meet), sets the smallest pitch giving ≥ 0.35 em everywhere,
+    adds 10% for the relief stages, clamps to the text band v ∈ [0.150, 0.865], and centers the ink
+    block in the band. The old 0.0875 pitch measured out at −0.19…−0.51 em of clearance — genuine
+    ink collision, as reviewed.</li>
+    <li><b>Finding — the constraint system is overdetermined.</b> The rule pitch is ≈ 2.33 em; the
+    band admits at most 1.70 em (8-line) / 1.99 em (7-line) at the band-floor em 0.052, and the
+    feasibility scan shows <em>empty windows in both directions</em>: kashida-cap justification needs
+    em ≥ 0.051 (8-line) / 0.046 (7-line), while the full rule would fit only at em ≈ 0.039 / 0.043 —
+    both below the legal band. Both variants are frozen at the in-band optimum (em 0.052, maximum
+    clamped pitch): the 7-line reaches +0.22 em of real daylight, the 8-line −0.06 em (still
+    touching). Which constraint yields — clearance target, em band, sheet/margins, or line count —
+    is the reviewer's call; svg shas f966bd03… / 1b0232dc….</li>
+    <li><b>Justification fix</b> — the per-joint 1.5 em cap now bounds the <em>measured</em> width
+    contribution instead of the tatweel count (Amiri's contextual forms deliver less advance per
+    tatweel than the isolated measure, so a count cap under-delivered the promised capacity), with
+    exact marginals tracked per adjustment; the line breaker's capacity model keeps one tatweel
+    quantum of slack so admitted lines can actually reach the column edge.</li>
   </ol>
 </section>
 

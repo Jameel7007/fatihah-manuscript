@@ -2,7 +2,7 @@
  "note": "§17 per-glyph override table. Writing order = shaped glyph sequence per word (RTL), marks +Δp 0.003; kashida strokes are base strokes of their word. Skeleton priors are applied at atlas build (M3).",
  "variant": "8line",
  "checksums": {
-  "svg": "cc193c23042a1337802bdd7bee8c1f088b6c7a7319244562d2b83f51764a06cd",
+  "svg": "f966bd03b10383fca5e6c5b7d3c1fb769fb19bbef2d0b9e8e08553477106f9ae",
   "font": "e2a47644762d16bdfb6d33e0d8db8c6ff30beae84150ef5a705316bbd829455c"
  },
  "markDelayDp": 0.003,
@@ -14,7 +14,7 @@
    ],
    "glyphs": [
     {
-     "order": 44,
+     "order": 50,
      "gid": 67,
      "word": 3,
      "kind": "mark",
@@ -24,7 +24,7 @@
      "handOverride": null
     },
     {
-     "order": 40,
+     "order": 46,
      "gid": 574,
      "word": 3,
      "kind": "base",
@@ -34,7 +34,7 @@
      "handOverride": null
     },
     {
-     "order": 39,
+     "order": 45,
      "gid": 565,
      "word": 3,
      "kind": "base",
@@ -44,7 +44,7 @@
      "handOverride": null
     },
     {
-     "order": 43,
+     "order": 49,
      "gid": 67,
      "word": 3,
      "kind": "mark",
@@ -54,7 +54,7 @@
      "handOverride": null
     },
     {
-     "order": 38,
+     "order": 44,
      "gid": 483,
      "word": 3,
      "kind": "base",
@@ -64,7 +64,7 @@
      "handOverride": null
     },
     {
-     "order": 41,
+     "order": 47,
      "gid": 347,
      "word": 3,
      "kind": "mark",
@@ -74,7 +74,7 @@
      "handOverride": null
     },
     {
-     "order": 42,
+     "order": 48,
      "gid": 68,
      "word": 3,
      "kind": "mark",
@@ -84,7 +84,7 @@
      "handOverride": null
     },
     {
-     "order": 37,
+     "order": 43,
      "gid": 859,
      "word": 3,
      "kind": "base",
@@ -94,7 +94,7 @@
      "handOverride": null
     },
     {
-     "order": 36,
+     "order": 42,
      "gid": 857,
      "word": 3,
      "kind": "base",
@@ -104,7 +104,7 @@
      "handOverride": null
     },
     {
-     "order": 35,
+     "order": 41,
      "gid": 90,
      "word": 3,
      "kind": "base",
@@ -114,7 +114,7 @@
      "handOverride": null
     },
     {
-     "order": 34,
+     "order": 40,
      "gid": 67,
      "word": 2,
      "kind": "mark",
@@ -124,7 +124,7 @@
      "handOverride": null
     },
     {
-     "order": 28,
+     "order": 34,
      "gid": 501,
      "word": 2,
      "kind": "base",
@@ -134,7 +134,7 @@
      "handOverride": null
     },
     {
-     "order": 33,
+     "order": 39,
      "gid": 89,
      "word": 2,
      "kind": "mark",
@@ -144,7 +144,7 @@
      "handOverride": null
     },
     {
-     "order": 32,
+     "order": 38,
      "gid": 65,
      "word": 2,
      "kind": "mark",
@@ -154,7 +154,7 @@
      "handOverride": null
     },
     {
-     "order": 27,
+     "order": 33,
      "gid": 1056,
      "word": 2,
      "kind": "base",
@@ -164,7 +164,7 @@
      "handOverride": null
     },
     {
-     "order": 31,
+     "order": 37,
      "gid": 69,
      "word": 2,
      "kind": "mark",
@@ -174,7 +174,7 @@
      "handOverride": null
     },
     {
-     "order": 26,
+     "order": 32,
      "gid": 1053,
      "word": 2,
      "kind": "base",
@@ -184,7 +184,7 @@
      "handOverride": null
     },
     {
-     "order": 29,
+     "order": 35,
      "gid": 347,
      "word": 2,
      "kind": "mark",
@@ -194,7 +194,7 @@
      "handOverride": null
     },
     {
-     "order": 30,
+     "order": 36,
      "gid": 68,
      "word": 2,
      "kind": "mark",
@@ -204,7 +204,7 @@
      "handOverride": null
     },
     {
-     "order": 25,
+     "order": 31,
      "gid": 859,
      "word": 2,
      "kind": "base",
@@ -214,7 +214,7 @@
      "handOverride": null
     },
     {
-     "order": 24,
+     "order": 30,
      "gid": 857,
      "word": 2,
      "kind": "base",
@@ -224,7 +224,7 @@
      "handOverride": null
     },
     {
-     "order": 23,
+     "order": 29,
      "gid": 90,
      "word": 2,
      "kind": "base",
@@ -234,7 +234,7 @@
      "handOverride": null
     },
     {
-     "order": 22,
+     "order": 28,
      "gid": 67,
      "word": 1,
      "kind": "mark",
@@ -244,7 +244,7 @@
      "handOverride": null
     },
     {
-     "order": 19,
+     "order": 25,
      "gid": 291,
      "word": 1,
      "kind": "base",
@@ -254,7 +254,7 @@
      "handOverride": null
     },
     {
-     "order": 20,
+     "order": 26,
      "gid": 347,
      "word": 1,
      "kind": "mark",
@@ -264,7 +264,7 @@
      "handOverride": null
     },
     {
-     "order": 21,
+     "order": 27,
      "gid": 68,
      "word": 1,
      "kind": "mark",
@@ -274,7 +274,7 @@
      "handOverride": null
     },
     {
-     "order": 18,
+     "order": 24,
      "gid": 290,
      "word": 1,
      "kind": "base",
@@ -284,7 +284,7 @@
      "handOverride": null
     },
     {
-     "order": 17,
+     "order": 23,
      "gid": 289,
      "word": 1,
      "kind": "base",
@@ -294,7 +294,7 @@
      "handOverride": null
     },
     {
-     "order": 16,
+     "order": 22,
      "gid": 90,
      "word": 1,
      "kind": "base",
@@ -304,7 +304,7 @@
      "handOverride": null
     },
     {
-     "order": 15,
+     "order": 21,
      "gid": 67,
      "word": 0,
      "kind": "mark",
@@ -314,11 +314,71 @@
      "handOverride": null
     },
     {
-     "order": 12,
+     "order": 18,
      "gid": 498,
      "word": 0,
      "kind": "base",
      "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 17,
+     "gid": 51,
+     "word": 0,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 16,
+     "gid": 51,
+     "word": 0,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 15,
+     "gid": 51,
+     "word": 0,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 14,
+     "gid": 51,
+     "word": 0,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 13,
+     "gid": 51,
+     "word": 0,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 12,
+     "gid": 51,
+     "word": 0,
+     "kind": "base",
+     "kashida": true,
      "delay": 0,
      "skeletonPriors": "pending-atlas (M3)",
      "handOverride": null
@@ -424,7 +484,7 @@
      "handOverride": null
     },
     {
-     "order": 14,
+     "order": 20,
      "gid": 69,
      "word": 0,
      "kind": "mark",
@@ -444,7 +504,7 @@
      "handOverride": null
     },
     {
-     "order": 13,
+     "order": 19,
      "gid": 67,
      "word": 0,
      "kind": "mark",
@@ -472,7 +532,107 @@
    ],
    "glyphs": [
     {
+     "order": 87,
+     "gid": 65,
+     "word": 3,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
      "order": 81,
+     "gid": 501,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 80,
+     "gid": 1314,
+     "word": 3,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 79,
+     "gid": 458,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 78,
+     "gid": 1313,
+     "word": 3,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 86,
+     "gid": 67,
+     "word": 3,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 77,
+     "gid": 773,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 85,
+     "gid": 65,
+     "word": 3,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 76,
+     "gid": 772,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 84,
+     "gid": 89,
+     "word": 3,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 83,
      "gid": 65,
      "word": 3,
      "kind": "mark",
@@ -483,106 +643,6 @@
     },
     {
      "order": 75,
-     "gid": 501,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 74,
-     "gid": 1270,
-     "word": 3,
-     "kind": "base",
-     "kashida": true,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 73,
-     "gid": 458,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 72,
-     "gid": 1269,
-     "word": 3,
-     "kind": "base",
-     "kashida": true,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 80,
-     "gid": 67,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 71,
-     "gid": 773,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 79,
-     "gid": 65,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 70,
-     "gid": 772,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 78,
-     "gid": 89,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 77,
-     "gid": 65,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 69,
      "gid": 439,
      "word": 3,
      "kind": "base",
@@ -592,7 +652,7 @@
      "handOverride": null
     },
     {
-     "order": 76,
+     "order": 82,
      "gid": 69,
      "word": 3,
      "kind": "mark",
@@ -602,7 +662,7 @@
      "handOverride": null
     },
     {
-     "order": 68,
+     "order": 74,
      "gid": 496,
      "word": 3,
      "kind": "base",
@@ -612,7 +672,7 @@
      "handOverride": null
     },
     {
-     "order": 67,
+     "order": 73,
      "gid": 90,
      "word": 3,
      "kind": "base",
@@ -622,7 +682,7 @@
      "handOverride": null
     },
     {
-     "order": 65,
+     "order": 71,
      "gid": 67,
      "word": 2,
      "kind": "mark",
@@ -632,7 +692,7 @@
      "handOverride": null
     },
     {
-     "order": 66,
+     "order": 72,
      "gid": 68,
      "word": 2,
      "kind": "mark",
@@ -642,7 +702,7 @@
      "handOverride": null
     },
     {
-     "order": 63,
+     "order": 69,
      "gid": 32,
      "word": 2,
      "kind": "base",
@@ -652,7 +712,7 @@
      "handOverride": null
     },
     {
-     "order": 64,
+     "order": 70,
      "gid": 65,
      "word": 2,
      "kind": "mark",
@@ -662,7 +722,7 @@
      "handOverride": null
     },
     {
-     "order": 62,
+     "order": 68,
      "gid": 41,
      "word": 2,
      "kind": "base",
@@ -672,7 +732,7 @@
      "handOverride": null
     },
     {
-     "order": 61,
+     "order": 67,
      "gid": 67,
      "word": 1,
      "kind": "mark",
@@ -682,7 +742,7 @@
      "handOverride": null
     },
     {
-     "order": 57,
+     "order": 63,
      "gid": 291,
      "word": 1,
      "kind": "base",
@@ -692,7 +752,7 @@
      "handOverride": null
     },
     {
-     "order": 58,
+     "order": 64,
      "gid": 347,
      "word": 1,
      "kind": "mark",
@@ -702,7 +762,7 @@
      "handOverride": null
     },
     {
-     "order": 60,
+     "order": 66,
      "gid": 68,
      "word": 1,
      "kind": "mark",
@@ -712,7 +772,7 @@
      "handOverride": null
     },
     {
-     "order": 56,
+     "order": 62,
      "gid": 290,
      "word": 1,
      "kind": "base",
@@ -722,7 +782,7 @@
      "handOverride": null
     },
     {
-     "order": 59,
+     "order": 65,
      "gid": 67,
      "word": 1,
      "kind": "mark",
@@ -732,7 +792,7 @@
      "handOverride": null
     },
     {
-     "order": 55,
+     "order": 61,
      "gid": 289,
      "word": 1,
      "kind": "base",
@@ -742,7 +802,7 @@
      "handOverride": null
     },
     {
-     "order": 54,
+     "order": 60,
      "gid": 66,
      "word": 0,
      "kind": "mark",
@@ -752,7 +812,7 @@
      "handOverride": null
     },
     {
-     "order": 50,
+     "order": 56,
      "gid": 468,
      "word": 0,
      "kind": "base",
@@ -762,8 +822,8 @@
      "handOverride": null
     },
     {
-     "order": 49,
-     "gid": 1270,
+     "order": 55,
+     "gid": 1314,
      "word": 0,
      "kind": "base",
      "kashida": true,
@@ -772,7 +832,7 @@
      "handOverride": null
     },
     {
-     "order": 53,
+     "order": 59,
      "gid": 69,
      "word": 0,
      "kind": "mark",
@@ -782,7 +842,7 @@
      "handOverride": null
     },
     {
-     "order": 48,
+     "order": 54,
      "gid": 500,
      "word": 0,
      "kind": "base",
@@ -792,7 +852,7 @@
      "handOverride": null
     },
     {
-     "order": 52,
+     "order": 58,
      "gid": 65,
      "word": 0,
      "kind": "mark",
@@ -802,7 +862,7 @@
      "handOverride": null
     },
     {
-     "order": 47,
+     "order": 53,
      "gid": 675,
      "word": 0,
      "kind": "base",
@@ -812,7 +872,7 @@
      "handOverride": null
     },
     {
-     "order": 51,
+     "order": 57,
      "gid": 69,
      "word": 0,
      "kind": "mark",
@@ -822,7 +882,7 @@
      "handOverride": null
     },
     {
-     "order": 46,
+     "order": 52,
      "gid": 549,
      "word": 0,
      "kind": "base",
@@ -832,7 +892,7 @@
      "handOverride": null
     },
     {
-     "order": 45,
+     "order": 51,
      "gid": 90,
      "word": 0,
      "kind": "base",
@@ -850,7 +910,7 @@
    ],
    "glyphs": [
     {
-     "order": 105,
+     "order": 111,
      "gid": 67,
      "word": 1,
      "kind": "mark",
@@ -860,7 +920,7 @@
      "handOverride": null
     },
     {
-     "order": 101,
+     "order": 107,
      "gid": 498,
      "word": 1,
      "kind": "base",
@@ -870,8 +930,8 @@
      "handOverride": null
     },
     {
-     "order": 100,
-     "gid": 1269,
+     "order": 106,
+     "gid": 1315,
      "word": 1,
      "kind": "base",
      "kashida": true,
@@ -880,7 +940,7 @@
      "handOverride": null
     },
     {
-     "order": 99,
+     "order": 105,
      "gid": 458,
      "word": 1,
      "kind": "base",
@@ -890,7 +950,7 @@
      "handOverride": null
     },
     {
-     "order": 104,
+     "order": 110,
      "gid": 67,
      "word": 1,
      "kind": "mark",
@@ -900,7 +960,7 @@
      "handOverride": null
     },
     {
-     "order": 98,
+     "order": 104,
      "gid": 483,
      "word": 1,
      "kind": "base",
@@ -910,8 +970,18 @@
      "handOverride": null
     },
     {
-     "order": 102,
+     "order": 108,
      "gid": 347,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 109,
+     "gid": 68,
      "word": 1,
      "kind": "mark",
      "kashida": false,
@@ -921,16 +991,6 @@
     },
     {
      "order": 103,
-     "gid": 68,
-     "word": 1,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 97,
      "gid": 859,
      "word": 1,
      "kind": "base",
@@ -940,7 +1000,7 @@
      "handOverride": null
     },
     {
-     "order": 96,
+     "order": 102,
      "gid": 857,
      "word": 1,
      "kind": "base",
@@ -950,7 +1010,7 @@
      "handOverride": null
     },
     {
-     "order": 95,
+     "order": 101,
      "gid": 90,
      "word": 1,
      "kind": "base",
@@ -960,7 +1020,7 @@
      "handOverride": null
     },
     {
-     "order": 94,
+     "order": 100,
      "gid": 67,
      "word": 0,
      "kind": "mark",
@@ -970,7 +1030,7 @@
      "handOverride": null
     },
     {
-     "order": 88,
+     "order": 94,
      "gid": 501,
      "word": 0,
      "kind": "base",
@@ -980,8 +1040,8 @@
      "handOverride": null
     },
     {
-     "order": 87,
-     "gid": 1269,
+     "order": 93,
+     "gid": 1315,
      "word": 0,
      "kind": "base",
      "kashida": true,
@@ -990,7 +1050,7 @@
      "handOverride": null
     },
     {
-     "order": 93,
+     "order": 99,
      "gid": 89,
      "word": 0,
      "kind": "mark",
@@ -1000,7 +1060,7 @@
      "handOverride": null
     },
     {
-     "order": 92,
+     "order": 98,
      "gid": 65,
      "word": 0,
      "kind": "mark",
@@ -1010,7 +1070,7 @@
      "handOverride": null
     },
     {
-     "order": 86,
+     "order": 92,
      "gid": 1056,
      "word": 0,
      "kind": "base",
@@ -1020,7 +1080,7 @@
      "handOverride": null
     },
     {
-     "order": 91,
+     "order": 97,
      "gid": 69,
      "word": 0,
      "kind": "mark",
@@ -1030,7 +1090,7 @@
      "handOverride": null
     },
     {
-     "order": 85,
+     "order": 91,
      "gid": 1053,
      "word": 0,
      "kind": "base",
@@ -1040,7 +1100,7 @@
      "handOverride": null
     },
     {
-     "order": 89,
+     "order": 95,
      "gid": 347,
      "word": 0,
      "kind": "mark",
@@ -1050,7 +1110,7 @@
      "handOverride": null
     },
     {
-     "order": 90,
+     "order": 96,
      "gid": 68,
      "word": 0,
      "kind": "mark",
@@ -1060,7 +1120,7 @@
      "handOverride": null
     },
     {
-     "order": 84,
+     "order": 90,
      "gid": 859,
      "word": 0,
      "kind": "base",
@@ -1070,7 +1130,7 @@
      "handOverride": null
     },
     {
-     "order": 83,
+     "order": 89,
      "gid": 857,
      "word": 0,
      "kind": "base",
@@ -1080,7 +1140,7 @@
      "handOverride": null
     },
     {
-     "order": 82,
+     "order": 88,
      "gid": 90,
      "word": 0,
      "kind": "base",
@@ -1092,66 +1152,6 @@
     {
      "order": 119,
      "gid": 67,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 116,
-     "gid": 56,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 118,
-     "gid": 69,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 115,
-     "gid": 526,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 117,
-     "gid": 65,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 114,
-     "gid": 447,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 113,
-     "gid": 67,
      "word": 2,
      "kind": "mark",
      "kashida": false,
@@ -1160,7 +1160,7 @@
      "handOverride": null
     },
     {
-     "order": 109,
+     "order": 115,
      "gid": 492,
      "word": 2,
      "kind": "base",
@@ -1170,8 +1170,8 @@
      "handOverride": null
     },
     {
-     "order": 108,
-     "gid": 1269,
+     "order": 114,
+     "gid": 1315,
      "word": 2,
      "kind": "base",
      "kashida": true,
@@ -1180,7 +1180,7 @@
      "handOverride": null
     },
     {
-     "order": 112,
+     "order": 118,
      "gid": 67,
      "word": 2,
      "kind": "mark",
@@ -1190,7 +1190,7 @@
      "handOverride": null
     },
     {
-     "order": 107,
+     "order": 113,
      "gid": 497,
      "word": 2,
      "kind": "base",
@@ -1200,7 +1200,7 @@
      "handOverride": null
     },
     {
-     "order": 111,
+     "order": 117,
      "gid": 89,
      "word": 2,
      "kind": "mark",
@@ -1210,7 +1210,7 @@
      "handOverride": null
     },
     {
-     "order": 110,
+     "order": 116,
      "gid": 65,
      "word": 2,
      "kind": "mark",
@@ -1220,7 +1220,7 @@
      "handOverride": null
     },
     {
-     "order": 106,
+     "order": 112,
      "gid": 499,
      "word": 2,
      "kind": "base",
@@ -1238,298 +1238,8 @@
    ],
    "glyphs": [
     {
-     "order": 128,
+     "order": 135,
      "gid": 67,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 125,
-     "gid": 501,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 124,
-     "gid": 1270,
-     "word": 0,
-     "kind": "base",
-     "kashida": true,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 123,
-     "gid": 447,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 127,
-     "gid": 67,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 126,
-     "gid": 68,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 122,
-     "gid": 1043,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 121,
-     "gid": 1038,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 120,
-     "gid": 90,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 156,
-     "gid": 65,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 151,
-     "gid": 54,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 150,
-     "gid": 430,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 149,
-     "gid": 1270,
-     "word": 3,
-     "kind": "base",
-     "kashida": true,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 154,
-     "gid": 347,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 155,
-     "gid": 68,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 148,
-     "gid": 447,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 152,
-     "gid": 351,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 147,
-     "gid": 1171,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 153,
-     "gid": 65,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 146,
-     "gid": 59,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 145,
-     "gid": 66,
-     "word": 2,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 141,
-     "gid": 468,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 140,
-     "gid": 1270,
-     "word": 2,
-     "kind": "base",
-     "kashida": true,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 144,
-     "gid": 66,
-     "word": 2,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 139,
-     "gid": 459,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 143,
-     "gid": 69,
-     "word": 2,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 138,
-     "gid": 439,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 142,
-     "gid": 65,
-     "word": 2,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 137,
-     "gid": 450,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 136,
-     "gid": 65,
      "word": 1,
      "kind": "mark",
      "kashida": false,
@@ -1539,7 +1249,7 @@
     },
     {
      "order": 132,
-     "gid": 54,
+     "gid": 501,
      "word": 1,
      "kind": "base",
      "kashida": false,
@@ -1549,7 +1259,17 @@
     },
     {
      "order": 131,
-     "gid": 430,
+     "gid": 1315,
+     "word": 1,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 130,
+     "gid": 447,
      "word": 1,
      "kind": "base",
      "kashida": false,
@@ -1559,7 +1279,7 @@
     },
     {
      "order": 134,
-     "gid": 347,
+     "gid": 67,
      "word": 1,
      "kind": "mark",
      "kashida": false,
@@ -1568,7 +1288,7 @@
      "handOverride": null
     },
     {
-     "order": 135,
+     "order": 133,
      "gid": 68,
      "word": 1,
      "kind": "mark",
@@ -1578,8 +1298,8 @@
      "handOverride": null
     },
     {
-     "order": 130,
-     "gid": 982,
+     "order": 129,
+     "gid": 1043,
      "word": 1,
      "kind": "base",
      "kashida": false,
@@ -1588,9 +1308,29 @@
      "handOverride": null
     },
     {
-     "order": 133,
-     "gid": 351,
+     "order": 128,
+     "gid": 1038,
      "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 127,
+     "gid": 90,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 126,
+     "gid": 67,
+     "word": 0,
      "kind": "mark",
      "kashida": false,
      "delay": 0.003,
@@ -1598,9 +1338,229 @@
      "handOverride": null
     },
     {
-     "order": 129,
+     "order": 123,
+     "gid": 56,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 125,
+     "gid": 69,
+     "word": 0,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 122,
+     "gid": 526,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 121,
+     "gid": 1315,
+     "word": 0,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 124,
+     "gid": 65,
+     "word": 0,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 120,
+     "gid": 447,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 152,
+     "gid": 66,
+     "word": 3,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 148,
+     "gid": 468,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 147,
+     "gid": 1315,
+     "word": 3,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 151,
+     "gid": 66,
+     "word": 3,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 146,
+     "gid": 459,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 150,
+     "gid": 69,
+     "word": 3,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 145,
+     "gid": 439,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 149,
+     "gid": 65,
+     "word": 3,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 144,
+     "gid": 450,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 143,
+     "gid": 65,
+     "word": 2,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 139,
+     "gid": 54,
+     "word": 2,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 138,
+     "gid": 430,
+     "word": 2,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 141,
+     "gid": 347,
+     "word": 2,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 142,
+     "gid": 68,
+     "word": 2,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 137,
+     "gid": 982,
+     "word": 2,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 140,
+     "gid": 351,
+     "word": 2,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 136,
      "gid": 29,
-     "word": 1,
+     "word": 2,
      "kind": "base",
      "kashida": false,
      "delay": 0,
@@ -1616,268 +1576,18 @@
    ],
    "glyphs": [
     {
-     "order": 168,
-     "gid": 66,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 163,
-     "gid": 849,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 162,
-     "gid": 839,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 167,
-     "gid": 67,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 161,
-     "gid": 439,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 166,
-     "gid": 65,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 160,
-     "gid": 462,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 159,
-     "gid": 1313,
-     "word": 0,
-     "kind": "base",
-     "kashida": true,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 165,
-     "gid": 69,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 158,
-     "gid": 712,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 164,
-     "gid": 65,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 157,
-     "gid": 706,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 188,
-     "gid": 65,
-     "word": 2,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 183,
-     "gid": 47,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 187,
-     "gid": 89,
-     "word": 2,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 186,
-     "gid": 65,
-     "word": 2,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
      "order": 182,
-     "gid": 506,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 181,
-     "gid": 1270,
-     "word": 2,
-     "kind": "base",
-     "kashida": true,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 185,
-     "gid": 67,
-     "word": 2,
+     "gid": 66,
+     "word": 1,
      "kind": "mark",
      "kashida": false,
      "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 184,
-     "gid": 68,
-     "word": 2,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 180,
-     "gid": 512,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 179,
-     "gid": 496,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 178,
-     "gid": 90,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 174,
-     "gid": 430,
-     "word": 1,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 173,
-     "gid": 1313,
-     "word": 1,
-     "kind": "base",
-     "kashida": true,
-     "delay": 0,
      "skeletonPriors": "pending-atlas (M3)",
      "handOverride": null
     },
     {
      "order": 177,
-     "gid": 65,
-     "word": 1,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 172,
-     "gid": 450,
+     "gid": 849,
      "word": 1,
      "kind": "base",
      "kashida": false,
@@ -1887,6 +1597,16 @@
     },
     {
      "order": 176,
+     "gid": 839,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 181,
      "gid": 67,
      "word": 1,
      "kind": "mark",
@@ -1896,8 +1616,8 @@
      "handOverride": null
     },
     {
-     "order": 171,
-     "gid": 468,
+     "order": 175,
+     "gid": 439,
      "word": 1,
      "kind": "base",
      "kashida": false,
@@ -1906,7 +1626,107 @@
      "handOverride": null
     },
     {
-     "order": 175,
+     "order": 180,
+     "gid": 65,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 174,
+     "gid": 462,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 173,
+     "gid": 51,
+     "word": 1,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 172,
+     "gid": 51,
+     "word": 1,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 171,
+     "gid": 51,
+     "word": 1,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 170,
+     "gid": 51,
+     "word": 1,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 169,
+     "gid": 51,
+     "word": 1,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 168,
+     "gid": 51,
+     "word": 1,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 167,
+     "gid": 51,
+     "word": 1,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 166,
+     "gid": 51,
+     "word": 1,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 179,
      "gid": 69,
      "word": 1,
      "kind": "mark",
@@ -1916,8 +1736,8 @@
      "handOverride": null
     },
     {
-     "order": 170,
-     "gid": 490,
+     "order": 165,
+     "gid": 712,
      "word": 1,
      "kind": "base",
      "kashida": false,
@@ -1926,9 +1746,289 @@
      "handOverride": null
     },
     {
-     "order": 169,
-     "gid": 90,
+     "order": 178,
+     "gid": 65,
      "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 164,
+     "gid": 706,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 163,
+     "gid": 65,
+     "word": 0,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 158,
+     "gid": 54,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 157,
+     "gid": 430,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 156,
+     "gid": 1315,
+     "word": 0,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 161,
+     "gid": 347,
+     "word": 0,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 162,
+     "gid": 68,
+     "word": 0,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 155,
+     "gid": 447,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 159,
+     "gid": 351,
+     "word": 0,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 154,
+     "gid": 1171,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 160,
+     "gid": 65,
+     "word": 0,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 153,
+     "gid": 59,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 195,
+     "gid": 430,
+     "word": 2,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 194,
+     "gid": 51,
+     "word": 2,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 193,
+     "gid": 51,
+     "word": 2,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 192,
+     "gid": 51,
+     "word": 2,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 191,
+     "gid": 51,
+     "word": 2,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 190,
+     "gid": 51,
+     "word": 2,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 189,
+     "gid": 51,
+     "word": 2,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 188,
+     "gid": 51,
+     "word": 2,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 187,
+     "gid": 51,
+     "word": 2,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 198,
+     "gid": 65,
+     "word": 2,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 186,
+     "gid": 450,
+     "word": 2,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 197,
+     "gid": 67,
+     "word": 2,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 185,
+     "gid": 468,
+     "word": 2,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 196,
+     "gid": 69,
+     "word": 2,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 184,
+     "gid": 490,
+     "word": 2,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 183,
+     "gid": 90,
+     "word": 2,
      "kind": "base",
      "kashida": false,
      "delay": 0,
@@ -1944,257 +2044,7 @@
    ],
    "glyphs": [
     {
-     "order": 203,
-     "gid": 65,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 197,
-     "gid": 574,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 196,
-     "gid": 565,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 202,
-     "gid": 67,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 195,
-     "gid": 476,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 201,
-     "gid": 65,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 194,
-     "gid": 462,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 193,
-     "gid": 1313,
-     "word": 0,
-     "kind": "base",
-     "kashida": true,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 200,
-     "gid": 69,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 192,
-     "gid": 517,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 199,
-     "gid": 66,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 191,
-     "gid": 500,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 198,
-     "gid": 69,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 190,
-     "gid": 496,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 189,
-     "gid": 90,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 221,
-     "gid": 65,
-     "word": 2,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 217,
-     "gid": 501,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 216,
-     "gid": 1270,
-     "word": 2,
-     "kind": "base",
-     "kashida": true,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 215,
-     "gid": 447,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 220,
-     "gid": 67,
-     "word": 2,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 214,
-     "gid": 1042,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 218,
-     "gid": 347,
-     "word": 2,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 219,
-     "gid": 68,
-     "word": 2,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 213,
-     "gid": 1038,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 212,
-     "gid": 90,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 211,
+     "order": 224,
      "gid": 65,
      "word": 1,
      "kind": "mark",
@@ -2204,8 +2054,128 @@
      "handOverride": null
     },
     {
-     "order": 207,
-     "gid": 47,
+     "order": 218,
+     "gid": 574,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 217,
+     "gid": 565,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 223,
+     "gid": 67,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 216,
+     "gid": 476,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 222,
+     "gid": 65,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 215,
+     "gid": 462,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 214,
+     "gid": 1314,
+     "word": 1,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 221,
+     "gid": 69,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 213,
+     "gid": 517,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 220,
+     "gid": 66,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 212,
+     "gid": 500,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 219,
+     "gid": 69,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 211,
+     "gid": 496,
      "word": 1,
      "kind": "base",
      "kashida": false,
@@ -2215,48 +2185,18 @@
     },
     {
      "order": 210,
-     "gid": 89,
+     "gid": 90,
      "word": 1,
-     "kind": "mark",
+     "kind": "base",
      "kashida": false,
-     "delay": 0.003,
+     "delay": 0,
      "skeletonPriors": "pending-atlas (M3)",
      "handOverride": null
     },
     {
      "order": 209,
      "gid": 65,
-     "word": 1,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 206,
-     "gid": 506,
-     "word": 1,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 205,
-     "gid": 1270,
-     "word": 1,
-     "kind": "base",
-     "kashida": true,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 208,
-     "gid": 67,
-     "word": 1,
+     "word": 0,
      "kind": "mark",
      "kashida": false,
      "delay": 0.003,
@@ -2265,8 +2205,178 @@
     },
     {
      "order": 204,
+     "gid": 47,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 208,
+     "gid": 89,
+     "word": 0,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 207,
+     "gid": 65,
+     "word": 0,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 203,
+     "gid": 506,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 202,
+     "gid": 1313,
+     "word": 0,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 206,
+     "gid": 67,
+     "word": 0,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 205,
+     "gid": 68,
+     "word": 0,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 201,
+     "gid": 512,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 200,
+     "gid": 496,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 199,
+     "gid": 90,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 232,
+     "gid": 65,
+     "word": 2,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 228,
+     "gid": 47,
+     "word": 2,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 231,
+     "gid": 89,
+     "word": 2,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 230,
+     "gid": 65,
+     "word": 2,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 227,
+     "gid": 506,
+     "word": 2,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 226,
+     "gid": 1313,
+     "word": 2,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 229,
+     "gid": 67,
+     "word": 2,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 225,
      "gid": 510,
-     "word": 1,
+     "word": 2,
      "kind": "base",
      "kashida": false,
      "delay": 0,
@@ -2280,7 +2390,7 @@
    "ayahs": [],
    "glyphs": [
     {
-     "order": 260,
+     "order": 270,
      "gid": 67,
      "word": 3,
      "kind": "mark",
@@ -2290,8 +2400,8 @@
      "handOverride": null
     },
     {
-     "order": 255,
-     "gid": 32,
+     "order": 267,
+     "gid": 506,
      "word": 3,
      "kind": "base",
      "kashida": false,
@@ -2300,37 +2410,17 @@
      "handOverride": null
     },
     {
-     "order": 254,
-     "gid": 526,
+     "order": 266,
+     "gid": 1314,
      "word": 3,
      "kind": "base",
-     "kashida": false,
+     "kashida": true,
      "delay": 0,
      "skeletonPriors": "pending-atlas (M3)",
      "handOverride": null
     },
     {
-     "order": 259,
-     "gid": 66,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 253,
-     "gid": 511,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 258,
+     "order": 269,
      "gid": 69,
      "word": 3,
      "kind": "mark",
@@ -2340,9 +2430,49 @@
      "handOverride": null
     },
     {
-     "order": 252,
-     "gid": 438,
+     "order": 265,
+     "gid": 458,
      "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 268,
+     "gid": 65,
+     "word": 3,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 264,
+     "gid": 436,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 263,
+     "gid": 69,
+     "word": 2,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 258,
+     "gid": 498,
+     "word": 2,
      "kind": "base",
      "kashida": false,
      "delay": 0,
@@ -2351,56 +2481,16 @@
     },
     {
      "order": 257,
-     "gid": 65,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 251,
-     "gid": 500,
-     "word": 3,
+     "gid": 1314,
+     "word": 2,
      "kind": "base",
-     "kashida": false,
+     "kashida": true,
      "delay": 0,
      "skeletonPriors": "pending-atlas (M3)",
      "handOverride": null
     },
     {
-     "order": 256,
-     "gid": 69,
-     "word": 3,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 250,
-     "gid": 496,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 249,
-     "gid": 90,
-     "word": 3,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 248,
+     "order": 262,
      "gid": 67,
      "word": 2,
      "kind": "mark",
@@ -2410,8 +2500,8 @@
      "handOverride": null
     },
     {
-     "order": 245,
-     "gid": 506,
+     "order": 256,
+     "gid": 1146,
      "word": 2,
      "kind": "base",
      "kashida": false,
@@ -2420,17 +2510,7 @@
      "handOverride": null
     },
     {
-     "order": 244,
-     "gid": 1269,
-     "word": 2,
-     "kind": "base",
-     "kashida": true,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 247,
+     "order": 261,
      "gid": 69,
      "word": 2,
      "kind": "mark",
@@ -2440,8 +2520,8 @@
      "handOverride": null
     },
     {
-     "order": 243,
-     "gid": 458,
+     "order": 255,
+     "gid": 1137,
      "word": 2,
      "kind": "base",
      "kashida": false,
@@ -2450,7 +2530,7 @@
      "handOverride": null
     },
     {
-     "order": 246,
+     "order": 260,
      "gid": 65,
      "word": 2,
      "kind": "mark",
@@ -2460,8 +2540,8 @@
      "handOverride": null
     },
     {
-     "order": 242,
-     "gid": 436,
+     "order": 254,
+     "gid": 497,
      "word": 2,
      "kind": "base",
      "kashida": false,
@@ -2470,7 +2550,57 @@
      "handOverride": null
     },
     {
-     "order": 241,
+     "order": 259,
+     "gid": 65,
+     "word": 2,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 253,
+     "gid": 940,
+     "word": 2,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 252,
+     "gid": 65,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 247,
+     "gid": 440,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 246,
+     "gid": 1314,
+     "word": 1,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 251,
      "gid": 69,
      "word": 1,
      "kind": "mark",
@@ -2480,9 +2610,99 @@
      "handOverride": null
     },
     {
-     "order": 236,
-     "gid": 498,
+     "order": 245,
+     "gid": 500,
      "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 250,
+     "gid": 65,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 244,
+     "gid": 439,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 249,
+     "gid": 69,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 243,
+     "gid": 450,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 248,
+     "gid": 1257,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 242,
+     "gid": 27,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 241,
+     "gid": 65,
+     "word": 0,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 237,
+     "gid": 697,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 236,
+     "gid": 688,
+     "word": 0,
      "kind": "base",
      "kashida": false,
      "delay": 0,
@@ -2492,7 +2712,7 @@
     {
      "order": 240,
      "gid": 67,
-     "word": 1,
+     "word": 0,
      "kind": "mark",
      "kashida": false,
      "delay": 0.003,
@@ -2501,28 +2721,8 @@
     },
     {
      "order": 235,
-     "gid": 1146,
-     "word": 1,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 239,
-     "gid": 69,
-     "word": 1,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 234,
-     "gid": 1137,
-     "word": 1,
+     "gid": 1042,
+     "word": 0,
      "kind": "base",
      "kashida": false,
      "delay": 0,
@@ -2531,137 +2731,37 @@
     },
     {
      "order": 238,
-     "gid": 65,
-     "word": 1,
+     "gid": 347,
+     "word": 0,
      "kind": "mark",
      "kashida": false,
      "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 239,
+     "gid": 68,
+     "word": 0,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 234,
+     "gid": 1038,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
      "skeletonPriors": "pending-atlas (M3)",
      "handOverride": null
     },
     {
      "order": 233,
-     "gid": 497,
-     "word": 1,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 237,
-     "gid": 65,
-     "word": 1,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 232,
-     "gid": 940,
-     "word": 1,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 231,
-     "gid": 65,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 226,
-     "gid": 440,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 230,
-     "gid": 69,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 225,
-     "gid": 500,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 229,
-     "gid": 65,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 224,
-     "gid": 439,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 228,
-     "gid": 69,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 223,
-     "gid": 450,
-     "word": 0,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 227,
-     "gid": 1257,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 222,
-     "gid": 27,
+     "gid": 90,
      "word": 0,
      "kind": "base",
      "kashida": false,
@@ -2678,7 +2778,147 @@
    ],
    "glyphs": [
     {
-     "order": 290,
+     "order": 310,
+     "gid": 65,
+     "word": 3,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 305,
+     "gid": 501,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 304,
+     "gid": 1270,
+     "word": 3,
+     "kind": "base",
+     "kashida": true,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 303,
+     "gid": 458,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 309,
+     "gid": 67,
+     "word": 3,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 308,
+     "gid": 68,
+     "word": 3,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 302,
+     "gid": 496,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 301,
+     "gid": 432,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 306,
+     "gid": 347,
+     "word": 3,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 307,
+     "gid": 68,
+     "word": 3,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 300,
+     "gid": 511,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 299,
+     "gid": 496,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 298,
+     "gid": 90,
+     "word": 3,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 295,
+     "gid": 650,
+     "word": 2,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 297,
      "gid": 65,
      "word": 2,
      "kind": "mark",
@@ -2688,8 +2928,8 @@
      "handOverride": null
     },
     {
-     "order": 285,
-     "gid": 501,
+     "order": 294,
+     "gid": 648,
      "word": 2,
      "kind": "base",
      "kashida": false,
@@ -2698,28 +2938,8 @@
      "handOverride": null
     },
     {
-     "order": 284,
-     "gid": 1314,
-     "word": 2,
-     "kind": "base",
-     "kashida": true,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 283,
-     "gid": 458,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 289,
-     "gid": 67,
+     "order": 296,
+     "gid": 65,
      "word": 2,
      "kind": "mark",
      "kashida": false,
@@ -2728,18 +2948,8 @@
      "handOverride": null
     },
     {
-     "order": 288,
-     "gid": 68,
-     "word": 2,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 282,
-     "gid": 496,
+     "order": 293,
+     "gid": 59,
      "word": 2,
      "kind": "base",
      "kashida": false,
@@ -2748,29 +2958,9 @@
      "handOverride": null
     },
     {
-     "order": 281,
-     "gid": 432,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 280,
-     "gid": 1313,
-     "word": 2,
-     "kind": "base",
-     "kashida": true,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 286,
-     "gid": 347,
-     "word": 2,
+     "order": 292,
+     "gid": 69,
+     "word": 1,
      "kind": "mark",
      "kashida": false,
      "delay": 0.003,
@@ -2779,108 +2969,8 @@
     },
     {
      "order": 287,
-     "gid": 68,
-     "word": 2,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 279,
-     "gid": 511,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 278,
-     "gid": 496,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 277,
-     "gid": 90,
-     "word": 2,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 274,
-     "gid": 650,
-     "word": 1,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 276,
-     "gid": 65,
-     "word": 1,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 273,
-     "gid": 648,
-     "word": 1,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 275,
-     "gid": 65,
-     "word": 1,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 272,
-     "gid": 59,
-     "word": 1,
-     "kind": "base",
-     "kashida": false,
-     "delay": 0,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 271,
-     "gid": 69,
-     "word": 0,
-     "kind": "mark",
-     "kashida": false,
-     "delay": 0.003,
-     "skeletonPriors": "pending-atlas (M3)",
-     "handOverride": null
-    },
-    {
-     "order": 266,
      "gid": 498,
-     "word": 0,
+     "word": 1,
      "kind": "base",
      "kashida": false,
      "delay": 0,
@@ -2888,17 +2978,87 @@
      "handOverride": null
     },
     {
-     "order": 265,
-     "gid": 1314,
-     "word": 0,
+     "order": 291,
+     "gid": 67,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 286,
+     "gid": 1146,
+     "word": 1,
      "kind": "base",
-     "kashida": true,
+     "kashida": false,
      "delay": 0,
      "skeletonPriors": "pending-atlas (M3)",
      "handOverride": null
     },
     {
-     "order": 270,
+     "order": 290,
+     "gid": 69,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 285,
+     "gid": 1137,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 289,
+     "gid": 65,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 284,
+     "gid": 497,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 288,
+     "gid": 65,
+     "word": 1,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 283,
+     "gid": 940,
+     "word": 1,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 282,
      "gid": 67,
      "word": 0,
      "kind": "mark",
@@ -2908,8 +3068,8 @@
      "handOverride": null
     },
     {
-     "order": 264,
-     "gid": 1146,
+     "order": 277,
+     "gid": 32,
      "word": 0,
      "kind": "base",
      "kashida": false,
@@ -2918,7 +3078,37 @@
      "handOverride": null
     },
     {
-     "order": 269,
+     "order": 276,
+     "gid": 526,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 281,
+     "gid": 66,
+     "word": 0,
+     "kind": "mark",
+     "kashida": false,
+     "delay": 0.003,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 275,
+     "gid": 511,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 280,
      "gid": 69,
      "word": 0,
      "kind": "mark",
@@ -2928,8 +3118,8 @@
      "handOverride": null
     },
     {
-     "order": 263,
-     "gid": 1137,
+     "order": 274,
+     "gid": 438,
      "word": 0,
      "kind": "base",
      "kashida": false,
@@ -2938,7 +3128,7 @@
      "handOverride": null
     },
     {
-     "order": 268,
+     "order": 279,
      "gid": 65,
      "word": 0,
      "kind": "mark",
@@ -2948,8 +3138,8 @@
      "handOverride": null
     },
     {
-     "order": 262,
-     "gid": 497,
+     "order": 273,
+     "gid": 500,
      "word": 0,
      "kind": "base",
      "kashida": false,
@@ -2958,8 +3148,8 @@
      "handOverride": null
     },
     {
-     "order": 267,
-     "gid": 65,
+     "order": 278,
+     "gid": 69,
      "word": 0,
      "kind": "mark",
      "kashida": false,
@@ -2968,8 +3158,18 @@
      "handOverride": null
     },
     {
-     "order": 261,
-     "gid": 940,
+     "order": 272,
+     "gid": 496,
+     "word": 0,
+     "kind": "base",
+     "kashida": false,
+     "delay": 0,
+     "skeletonPriors": "pending-atlas (M3)",
+     "handOverride": null
+    },
+    {
+     "order": 271,
+     "gid": 90,
      "word": 0,
      "kind": "base",
      "kashida": false,

@@ -115,18 +115,23 @@
   },
   "text_pipeline": {
     "layout": "v1.4.1 classical justified TRUE-RECTANGLE variants (2026-08-25, PENDING USER CHOICE): continuous flow, minimum-unevenness DP line breaking, kashida-only block justification. Balanced elongation: <=1.5 em per joint, slack spread over 2-3 joints per line (sin/shin teeth, then before-final joints, then flat bases of sad/dad/kaf; the Allah ligature and lam-alif are excluded - tested on BARE letters, diacritics sit between them); basmalah = full-em own line filled by the single uncapped sin elongation. No orphan close: the final line carries >=3 words and ends on the ayah-7 marker (rosette-filler fallback implemented, NOT needed - both variants close fully justified).",
+    "leading_rule": "v1.4.2: min per-x ink-over-ink clearance (shaped glyph boxes) >= 0.35 em between adjacent lines, x1.10 for relief shadows; pitch = smallest satisfying value, CLAMPED to the text band [0.150, 0.865]; ink block centered in the band. STATUS: the rule pitch (2.33 em) does not fit the band at ANY legal em for either variant - feasibility windows are empty in both directions (8line: caps-justifiable only at em >= 0.051, rule would fit only at em ~0.039; 7line: caps >= 0.046, rule ~0.043). Both variants are frozen at band-floor em 0.052 with the maximum in-band pitch: AWAITING the user's ruling on which constraint yields.",
     "variants": {
       "8line": {
-        "em": 0.058,
-        "svg_sha256": "cc193c23042a1337802bdd7bee8c1f088b6c7a7319244562d2b83f51764a06cd",
-        "glyphs": 291,
-        "close": "justified, 3 words + marker (kashida 1.43+1.43+1.2 em)"
+        "em": 0.052,
+        "pitch": "0.088534 (1.703 em, band-clamped; rule wants 2.329 em)",
+        "ink_daylight_em": -0.064,
+        "svg_sha256": "f966bd03b10383fca5e6c5b7d3c1fb769fb19bbef2d0b9e8e08553477106f9ae",
+        "glyphs": 311,
+        "close": "justified, 4 words + marker (0.84 em kashida)"
       },
       "7line": {
-        "em": 0.0585,
-        "svg_sha256": "8190602e63205515448ea267c4afdae295a1a0d2bfb7d9c7a190e53452e2cc52",
-        "glyphs": 277,
-        "close": "justified, 3 words + marker; largest feasible hand in the band - most lines fill naturally (Ottoman 7-line convention)"
+        "em": 0.052,
+        "pitch": "0.103289 (1.986 em, band-clamped; rule wants 2.329 em)",
+        "ink_daylight_em": 0.219,
+        "svg_sha256": "1b0232dc0a5078b1e0434805bd0e63a65df9005766b0f09debbab2a9b7d82757",
+        "glyphs": 292,
+        "close": "justified, 4 words + marker (0.84 em kashida)"
       },
       "active": "8line (copied to composition.json until the user chooses)"
     },
