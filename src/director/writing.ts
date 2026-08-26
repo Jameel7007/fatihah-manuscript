@@ -17,8 +17,8 @@ export const WRITING = {
   /** breath between words — deliberately longer than any intra-word step */
   wordGap: 2.2,
   /** demo pacing for ?scene=reveal (units/s). M3 ignores this and maps units → Δp.
-   *  Lines 1–2 of the v1.4 justified flow span ≈ 99.3 units → ≈ 29 s per loop
-   *  (same per-word feel as the approved 2.0×-slower cut; these lines carry more words). */
+   *  Lines 1–2 of the chosen 7-line composition span ≈ 102 units → ≈ 30 s per loop
+   *  (same per-word feel as the approved 2.0×-slower cut). */
   unitsPerSecond: 3.45,
   /** how long a glyph reads as wet after its reveal completes, in units */
   wetUnits: 3.0,

@@ -133,7 +133,7 @@
         "glyphs": 292,
         "close": "justified, 4 words + marker (0.84 em kashida)"
       },
-      "active": "8line (copied to composition.json until the user chooses)"
+      "active": "7line — LAYOUT CHOSEN at review 2026-08-25 (composition.json = the 7-line block; 8line stays frozen as reference)"
     },
     "font_sha256": "e2a47644762d16bdfb6d33e0d8db8c6ff30beae84150ef5a705316bbd829455c",
     "canonical_source": "Tanzil Uthmani (via api.alquran.cloud, edition quran-uthmani)",

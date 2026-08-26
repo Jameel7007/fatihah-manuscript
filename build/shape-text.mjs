@@ -769,12 +769,13 @@ for (const nLines of [8, 7]) {
   console.log(`  (* = below the legal band [${EM_BAND[0]}, ${EM_BAND[1]}])`);
 }
 
-// active composition = the 8-line block until the user chooses (consumed by the app)
-if (results['8line']) {
-  copyFileSync(join(root, 'public/text/composition-8line.json'), join(root, 'public/text/composition.json'));
-  copyFileSync(join(root, 'public/text/composition-8line.svg'), join(root, 'public/text/composition.svg'));
-  copyFileSync(join(root, 'build/stroke-order-8line.json'), join(root, 'build/stroke-order.json'));
-  console.log('\nactive composition = 8line (pending layout choice)');
+// active composition = the 7-LINE block — the layout chosen at review (2026-08-25);
+// the 8-line variant stays frozen alongside as a reference
+if (results['7line']) {
+  copyFileSync(join(root, 'public/text/composition-7line.json'), join(root, 'public/text/composition.json'));
+  copyFileSync(join(root, 'public/text/composition-7line.svg'), join(root, 'public/text/composition.svg'));
+  copyFileSync(join(root, 'build/stroke-order-7line.json'), join(root, 'build/stroke-order.json'));
+  console.log('\nactive composition = 7line (chosen at review 2026-08-25)');
 }
 const fontHash = createHash('sha256').update(fontData).digest('hex');
 console.log(`font sha256 ${fontHash}`);

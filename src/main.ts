@@ -291,6 +291,7 @@ async function runReveal(): Promise<void> {
   }
   const comp = (await (await fetch('/text/composition.json')).json()) as {
     checksums: { svg: string };
+    em: number;
     lines: Array<{ baseline: number; glyphs: GlyphRec[]; markers: Array<{ x: number; y: number }> }>;
   };
   const lines = comp.lines.slice(0, 2);
@@ -298,9 +299,19 @@ async function runReveal(): Promise<void> {
   // §17 pacing — shared with M3's ink reveal (director/writing.ts)
   const { items: sched, span } = buildSchedule(glyphs);
 
+  // world window around lines 1–2, derived from the frozen composition (baseline0 and
+  // pitch are measured values now — never hardcode them here)
+  const firstLine = lines[0];
+  const lastLine = lines[lines.length - 1];
+  if (!firstLine || !lastLine) throw new Error('composition has no lines');
+  const wx0 = -0.33;
+  const wx1 = 0.33;
+  const wy0 = firstLine.baseline - 1.35 * comp.em; // mark towers reach ~1.25 em
+  const wy1 = lastLine.baseline + 0.8 * comp.em; // descenders ~0.75 em
+
   const c2 = document.createElement('canvas');
   const W = Math.max(360, Math.min(window.innerWidth - 32, 1280));
-  const H = Math.round(W * 0.34);
+  const H = Math.round((W * (wy1 - wy0)) / (wx1 - wx0));
   c2.width = W * devicePixelRatio;
   c2.height = H * devicePixelRatio;
   c2.style.cssText = `position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:${W}px;height:${H}px;background:#E6D5AF;border:1px solid #2C2517`;
@@ -310,11 +321,6 @@ async function runReveal(): Promise<void> {
   if (!ctx) throw new Error('2d context unavailable');
   ctx.scale(devicePixelRatio, devicePixelRatio);
 
-  // world window around lines 1–2
-  const wx0 = -0.33;
-  const wx1 = 0.33;
-  const wy0 = 0.13;
-  const wy1 = 0.13 + (wx1 - wx0) * (H / W);
   const S = W / (wx1 - wx0);
   const X = (x: number): number => (x - wx0) * S;
   const Y = (y: number): number => (y - wy0) * S;
