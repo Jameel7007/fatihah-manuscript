@@ -276,7 +276,7 @@
     <tbody>
       <tr><td>Flow &amp; line count</td><td class="n">8 or 7 — two frozen variants</td><td><b>v1.4.1:</b> the seven āyāt run as one continuous flow (classical manuscript convention), broken by a <b>minimum-unevenness DP</b> at word boundaries against the column (stretch spread as evenly as the caps allow across all lines — the block is a true rectangle). Two variants are frozen pending the reviewer's choice: the <b>8-line</b> and the classical Ottoman <b>7-line</b> block, both currently at the band-floor em 0.052 (see the leading row — the clearance rule sets the hand). Fit conflicts re-break lines — never shrink an individual line's em, never re-kern</td></tr>
       <tr><td>Margins (top / bottom / sides)</td><td class="n">0.150 / 0.135 / 0.115</td><td>Head margin largest, per manuscript convention; text column width 0.55 = 70.5% of sheet width</td></tr>
-      <tr><td>Leading (v1.4.2 rule)</td><td class="n">measured, band-clamped</td><td><b>Rule:</b> the vertical clearance between the lowest ink of line n and the highest ink of line n+1 — measured on the shaped glyph boxes, per horizontal position (ink over ink) — must be ≥ <b>0.35 em</b>; the pitch is the smallest value satisfying every pair, then ×<b>1.10</b> for the relief/extrusion stages whose shadows fall into the gap. The pitch is clamped to what the text band admits and the ink block is centered in the band. <b>Status:</b> the rule pitch (≈ 2.33 em) exceeds what the band admits at every legal em — both variants are frozen at the band-clamped maximum: 8-line pitch 0.0885 (1.70 em, ink daylight −0.06 em — still touching), 7-line pitch 0.1033 (1.99 em, daylight +0.22 em). The constraint conflict (band vs em band vs clearance) is before the reviewer</td></tr>
+      <tr><td>Leading (v1.4.2 rule)</td><td class="n">measured, band-clamped</td><td><b>Rule:</b> the vertical clearance between the lowest ink of line n and the highest ink of line n+1 — measured on the shaped glyph boxes, per horizontal position (ink over ink) — must be ≥ <b>0.35 em</b>; the pitch is the smallest value satisfying every pair, then ×<b>1.10</b> for the relief/extrusion stages whose shadows fall into the gap. The pitch is clamped to what the text band admits and the ink block is centered in the band. <b>Status:</b> the rule pitch (≈ 2.33 em) exceeds what the band admits at every legal em — both variants are frozen at the band-clamped maximum: 8-line pitch 0.0885 (1.70 em, ink daylight −0.06 em — still touching), 7-line pitch 0.1033 (1.99 em, daylight +0.22 em). <b>Ruled (review, 2026-08-25):</b> band-max leading — sheet, margins, and em band hold; the 0.35 em target stands as the measurement the band cannot honor</td></tr>
       <tr><td>Em size (all lines)</td><td class="n">0.052 / 0.052</td><td>One em for every line <b>including the Basmalah</b> — the references keep a uniform hand and let elongation, not scale, articulate the opening; accept em ∈ [0.052, 0.060] globally; both variants currently sit at the band floor, where the clamped leading buys the most ink daylight; resolve fit conflicts by re-breaking (row 1)</td></tr>
       <tr><td>Basmalah line</td><td class="n">1.0 × em, full column</td><td>Its own line, right-aligned, filling the column edge-to-edge through a <b>single elongation of the sīn joint in بسم</b> — the great sweep of the classical opening; no other joint in the line stretches</td></tr>
       <tr><td>x-height reference</td><td class="n">≈ 0.021 (0.36 em)</td><td><b>Rule:</b> measured from source as median tooth-glyph band height; drives extrusion depth &amp; bevel width (§6)</td></tr>
@@ -1470,7 +1470,7 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     renders under <span style="font-family:var(--mono);font-size:12px">qa/proofs/</span>.</li>
   </ol>
 
-  <h3>v1.4.2 — measured leading <span class="tag">user direction, 2026-08-25 · constraint conflict open</span></h3>
+  <h3>v1.4.2 — measured leading <span class="tag">user direction, 2026-08-25 · ruled: band-max leading</span></h3>
   <ol>
     <li><b>§3 leading rule</b> — pitch is no longer an authored constant: the pipeline measures, on
     the shaped glyph boxes of each frozen variant, the per-x ink-over-ink clearance between adjacent
@@ -1484,8 +1484,8 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     em ≥ 0.051 (8-line) / 0.046 (7-line), while the full rule would fit only at em ≈ 0.039 / 0.043 —
     both below the legal band. Both variants are frozen at the in-band optimum (em 0.052, maximum
     clamped pitch): the 7-line reaches +0.22 em of real daylight, the 8-line −0.06 em (still
-    touching). Which constraint yields — clearance target, em band, sheet/margins, or line count —
-    is the reviewer's call; svg shas f966bd03… / 1b0232dc….</li>
+    touching). <b>Ruled (review, 2026-08-25): band-max leading</b> — sheet, margins, and em band
+    hold; the frozen variants above are the standing compositions. Svg shas f966bd03… / 1b0232dc….</li>
     <li><b>Justification fix</b> — the per-joint 1.5 em cap now bounds the <em>measured</em> width
     contribution instead of the tatweel count (Amiri's contextual forms deliver less advance per
     tatweel than the isolated measure, so a count cap under-delivered the promised capacity), with
