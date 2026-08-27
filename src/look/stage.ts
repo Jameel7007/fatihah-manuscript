@@ -54,13 +54,16 @@ import {
 } from 'three/tsl';
 import type { Field } from '../field/field';
 import { GRID_H, GRID_W, type SilhouetteData } from '../field/silhouette';
+import { INK_DRY, INK_WET } from '../ink/ink';
+import { InkPass } from '../ink/inkPass';
+import type { InkPack } from '../ink/atlas';
 import { THICKNESS } from '../field/deform';
 import { buildEnvironment, buildFiberTexture, buildUtilTexture } from './textures';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type N = any;
 
-export type DebugMode = 'none' | 'normal' | 'matcap' | 'graycard';
+export type DebugMode = 'none' | 'normal' | 'matcap' | 'graycard' | 'ink';
 
 // §16 background pre-compensation — scene-linear clear color that the live AgX pipeline
 // displays as exactly #0D0906. Baked from `?calibrate=bg` (secant solve against readback);
@@ -81,6 +84,8 @@ export interface Stage {
   scene: Scene;
   sheetRoot: Group;
   key: SpotLight;
+  /** M3 ink RT pass — run once per frame before the beauty render (pure f(p)) */
+  inkPass?: InkPass;
   /** scene-linear background (a physical far sphere — pass() drops scene.background) */
   setBackground(r: number, g: number, b: number): void;
 }
@@ -132,6 +137,7 @@ export function buildStage(
   field: Field,
   sil: SilhouetteData,
   debug: DebugMode,
+  ink?: InkPack,
 ): Stage {
   const scene = new Scene();
 
@@ -155,10 +161,13 @@ export function buildStage(
 
   const maps = { fiber: buildFiberTexture(renderer), util: buildUtilTexture(renderer) };
 
+  // M3 ink: evaluated in its own RT pass; the parchment material samples one texture.
+  const inkPass = ink ? new InkPass(ink, maps.fiber) : undefined;
+
   const sheetRoot = new Group();
   scene.add(sheetRoot);
 
-  sheetRoot.add(buildSheet(field, maps, debug));
+  sheetRoot.add(buildSheet(field, maps, debug, inkPass?.texture));
   sheetRoot.add(buildRibbon(field, sil, maps, debug));
 
   // §8 rig
@@ -187,6 +196,7 @@ export function buildStage(
     scene,
     sheetRoot,
     key,
+    inkPass,
     setBackground: (r: number, g: number, b: number) => {
       (uBg.value as Vector3).set(r, g, b);
     },
@@ -209,7 +219,17 @@ function fieldMaterial(
   tangentObj: N,
   suv: N,
   kind: 'parchment' | 'edge',
+  inkTex?: import('three/webgpu').Texture,
 ): MeshBasicNodeMaterial | MeshStandardNodeMaterial | MeshPhysicalNodeMaterial {
+  if (debug === 'ink' && inkTex) {
+    // raw ink-RT inspection: R = coverage, G = wetness (no lighting, no grade)
+    const m = new MeshBasicNodeMaterial();
+    m.side = DoubleSide;
+    m.positionNode = positionNode;
+    const dbg: N = texture(inkTex, suv);
+    m.colorNode = vec4(dbg.r, dbg.g, float(0.08), 1);
+    return m;
+  }
   if (debug === 'normal' || debug === 'matcap') {
     const m = new MeshBasicNodeMaterial();
     m.side = DoubleSide;
@@ -265,12 +285,31 @@ function fieldMaterial(
   col = col.mul(float(1).sub(util.y.mul(0.05)));
   col = col.mul(float(1).sub(util.w.mul(0.12)));
   col = col.mix(color('#DCC79A').mul(util.z.sub(0.5).mul(0.1).add(1)), backAmt.mul(0.85));
+
+  // §14 flat ink (M3): MTSDF layer inside this shader — recto only, wet/dry colored,
+  // pooled slightly darker in fiber valleys (the cavity term's albedo share)
+  let rBase: N = rmod.sub(0.5).mul(0.28).add(0.62).add(backAmt.mul(0.09));
+  if (inkTex) {
+    // §14 flat ink (M3), composited from the ink RT — recto only, wet/dry colored,
+    // pooled slightly darker in fiber valleys (the cavity term's albedo share).
+    // NOTE: every lerp here is written as explicit mul/add — TSL mix() with a
+    // texture-derived factor silently breaks this material's light integration
+    // (three r185 WebGPU; bisected 2026-08-27, value-independent, even factor 0).
+    const inkT: N = texture(inkTex, suv);
+    const rectoCov: N = inkT.r.mul(float(1).sub(backAmt));
+    const wetF: N = inkT.g;
+    const inkCol: N = color(INK_DRY).mul(float(1).sub(wetF)).add(color(INK_WET).mul(wetF));
+    const cavity: N = float(1).sub(height.sub(0.5).mul(0.24));
+    col = col.mul(float(1).sub(rectoCov)).add(inkCol.mul(cavity).mul(rectoCov));
+    // wet ink is glossier; dry ink still tighter than parchment
+    const inkRough: N = float(0.52).sub(wetF.mul(0.24));
+    rBase = rBase.mul(float(1).sub(rectoCov)).add(inkRough.mul(rectoCov));
+  }
   m.colorNode = col;
 
   // roughness: §7 0.62 ± 0.14 via fiber mod; verso +0.09 — then §15 geometric specular AA:
   // r' = sqrt(r² + min(2·σ²(N), 0.18)), σ² from screen-space normal derivatives, so curved
   // highlights (the roll under the key) never shimmer at distance or in motion
-  const rBase: N = rmod.sub(0.5).mul(0.28).add(0.62).add(backAmt.mul(0.09));
   const nDx: N = dFdx(transformNormalToView(normalObj));
   const nDy: N = dFdy(transformNormalToView(normalObj));
   const sigma2: N = nDx.dot(nDx).add(nDy.dot(nDy)).mul(0.25);
@@ -311,7 +350,7 @@ function matcapShade(n: N): N {
   return vec3(l1.mul(l1).add(l2));
 }
 
-function buildSheet(field: Field, maps: Maps, debug: DebugMode): Mesh {
+function buildSheet(field: Field, maps: Maps, debug: DebugMode, inkTex?: import('three/webgpu').Texture): Mesh {
   const count = GRID_W * GRID_H;
   const geo = new BufferGeometry();
   geo.setAttribute('position', new BufferAttribute(new Float32Array(count * 3), 3));
@@ -337,7 +376,7 @@ function buildSheet(field: Field, maps: Maps, debug: DebugMode): Mesh {
   const tan: N = textureLoad(field.tanRT.texture, texel).xyz;
   const suv: N = varying(vec2(ti.toFloat().div(GRID_W - 1), tj.toFloat().div(GRID_H - 1)));
 
-  const mesh = new Mesh(geo, fieldMaterial(field, maps, debug, pos, nrm, tan, suv, 'parchment'));
+  const mesh = new Mesh(geo, fieldMaterial(field, maps, debug, pos, nrm, tan, suv, 'parchment', inkTex));
   mesh.frustumCulled = false;
   mesh.castShadow = true;
   mesh.receiveShadow = true;

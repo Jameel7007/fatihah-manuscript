@@ -143,7 +143,7 @@
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.4.3 · 7-line block chosen</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.4.3 · M3 ink in progress</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -1501,6 +1501,49 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     <span style="font-family:var(--mono);font-size:12px">?scene=reveal</span> window now derives
     from the frozen composition's measured baselines instead of hardcoding them; lines 1–2 loop
     ≈ 30 s at the approved pacing. M3's ink atlas builds on this composition.</li>
+  </ol>
+
+  <h3>M3 open — ink: atlas, reveal, wet, bleed <span class="tag">2026-08-27 · R-0.45 blessing awaits review</span></h3>
+  <ol>
+    <li><b>§18 atlas build</b> — <span style="font-family:var(--mono);font-size:12px">build/build-ink-atlas.mjs</span>
+    implements the msdfgen-equivalent in-repo (no native dependency): analytic per-edge
+    pseudo-distances with corner-preserving edge coloring, nonzero-winding signs with per-glyph
+    auto-calibration, and an error-correction pass against the true SDF. 82 unique glyphs at
+    64 px/em in a 2048×256 sheet; gates: reconstruction IoU mean 0.990 (worst 0.964, a small mark),
+    RTL writing-order audit over 10 clusters PASS. <b>Channel layout amendment</b> (supersedes the
+    §14/§18 wording): NO data may live in any PNG alpha — browsers premultiply RGB by A on decode.
+    atlasMTSDF = [msdf RGB, 255]; atlasProg = [stroke-order w, true SDF, §14 puff, 255] — the puff
+    channel moves from A to <b>B</b>. Stroke order: Zhang–Suen skeleton + geodesic BFS with the §17
+    priors (tall stems top-down, RTL entry, components chained right→left; ccw loop handling is a
+    directed-walk approximation, override table still available). KTX2/UASTC packaging remains a
+    §18 build-hardening debt — dev assets are lossless PNG (391 KB the pair).</li>
+    <li><b>§10/§17 windows</b> — per-glyph write windows are baked at build time: each āyah's §17
+    schedule (glyphUnit 1, kashidaUnit 0.35, markUnit 0.65, markLag 1.2, wordGap 2.2, ring 1.5)
+    maps proportionally into its §10 window, with a 0.002 pen-lift at <em>every</em> internal line
+    break — generalizing the old two-window āyah-7 note: in the 7-line block āyah 7 spans three
+    lines, so its [0.526, 0.580] span splits into three segments. Āyah rings are analytic circle
+    instances drawn by the same pen clock (angular w from the top, sweeping leftward — the RTL
+    hand). E5 realized per §13 as the spatial Δw 0.012 smoothstep, with the per-glyph clock
+    overscanned by the feather so stroke starts are fully hidden at t = 0 and ends fully land at
+    t = 1. Wet trail Δp 0.045 closed-form per texel; bleed = fiber-grain threshold jitter that
+    widens slightly as the texel dries.</li>
+    <li><b>§14/§16 architecture amendment</b> — the flat ink layer evaluates in a dedicated
+    sheet-space RT pass (<span style="font-family:var(--mono);font-size:12px">src/ink/inkPass.ts</span>,
+    1597×2048 RGBA8, re-rendered only when p changes, pure f(p)); the parchment shader samples that
+    one texture and composites with <em>explicit mul/add lerps</em>. Forced by three r185 WebGPU
+    behavior, bisected to reproducible minimal cases: (1) TSL <span style="font-family:var(--mono);font-size:12px">mix()</span>
+    with a texture-derived factor inside the physical material's color/roughness inputs silently
+    kills the light integration — value-independent, even a constant-zero factor; (2) float32
+    DataTextures break the material's pipeline outright (environment lost or mesh gone, no console
+    error) — all lookup data ships as fixed-point RGBA8 byte pairs (16-bit, 1.5e-5 precision);
+    (3) a fullscreen-quad RT reads back v-flipped vs the quad's uv — the pass writes at 1 − uv.y.
+    The §14 fwidth AA happens analytically in the RT pass at above-display resolution.</li>
+    <li><b>Regression</b> — R-0.21 re-captured after the full integration is <b>bit-identical</b> to
+    its M2 blessing (the explicit lerps are exact identities at zero coverage). R-0.34 now
+    legitimately differs — §10 puts the basmalah 60% written and wet there — and is re-blessed
+    together with R-0.45-T1/T3 after the reviewer's pass; the no-shimmer-at-4×-scrub check needs a
+    live foregrounded browser (dev-pane rAF throttling), same as storm/flick. Review frames:
+    <span style="font-family:var(--mono);font-size:12px">qa/review/m3-R{034,045,056,062}.png</span>.</li>
   </ol>
 </section>
 

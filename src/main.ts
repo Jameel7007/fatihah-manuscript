@@ -13,6 +13,7 @@ import { createGrade } from './look/grade';
 import { captureFrame, samplePixel, type CaptureFrame } from './qa/capture';
 import { flickProfile, runProbes, runStorm, sampleResidualEnergy, type ProbeReport } from './qa/probes';
 import { WRITING, buildSchedule } from './director/writing';
+import { loadInk } from './ink/atlas';
 
 interface CaptureResult {
   hash: string;
@@ -495,7 +496,13 @@ async function runMain(): Promise<void> {
   const sil = buildSilhouette();
   const residual = new Residual();
   const field = new Field(sil);
-  const { scene, sheetRoot } = buildStage(renderer, field, sil, debugMode);
+  // M3 ink — awaited before the stage builds so capture frames are complete
+  const ink = q.get('noink') !== null ? undefined : await loadInk().catch((err: unknown) => {
+    console.error('[ink] atlas load failed — rendering without the ink layer', err);
+    return undefined;
+  });
+  const { scene, sheetRoot, key, inkPass } = buildStage(renderer, field, sil, debugMode, ink);
+  if (q.get('noshadow') !== null) key.castShadow = false; // QA: isolate the key's shadow
   const rig = new CameraRig();
   const scroll = new ScrollDriver();
   const size = fitViewport();
@@ -512,6 +519,7 @@ async function runMain(): Promise<void> {
   });
 
   const applyFrame = (p: number, dt: number, simEnabled: boolean): void => {
+    inkPass?.run(renderer, p);
     const d = evalDeform(p);
     if (simEnabled) {
       residual.setInputs(dt, scroll.vLpf, d.wTop, d.wBot);

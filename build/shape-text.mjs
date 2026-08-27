@@ -255,7 +255,7 @@ function justifyLine(segments, targetSegsU, { sinOnlyFirstWord = false } = {}) {
 const tokens = [];
 for (let ay = 1; ay <= 7; ay++) {
   const words = canon.ayahs[ay - 1].split(' ').filter(Boolean);
-  for (const w of words) tokens.push({ type: 'word', text: w });
+  for (const w of words) tokens.push({ type: 'word', text: w, ayah: ay });
   tokens.push({ type: 'marker', ayah: ay });
 }
 const basmalahTokens = [];
@@ -540,6 +540,9 @@ function composeVariant(solution, nLines) {
     const segShaped = segTexts.map((t) => ({ text: t, run: shapeRun(t) }));
     const lineWidthU = segShaped.reduce((a, s2) => a + s2.run.width, 0) + nat.markers * markerU;
 
+    // reading-order word → āyah map for this line (word indices follow token order)
+    const wordAyah = toks.filter((t) => t.type === 'word').map((t) => t.ayah);
+
     // place segments right → left (RTL flow): first segment at the RIGHT edge
     const rightEdgeU = COLUMN_RIGHT / s; // font units at this em
     const markers = [];
@@ -646,6 +649,7 @@ function composeVariant(solution, nLines) {
       glyphs: glyphItems.map((g) => ({
         gid: g.gid,
         word: g.word,
+        ayah: wordAyah[g.word] ?? 0,
         kind: g.kind,
         kashida: g.kashida || undefined,
         order: g.order,

@@ -113,6 +113,26 @@
     "bg": "graded-chain floor displays (13.6, 9.8, 6.6) at zero background — #0D0906 within a count; BG_LINEAR ~0; +0.5-count warm floor residue tracked",
     "key": "KEY_INTENSITY 9.87 — 18% card R=128 through the full chain"
   },
+  "ink_pipeline": {
+    "milestone": "M3 (open) — atlas build + reveal/wet/bleed live on the sheet; R-0.45 blessing awaits the user's review",
+    "atlas": {
+      "mtsdf": "public/text/ink-mtsdf.png — RGB = msdf (analytic edge-colored pseudo-distances, JS msdfgen-equivalent in build/build-ink-atlas.mjs), A=255; 64px/em, range +-6px, 2048x256",
+      "prog": "public/text/ink-prog.png — R = stroke-order w (Zhang-Suen skeleton + geodesic BFS, SS17 priors), G = true SDF, B = SS14 puff (interior distance, 1.5-texel blur), A=255",
+      "mtsdf_sha256": "e4be90688627d8dcf7b20f09c40e53063b8040a9663a6e8e9e7a34779dceb4b8",
+      "prog_sha256": "b95f0884886c35a45f1593bd3782c7185004f0faab70957c7bc186e29775dfbb",
+      "gates": "reconstruction IoU mean 0.9903 / worst 0.9641 (gid 68, small mark); RTL writing-order audit 10 clusters PASS (build/ink-audit.json)"
+    },
+    "windows": "SS10 per-ayah write windows mapped from the SS17 schedule (units->dp proportional); a 0.002 pen-lift at EVERY internal line break (ayah 7 spans three lines in the 7-line block -> its SS10 span [0.526,0.580] splits into three segments); ayah rings are analytic circle instances drawn by the same pen clock (angular w from the top, leftward first); wet trail dp 0.045 closed-form; E5 = spatial smoothstep dw 0.012 with overscanned t so stroke starts hide at t=0 and ends land at t=1",
+    "architecture": "ink evaluates in a sheet-space RT pass (src/ink/inkPass.ts, 1597x2048 RGBA8, re-rendered when p changes); the parchment material samples ONE texture and composites with EXPLICIT mul/add lerps",
+    "three_r185_gotchas": [
+      "TSL mix() with a texture-derived factor inside MeshPhysicalNodeMaterial colorNode/roughnessNode silently kills the light integration (value-independent, even factor 0) — write lerps as mul/add",
+      "float32 DataTextures (textureLoad) in the physical material silently break the pipeline (env lost or mesh vanishes, no console error) — all lookup data ships as fixed-point RGBA8 byte pairs",
+      "browsers premultiply PNG RGB by alpha on decode/upload — atlas alphas must be 255, no data channel in A",
+      "an RT written by a fullscreen quad reads back v-FLIPPED vs the quad's uv on WebGPU — the ink pass evaluates at 1-uv.y (probed empirically)"
+    ],
+    "frames": "R-0.21 re-verified BIT-IDENTICAL to the M2 blessing after full M3 integration (manual-lerp identity at zero coverage); R-0.34 now legitimately differs (basmalah 60% written per SS10) — re-bless with R-0.45 at sign-off; review PNGs qa/review/m3-R{034,045,056,062}.png",
+    "dod_status": "RTL audit PASS (automated); wet trail dp 0.045 closed-form in the shader; no-shimmer-at-4x-scrub review + R-0.45-T1/T3 blessing pending the user's live pass (dev pane rAF throttling makes scrub runs meaningless here)"
+  },
   "text_pipeline": {
     "layout": "v1.4.1 classical justified TRUE-RECTANGLE variants (2026-08-25, PENDING USER CHOICE): continuous flow, minimum-unevenness DP line breaking, kashida-only block justification. Balanced elongation: <=1.5 em per joint, slack spread over 2-3 joints per line (sin/shin teeth, then before-final joints, then flat bases of sad/dad/kaf; the Allah ligature and lam-alif are excluded - tested on BARE letters, diacritics sit between them); basmalah = full-em own line filled by the single uncapped sin elongation. No orphan close: the final line carries >=3 words and ends on the ayah-7 marker (rosette-filler fallback implemented, NOT needed - both variants close fully justified).",
     "leading_rule": "v1.4.2: min per-x ink-over-ink clearance (shaped glyph boxes) >= 0.35 em between adjacent lines, x1.10 for relief shadows; pitch = smallest satisfying value, CLAMPED to the text band [0.150, 0.865]; ink block centered in the band. STATUS: the rule pitch (2.33 em) does not fit the band at ANY legal em for either variant - feasibility windows are empty in both directions (8line: caps-justifiable only at em >= 0.051, rule would fit only at em ~0.039; 7line: caps >= 0.046, rule ~0.043). Both variants are frozen at band-floor em 0.052 with the maximum in-band pitch: RULED by review 2026-08-25: band-max leading — sheet, margins, and em band hold; these frozen variants stand.",

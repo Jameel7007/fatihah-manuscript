@@ -52,6 +52,7 @@
     {
      "gid": 67,
      "word": 3,
+     "ayah": 1,
      "kind": "mark",
      "order": 50,
      "delay": 0.003,
@@ -69,6 +70,7 @@
     {
      "gid": 574,
      "word": 3,
+     "ayah": 1,
      "kind": "base",
      "order": 46,
      "delay": 0,
@@ -86,6 +88,7 @@
     {
      "gid": 565,
      "word": 3,
+     "ayah": 1,
      "kind": "base",
      "order": 45,
      "delay": 0,
@@ -103,6 +106,7 @@
     {
      "gid": 67,
      "word": 3,
+     "ayah": 1,
      "kind": "mark",
      "order": 49,
      "delay": 0.003,
@@ -120,6 +124,7 @@
     {
      "gid": 483,
      "word": 3,
+     "ayah": 1,
      "kind": "base",
      "order": 44,
      "delay": 0,
@@ -137,6 +142,7 @@
     {
      "gid": 347,
      "word": 3,
+     "ayah": 1,
      "kind": "mark",
      "order": 47,
      "delay": 0.003,
@@ -154,6 +160,7 @@
     {
      "gid": 68,
      "word": 3,
+     "ayah": 1,
      "kind": "mark",
      "order": 48,
      "delay": 0.003,
@@ -171,6 +178,7 @@
     {
      "gid": 859,
      "word": 3,
+     "ayah": 1,
      "kind": "base",
      "order": 43,
      "delay": 0,
@@ -188,6 +196,7 @@
     {
      "gid": 857,
      "word": 3,
+     "ayah": 1,
      "kind": "base",
      "order": 42,
      "delay": 0,
@@ -205,6 +214,7 @@
     {
      "gid": 90,
      "word": 3,
+     "ayah": 1,
      "kind": "base",
      "order": 41,
      "delay": 0,
@@ -222,6 +232,7 @@
     {
      "gid": 67,
      "word": 2,
+     "ayah": 1,
      "kind": "mark",
      "order": 40,
      "delay": 0.003,
@@ -239,6 +250,7 @@
     {
      "gid": 501,
      "word": 2,
+     "ayah": 1,
      "kind": "base",
      "order": 34,
      "delay": 0,
@@ -256,6 +268,7 @@
     {
      "gid": 89,
      "word": 2,
+     "ayah": 1,
      "kind": "mark",
      "order": 39,
      "delay": 0.003,
@@ -273,6 +286,7 @@
     {
      "gid": 65,
      "word": 2,
+     "ayah": 1,
      "kind": "mark",
      "order": 38,
      "delay": 0.003,
@@ -290,6 +304,7 @@
     {
      "gid": 1056,
      "word": 2,
+     "ayah": 1,
      "kind": "base",
      "order": 33,
      "delay": 0,
@@ -307,6 +322,7 @@
     {
      "gid": 69,
      "word": 2,
+     "ayah": 1,
      "kind": "mark",
      "order": 37,
      "delay": 0.003,
@@ -324,6 +340,7 @@
     {
      "gid": 1053,
      "word": 2,
+     "ayah": 1,
      "kind": "base",
      "order": 32,
      "delay": 0,
@@ -341,6 +358,7 @@
     {
      "gid": 347,
      "word": 2,
+     "ayah": 1,
      "kind": "mark",
      "order": 35,
      "delay": 0.003,
@@ -358,6 +376,7 @@
     {
      "gid": 68,
      "word": 2,
+     "ayah": 1,
      "kind": "mark",
      "order": 36,
      "delay": 0.003,
@@ -375,6 +394,7 @@
     {
      "gid": 859,
      "word": 2,
+     "ayah": 1,
      "kind": "base",
      "order": 31,
      "delay": 0,
@@ -392,6 +412,7 @@
     {
      "gid": 857,
      "word": 2,
+     "ayah": 1,
      "kind": "base",
      "order": 30,
      "delay": 0,
@@ -409,6 +430,7 @@
     {
      "gid": 90,
      "word": 2,
+     "ayah": 1,
      "kind": "base",
      "order": 29,
      "delay": 0,
@@ -426,6 +448,7 @@
     {
      "gid": 67,
      "word": 1,
+     "ayah": 1,
      "kind": "mark",
      "order": 28,
      "delay": 0.003,
@@ -443,6 +466,7 @@
     {
      "gid": 291,
      "word": 1,
+     "ayah": 1,
      "kind": "base",
      "order": 25,
      "delay": 0,
@@ -460,6 +484,7 @@
     {
      "gid": 347,
      "word": 1,
+     "ayah": 1,
      "kind": "mark",
      "order": 26,
      "delay": 0.003,
@@ -477,6 +502,7 @@
     {
      "gid": 68,
      "word": 1,
+     "ayah": 1,
      "kind": "mark",
      "order": 27,
      "delay": 0.003,
@@ -494,6 +520,7 @@
     {
      "gid": 290,
      "word": 1,
+     "ayah": 1,
      "kind": "base",
      "order": 24,
      "delay": 0,
@@ -511,6 +538,7 @@
     {
      "gid": 289,
      "word": 1,
+     "ayah": 1,
      "kind": "base",
      "order": 23,
      "delay": 0,
@@ -528,6 +556,7 @@
     {
      "gid": 90,
      "word": 1,
+     "ayah": 1,
      "kind": "base",
      "order": 22,
      "delay": 0,
@@ -545,6 +574,7 @@
     {
      "gid": 67,
      "word": 0,
+     "ayah": 1,
      "kind": "mark",
      "order": 21,
      "delay": 0.003,
@@ -562,6 +592,7 @@
     {
      "gid": 498,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "order": 18,
      "delay": 0,
@@ -579,6 +610,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 17,
@@ -597,6 +629,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 16,
@@ -615,6 +648,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 15,
@@ -633,6 +667,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 14,
@@ -651,6 +686,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 13,
@@ -669,6 +705,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 12,
@@ -687,6 +724,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 11,
@@ -705,6 +743,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 10,
@@ -723,6 +762,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 9,
@@ -741,6 +781,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 8,
@@ -759,6 +800,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 7,
@@ -777,6 +819,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 6,
@@ -795,6 +838,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 5,
@@ -813,6 +857,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 4,
@@ -831,6 +876,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 3,
@@ -849,6 +895,7 @@
     {
      "gid": 51,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "kashida": true,
      "order": 2,
@@ -867,6 +914,7 @@
     {
      "gid": 69,
      "word": 0,
+     "ayah": 1,
      "kind": "mark",
      "order": 20,
      "delay": 0.003,
@@ -884,6 +932,7 @@
     {
      "gid": 712,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "order": 1,
      "delay": 0,
@@ -901,6 +950,7 @@
     {
      "gid": 67,
      "word": 0,
+     "ayah": 1,
      "kind": "mark",
      "order": 19,
      "delay": 0.003,
@@ -918,6 +968,7 @@
     {
      "gid": 704,
      "word": 0,
+     "ayah": 1,
      "kind": "base",
      "order": 0,
      "delay": 0,
@@ -978,6 +1029,7 @@
     {
      "gid": 65,
      "word": 3,
+     "ayah": 2,
      "kind": "mark",
      "order": 87,
      "delay": 0.003,
@@ -995,6 +1047,7 @@
     {
      "gid": 501,
      "word": 3,
+     "ayah": 2,
      "kind": "base",
      "order": 81,
      "delay": 0,
@@ -1012,6 +1065,7 @@
     {
      "gid": 1314,
      "word": 3,
+     "ayah": 2,
      "kind": "base",
      "kashida": true,
      "order": 80,
@@ -1030,6 +1084,7 @@
     {
      "gid": 458,
      "word": 3,
+     "ayah": 2,
      "kind": "base",
      "order": 79,
      "delay": 0,
@@ -1047,6 +1102,7 @@
     {
      "gid": 1313,
      "word": 3,
+     "ayah": 2,
      "kind": "base",
      "kashida": true,
      "order": 78,
@@ -1065,6 +1121,7 @@
     {
      "gid": 67,
      "word": 3,
+     "ayah": 2,
      "kind": "mark",
      "order": 86,
      "delay": 0.003,
@@ -1082,6 +1139,7 @@
     {
      "gid": 773,
      "word": 3,
+     "ayah": 2,
      "kind": "base",
      "order": 77,
      "delay": 0,
@@ -1099,6 +1157,7 @@
     {
      "gid": 65,
      "word": 3,
+     "ayah": 2,
      "kind": "mark",
      "order": 85,
      "delay": 0.003,
@@ -1116,6 +1175,7 @@
     {
      "gid": 772,
      "word": 3,
+     "ayah": 2,
      "kind": "base",
      "order": 76,
      "delay": 0,
@@ -1133,6 +1193,7 @@
     {
      "gid": 89,
      "word": 3,
+     "ayah": 2,
      "kind": "mark",
      "order": 84,
      "delay": 0.003,
@@ -1150,6 +1211,7 @@
     {
      "gid": 65,
      "word": 3,
+     "ayah": 2,
      "kind": "mark",
      "order": 83,
      "delay": 0.003,
@@ -1167,6 +1229,7 @@
     {
      "gid": 439,
      "word": 3,
+     "ayah": 2,
      "kind": "base",
      "order": 75,
      "delay": 0,
@@ -1184,6 +1247,7 @@
     {
      "gid": 69,
      "word": 3,
+     "ayah": 2,
      "kind": "mark",
      "order": 82,
      "delay": 0.003,
@@ -1201,6 +1265,7 @@
     {
      "gid": 496,
      "word": 3,
+     "ayah": 2,
      "kind": "base",
      "order": 74,
      "delay": 0,
@@ -1218,6 +1283,7 @@
     {
      "gid": 90,
      "word": 3,
+     "ayah": 2,
      "kind": "base",
      "order": 73,
      "delay": 0,
@@ -1235,6 +1301,7 @@
     {
      "gid": 67,
      "word": 2,
+     "ayah": 2,
      "kind": "mark",
      "order": 71,
      "delay": 0.003,
@@ -1252,6 +1319,7 @@
     {
      "gid": 68,
      "word": 2,
+     "ayah": 2,
      "kind": "mark",
      "order": 72,
      "delay": 0.003,
@@ -1269,6 +1337,7 @@
     {
      "gid": 32,
      "word": 2,
+     "ayah": 2,
      "kind": "base",
      "order": 69,
      "delay": 0,
@@ -1286,6 +1355,7 @@
     {
      "gid": 65,
      "word": 2,
+     "ayah": 2,
      "kind": "mark",
      "order": 70,
      "delay": 0.003,
@@ -1303,6 +1373,7 @@
     {
      "gid": 41,
      "word": 2,
+     "ayah": 2,
      "kind": "base",
      "order": 68,
      "delay": 0,
@@ -1320,6 +1391,7 @@
     {
      "gid": 67,
      "word": 1,
+     "ayah": 2,
      "kind": "mark",
      "order": 67,
      "delay": 0.003,
@@ -1337,6 +1409,7 @@
     {
      "gid": 291,
      "word": 1,
+     "ayah": 2,
      "kind": "base",
      "order": 63,
      "delay": 0,
@@ -1354,6 +1427,7 @@
     {
      "gid": 347,
      "word": 1,
+     "ayah": 2,
      "kind": "mark",
      "order": 64,
      "delay": 0.003,
@@ -1371,6 +1445,7 @@
     {
      "gid": 68,
      "word": 1,
+     "ayah": 2,
      "kind": "mark",
      "order": 66,
      "delay": 0.003,
@@ -1388,6 +1463,7 @@
     {
      "gid": 290,
      "word": 1,
+     "ayah": 2,
      "kind": "base",
      "order": 62,
      "delay": 0,
@@ -1405,6 +1481,7 @@
     {
      "gid": 67,
      "word": 1,
+     "ayah": 2,
      "kind": "mark",
      "order": 65,
      "delay": 0.003,
@@ -1422,6 +1499,7 @@
     {
      "gid": 289,
      "word": 1,
+     "ayah": 2,
      "kind": "base",
      "order": 61,
      "delay": 0,
@@ -1439,6 +1517,7 @@
     {
      "gid": 66,
      "word": 0,
+     "ayah": 2,
      "kind": "mark",
      "order": 60,
      "delay": 0.003,
@@ -1456,6 +1535,7 @@
     {
      "gid": 468,
      "word": 0,
+     "ayah": 2,
      "kind": "base",
      "order": 56,
      "delay": 0,
@@ -1473,6 +1553,7 @@
     {
      "gid": 1314,
      "word": 0,
+     "ayah": 2,
      "kind": "base",
      "kashida": true,
      "order": 55,
@@ -1491,6 +1572,7 @@
     {
      "gid": 69,
      "word": 0,
+     "ayah": 2,
      "kind": "mark",
      "order": 59,
      "delay": 0.003,
@@ -1508,6 +1590,7 @@
     {
      "gid": 500,
      "word": 0,
+     "ayah": 2,
      "kind": "base",
      "order": 54,
      "delay": 0,
@@ -1525,6 +1608,7 @@
     {
      "gid": 65,
      "word": 0,
+     "ayah": 2,
      "kind": "mark",
      "order": 58,
      "delay": 0.003,
@@ -1542,6 +1626,7 @@
     {
      "gid": 675,
      "word": 0,
+     "ayah": 2,
      "kind": "base",
      "order": 53,
      "delay": 0,
@@ -1559,6 +1644,7 @@
     {
      "gid": 69,
      "word": 0,
+     "ayah": 2,
      "kind": "mark",
      "order": 57,
      "delay": 0.003,
@@ -1576,6 +1662,7 @@
     {
      "gid": 549,
      "word": 0,
+     "ayah": 2,
      "kind": "base",
      "order": 52,
      "delay": 0,
@@ -1593,6 +1680,7 @@
     {
      "gid": 90,
      "word": 0,
+     "ayah": 2,
      "kind": "base",
      "order": 51,
      "delay": 0,
@@ -1654,6 +1742,7 @@
     {
      "gid": 67,
      "word": 1,
+     "ayah": 3,
      "kind": "mark",
      "order": 111,
      "delay": 0.003,
@@ -1671,6 +1760,7 @@
     {
      "gid": 498,
      "word": 1,
+     "ayah": 3,
      "kind": "base",
      "order": 107,
      "delay": 0,
@@ -1688,6 +1778,7 @@
     {
      "gid": 1315,
      "word": 1,
+     "ayah": 3,
      "kind": "base",
      "kashida": true,
      "order": 106,
@@ -1706,6 +1797,7 @@
     {
      "gid": 458,
      "word": 1,
+     "ayah": 3,
      "kind": "base",
      "order": 105,
      "delay": 0,
@@ -1723,6 +1815,7 @@
     {
      "gid": 67,
      "word": 1,
+     "ayah": 3,
      "kind": "mark",
      "order": 110,
      "delay": 0.003,
@@ -1740,6 +1833,7 @@
     {
      "gid": 483,
      "word": 1,
+     "ayah": 3,
      "kind": "base",
      "order": 104,
      "delay": 0,
@@ -1757,6 +1851,7 @@
     {
      "gid": 347,
      "word": 1,
+     "ayah": 3,
      "kind": "mark",
      "order": 108,
      "delay": 0.003,
@@ -1774,6 +1869,7 @@
     {
      "gid": 68,
      "word": 1,
+     "ayah": 3,
      "kind": "mark",
      "order": 109,
      "delay": 0.003,
@@ -1791,6 +1887,7 @@
     {
      "gid": 859,
      "word": 1,
+     "ayah": 3,
      "kind": "base",
      "order": 103,
      "delay": 0,
@@ -1808,6 +1905,7 @@
     {
      "gid": 857,
      "word": 1,
+     "ayah": 3,
      "kind": "base",
      "order": 102,
      "delay": 0,
@@ -1825,6 +1923,7 @@
     {
      "gid": 90,
      "word": 1,
+     "ayah": 3,
      "kind": "base",
      "order": 101,
      "delay": 0,
@@ -1842,6 +1941,7 @@
     {
      "gid": 67,
      "word": 0,
+     "ayah": 3,
      "kind": "mark",
      "order": 100,
      "delay": 0.003,
@@ -1859,6 +1959,7 @@
     {
      "gid": 501,
      "word": 0,
+     "ayah": 3,
      "kind": "base",
      "order": 94,
      "delay": 0,
@@ -1876,6 +1977,7 @@
     {
      "gid": 1315,
      "word": 0,
+     "ayah": 3,
      "kind": "base",
      "kashida": true,
      "order": 93,
@@ -1894,6 +1996,7 @@
     {
      "gid": 89,
      "word": 0,
+     "ayah": 3,
      "kind": "mark",
      "order": 99,
      "delay": 0.003,
@@ -1911,6 +2014,7 @@
     {
      "gid": 65,
      "word": 0,
+     "ayah": 3,
      "kind": "mark",
      "order": 98,
      "delay": 0.003,
@@ -1928,6 +2032,7 @@
     {
      "gid": 1056,
      "word": 0,
+     "ayah": 3,
      "kind": "base",
      "order": 92,
      "delay": 0,
@@ -1945,6 +2050,7 @@
     {
      "gid": 69,
      "word": 0,
+     "ayah": 3,
      "kind": "mark",
      "order": 97,
      "delay": 0.003,
@@ -1962,6 +2068,7 @@
     {
      "gid": 1053,
      "word": 0,
+     "ayah": 3,
      "kind": "base",
      "order": 91,
      "delay": 0,
@@ -1979,6 +2086,7 @@
     {
      "gid": 347,
      "word": 0,
+     "ayah": 3,
      "kind": "mark",
      "order": 95,
      "delay": 0.003,
@@ -1996,6 +2104,7 @@
     {
      "gid": 68,
      "word": 0,
+     "ayah": 3,
      "kind": "mark",
      "order": 96,
      "delay": 0.003,
@@ -2013,6 +2122,7 @@
     {
      "gid": 859,
      "word": 0,
+     "ayah": 3,
      "kind": "base",
      "order": 90,
      "delay": 0,
@@ -2030,6 +2140,7 @@
     {
      "gid": 857,
      "word": 0,
+     "ayah": 3,
      "kind": "base",
      "order": 89,
      "delay": 0,
@@ -2047,6 +2158,7 @@
     {
      "gid": 90,
      "word": 0,
+     "ayah": 3,
      "kind": "base",
      "order": 88,
      "delay": 0,
@@ -2064,6 +2176,7 @@
     {
      "gid": 67,
      "word": 2,
+     "ayah": 4,
      "kind": "mark",
      "order": 119,
      "delay": 0.003,
@@ -2081,6 +2194,7 @@
     {
      "gid": 492,
      "word": 2,
+     "ayah": 4,
      "kind": "base",
      "order": 115,
      "delay": 0,
@@ -2098,6 +2212,7 @@
     {
      "gid": 1315,
      "word": 2,
+     "ayah": 4,
      "kind": "base",
      "kashida": true,
      "order": 114,
@@ -2116,6 +2231,7 @@
     {
      "gid": 67,
      "word": 2,
+     "ayah": 4,
      "kind": "mark",
      "order": 118,
      "delay": 0.003,
@@ -2133,6 +2249,7 @@
     {
      "gid": 497,
      "word": 2,
+     "ayah": 4,
      "kind": "base",
      "order": 113,
      "delay": 0,
@@ -2150,6 +2267,7 @@
     {
      "gid": 89,
      "word": 2,
+     "ayah": 4,
      "kind": "mark",
      "order": 117,
      "delay": 0.003,
@@ -2167,6 +2285,7 @@
     {
      "gid": 65,
      "word": 2,
+     "ayah": 4,
      "kind": "mark",
      "order": 116,
      "delay": 0.003,
@@ -2184,6 +2303,7 @@
     {
      "gid": 499,
      "word": 2,
+     "ayah": 4,
      "kind": "base",
      "order": 112,
      "delay": 0,
@@ -2245,6 +2365,7 @@
     {
      "gid": 67,
      "word": 1,
+     "ayah": 4,
      "kind": "mark",
      "order": 135,
      "delay": 0.003,
@@ -2262,6 +2383,7 @@
     {
      "gid": 501,
      "word": 1,
+     "ayah": 4,
      "kind": "base",
      "order": 132,
      "delay": 0,
@@ -2279,6 +2401,7 @@
     {
      "gid": 1315,
      "word": 1,
+     "ayah": 4,
      "kind": "base",
      "kashida": true,
      "order": 131,
@@ -2297,6 +2420,7 @@
     {
      "gid": 447,
      "word": 1,
+     "ayah": 4,
      "kind": "base",
      "order": 130,
      "delay": 0,
@@ -2314,6 +2438,7 @@
     {
      "gid": 67,
      "word": 1,
+     "ayah": 4,
      "kind": "mark",
      "order": 134,
      "delay": 0.003,
@@ -2331,6 +2456,7 @@
     {
      "gid": 68,
      "word": 1,
+     "ayah": 4,
      "kind": "mark",
      "order": 133,
      "delay": 0.003,
@@ -2348,6 +2474,7 @@
     {
      "gid": 1043,
      "word": 1,
+     "ayah": 4,
      "kind": "base",
      "order": 129,
      "delay": 0,
@@ -2365,6 +2492,7 @@
     {
      "gid": 1038,
      "word": 1,
+     "ayah": 4,
      "kind": "base",
      "order": 128,
      "delay": 0,
@@ -2382,6 +2510,7 @@
     {
      "gid": 90,
      "word": 1,
+     "ayah": 4,
      "kind": "base",
      "order": 127,
      "delay": 0,
@@ -2399,6 +2528,7 @@
     {
      "gid": 67,
      "word": 0,
+     "ayah": 4,
      "kind": "mark",
      "order": 126,
      "delay": 0.003,
@@ -2416,6 +2546,7 @@
     {
      "gid": 56,
      "word": 0,
+     "ayah": 4,
      "kind": "base",
      "order": 123,
      "delay": 0,
@@ -2433,6 +2564,7 @@
     {
      "gid": 69,
      "word": 0,
+     "ayah": 4,
      "kind": "mark",
      "order": 125,
      "delay": 0.003,
@@ -2450,6 +2582,7 @@
     {
      "gid": 526,
      "word": 0,
+     "ayah": 4,
      "kind": "base",
      "order": 122,
      "delay": 0,
@@ -2467,6 +2600,7 @@
     {
      "gid": 1315,
      "word": 0,
+     "ayah": 4,
      "kind": "base",
      "kashida": true,
      "order": 121,
@@ -2485,6 +2619,7 @@
     {
      "gid": 65,
      "word": 0,
+     "ayah": 4,
      "kind": "mark",
      "order": 124,
      "delay": 0.003,
@@ -2502,6 +2637,7 @@
     {
      "gid": 447,
      "word": 0,
+     "ayah": 4,
      "kind": "base",
      "order": 120,
      "delay": 0,
@@ -2519,6 +2655,7 @@
     {
      "gid": 66,
      "word": 3,
+     "ayah": 5,
      "kind": "mark",
      "order": 152,
      "delay": 0.003,
@@ -2536,6 +2673,7 @@
     {
      "gid": 468,
      "word": 3,
+     "ayah": 5,
      "kind": "base",
      "order": 148,
      "delay": 0,
@@ -2553,6 +2691,7 @@
     {
      "gid": 1315,
      "word": 3,
+     "ayah": 5,
      "kind": "base",
      "kashida": true,
      "order": 147,
@@ -2571,6 +2710,7 @@
     {
      "gid": 66,
      "word": 3,
+     "ayah": 5,
      "kind": "mark",
      "order": 151,
      "delay": 0.003,
@@ -2588,6 +2728,7 @@
     {
      "gid": 459,
      "word": 3,
+     "ayah": 5,
      "kind": "base",
      "order": 146,
      "delay": 0,
@@ -2605,6 +2746,7 @@
     {
      "gid": 69,
      "word": 3,
+     "ayah": 5,
      "kind": "mark",
      "order": 150,
      "delay": 0.003,
@@ -2622,6 +2764,7 @@
     {
      "gid": 439,
      "word": 3,
+     "ayah": 5,
      "kind": "base",
      "order": 145,
      "delay": 0,
@@ -2639,6 +2782,7 @@
     {
      "gid": 65,
      "word": 3,
+     "ayah": 5,
      "kind": "mark",
      "order": 149,
      "delay": 0.003,
@@ -2656,6 +2800,7 @@
     {
      "gid": 450,
      "word": 3,
+     "ayah": 5,
      "kind": "base",
      "order": 144,
      "delay": 0,
@@ -2673,6 +2818,7 @@
     {
      "gid": 65,
      "word": 2,
+     "ayah": 5,
      "kind": "mark",
      "order": 143,
      "delay": 0.003,
@@ -2690,6 +2836,7 @@
     {
      "gid": 54,
      "word": 2,
+     "ayah": 5,
      "kind": "base",
      "order": 139,
      "delay": 0,
@@ -2707,6 +2854,7 @@
     {
      "gid": 430,
      "word": 2,
+     "ayah": 5,
      "kind": "base",
      "order": 138,
      "delay": 0,
@@ -2724,6 +2872,7 @@
     {
      "gid": 347,
      "word": 2,
+     "ayah": 5,
      "kind": "mark",
      "order": 141,
      "delay": 0.003,
@@ -2741,6 +2890,7 @@
     {
      "gid": 68,
      "word": 2,
+     "ayah": 5,
      "kind": "mark",
      "order": 142,
      "delay": 0.003,
@@ -2758,6 +2908,7 @@
     {
      "gid": 982,
      "word": 2,
+     "ayah": 5,
      "kind": "base",
      "order": 137,
      "delay": 0,
@@ -2775,6 +2926,7 @@
     {
      "gid": 351,
      "word": 2,
+     "ayah": 5,
      "kind": "mark",
      "order": 140,
      "delay": 0.003,
@@ -2792,6 +2944,7 @@
     {
      "gid": 29,
      "word": 2,
+     "ayah": 5,
      "kind": "base",
      "order": 136,
      "delay": 0,
@@ -2853,6 +3006,7 @@
     {
      "gid": 66,
      "word": 1,
+     "ayah": 5,
      "kind": "mark",
      "order": 182,
      "delay": 0.003,
@@ -2870,6 +3024,7 @@
     {
      "gid": 849,
      "word": 1,
+     "ayah": 5,
      "kind": "base",
      "order": 177,
      "delay": 0,
@@ -2887,6 +3042,7 @@
     {
      "gid": 839,
      "word": 1,
+     "ayah": 5,
      "kind": "base",
      "order": 176,
      "delay": 0,
@@ -2904,6 +3060,7 @@
     {
      "gid": 67,
      "word": 1,
+     "ayah": 5,
      "kind": "mark",
      "order": 181,
      "delay": 0.003,
@@ -2921,6 +3078,7 @@
     {
      "gid": 439,
      "word": 1,
+     "ayah": 5,
      "kind": "base",
      "order": 175,
      "delay": 0,
@@ -2938,6 +3096,7 @@
     {
      "gid": 65,
      "word": 1,
+     "ayah": 5,
      "kind": "mark",
      "order": 180,
      "delay": 0.003,
@@ -2955,6 +3114,7 @@
     {
      "gid": 462,
      "word": 1,
+     "ayah": 5,
      "kind": "base",
      "order": 174,
      "delay": 0,
@@ -2972,6 +3132,7 @@
     {
      "gid": 51,
      "word": 1,
+     "ayah": 5,
      "kind": "base",
      "kashida": true,
      "order": 173,
@@ -2990,6 +3151,7 @@
     {
      "gid": 51,
      "word": 1,
+     "ayah": 5,
      "kind": "base",
      "kashida": true,
      "order": 172,
@@ -3008,6 +3170,7 @@
     {
      "gid": 51,
      "word": 1,
+     "ayah": 5,
      "kind": "base",
      "kashida": true,
      "order": 171,
@@ -3026,6 +3189,7 @@
     {
      "gid": 51,
      "word": 1,
+     "ayah": 5,
      "kind": "base",
      "kashida": true,
      "order": 170,
@@ -3044,6 +3208,7 @@
     {
      "gid": 51,
      "word": 1,
+     "ayah": 5,
      "kind": "base",
      "kashida": true,
      "order": 169,
@@ -3062,6 +3227,7 @@
     {
      "gid": 51,
      "word": 1,
+     "ayah": 5,
      "kind": "base",
      "kashida": true,
      "order": 168,
@@ -3080,6 +3246,7 @@
     {
      "gid": 51,
      "word": 1,
+     "ayah": 5,
      "kind": "base",
      "kashida": true,
      "order": 167,
@@ -3098,6 +3265,7 @@
     {
      "gid": 51,
      "word": 1,
+     "ayah": 5,
      "kind": "base",
      "kashida": true,
      "order": 166,
@@ -3116,6 +3284,7 @@
     {
      "gid": 69,
      "word": 1,
+     "ayah": 5,
      "kind": "mark",
      "order": 179,
      "delay": 0.003,
@@ -3133,6 +3302,7 @@
     {
      "gid": 712,
      "word": 1,
+     "ayah": 5,
      "kind": "base",
      "order": 165,
      "delay": 0,
@@ -3150,6 +3320,7 @@
     {
      "gid": 65,
      "word": 1,
+     "ayah": 5,
      "kind": "mark",
      "order": 178,
      "delay": 0.003,
@@ -3167,6 +3338,7 @@
     {
      "gid": 706,
      "word": 1,
+     "ayah": 5,
      "kind": "base",
      "order": 164,
      "delay": 0,
@@ -3184,6 +3356,7 @@
     {
      "gid": 65,
      "word": 0,
+     "ayah": 5,
      "kind": "mark",
      "order": 163,
      "delay": 0.003,
@@ -3201,6 +3374,7 @@
     {
      "gid": 54,
      "word": 0,
+     "ayah": 5,
      "kind": "base",
      "order": 158,
      "delay": 0,
@@ -3218,6 +3392,7 @@
     {
      "gid": 430,
      "word": 0,
+     "ayah": 5,
      "kind": "base",
      "order": 157,
      "delay": 0,
@@ -3235,6 +3410,7 @@
     {
      "gid": 1315,
      "word": 0,
+     "ayah": 5,
      "kind": "base",
      "kashida": true,
      "order": 156,
@@ -3253,6 +3429,7 @@
     {
      "gid": 347,
      "word": 0,
+     "ayah": 5,
      "kind": "mark",
      "order": 161,
      "delay": 0.003,
@@ -3270,6 +3447,7 @@
     {
      "gid": 68,
      "word": 0,
+     "ayah": 5,
      "kind": "mark",
      "order": 162,
      "delay": 0.003,
@@ -3287,6 +3465,7 @@
     {
      "gid": 447,
      "word": 0,
+     "ayah": 5,
      "kind": "base",
      "order": 155,
      "delay": 0,
@@ -3304,6 +3483,7 @@
     {
      "gid": 351,
      "word": 0,
+     "ayah": 5,
      "kind": "mark",
      "order": 159,
      "delay": 0.003,
@@ -3321,6 +3501,7 @@
     {
      "gid": 1171,
      "word": 0,
+     "ayah": 5,
      "kind": "base",
      "order": 154,
      "delay": 0,
@@ -3338,6 +3519,7 @@
     {
      "gid": 65,
      "word": 0,
+     "ayah": 5,
      "kind": "mark",
      "order": 160,
      "delay": 0.003,
@@ -3355,6 +3537,7 @@
     {
      "gid": 59,
      "word": 0,
+     "ayah": 5,
      "kind": "base",
      "order": 153,
      "delay": 0,
@@ -3372,6 +3555,7 @@
     {
      "gid": 430,
      "word": 2,
+     "ayah": 6,
      "kind": "base",
      "order": 195,
      "delay": 0,
@@ -3389,6 +3573,7 @@
     {
      "gid": 51,
      "word": 2,
+     "ayah": 6,
      "kind": "base",
      "kashida": true,
      "order": 194,
@@ -3407,6 +3592,7 @@
     {
      "gid": 51,
      "word": 2,
+     "ayah": 6,
      "kind": "base",
      "kashida": true,
      "order": 193,
@@ -3425,6 +3611,7 @@
     {
      "gid": 51,
      "word": 2,
+     "ayah": 6,
      "kind": "base",
      "kashida": true,
      "order": 192,
@@ -3443,6 +3630,7 @@
     {
      "gid": 51,
      "word": 2,
+     "ayah": 6,
      "kind": "base",
      "kashida": true,
      "order": 191,
@@ -3461,6 +3649,7 @@
     {
      "gid": 51,
      "word": 2,
+     "ayah": 6,
      "kind": "base",
      "kashida": true,
      "order": 190,
@@ -3479,6 +3668,7 @@
     {
      "gid": 51,
      "word": 2,
+     "ayah": 6,
      "kind": "base",
      "kashida": true,
      "order": 189,
@@ -3497,6 +3687,7 @@
     {
      "gid": 51,
      "word": 2,
+     "ayah": 6,
      "kind": "base",
      "kashida": true,
      "order": 188,
@@ -3515,6 +3706,7 @@
     {
      "gid": 51,
      "word": 2,
+     "ayah": 6,
      "kind": "base",
      "kashida": true,
      "order": 187,
@@ -3533,6 +3725,7 @@
     {
      "gid": 65,
      "word": 2,
+     "ayah": 6,
      "kind": "mark",
      "order": 198,
      "delay": 0.003,
@@ -3550,6 +3743,7 @@
     {
      "gid": 450,
      "word": 2,
+     "ayah": 6,
      "kind": "base",
      "order": 186,
      "delay": 0,
@@ -3567,6 +3761,7 @@
     {
      "gid": 67,
      "word": 2,
+     "ayah": 6,
      "kind": "mark",
      "order": 197,
      "delay": 0.003,
@@ -3584,6 +3779,7 @@
     {
      "gid": 468,
      "word": 2,
+     "ayah": 6,
      "kind": "base",
      "order": 185,
      "delay": 0,
@@ -3601,6 +3797,7 @@
     {
      "gid": 69,
      "word": 2,
+     "ayah": 6,
      "kind": "mark",
      "order": 196,
      "delay": 0.003,
@@ -3618,6 +3815,7 @@
     {
      "gid": 490,
      "word": 2,
+     "ayah": 6,
      "kind": "base",
      "order": 184,
      "delay": 0,
@@ -3635,6 +3833,7 @@
     {
      "gid": 90,
      "word": 2,
+     "ayah": 6,
      "kind": "base",
      "order": 183,
      "delay": 0,
@@ -3696,6 +3895,7 @@
     {
      "gid": 65,
      "word": 1,
+     "ayah": 6,
      "kind": "mark",
      "order": 224,
      "delay": 0.003,
@@ -3713,6 +3913,7 @@
     {
      "gid": 574,
      "word": 1,
+     "ayah": 6,
      "kind": "base",
      "order": 218,
      "delay": 0,
@@ -3730,6 +3931,7 @@
     {
      "gid": 565,
      "word": 1,
+     "ayah": 6,
      "kind": "base",
      "order": 217,
      "delay": 0,
@@ -3747,6 +3949,7 @@
     {
      "gid": 67,
      "word": 1,
+     "ayah": 6,
      "kind": "mark",
      "order": 223,
      "delay": 0.003,
@@ -3764,6 +3967,7 @@
     {
      "gid": 476,
      "word": 1,
+     "ayah": 6,
      "kind": "base",
      "order": 216,
      "delay": 0,
@@ -3781,6 +3985,7 @@
     {
      "gid": 65,
      "word": 1,
+     "ayah": 6,
      "kind": "mark",
      "order": 222,
      "delay": 0.003,
@@ -3798,6 +4003,7 @@
     {
      "gid": 462,
      "word": 1,
+     "ayah": 6,
      "kind": "base",
      "order": 215,
      "delay": 0,
@@ -3815,6 +4021,7 @@
     {
      "gid": 1314,
      "word": 1,
+     "ayah": 6,
      "kind": "base",
      "kashida": true,
      "order": 214,
@@ -3833,6 +4040,7 @@
     {
      "gid": 69,
      "word": 1,
+     "ayah": 6,
      "kind": "mark",
      "order": 221,
      "delay": 0.003,
@@ -3850,6 +4058,7 @@
     {
      "gid": 517,
      "word": 1,
+     "ayah": 6,
      "kind": "base",
      "order": 213,
      "delay": 0,
@@ -3867,6 +4076,7 @@
     {
      "gid": 66,
      "word": 1,
+     "ayah": 6,
      "kind": "mark",
      "order": 220,
      "delay": 0.003,
@@ -3884,6 +4094,7 @@
     {
      "gid": 500,
      "word": 1,
+     "ayah": 6,
      "kind": "base",
      "order": 212,
      "delay": 0,
@@ -3901,6 +4112,7 @@
     {
      "gid": 69,
      "word": 1,
+     "ayah": 6,
      "kind": "mark",
      "order": 219,
      "delay": 0.003,
@@ -3918,6 +4130,7 @@
     {
      "gid": 496,
      "word": 1,
+     "ayah": 6,
      "kind": "base",
      "order": 211,
      "delay": 0,
@@ -3935,6 +4148,7 @@
     {
      "gid": 90,
      "word": 1,
+     "ayah": 6,
      "kind": "base",
      "order": 210,
      "delay": 0,
@@ -3952,6 +4166,7 @@
     {
      "gid": 65,
      "word": 0,
+     "ayah": 6,
      "kind": "mark",
      "order": 209,
      "delay": 0.003,
@@ -3969,6 +4184,7 @@
     {
      "gid": 47,
      "word": 0,
+     "ayah": 6,
      "kind": "base",
      "order": 204,
      "delay": 0,
@@ -3986,6 +4202,7 @@
     {
      "gid": 89,
      "word": 0,
+     "ayah": 6,
      "kind": "mark",
      "order": 208,
      "delay": 0.003,
@@ -4003,6 +4220,7 @@
     {
      "gid": 65,
      "word": 0,
+     "ayah": 6,
      "kind": "mark",
      "order": 207,
      "delay": 0.003,
@@ -4020,6 +4238,7 @@
     {
      "gid": 506,
      "word": 0,
+     "ayah": 6,
      "kind": "base",
      "order": 203,
      "delay": 0,
@@ -4037,6 +4256,7 @@
     {
      "gid": 1313,
      "word": 0,
+     "ayah": 6,
      "kind": "base",
      "kashida": true,
      "order": 202,
@@ -4055,6 +4275,7 @@
     {
      "gid": 67,
      "word": 0,
+     "ayah": 6,
      "kind": "mark",
      "order": 206,
      "delay": 0.003,
@@ -4072,6 +4293,7 @@
     {
      "gid": 68,
      "word": 0,
+     "ayah": 6,
      "kind": "mark",
      "order": 205,
      "delay": 0.003,
@@ -4089,6 +4311,7 @@
     {
      "gid": 512,
      "word": 0,
+     "ayah": 6,
      "kind": "base",
      "order": 201,
      "delay": 0,
@@ -4106,6 +4329,7 @@
     {
      "gid": 496,
      "word": 0,
+     "ayah": 6,
      "kind": "base",
      "order": 200,
      "delay": 0,
@@ -4123,6 +4347,7 @@
     {
      "gid": 90,
      "word": 0,
+     "ayah": 6,
      "kind": "base",
      "order": 199,
      "delay": 0,
@@ -4140,6 +4365,7 @@
     {
      "gid": 65,
      "word": 2,
+     "ayah": 7,
      "kind": "mark",
      "order": 232,
      "delay": 0.003,
@@ -4157,6 +4383,7 @@
     {
      "gid": 47,
      "word": 2,
+     "ayah": 7,
      "kind": "base",
      "order": 228,
      "delay": 0,
@@ -4174,6 +4401,7 @@
     {
      "gid": 89,
      "word": 2,
+     "ayah": 7,
      "kind": "mark",
      "order": 231,
      "delay": 0.003,
@@ -4191,6 +4419,7 @@
     {
      "gid": 65,
      "word": 2,
+     "ayah": 7,
      "kind": "mark",
      "order": 230,
      "delay": 0.003,
@@ -4208,6 +4437,7 @@
     {
      "gid": 506,
      "word": 2,
+     "ayah": 7,
      "kind": "base",
      "order": 227,
      "delay": 0,
@@ -4225,6 +4455,7 @@
     {
      "gid": 1313,
      "word": 2,
+     "ayah": 7,
      "kind": "base",
      "kashida": true,
      "order": 226,
@@ -4243,6 +4474,7 @@
     {
      "gid": 67,
      "word": 2,
+     "ayah": 7,
      "kind": "mark",
      "order": 229,
      "delay": 0.003,
@@ -4260,6 +4492,7 @@
     {
      "gid": 510,
      "word": 2,
+     "ayah": 7,
      "kind": "base",
      "order": 225,
      "delay": 0,
@@ -4312,6 +4545,7 @@
     {
      "gid": 67,
      "word": 3,
+     "ayah": 7,
      "kind": "mark",
      "order": 270,
      "delay": 0.003,
@@ -4329,6 +4563,7 @@
     {
      "gid": 506,
      "word": 3,
+     "ayah": 7,
      "kind": "base",
      "order": 267,
      "delay": 0,
@@ -4346,6 +4581,7 @@
     {
      "gid": 1314,
      "word": 3,
+     "ayah": 7,
      "kind": "base",
      "kashida": true,
      "order": 266,
@@ -4364,6 +4600,7 @@
     {
      "gid": 69,
      "word": 3,
+     "ayah": 7,
      "kind": "mark",
      "order": 269,
      "delay": 0.003,
@@ -4381,6 +4618,7 @@
     {
      "gid": 458,
      "word": 3,
+     "ayah": 7,
      "kind": "base",
      "order": 265,
      "delay": 0,
@@ -4398,6 +4636,7 @@
     {
      "gid": 65,
      "word": 3,
+     "ayah": 7,
      "kind": "mark",
      "order": 268,
      "delay": 0.003,
@@ -4415,6 +4654,7 @@
     {
      "gid": 436,
      "word": 3,
+     "ayah": 7,
      "kind": "base",
      "order": 264,
      "delay": 0,
@@ -4432,6 +4672,7 @@
     {
      "gid": 69,
      "word": 2,
+     "ayah": 7,
      "kind": "mark",
      "order": 263,
      "delay": 0.003,
@@ -4449,6 +4690,7 @@
     {
      "gid": 498,
      "word": 2,
+     "ayah": 7,
      "kind": "base",
      "order": 258,
      "delay": 0,
@@ -4466,6 +4708,7 @@
     {
      "gid": 1314,
      "word": 2,
+     "ayah": 7,
      "kind": "base",
      "kashida": true,
      "order": 257,
@@ -4484,6 +4727,7 @@
     {
      "gid": 67,
      "word": 2,
+     "ayah": 7,
      "kind": "mark",
      "order": 262,
      "delay": 0.003,
@@ -4501,6 +4745,7 @@
     {
      "gid": 1146,
      "word": 2,
+     "ayah": 7,
      "kind": "base",
      "order": 256,
      "delay": 0,
@@ -4518,6 +4763,7 @@
     {
      "gid": 69,
      "word": 2,
+     "ayah": 7,
      "kind": "mark",
      "order": 261,
      "delay": 0.003,
@@ -4535,6 +4781,7 @@
     {
      "gid": 1137,
      "word": 2,
+     "ayah": 7,
      "kind": "base",
      "order": 255,
      "delay": 0,
@@ -4552,6 +4799,7 @@
     {
      "gid": 65,
      "word": 2,
+     "ayah": 7,
      "kind": "mark",
      "order": 260,
      "delay": 0.003,
@@ -4569,6 +4817,7 @@
     {
      "gid": 497,
      "word": 2,
+     "ayah": 7,
      "kind": "base",
      "order": 254,
      "delay": 0,
@@ -4586,6 +4835,7 @@
     {
      "gid": 65,
      "word": 2,
+     "ayah": 7,
      "kind": "mark",
      "order": 259,
      "delay": 0.003,
@@ -4603,6 +4853,7 @@
     {
      "gid": 940,
      "word": 2,
+     "ayah": 7,
      "kind": "base",
      "order": 253,
      "delay": 0,
@@ -4620,6 +4871,7 @@
     {
      "gid": 65,
      "word": 1,
+     "ayah": 7,
      "kind": "mark",
      "order": 252,
      "delay": 0.003,
@@ -4637,6 +4889,7 @@
     {
      "gid": 440,
      "word": 1,
+     "ayah": 7,
      "kind": "base",
      "order": 247,
      "delay": 0,
@@ -4654,6 +4907,7 @@
     {
      "gid": 1314,
      "word": 1,
+     "ayah": 7,
      "kind": "base",
      "kashida": true,
      "order": 246,
@@ -4672,6 +4926,7 @@
     {
      "gid": 69,
      "word": 1,
+     "ayah": 7,
      "kind": "mark",
      "order": 251,
      "delay": 0.003,
@@ -4689,6 +4944,7 @@
     {
      "gid": 500,
      "word": 1,
+     "ayah": 7,
      "kind": "base",
      "order": 245,
      "delay": 0,
@@ -4706,6 +4962,7 @@
     {
      "gid": 65,
      "word": 1,
+     "ayah": 7,
      "kind": "mark",
      "order": 250,
      "delay": 0.003,
@@ -4723,6 +4980,7 @@
     {
      "gid": 439,
      "word": 1,
+     "ayah": 7,
      "kind": "base",
      "order": 244,
      "delay": 0,
@@ -4740,6 +4998,7 @@
     {
      "gid": 69,
      "word": 1,
+     "ayah": 7,
      "kind": "mark",
      "order": 249,
      "delay": 0.003,
@@ -4757,6 +5016,7 @@
     {
      "gid": 450,
      "word": 1,
+     "ayah": 7,
      "kind": "base",
      "order": 243,
      "delay": 0,
@@ -4774,6 +5034,7 @@
     {
      "gid": 1257,
      "word": 1,
+     "ayah": 7,
      "kind": "mark",
      "order": 248,
      "delay": 0.003,
@@ -4791,6 +5052,7 @@
     {
      "gid": 27,
      "word": 1,
+     "ayah": 7,
      "kind": "base",
      "order": 242,
      "delay": 0,
@@ -4808,6 +5070,7 @@
     {
      "gid": 65,
      "word": 0,
+     "ayah": 7,
      "kind": "mark",
      "order": 241,
      "delay": 0.003,
@@ -4825,6 +5088,7 @@
     {
      "gid": 697,
      "word": 0,
+     "ayah": 7,
      "kind": "base",
      "order": 237,
      "delay": 0,
@@ -4842,6 +5106,7 @@
     {
      "gid": 688,
      "word": 0,
+     "ayah": 7,
      "kind": "base",
      "order": 236,
      "delay": 0,
@@ -4859,6 +5124,7 @@
     {
      "gid": 67,
      "word": 0,
+     "ayah": 7,
      "kind": "mark",
      "order": 240,
      "delay": 0.003,
@@ -4876,6 +5142,7 @@
     {
      "gid": 1042,
      "word": 0,
+     "ayah": 7,
      "kind": "base",
      "order": 235,
      "delay": 0,
@@ -4893,6 +5160,7 @@
     {
      "gid": 347,
      "word": 0,
+     "ayah": 7,
      "kind": "mark",
      "order": 238,
      "delay": 0.003,
@@ -4910,6 +5178,7 @@
     {
      "gid": 68,
      "word": 0,
+     "ayah": 7,
      "kind": "mark",
      "order": 239,
      "delay": 0.003,
@@ -4927,6 +5196,7 @@
     {
      "gid": 1038,
      "word": 0,
+     "ayah": 7,
      "kind": "base",
      "order": 234,
      "delay": 0,
@@ -4944,6 +5214,7 @@
     {
      "gid": 90,
      "word": 0,
+     "ayah": 7,
      "kind": "base",
      "order": 233,
      "delay": 0,
@@ -4992,6 +5263,7 @@
     {
      "gid": 65,
      "word": 3,
+     "ayah": 7,
      "kind": "mark",
      "order": 310,
      "delay": 0.003,
@@ -5009,6 +5281,7 @@
     {
      "gid": 501,
      "word": 3,
+     "ayah": 7,
      "kind": "base",
      "order": 305,
      "delay": 0,
@@ -5026,6 +5299,7 @@
     {
      "gid": 1270,
      "word": 3,
+     "ayah": 7,
      "kind": "base",
      "kashida": true,
      "order": 304,
@@ -5044,6 +5318,7 @@
     {
      "gid": 458,
      "word": 3,
+     "ayah": 7,
      "kind": "base",
      "order": 303,
      "delay": 0,
@@ -5061,6 +5336,7 @@
     {
      "gid": 67,
      "word": 3,
+     "ayah": 7,
      "kind": "mark",
      "order": 309,
      "delay": 0.003,
@@ -5078,6 +5354,7 @@
     {
      "gid": 68,
      "word": 3,
+     "ayah": 7,
      "kind": "mark",
      "order": 308,
      "delay": 0.003,
@@ -5095,6 +5372,7 @@
     {
      "gid": 496,
      "word": 3,
+     "ayah": 7,
      "kind": "base",
      "order": 302,
      "delay": 0,
@@ -5112,6 +5390,7 @@
     {
      "gid": 432,
      "word": 3,
+     "ayah": 7,
      "kind": "base",
      "order": 301,
      "delay": 0,
@@ -5129,6 +5408,7 @@
     {
      "gid": 347,
      "word": 3,
+     "ayah": 7,
      "kind": "mark",
      "order": 306,
      "delay": 0.003,
@@ -5146,6 +5426,7 @@
     {
      "gid": 68,
      "word": 3,
+     "ayah": 7,
      "kind": "mark",
      "order": 307,
      "delay": 0.003,
@@ -5163,6 +5444,7 @@
     {
      "gid": 511,
      "word": 3,
+     "ayah": 7,
      "kind": "base",
      "order": 300,
      "delay": 0,
@@ -5180,6 +5462,7 @@
     {
      "gid": 496,
      "word": 3,
+     "ayah": 7,
      "kind": "base",
      "order": 299,
      "delay": 0,
@@ -5197,6 +5480,7 @@
     {
      "gid": 90,
      "word": 3,
+     "ayah": 7,
      "kind": "base",
      "order": 298,
      "delay": 0,
@@ -5214,6 +5498,7 @@
     {
      "gid": 650,
      "word": 2,
+     "ayah": 7,
      "kind": "base",
      "order": 295,
      "delay": 0,
@@ -5231,6 +5516,7 @@
     {
      "gid": 65,
      "word": 2,
+     "ayah": 7,
      "kind": "mark",
      "order": 297,
      "delay": 0.003,
@@ -5248,6 +5534,7 @@
     {
      "gid": 648,
      "word": 2,
+     "ayah": 7,
      "kind": "base",
      "order": 294,
      "delay": 0,
@@ -5265,6 +5552,7 @@
     {
      "gid": 65,
      "word": 2,
+     "ayah": 7,
      "kind": "mark",
      "order": 296,
      "delay": 0.003,
@@ -5282,6 +5570,7 @@
     {
      "gid": 59,
      "word": 2,
+     "ayah": 7,
      "kind": "base",
      "order": 293,
      "delay": 0,
@@ -5299,6 +5588,7 @@
     {
      "gid": 69,
      "word": 1,
+     "ayah": 7,
      "kind": "mark",
      "order": 292,
      "delay": 0.003,
@@ -5316,6 +5606,7 @@
     {
      "gid": 498,
      "word": 1,
+     "ayah": 7,
      "kind": "base",
      "order": 287,
      "delay": 0,
@@ -5333,6 +5624,7 @@
     {
      "gid": 67,
      "word": 1,
+     "ayah": 7,
      "kind": "mark",
      "order": 291,
      "delay": 0.003,
@@ -5350,6 +5642,7 @@
     {
      "gid": 1146,
      "word": 1,
+     "ayah": 7,
      "kind": "base",
      "order": 286,
      "delay": 0,
@@ -5367,6 +5660,7 @@
     {
      "gid": 69,
      "word": 1,
+     "ayah": 7,
      "kind": "mark",
      "order": 290,
      "delay": 0.003,
@@ -5384,6 +5678,7 @@
     {
      "gid": 1137,
      "word": 1,
+     "ayah": 7,
      "kind": "base",
      "order": 285,
      "delay": 0,
@@ -5401,6 +5696,7 @@
     {
      "gid": 65,
      "word": 1,
+     "ayah": 7,
      "kind": "mark",
      "order": 289,
      "delay": 0.003,
@@ -5418,6 +5714,7 @@
     {
      "gid": 497,
      "word": 1,
+     "ayah": 7,
      "kind": "base",
      "order": 284,
      "delay": 0,
@@ -5435,6 +5732,7 @@
     {
      "gid": 65,
      "word": 1,
+     "ayah": 7,
      "kind": "mark",
      "order": 288,
      "delay": 0.003,
@@ -5452,6 +5750,7 @@
     {
      "gid": 940,
      "word": 1,
+     "ayah": 7,
      "kind": "base",
      "order": 283,
      "delay": 0,
@@ -5469,6 +5768,7 @@
     {
      "gid": 67,
      "word": 0,
+     "ayah": 7,
      "kind": "mark",
      "order": 282,
      "delay": 0.003,
@@ -5486,6 +5786,7 @@
     {
      "gid": 32,
      "word": 0,
+     "ayah": 7,
      "kind": "base",
      "order": 277,
      "delay": 0,
@@ -5503,6 +5804,7 @@
     {
      "gid": 526,
      "word": 0,
+     "ayah": 7,
      "kind": "base",
      "order": 276,
      "delay": 0,
@@ -5520,6 +5822,7 @@
     {
      "gid": 66,
      "word": 0,
+     "ayah": 7,
      "kind": "mark",
      "order": 281,
      "delay": 0.003,
@@ -5537,6 +5840,7 @@
     {
      "gid": 511,
      "word": 0,
+     "ayah": 7,
      "kind": "base",
      "order": 275,
      "delay": 0,
@@ -5554,6 +5858,7 @@
     {
      "gid": 69,
      "word": 0,
+     "ayah": 7,
      "kind": "mark",
      "order": 280,
      "delay": 0.003,
@@ -5571,6 +5876,7 @@
     {
      "gid": 438,
      "word": 0,
+     "ayah": 7,
      "kind": "base",
      "order": 274,
      "delay": 0,
@@ -5588,6 +5894,7 @@
     {
      "gid": 65,
      "word": 0,
+     "ayah": 7,
      "kind": "mark",
      "order": 279,
      "delay": 0.003,
@@ -5605,6 +5912,7 @@
     {
      "gid": 500,
      "word": 0,
+     "ayah": 7,
      "kind": "base",
      "order": 273,
      "delay": 0,
@@ -5622,6 +5930,7 @@
     {
      "gid": 69,
      "word": 0,
+     "ayah": 7,
      "kind": "mark",
      "order": 278,
      "delay": 0.003,
@@ -5639,6 +5948,7 @@
     {
      "gid": 496,
      "word": 0,
+     "ayah": 7,
      "kind": "base",
      "order": 272,
      "delay": 0,
@@ -5656,6 +5966,7 @@
     {
      "gid": 90,
      "word": 0,
+     "ayah": 7,
      "kind": "base",
      "order": 271,
      "delay": 0,
