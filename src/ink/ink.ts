@@ -20,6 +20,8 @@ const SHEET_W = 0.78;
 export interface InkSample {
   cov: N;
   wet: N;
+  /** §14 emboss puff height (0..1), reveal-gated — consumed by the M4 relief stage */
+  puff: N;
 }
 
 /** decode a 16-bit big-endian byte pair (channels already 0..1) back to [0,1] */
@@ -35,6 +37,7 @@ export function inkNode(pack: InkPack, suv: N, fiberH: N): InkSample {
 
   let cov: N = float(0);
   let wet: N = float(0);
+  let puff: N = float(0);
 
   // analytic AA from suv derivatives — continuous across grid cells (a per-instance uv
   // fwidth would spike at cell borders); §14's "analytic fwidth AA" via per-instance slope
@@ -75,7 +78,8 @@ export function inkNode(pack: InkPack, suv: N, fiberH: N): InkSample {
     const auv: N = auv0.add(luv.mul(auv1.sub(auv0)));
     const s: N = texture(pack.mtsdf, auv);
     const med: N = max(min(s.r, s.g), min(max(s.r, s.g), s.b));
-    const wG: N = texture(pack.prog, auv).r;
+    const progS: N = texture(pack.prog, auv); // [w, trueSDF, puff, 255]
+    const wG: N = progS.r;
     const aaG: N = suvFw.mul(aaSlope).max(1e-5); // normalized-sd units per fragment
 
     // --- ring branch: analytic circle in world units ---
@@ -105,11 +109,17 @@ export function inkNode(pack: InkPack, suv: N, fiberH: N): InkSample {
     const reveal: N = smoothstep(w.sub(E5_FEATHER), w.add(E5_FEATHER), t01); // E5 leading edge
     const c: N = covShape.mul(reveal).mul(inside).mul(valid);
 
+    // §14 puff: glyphs from the progression atlas; rings analytically from their stroke
+    // interior (normalized like the atlas: interior distance / 0.05 em)
+    const puffR2: N = clamp(sdR.div(0.0026), 0, 1);
+    const puffShape: N = progS.b.mul(float(1).sub(isRing)).add(puffR2.mul(isRing));
+
     cov = max(cov, c);
     wet = max(wet, float(1).sub(dry).mul(c));
+    puff = max(puff, puffShape.mul(reveal).mul(inside).mul(valid));
   }
 
-  return { cov, wet };
+  return { cov, wet, puff };
 }
 
 export const INK_DRY = '#2A211B';

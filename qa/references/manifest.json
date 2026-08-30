@@ -29,13 +29,23 @@
   },
   {
    "id": "R-0.34-T1",
-   "milestone": "M2 complete look (grade pass, specular AA, graded calibrations)",
+   "milestone": "M3 ink (basmalah 60% written + wet per SS10) + M4 light choreography (key S3 dim 0.88)",
    "url": "/?capture=0.34&tier=1",
    "sha256": {
-    "webgpu": "2c29c06e1a09a15669fb33bf2b92dad4c191f75c26a5bb004789b546d97aaf9a",
+    "webgpu": "1f3f2b5826e1c2fd0b87ae249bf2314d3809be572c8b92761fd217ab06024fcc",
     "webgl2": "pending CI re-bless (see R-0.00 note)"
    },
-   "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
+   "verified": "2026-08-27, re-blessed at M3 close (user sign-off on the write sequence): ink present per SS10, key dim driver active"
+  },
+  {
+   "id": "R-0.45-T1",
+   "milestone": "M3 ink (SS20 DoD frame: ayah 4 finishing in its 0.424-0.451 window) + key dim 0.88",
+   "url": "/?capture=0.45&tier=1",
+   "sha256": {
+    "webgpu": "06cc7d5f711c29bfb69d5e614b0fc8b91c7a3d09e170676ba5d51552e7cc6216",
+    "webgl2": "pending CI re-bless (see R-0.00 note)"
+   },
+   "verified": "2026-08-27, blessed at M3 close — reproduced across two loads on a settled server; wet-trail DoD PASS (see ink_pipeline)"
   },
   {
    "id": "R-0.50-T1 (M0 gray-box, superseded by M1 field)",
@@ -114,7 +124,7 @@
   "key": "KEY_INTENSITY 9.87 — 18% card R=128 through the full chain"
  },
  "ink_pipeline": {
-  "milestone": "M3 (open) — atlas build + reveal/wet/bleed live on the sheet; R-0.45 blessing awaits the user's review",
+  "milestone": "M3 CLOSED (user sign-off 2026-08-28 on the write sequence; writing dwell added per review) — R-0.34/R-0.45 blessed above",
   "atlas": {
    "mtsdf": "public/text/ink-mtsdf.png — RGB = msdf (analytic edge-colored pseudo-distances, JS msdfgen-equivalent in build/build-ink-atlas.mjs), A=255; 64px/em, range +-6px, 2048x256",
    "prog": "public/text/ink-prog.png — R = stroke-order w (Zhang-Suen skeleton + geodesic BFS, SS17 priors), G = true SDF, B = SS14 puff (interior distance, 1.5-texel blur), A=255",
@@ -133,9 +143,11 @@
   "frames": "R-0.21 re-verified BIT-IDENTICAL to the M2 blessing after full M3 integration (manual-lerp identity at zero coverage); R-0.34 now legitimately differs (basmalah 60% written per SS10) — re-bless with R-0.45 at sign-off; review PNGs qa/review/m3-R{034,045,056,062}.png",
   "dod_status": "RTL audit PASS (automated). WET TRAIL VERIFIED EMPIRICALLY 2026-08-27: ?scene=inkrt flat instrument, tone mapping OFF at the renderer — line-1 tail wet at dp=0.041 after its last texel (485 px, gMax 93), EXACTLY ZERO wet pixels at dp=0.047 -> trail length in [0.041, 0.047] = 0.045 +-10% PASS. No-shimmer-at-4x-scrub review + blessing pending the user's live pass (pane rAF throttling defeats live scrubs).",
   "candidates": {
-   "R-0.45-T1-webgpu": "c63e9ef2f14269ccdce90437594272c5dd7af6c78b1522578e932cc374340811 (reproduced across a cold server restart and the RT-pass p-clamp optimization)",
-   "R-0.45-T3-webgpu": "120f034b18dad380a97972513214171d3f96255817bb8129f95fce4a1a9c1139 (390x844)",
-   "R-0.45-T1-webgl2": "99173252605c746863c62389a04be64f7fd264413ebbb4faadac6b06c65c24e7 (smoke: full ink pipeline compiles + renders on the fallback)"
+   "note": "earlier M3 candidates superseded by the M4 key/rim drivers (light values changed by SS10 schedule); M4 candidates below are prefixes, full-hash blessing at M4 close",
+   "R-0.56-T1-webgpu": "361b9d10c7fda518... (presenting climb, key 0.92)",
+   "R-0.645-T1-webgpu": "3308632f2d6adf13... (emboss forming)",
+   "R-0.45-T3-webgpu": "re-capture at M4 close (light drivers changed it)",
+   "R-0.45-T1-webgl2": "re-capture at M4 close"
   },
   "qa_instrument": "?scene=inkrt&p=P [&w=&h=] — the ink RT rendered flat 1:1 in sheet uv (R=cov, G=wet), renderer tone mapping disabled. GOTCHA that cost a debugging session: the boot renderer carries AgX (the ?scene=ramp contract) and material.toneMapped=false is IGNORED on the direct-render path in three r185 — AgX's inset matrix bleeds R into G, which reads as phantom permanent wetness in any channel-encoded readback. Disable tone mapping on the RENDERER for QA scenes, and calibrate readback with an in-shader ramp (G := suv.x) before trusting decoded values.",
   "optimizations": "InkPass.run clamps p to [0.30, 0.64] (ink constant outside) and skips re-render on unchanged clamped p"
@@ -170,5 +182,12 @@
   "verification": "ALL VARIANTS: SEVEN AYAT IDENTICAL (build/verify-text.mjs, 2026-08-25): for composition.json, composition-8line.json, composition-7line.json the verifier reads the post-justification presentation strings, strips U+0640, reassembles the flow, and matches the pinned canonical byte-for-byte. Canonical pin unchanged (U+FEFF feed artifact stripped at pinning).",
   "proofs": "qa/proofs/fatihah-proof-{8line,7line}-4000.png (plain) + fatihah-proof-{8line,7line}-parchment-4000.png (2D port of the SS7/SS15 parchment recipe: fbm grain 340x280 + undulation + macro/blotch + stains + aged edges); live at ?scene=proof&layout=8|7[&bg=parchment]",
   "reveal_pacing": "director/writing.ts WRITING constants (glyphUnit 1.0, kashidaUnit 0.35 - elongations sweep, not step, markUnit 0.65, markLag 1.2, wordGap 2.2, unitsPerSecond 3.45); M3 maps units to dp"
+ },
+ "m4_open": {
+  "scope": "presenting + relief: SS13 writing dwell, SS10 light choreography, SS14 emboss stage; geometry handoff + glyph mesh = next",
+  "writing_dwell": "scroll->p density remap x1.35 over p [0.30, 0.62] (feather 0.03), spacer scaled by the 1.112 total — the writing takes ~35% more scroll travel, all SS10 windows unchanged in p; capture pins p directly (blessed frames unaffected by the remap itself)",
+  "light_drivers": "keyFactor: 1.00 -> 0.88 (S3 dim, [0.30,0.34] E1) -> 0.95 ([0.52,0.60] E1); rimFactor: 0.30 -> 0.42 ([0.64,0.68] E2) -> 0.52 ([0.72,0.76] E2)",
+  "emboss": "ink RT B = SS14 puff (reveal-gated; rings analytic interior/0.05em); material bump from the puff uv-gradient (eps 1.5/2048, world slopes along the field T/B, apparent height 0.0009 x embossFactor) + 8% border cavity darkening; embossFactor = E2(span 0.640-0.690) x (1 - E7(span 0.690-0.730)) — the E7 fade lands with the glyph mesh (M5 entry at 0.690); until the mesh exists, p > 0.73 legitimately shows flat ink again",
+  "review_frames": "qa/review/m4-R066.png, m4-R0685.png"
  }
 }

@@ -84,6 +84,10 @@ export interface Stage {
   scene: Scene;
   sheetRoot: Group;
   key: SpotLight;
+  /** §8 rim — intensity driven per frame by the §10 schedule (drivers.rimFactor) */
+  rim: SpotLight;
+  /** §14 emboss apparent-height factor uniform (0..1) — drivers.embossFactor(p) */
+  uEmboss: { value: number };
   /** M3 ink RT pass — run once per frame before the beauty render (pure f(p)) */
   inkPass?: InkPass;
   /** scene-linear background (a physical far sphere — pass() drops scene.background) */
@@ -163,11 +167,12 @@ export function buildStage(
 
   // M3 ink: evaluated in its own RT pass; the parchment material samples one texture.
   const inkPass = ink ? new InkPass(ink, maps.fiber) : undefined;
+  const uEmboss = uniform(0); // §14 emboss factor, driven per frame
 
   const sheetRoot = new Group();
   scene.add(sheetRoot);
 
-  sheetRoot.add(buildSheet(field, maps, debug, inkPass?.texture));
+  sheetRoot.add(buildSheet(field, maps, debug, inkPass?.texture, uEmboss));
   sheetRoot.add(buildRibbon(field, sil, maps, debug));
 
   // §8 rig
@@ -196,6 +201,8 @@ export function buildStage(
     scene,
     sheetRoot,
     key,
+    rim,
+    uEmboss,
     inkPass,
     setBackground: (r: number, g: number, b: number) => {
       (uBg.value as Vector3).set(r, g, b);
@@ -220,6 +227,7 @@ function fieldMaterial(
   suv: N,
   kind: 'parchment' | 'edge',
   inkTex?: import('three/webgpu').Texture,
+  uEmboss?: N,
 ): MeshBasicNodeMaterial | MeshStandardNodeMaterial | MeshPhysicalNodeMaterial {
   if (debug === 'ink' && inkTex) {
     // raw ink-RT inspection: R = coverage, G = wetness (no lighting, no grade)
@@ -289,8 +297,12 @@ function fieldMaterial(
   // §14 flat ink (M3): MTSDF layer inside this shader — recto only, wet/dry colored,
   // pooled slightly darker in fiber valleys (the cavity term's albedo share)
   let rBase: N = rmod.sub(0.5).mul(0.28).add(0.62).add(backAmt.mul(0.09));
+  let embossGU: N = float(0);
+  let embossGV: N = float(0);
   if (inkTex) {
-    // §14 flat ink (M3), composited from the ink RT — recto only, wet/dry colored,
+    let embossGU: N = float(0);
+  let embossGV: N = float(0);
+  // §14 flat ink (M3), composited from the ink RT — recto only, wet/dry colored,
     // pooled slightly darker in fiber valleys (the cavity term's albedo share).
     // NOTE: every lerp here is written as explicit mul/add — TSL mix() with a
     // texture-derived factor silently breaks this material's light integration
@@ -324,7 +336,7 @@ function fieldMaterial(
   const Tv: N = transformNormalToView(tangentObj);
   const Bv: N = Nv.cross(Tv);
   const k = 0.00055; // §7 micro 0.55 at parchment scale — tuned against 41 cm sheet analog
-  m.normalNode = Nv.add(Tv.mul(fn.x.mul(k))).add(Bv.mul(fn.y.mul(k))).normalize();
+  m.normalNode = Nv.add(Tv.mul(fn.x.mul(k))).add(Bv.mul(fn.y.mul(k))).sub(Tv.mul(embossGU)).sub(Bv.mul(embossGV)).normalize();
 
   // thin-surface wrap translucency — §7: light from behind glows through, gated by local
   // thickness (fiber height + macro). Emissive-approximated until it joins the shadowed
@@ -350,7 +362,7 @@ function matcapShade(n: N): N {
   return vec3(l1.mul(l1).add(l2));
 }
 
-function buildSheet(field: Field, maps: Maps, debug: DebugMode, inkTex?: import('three/webgpu').Texture): Mesh {
+function buildSheet(field: Field, maps: Maps, debug: DebugMode, inkTex?: import('three/webgpu').Texture, uEmboss?: N): Mesh {
   const count = GRID_W * GRID_H;
   const geo = new BufferGeometry();
   geo.setAttribute('position', new BufferAttribute(new Float32Array(count * 3), 3));
@@ -376,7 +388,7 @@ function buildSheet(field: Field, maps: Maps, debug: DebugMode, inkTex?: import(
   const tan: N = textureLoad(field.tanRT.texture, texel).xyz;
   const suv: N = varying(vec2(ti.toFloat().div(GRID_W - 1), tj.toFloat().div(GRID_H - 1)));
 
-  const mesh = new Mesh(geo, fieldMaterial(field, maps, debug, pos, nrm, tan, suv, 'parchment', inkTex));
+  const mesh = new Mesh(geo, fieldMaterial(field, maps, debug, pos, nrm, tan, suv, 'parchment', inkTex, uEmboss));
   mesh.frustumCulled = false;
   mesh.castShadow = true;
   mesh.receiveShadow = true;

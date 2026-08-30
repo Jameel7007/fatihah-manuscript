@@ -2,13 +2,13 @@ import { Color, PerspectiveCamera, REVISION } from 'three/webgpu';
 import { createRenderer } from './core/renderer';
 import { DPR_CAP, detectTier } from './core/tiers';
 import { CameraRig } from './director/camera';
-import { envYawDeg, poseTransform, stateLabel } from './director/drivers';
-import { ScrollDriver } from './director/scroll';
+import { embossFactor, envYawDeg, keyFactor, poseTransform, rimFactor, stateLabel } from './director/drivers';
+import { ScrollDriver, SCROLL_DENSITY_TOTAL } from './director/scroll';
 import { evalDeform } from './field/deform';
 import { Field } from './field/field';
 import { Residual } from './field/residual';
 import { buildSilhouette } from './field/silhouette';
-import { buildRamp, buildStage, type DebugMode } from './look/stage';
+import { buildRamp, buildStage, KEY_INTENSITY, type DebugMode } from './look/stage';
 import { createGrade } from './look/grade';
 import { captureFrame, samplePixel, type CaptureFrame } from './qa/capture';
 import { flickProfile, runProbes, runStorm, sampleResidualEnergy, type ProbeReport } from './qa/probes';
@@ -57,7 +57,7 @@ if (!canvas || !hud || !bar || !capEl || !spacer) throw new Error('missing DOM s
 
 const coarse = matchMedia('(pointer: coarse)').matches;
 const flatPage = isCapture || sceneMode === 'proof' || sceneMode === 'reveal';
-spacer.style.height = flatPage ? '0' : `${(coarse ? 6.5 : 8) * 100 + 100}vh`;
+spacer.style.height = flatPage ? '0' : `${Math.round((coarse ? 6.5 : 8) * 100 * SCROLL_DENSITY_TOTAL) + 100}vh`;
 if (isCapture) document.body.classList.add('capture');
 
 const boot = await createRenderer(canvas, {
@@ -556,7 +556,7 @@ async function runMain(): Promise<void> {
     console.error('[ink] atlas load failed — rendering without the ink layer', err);
     return undefined;
   });
-  const { scene, sheetRoot, key, inkPass } = buildStage(renderer, field, sil, debugMode, ink);
+  const { scene, sheetRoot, key, rim, uEmboss, inkPass } = buildStage(renderer, field, sil, debugMode, ink);
   if (q.get('noshadow') !== null) key.castShadow = false; // QA: isolate the key's shadow
   const rig = new CameraRig();
   const scroll = new ScrollDriver();
@@ -575,6 +575,9 @@ async function runMain(): Promise<void> {
 
   const applyFrame = (p: number, dt: number, simEnabled: boolean): void => {
     inkPass?.run(renderer, p);
+    uEmboss.value = embossFactor(p); // §14 relief window (E2 in, E7 fade at the handoff)
+    key.intensity = KEY_INTENSITY * keyFactor(p); // §10 S3 dim → presenting rise
+    rim.intensity = KEY_INTENSITY * 0.3 * rimFactor(p); // §10 rim ramp
     const d = evalDeform(p);
     if (simEnabled) {
       residual.setInputs(dt, scroll.vLpf, d.wTop, d.wBot);

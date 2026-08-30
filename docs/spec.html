@@ -143,7 +143,7 @@
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.4.3 · M3 ink in progress</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.4.3 · M3 closed · M4 in progress</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -1544,6 +1544,37 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     together with R-0.45-T1/T3 after the reviewer's pass; the no-shimmer-at-4×-scrub check needs a
     live foregrounded browser (dev-pane rAF throttling), same as storm/flick. Review frames:
     <span style="font-family:var(--mono);font-size:12px">qa/review/m3-R{034,045,056,062}.png</span>.</li>
+  </ol>
+
+  <h3>M3 closed · writing dwell · M4 open — presenting + relief <span class="tag">review sign-off, 2026-08-28</span></h3>
+  <ol>
+    <li><b>M3 closed</b> — the write sequence approved; the wet-trail DoD measured PASS (flat
+    ink-RT instrument <span style="font-family:var(--mono);font-size:12px">?scene=inkrt</span>:
+    tail wet at Δp 0.041 after the last texel, exactly zero wet pixels at Δp 0.047 → trail =
+    0.045 ± 10%). R-0.34 and R-0.45-T1 re-blessed under the final drivers. A fifth three-r185
+    gotcha recorded: the boot renderer carries AgX (the ramp contract) and
+    <span style="font-family:var(--mono);font-size:12px">material.toneMapped = false</span> is
+    ignored on the direct-render path — AgX's inset matrix bleeds R into G, reading as phantom
+    wetness in channel-encoded QA readbacks; QA scenes disable tone mapping on the renderer and
+    calibrate readbacks with an in-shader ramp.</li>
+    <li><b>§13 writing dwell</b> (review direction: "the writing a little slower") — the §10
+    windows cannot move (the last texel must dry by 0.625 before the 0.640 emboss, pinning the
+    window end at 0.580 + 0.045 exactly; the roll still covers the basmalah's line before
+    ≈ 0.31), so the slowdown lives in the scroll domain: the scroll→p map passes through a
+    density remap ×1.35 across p ∈ [0.30, 0.62] (feathered 0.03), and the scroll spacer scales
+    by the 1.112 total integral — the writing takes ~35% more scroll travel while scroll feel
+    outside the dwell and every p-domain window, probe, and blessed frame stay identical.
+    Capture mode pins p directly and never touches the remap.</li>
+    <li><b>M4 open — §10 light choreography + §14 emboss</b> — key and rim intensities are now
+    p-drivers (key 1.00 → 0.88 S3 dim → 0.95 with the presenting climb; rim 0.30 → 0.42 → 0.52),
+    and the emboss stage is live: the ink RT's B channel carries the reveal-gated §14 puff
+    (rings analytically), the parchment normal tilts along the field tangent frame from the
+    puff's uv-gradient as the apparent height scales 0 → 0.0009 (E2 over [0.640, 0.690]), and
+    the same gradient drives the +8% border cavity darkening. The E7 fade across the handoff
+    window [0.690, 0.730] is wired; until the glyph mesh lands (next), p &gt; 0.73 legitimately
+    returns to flat ink. Review frames
+    <span style="font-family:var(--mono);font-size:12px">qa/review/m4-R{066,0685}.png</span>;
+    M4 candidates R-0.56 / R-0.645 recorded, full blessing at M4 close.</li>
   </ol>
 </section>
 

@@ -50,7 +50,7 @@ export class InkPass {
     const det: N = texture(fiberTex, suv.mul(6.0));
     const fiberH: N = fib.z.mul(0.7).add(det.z.mul(0.3));
     const ink = inkNode(this.pack, suv, fiberH);
-    mat.colorNode = vec4(ink.cov, ink.wet, 0, 1);
+    mat.colorNode = vec4(ink.cov, ink.wet, ink.puff, 1); // B = §14 puff for the M4 relief
     const quad = new Mesh(new PlaneGeometry(2, 2), mat);
     quad.frustumCulled = false;
     this.scene.add(quad);

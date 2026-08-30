@@ -1,7 +1,7 @@
 // p-drivers: every animated quantity is a pure function of the smoothed scroll uniform.
 // M0 carries only the drivers the gray-box needs; the full DeformUBO set lands with M1.
 
-import { E1, E2, span } from './easing';
+import { E1, E2, E7, span } from './easing';
 
 /** Environment yaw in degrees — §10 schedule: +12° through the unroll, sweeping to −38° as
  *  the text rises so the window reflection travels along the gold (idle drift is M6's). */
@@ -23,6 +23,27 @@ export function poseTiltDeg(p: number): number {
 export function poseTransform(p: number, zTopCurl: number): { rotX: number; offY: number; offZ: number } {
   const t = (poseTiltDeg(p) * Math.PI) / 180;
   return { rotX: t, offY: zTopCurl * Math.sin(t), offZ: zTopCurl * (1 - Math.cos(t)) };
+}
+
+/** §14 emboss apparent-height factor (0..1): E2 growth over the emboss window
+ *  [0.640, 0.690], then the E7 fade across the geometry-handoff overlap [0.690, 0.730]
+ *  (embossStr = 1 − E7(t); the glyph mesh takes over inside that window — M5). */
+export function embossFactor(p: number): number {
+  return E2(span(p, 0.64, 0.69)) * (1 - E7(span(p, 0.69, 0.73)));
+}
+
+/** §10 key-intensity factor: 1.00 through the unroll, S3 dim to 0.88 as the ink begins,
+ *  rising 0.88 → 0.95 with the presenting climb [0.52, 0.60], holding 0.95 after. */
+export function keyFactor(p: number): number {
+  return 1 - 0.12 * E1(span(p, 0.3, 0.34)) + 0.07 * E1(span(p, 0.52, 0.6));
+}
+
+/** §10 rim-intensity factor (of the rig's 0.30 base ratio): 0.30 → 0.42 over the emboss
+ *  [0.64, 0.68], → 0.52 as the rise begins [0.72, 0.76]. Returned as a multiplier of the
+ *  M2 base (rim = KEY·0.30·rimFactor/0.30). */
+export function rimFactor(p: number): number {
+  const a = 0.3 + (0.42 - 0.3) * E2(span(p, 0.64, 0.68));
+  return (a + (0.52 - 0.42) * E2(span(p, 0.72, 0.76))) / 0.3;
 }
 
 /** State label for the HUD — ranges from §1 (overlaps resolve to the later state). */
