@@ -44,7 +44,7 @@ const calibrate = q.get('calibrate'); // 'bg' | 'key' — M2 calibration harness
 const sceneMode = q.get('scene') ?? 'main';
 const debugMode = (calibrate === 'key' ? 'graycard' : (q.get('debug') ?? 'none')) as DebugMode;
 const tier = detectTier(q.get('tier'));
-const isCapture = captureP !== null || probeP !== null || sceneMode === 'ramp' || calibrate !== null;
+const isCapture = captureP !== null || probeP !== null || sceneMode === 'ramp' || sceneMode === 'inkrt' || calibrate !== null;
 const capW = Number(q.get('w') ?? 1440);
 const capH = Number(q.get('h') ?? 900);
 
@@ -78,6 +78,8 @@ function fitViewport(): { w: number; h: number } {
 
 if (sceneMode === 'ramp') {
   await runRamp();
+} else if (sceneMode === 'inkrt') {
+  await runInkRT();
 } else if (sceneMode === 'reveal') {
   await runReveal();
 } else if (sceneMode === 'proof') {
@@ -86,6 +88,59 @@ if (sceneMode === 'ramp') {
   await runCalibrate(calibrate);
 } else {
   await runMain();
+}
+
+// --- flat ink-RT view (?scene=inkrt&p=P) — the M3 ink layer rendered 1:1 in sheet uv,
+// no pose, no lighting, no grade: R = coverage, G = wetness. QA instrument for the wet
+// trail, reveal edges, and (M4/M5) the puff/emboss channels. Captures like any scene. ---
+
+async function runInkRT(): Promise<void> {
+  const { buildFiberTexture } = await import('./look/textures');
+  const { InkPass } = await import('./ink/inkPass');
+  const { Scene, Mesh, PlaneGeometry, MeshBasicNodeMaterial, OrthographicCamera } = await import('three/webgpu');
+  const { texture, uv, vec2, vec4, float } = await import('three/tsl');
+  const pack = await loadInk();
+  const pass = new InkPass(pack, buildFiberTexture(renderer));
+  const p = Math.min(1, Math.max(0, Number(q.get('p') ?? '0.45')));
+
+  const size = fitViewport();
+  const scene = new Scene();
+  const mat = new MeshBasicNodeMaterial();
+  // RAW channels — the boot renderer carries AgX (the ?scene=ramp contract), and AgX's
+  // inset matrix bleeds R into G, which reads as phantom wetness in this instrument.
+  // material.toneMapped=false is IGNORED on this path in three r185 — switch the
+  // renderer itself off (restored irrelevant: this scene owns the renderer till reload)
+  const { NoToneMapping } = await import('three/webgpu');
+  renderer.toneMapping = NoToneMapping;
+  mat.toneMapped = false;
+  // display comp-top at screen-top (quad uv v=0 is at the bottom)
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const suv: any = vec2((uv() as any).x, float(1).sub((uv() as any).y));
+  const t: any = texture(pass.texture, suv);
+  mat.colorNode = vec4(t.r, t.g, float(0.06), 1);
+  const quad = new Mesh(new PlaneGeometry(2, 2), mat);
+  quad.frustumCulled = false;
+  scene.add(quad);
+  const cam = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  void size;
+
+  await new Promise<void>((resolve) => {
+    let n = 0;
+    renderer.setAnimationLoop(() => {
+      pass.run(renderer, p);
+      renderer.render(scene, cam);
+      if (++n >= 3) {
+        renderer.setAnimationLoop(null);
+        resolve();
+      }
+    });
+  });
+  if (isCapture || q.get('save') !== null) {
+    const frame = await captureFrame(canvas as HTMLCanvasElement);
+    window.__capture = { hash: frame.hash, p, tier, backend, dataUrl: frame.dataUrl };
+    capEl!.textContent = `inkrt p=${p} ${frame.hash.slice(0, 16)}`;
+  }
+  hud!.textContent = `ink RT · p ${p.toFixed(3)} · R=cov G=wet`;
 }
 
 // --- text proof (?scene=proof) — frozen composition large, dark on white, with āyah

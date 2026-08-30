@@ -1,167 +1,174 @@
 {
-  "note": "Blessed regression references. Hashes are environment-specific — re-bless when the capture environment changes. PNG blessing and SSIM/ΔE00 gates land with the CI harness. BLESSING POLICY (learned 2026-08-25): only hash from cold loads on a settled dev server — the first load after an HMR edit can serve a mixed module graph and taint the hash.",
-  "environment": {
-    "machine": "MacBook Pro (Apple Silicon)",
-    "browser": "Chromium (Claude Code browser pane)",
-    "three": "0.185.1",
-    "canvas": "1440x900 @ DPR 1"
+ "note": "Blessed regression references. Hashes are environment-specific — re-bless when the capture environment changes. PNG blessing and SSIM/ΔE00 gates land with the CI harness. BLESSING POLICY (learned 2026-08-25): only hash from cold loads on a settled dev server — the first load after an HMR edit can serve a mixed module graph and taint the hash.",
+ "environment": {
+  "machine": "MacBook Pro (Apple Silicon)",
+  "browser": "Chromium (Claude Code browser pane)",
+  "three": "0.185.1",
+  "canvas": "1440x900 @ DPR 1"
+ },
+ "frames": [
+  {
+   "id": "R-0.00-T1",
+   "milestone": "M2 complete look (grade pass, specular AA, graded calibrations)",
+   "url": "/?capture=0.0&tier=1",
+   "sha256": {
+    "webgpu": "80a1f5e1ea991d3c0c9b6e08a1c14c88daf8799e42a35581e616152367305e65",
+    "webgl2": "pending CI re-bless — dev pane throttling stalls webgl2 captures; cross-backend field equivalence proven by probes"
+   },
+   "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
   },
-  "frames": [
-    {
-      "id": "R-0.00-T1",
-      "milestone": "M2 complete look (grade pass, specular AA, graded calibrations)",
-      "url": "/?capture=0.0&tier=1",
-      "sha256": {
-        "webgpu": "80a1f5e1ea991d3c0c9b6e08a1c14c88daf8799e42a35581e616152367305e65",
-        "webgl2": "pending CI re-bless — dev pane throttling stalls webgl2 captures; cross-backend field equivalence proven by probes"
-      },
-      "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
-    },
-    {
-      "id": "R-0.21-T1",
-      "milestone": "M2 complete look (grade pass, specular AA, graded calibrations)",
-      "url": "/?capture=0.21&tier=1",
-      "sha256": {
-        "webgpu": "0828669cdc20aa2d05aefab7ca4e04d6f483e363e5bff2c80eb950659d7c7cdd",
-        "webgl2": "pending CI re-bless (see R-0.00 note)"
-      },
-      "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
-    },
-    {
-      "id": "R-0.34-T1",
-      "milestone": "M2 complete look (grade pass, specular AA, graded calibrations)",
-      "url": "/?capture=0.34&tier=1",
-      "sha256": {
-        "webgpu": "2c29c06e1a09a15669fb33bf2b92dad4c191f75c26a5bb004789b546d97aaf9a",
-        "webgl2": "pending CI re-bless (see R-0.00 note)"
-      },
-      "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
-    },
-    {
-      "id": "R-0.50-T1 (M0 gray-box, superseded by M1 field)",
-      "milestone": "M0",
-      "url": "/?capture=0.50&tier=1",
-      "sha256": {
-        "webgpu": "62a459cf14f174783d8bf652209806e52073b24886b618e2235986c3a8d795ee (stale — pre-field)",
-        "webgl2": "658bab87e5e10f769f6e6c5a1977c5ccce3a83d0a4bd6a642708e997b0572d50 (stale — pre-field)"
-      },
-      "verified": "2026-08-24 (M0); re-bless at M2 when materials land"
-    }
-  ],
-  "probes": {
-    "url": "/?probe=1&p={0.0|0.21|0.34}&tier=1[&backend=webgl2]",
-    "tolerance": {
-      "position": 0.0015,
-      "normalDeg": 2.0
-    },
-    "results": {
-      "webgpu": {
-        "p0.00": {
-          "maxPos": "1.1e-7",
-          "maxNormDeg": 1.08
-        },
-        "p0.21": {
-          "maxPos": "7.7e-8",
-          "maxNormDeg": 1.14
-        },
-        "p0.34": {
-          "maxPos": "1.5e-7",
-          "maxNormDeg": 1.1
-        },
-        "p0.38": {
-          "contract": "0.0153 / 0.0136"
-        }
-      },
-      "webgl2": {
-        "p0.00 (v1.3 pose)": {
-          "maxPos": "2.3e-7",
-          "maxNormDeg": 1.18
-        }
-      }
-    },
-    "derived_model_values": {
-      "p0.00": {
-        "turns": 4.2,
-        "topRollOuterR": 0.0468,
-        "botTipLift": 0.0182
-      },
-      "p0.21": {
-        "turns": 2.02
-      },
-      "p0.34": {
-        "turns": 0.276,
-        "botTipLift": 0.0156
-      },
-      "p0.38": {
-        "turns": 0.121,
-        "topTipLift": 0.0153,
-        "botTipLift": 0.0136
-      }
-    },
-    "verified": "2026-08-25 (v1.3.1 tightened) — GPU field == CPU oracle to float precision; terminal residual-curl contract exact (bottom 0.0136)"
+  {
+   "id": "R-0.21-T1",
+   "milestone": "M2 complete look (grade pass, specular AA, graded calibrations)",
+   "url": "/?capture=0.21&tier=1",
+   "sha256": {
+    "webgpu": "0828669cdc20aa2d05aefab7ca4e04d6f483e363e5bff2c80eb950659d7c7cdd",
+    "webgl2": "pending CI re-bless (see R-0.00 note)"
+   },
+   "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
   },
-  "agx_ramp": {
-    "url": "/?scene=ramp",
-    "verified": "2026-08-24 (M0)",
-    "result": "neutral (R=G=B all 13 stops), monotonic, linear 0.18 → 128/255, 12.0 linear → 251/255 (shoulder, no clip), floor 2.8e-3 → 2/255"
+  {
+   "id": "R-0.34-T1",
+   "milestone": "M2 complete look (grade pass, specular AA, graded calibrations)",
+   "url": "/?capture=0.34&tier=1",
+   "sha256": {
+    "webgpu": "2c29c06e1a09a15669fb33bf2b92dad4c191f75c26a5bb004789b546d97aaf9a",
+    "webgl2": "pending CI re-bless (see R-0.00 note)"
+   },
+   "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
   },
-  "manual_qa": {
-    "storm": "?storm=15 — harness implemented; the dev-pane throttles rAF for hidden tabs (3 frames/15 s), so a meaningful run needs a foregrounded browser. Monitor: NaN / p-range / errors.",
-    "flick": "key Q or ?flick=1 — §17 R-flick profile with residual-energy sparkline; visual sign-off is the reviewer's (M1 DoD item, pending user review)"
-  },
-  "calibrations": {
-    "bg": "graded-chain floor displays (13.6, 9.8, 6.6) at zero background — #0D0906 within a count; BG_LINEAR ~0; +0.5-count warm floor residue tracked",
-    "key": "KEY_INTENSITY 9.87 — 18% card R=128 through the full chain"
-  },
-  "ink_pipeline": {
-    "milestone": "M3 (open) — atlas build + reveal/wet/bleed live on the sheet; R-0.45 blessing awaits the user's review",
-    "atlas": {
-      "mtsdf": "public/text/ink-mtsdf.png — RGB = msdf (analytic edge-colored pseudo-distances, JS msdfgen-equivalent in build/build-ink-atlas.mjs), A=255; 64px/em, range +-6px, 2048x256",
-      "prog": "public/text/ink-prog.png — R = stroke-order w (Zhang-Suen skeleton + geodesic BFS, SS17 priors), G = true SDF, B = SS14 puff (interior distance, 1.5-texel blur), A=255",
-      "mtsdf_sha256": "e4be90688627d8dcf7b20f09c40e53063b8040a9663a6e8e9e7a34779dceb4b8",
-      "prog_sha256": "b95f0884886c35a45f1593bd3782c7185004f0faab70957c7bc186e29775dfbb",
-      "gates": "reconstruction IoU mean 0.9903 / worst 0.9641 (gid 68, small mark); RTL writing-order audit 10 clusters PASS (build/ink-audit.json)"
-    },
-    "windows": "SS10 per-ayah write windows mapped from the SS17 schedule (units->dp proportional); a 0.002 pen-lift at EVERY internal line break (ayah 7 spans three lines in the 7-line block -> its SS10 span [0.526,0.580] splits into three segments); ayah rings are analytic circle instances drawn by the same pen clock (angular w from the top, leftward first); wet trail dp 0.045 closed-form; E5 = spatial smoothstep dw 0.012 with overscanned t so stroke starts hide at t=0 and ends land at t=1",
-    "architecture": "ink evaluates in a sheet-space RT pass (src/ink/inkPass.ts, 1597x2048 RGBA8, re-rendered when p changes); the parchment material samples ONE texture and composites with EXPLICIT mul/add lerps",
-    "three_r185_gotchas": [
-      "TSL mix() with a texture-derived factor inside MeshPhysicalNodeMaterial colorNode/roughnessNode silently kills the light integration (value-independent, even factor 0) — write lerps as mul/add",
-      "float32 DataTextures (textureLoad) in the physical material silently break the pipeline (env lost or mesh vanishes, no console error) — all lookup data ships as fixed-point RGBA8 byte pairs",
-      "browsers premultiply PNG RGB by alpha on decode/upload — atlas alphas must be 255, no data channel in A",
-      "an RT written by a fullscreen quad reads back v-FLIPPED vs the quad's uv on WebGPU — the ink pass evaluates at 1-uv.y (probed empirically)"
-    ],
-    "frames": "R-0.21 re-verified BIT-IDENTICAL to the M2 blessing after full M3 integration (manual-lerp identity at zero coverage); R-0.34 now legitimately differs (basmalah 60% written per SS10) — re-bless with R-0.45 at sign-off; review PNGs qa/review/m3-R{034,045,056,062}.png",
-    "dod_status": "RTL audit PASS (automated); wet trail dp 0.045 closed-form in the shader; no-shimmer-at-4x-scrub review + R-0.45-T1/T3 blessing pending the user's live pass (dev pane rAF throttling makes scrub runs meaningless here)"
-  },
-  "text_pipeline": {
-    "layout": "v1.4.1 classical justified TRUE-RECTANGLE variants (2026-08-25, PENDING USER CHOICE): continuous flow, minimum-unevenness DP line breaking, kashida-only block justification. Balanced elongation: <=1.5 em per joint, slack spread over 2-3 joints per line (sin/shin teeth, then before-final joints, then flat bases of sad/dad/kaf; the Allah ligature and lam-alif are excluded - tested on BARE letters, diacritics sit between them); basmalah = full-em own line filled by the single uncapped sin elongation. No orphan close: the final line carries >=3 words and ends on the ayah-7 marker (rosette-filler fallback implemented, NOT needed - both variants close fully justified).",
-    "leading_rule": "v1.4.2: min per-x ink-over-ink clearance (shaped glyph boxes) >= 0.35 em between adjacent lines, x1.10 for relief shadows; pitch = smallest satisfying value, CLAMPED to the text band [0.150, 0.865]; ink block centered in the band. STATUS: the rule pitch (2.33 em) does not fit the band at ANY legal em for either variant - feasibility windows are empty in both directions (8line: caps-justifiable only at em >= 0.051, rule would fit only at em ~0.039; 7line: caps >= 0.046, rule ~0.043). Both variants are frozen at band-floor em 0.052 with the maximum in-band pitch: RULED by review 2026-08-25: band-max leading — sheet, margins, and em band hold; these frozen variants stand.",
-    "variants": {
-      "8line": {
-        "em": 0.052,
-        "pitch": "0.088534 (1.703 em, band-clamped; rule wants 2.329 em)",
-        "ink_daylight_em": -0.064,
-        "svg_sha256": "f966bd03b10383fca5e6c5b7d3c1fb769fb19bbef2d0b9e8e08553477106f9ae",
-        "glyphs": 311,
-        "close": "justified, 4 words + marker (0.84 em kashida)"
-      },
-      "7line": {
-        "em": 0.052,
-        "pitch": "0.103289 (1.986 em, band-clamped; rule wants 2.329 em)",
-        "ink_daylight_em": 0.219,
-        "svg_sha256": "1b0232dc0a5078b1e0434805bd0e63a65df9005766b0f09debbab2a9b7d82757",
-        "glyphs": 292,
-        "close": "justified, 4 words + marker (0.84 em kashida)"
-      },
-      "active": "7line — LAYOUT CHOSEN at review 2026-08-25 (composition.json = the 7-line block; 8line stays frozen as reference)"
-    },
-    "font_sha256": "e2a47644762d16bdfb6d33e0d8db8c6ff30beae84150ef5a705316bbd829455c",
-    "canonical_source": "Tanzil Uthmani (via api.alquran.cloud, edition quran-uthmani)",
-    "canonical_url": "https://api.alquran.cloud/v1/surah/1/quran-uthmani",
-    "canonical_fetched": "2026-08-25",
-    "canonical_sha256": "557e8ef1fe49090221c1dc09304dff792d378ba1b551250fb4fd9a21034a8be4",
-    "verification": "ALL VARIANTS: SEVEN AYAT IDENTICAL (build/verify-text.mjs, 2026-08-25): for composition.json, composition-8line.json, composition-7line.json the verifier reads the post-justification presentation strings, strips U+0640, reassembles the flow, and matches the pinned canonical byte-for-byte. Canonical pin unchanged (U+FEFF feed artifact stripped at pinning).",
-    "proofs": "qa/proofs/fatihah-proof-{8line,7line}-4000.png (plain) + fatihah-proof-{8line,7line}-parchment-4000.png (2D port of the SS7/SS15 parchment recipe: fbm grain 340x280 + undulation + macro/blotch + stains + aged edges); live at ?scene=proof&layout=8|7[&bg=parchment]",
-    "reveal_pacing": "director/writing.ts WRITING constants (glyphUnit 1.0, kashidaUnit 0.35 - elongations sweep, not step, markUnit 0.65, markLag 1.2, wordGap 2.2, unitsPerSecond 3.45); M3 maps units to dp"
+  {
+   "id": "R-0.50-T1 (M0 gray-box, superseded by M1 field)",
+   "milestone": "M0",
+   "url": "/?capture=0.50&tier=1",
+   "sha256": {
+    "webgpu": "62a459cf14f174783d8bf652209806e52073b24886b618e2235986c3a8d795ee (stale — pre-field)",
+    "webgl2": "658bab87e5e10f769f6e6c5a1977c5ccce3a83d0a4bd6a642708e997b0572d50 (stale — pre-field)"
+   },
+   "verified": "2026-08-24 (M0); re-bless at M2 when materials land"
   }
+ ],
+ "probes": {
+  "url": "/?probe=1&p={0.0|0.21|0.34}&tier=1[&backend=webgl2]",
+  "tolerance": {
+   "position": 0.0015,
+   "normalDeg": 2.0
+  },
+  "results": {
+   "webgpu": {
+    "p0.00": {
+     "maxPos": "1.1e-7",
+     "maxNormDeg": 1.08
+    },
+    "p0.21": {
+     "maxPos": "7.7e-8",
+     "maxNormDeg": 1.14
+    },
+    "p0.34": {
+     "maxPos": "1.5e-7",
+     "maxNormDeg": 1.1
+    },
+    "p0.38": {
+     "contract": "0.0153 / 0.0136"
+    }
+   },
+   "webgl2": {
+    "p0.00 (v1.3 pose)": {
+     "maxPos": "2.3e-7",
+     "maxNormDeg": 1.18
+    }
+   }
+  },
+  "derived_model_values": {
+   "p0.00": {
+    "turns": 4.2,
+    "topRollOuterR": 0.0468,
+    "botTipLift": 0.0182
+   },
+   "p0.21": {
+    "turns": 2.02
+   },
+   "p0.34": {
+    "turns": 0.276,
+    "botTipLift": 0.0156
+   },
+   "p0.38": {
+    "turns": 0.121,
+    "topTipLift": 0.0153,
+    "botTipLift": 0.0136
+   }
+  },
+  "verified": "2026-08-25 (v1.3.1 tightened) — GPU field == CPU oracle to float precision; terminal residual-curl contract exact (bottom 0.0136)"
+ },
+ "agx_ramp": {
+  "url": "/?scene=ramp",
+  "verified": "2026-08-24 (M0)",
+  "result": "neutral (R=G=B all 13 stops), monotonic, linear 0.18 → 128/255, 12.0 linear → 251/255 (shoulder, no clip), floor 2.8e-3 → 2/255"
+ },
+ "manual_qa": {
+  "storm": "?storm=15 — harness implemented; the dev-pane throttles rAF for hidden tabs (3 frames/15 s), so a meaningful run needs a foregrounded browser. Monitor: NaN / p-range / errors.",
+  "flick": "key Q or ?flick=1 — §17 R-flick profile with residual-energy sparkline; visual sign-off is the reviewer's (M1 DoD item, pending user review)"
+ },
+ "calibrations": {
+  "bg": "graded-chain floor displays (13.6, 9.8, 6.6) at zero background — #0D0906 within a count; BG_LINEAR ~0; +0.5-count warm floor residue tracked",
+  "key": "KEY_INTENSITY 9.87 — 18% card R=128 through the full chain"
+ },
+ "ink_pipeline": {
+  "milestone": "M3 (open) — atlas build + reveal/wet/bleed live on the sheet; R-0.45 blessing awaits the user's review",
+  "atlas": {
+   "mtsdf": "public/text/ink-mtsdf.png — RGB = msdf (analytic edge-colored pseudo-distances, JS msdfgen-equivalent in build/build-ink-atlas.mjs), A=255; 64px/em, range +-6px, 2048x256",
+   "prog": "public/text/ink-prog.png — R = stroke-order w (Zhang-Suen skeleton + geodesic BFS, SS17 priors), G = true SDF, B = SS14 puff (interior distance, 1.5-texel blur), A=255",
+   "mtsdf_sha256": "e4be90688627d8dcf7b20f09c40e53063b8040a9663a6e8e9e7a34779dceb4b8",
+   "prog_sha256": "b95f0884886c35a45f1593bd3782c7185004f0faab70957c7bc186e29775dfbb",
+   "gates": "reconstruction IoU mean 0.9903 / worst 0.9641 (gid 68, small mark); RTL writing-order audit 10 clusters PASS (build/ink-audit.json)"
+  },
+  "windows": "SS10 per-ayah write windows mapped from the SS17 schedule (units->dp proportional); a 0.002 pen-lift at EVERY internal line break (ayah 7 spans three lines in the 7-line block -> its SS10 span [0.526,0.580] splits into three segments); ayah rings are analytic circle instances drawn by the same pen clock (angular w from the top, leftward first); wet trail dp 0.045 closed-form; E5 = spatial smoothstep dw 0.012 with overscanned t so stroke starts hide at t=0 and ends land at t=1",
+  "architecture": "ink evaluates in a sheet-space RT pass (src/ink/inkPass.ts, 1597x2048 RGBA8, re-rendered when p changes); the parchment material samples ONE texture and composites with EXPLICIT mul/add lerps",
+  "three_r185_gotchas": [
+   "TSL mix() with a texture-derived factor inside MeshPhysicalNodeMaterial colorNode/roughnessNode silently kills the light integration (value-independent, even factor 0) — write lerps as mul/add",
+   "float32 DataTextures (textureLoad) in the physical material silently break the pipeline (env lost or mesh vanishes, no console error) — all lookup data ships as fixed-point RGBA8 byte pairs",
+   "browsers premultiply PNG RGB by alpha on decode/upload — atlas alphas must be 255, no data channel in A",
+   "an RT written by a fullscreen quad reads back v-FLIPPED vs the quad's uv on WebGPU — the ink pass evaluates at 1-uv.y (probed empirically)"
+  ],
+  "frames": "R-0.21 re-verified BIT-IDENTICAL to the M2 blessing after full M3 integration (manual-lerp identity at zero coverage); R-0.34 now legitimately differs (basmalah 60% written per SS10) — re-bless with R-0.45 at sign-off; review PNGs qa/review/m3-R{034,045,056,062}.png",
+  "dod_status": "RTL audit PASS (automated). WET TRAIL VERIFIED EMPIRICALLY 2026-08-27: ?scene=inkrt flat instrument, tone mapping OFF at the renderer — line-1 tail wet at dp=0.041 after its last texel (485 px, gMax 93), EXACTLY ZERO wet pixels at dp=0.047 -> trail length in [0.041, 0.047] = 0.045 +-10% PASS. No-shimmer-at-4x-scrub review + blessing pending the user's live pass (pane rAF throttling defeats live scrubs).",
+  "candidates": {
+   "R-0.45-T1-webgpu": "c63e9ef2f14269ccdce90437594272c5dd7af6c78b1522578e932cc374340811 (reproduced across a cold server restart and the RT-pass p-clamp optimization)",
+   "R-0.45-T3-webgpu": "120f034b18dad380a97972513214171d3f96255817bb8129f95fce4a1a9c1139 (390x844)",
+   "R-0.45-T1-webgl2": "99173252605c746863c62389a04be64f7fd264413ebbb4faadac6b06c65c24e7 (smoke: full ink pipeline compiles + renders on the fallback)"
+  },
+  "qa_instrument": "?scene=inkrt&p=P [&w=&h=] — the ink RT rendered flat 1:1 in sheet uv (R=cov, G=wet), renderer tone mapping disabled. GOTCHA that cost a debugging session: the boot renderer carries AgX (the ?scene=ramp contract) and material.toneMapped=false is IGNORED on the direct-render path in three r185 — AgX's inset matrix bleeds R into G, which reads as phantom permanent wetness in any channel-encoded readback. Disable tone mapping on the RENDERER for QA scenes, and calibrate readback with an in-shader ramp (G := suv.x) before trusting decoded values.",
+  "optimizations": "InkPass.run clamps p to [0.30, 0.64] (ink constant outside) and skips re-render on unchanged clamped p"
+ },
+ "text_pipeline": {
+  "layout": "v1.4.1 classical justified TRUE-RECTANGLE variants (2026-08-25, PENDING USER CHOICE): continuous flow, minimum-unevenness DP line breaking, kashida-only block justification. Balanced elongation: <=1.5 em per joint, slack spread over 2-3 joints per line (sin/shin teeth, then before-final joints, then flat bases of sad/dad/kaf; the Allah ligature and lam-alif are excluded - tested on BARE letters, diacritics sit between them); basmalah = full-em own line filled by the single uncapped sin elongation. No orphan close: the final line carries >=3 words and ends on the ayah-7 marker (rosette-filler fallback implemented, NOT needed - both variants close fully justified).",
+  "leading_rule": "v1.4.2: min per-x ink-over-ink clearance (shaped glyph boxes) >= 0.35 em between adjacent lines, x1.10 for relief shadows; pitch = smallest satisfying value, CLAMPED to the text band [0.150, 0.865]; ink block centered in the band. STATUS: the rule pitch (2.33 em) does not fit the band at ANY legal em for either variant - feasibility windows are empty in both directions (8line: caps-justifiable only at em >= 0.051, rule would fit only at em ~0.039; 7line: caps >= 0.046, rule ~0.043). Both variants are frozen at band-floor em 0.052 with the maximum in-band pitch: RULED by review 2026-08-25: band-max leading — sheet, margins, and em band hold; these frozen variants stand.",
+  "variants": {
+   "8line": {
+    "em": 0.052,
+    "pitch": "0.088534 (1.703 em, band-clamped; rule wants 2.329 em)",
+    "ink_daylight_em": -0.064,
+    "svg_sha256": "f966bd03b10383fca5e6c5b7d3c1fb769fb19bbef2d0b9e8e08553477106f9ae",
+    "glyphs": 311,
+    "close": "justified, 4 words + marker (0.84 em kashida)"
+   },
+   "7line": {
+    "em": 0.052,
+    "pitch": "0.103289 (1.986 em, band-clamped; rule wants 2.329 em)",
+    "ink_daylight_em": 0.219,
+    "svg_sha256": "1b0232dc0a5078b1e0434805bd0e63a65df9005766b0f09debbab2a9b7d82757",
+    "glyphs": 292,
+    "close": "justified, 4 words + marker (0.84 em kashida)"
+   },
+   "active": "7line — LAYOUT CHOSEN at review 2026-08-25 (composition.json = the 7-line block; 8line stays frozen as reference)"
+  },
+  "font_sha256": "e2a47644762d16bdfb6d33e0d8db8c6ff30beae84150ef5a705316bbd829455c",
+  "canonical_source": "Tanzil Uthmani (via api.alquran.cloud, edition quran-uthmani)",
+  "canonical_url": "https://api.alquran.cloud/v1/surah/1/quran-uthmani",
+  "canonical_fetched": "2026-08-25",
+  "canonical_sha256": "557e8ef1fe49090221c1dc09304dff792d378ba1b551250fb4fd9a21034a8be4",
+  "verification": "ALL VARIANTS: SEVEN AYAT IDENTICAL (build/verify-text.mjs, 2026-08-25): for composition.json, composition-8line.json, composition-7line.json the verifier reads the post-justification presentation strings, strips U+0640, reassembles the flow, and matches the pinned canonical byte-for-byte. Canonical pin unchanged (U+FEFF feed artifact stripped at pinning).",
+  "proofs": "qa/proofs/fatihah-proof-{8line,7line}-4000.png (plain) + fatihah-proof-{8line,7line}-parchment-4000.png (2D port of the SS7/SS15 parchment recipe: fbm grain 340x280 + undulation + macro/blotch + stains + aged edges); live at ?scene=proof&layout=8|7[&bg=parchment]",
+  "reveal_pacing": "director/writing.ts WRITING constants (glyphUnit 1.0, kashidaUnit 0.35 - elongations sweep, not step, markUnit 0.65, markLag 1.2, wordGap 2.2, unitsPerSecond 3.45); M3 maps units to dp"
+ }
 }

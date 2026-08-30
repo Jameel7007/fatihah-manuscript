@@ -60,11 +60,14 @@ export class InkPass {
     return this.rt.texture;
   }
 
-  /** Render the ink layer for scroll position p (skipped when p is unchanged). */
+  /** Render the ink layer for scroll position p. Outside [0.30, 0.64] the layer is
+   *  constant in p (blank before the first window at 0.320; complete and dry after the
+   *  last wet texel at ~0.625), so p clamps and unchanged clamps skip the pass. */
   run(renderer: import('three/webgpu').WebGPURenderer, p: number): void {
-    if (p === this.lastP) return;
-    this.lastP = p;
-    this.pack.uP.value = p;
+    const pc = Math.min(0.64, Math.max(0.3, p));
+    if (pc === this.lastP) return;
+    this.lastP = pc;
+    this.pack.uP.value = pc;
     const prev = renderer.getRenderTarget();
     renderer.setRenderTarget(this.rt);
     renderer.render(this.scene, this.cam);
