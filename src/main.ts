@@ -2,7 +2,7 @@ import { Color, PerspectiveCamera, REVISION } from 'three/webgpu';
 import { createRenderer } from './core/renderer';
 import { DPR_CAP, detectTier } from './core/tiers';
 import { CameraRig } from './director/camera';
-import { embossFactor, envYawDeg, keyFactor, poseTransform, rimFactor, stateLabel } from './director/drivers';
+import { embossFactor, envYawDeg, geoDepth, keyFactor, poseTransform, rimFactor, stateLabel } from './director/drivers';
 import { ScrollDriver, SCROLL_DENSITY_TOTAL } from './director/scroll';
 import { evalDeform } from './field/deform';
 import { Field } from './field/field';
@@ -14,6 +14,7 @@ import { captureFrame, samplePixel, type CaptureFrame } from './qa/capture';
 import { flickProfile, runProbes, runStorm, sampleResidualEnergy, type ProbeReport } from './qa/probes';
 import { WRITING, buildSchedule } from './director/writing';
 import { loadInk } from './ink/atlas';
+import { loadGlyphBin } from './relief/mesh';
 
 interface CaptureResult {
   hash: string;
@@ -166,8 +167,10 @@ async function runProof(): Promise<void> {
     layout: string;
     checksums: { svg: string };
     em: number;
+    marker?: { path: string; upem?: number };
     lines: PLine[];
   };
+  const compAny = comp;
   const parchment = q.get('bg') === 'parchment';
   (canvas as HTMLCanvasElement).style.display = 'none';
   document.body.style.overflow = 'auto';
@@ -273,16 +276,26 @@ async function runProof(): Promise<void> {
         ctx.restore();
       }
       for (const mk of l.markers ?? []) {
-        ctx.strokeStyle = '#8A6D3F';
-        ctx.lineWidth = 0.0276 * em * S;
-        ctx.beginPath();
-        ctx.arc(X(mk.x), Y(mk.y), 0.1086 * em * S, 0, Math.PI * 2);
-        ctx.stroke();
         ctx.fillStyle = '#8A6D3F';
-        ctx.font = `${0.1466 * em * S}px "Amiri Quran", "Noto Naskh Arabic", serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(arNum(mk.ayah), X(mk.x), Y(mk.y) + 0.0138 * em * S);
+        if (compAny.marker?.path) {
+          // v1.5 drawn rosette — same placement convention as the glyphs (y-up outline)
+          const ms = em / (compAny.marker?.upem ?? 1000);
+          ctx.save();
+          ctx.translate(X(mk.x), Y(mk.y));
+          ctx.scale(ms * S, -ms * S);
+          ctx.fill(new Path2D(compAny.marker.path), 'nonzero');
+          ctx.restore();
+        } else {
+          ctx.strokeStyle = '#8A6D3F';
+          ctx.lineWidth = 0.0276 * em * S;
+          ctx.beginPath();
+          ctx.arc(X(mk.x), Y(mk.y), 0.1086 * em * S, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.font = `${0.1466 * em * S}px "Amiri Quran", "Noto Naskh Arabic", serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(arNum(mk.ayah), X(mk.x), Y(mk.y) + 0.0138 * em * S);
+        }
       }
       for (const f of l.fillers ?? []) {
         // gold rosette filler: 8 round-capped petals + center dot
@@ -556,7 +569,12 @@ async function runMain(): Promise<void> {
     console.error('[ink] atlas load failed — rendering without the ink layer', err);
     return undefined;
   });
-  const { scene, sheetRoot, key, rim, uEmboss, inkPass } = buildStage(renderer, field, sil, debugMode, ink);
+  // M4 §14 glyph relief mesh (&nogeo: emboss-only — the silhouette-DoD A/B switch)
+  const glyphBin = q.get('nogeo') !== null || !ink ? undefined : await loadGlyphBin('/text/glyphs.bin').catch((err: unknown) => {
+    console.error('[relief] glyphs.bin load failed — rendering without the glyph mesh', err);
+    return undefined;
+  });
+  const { scene, sheetRoot, key, rim, uEmboss, inkPass, relief } = buildStage(renderer, field, sil, debugMode, ink, glyphBin);
   if (q.get('noshadow') !== null) key.castShadow = false; // QA: isolate the key's shadow
   const rig = new CameraRig();
   const scroll = new ScrollDriver();
@@ -576,6 +594,11 @@ async function runMain(): Promise<void> {
   const applyFrame = (p: number, dt: number, simEnabled: boolean): void => {
     inkPass?.run(renderer, p);
     uEmboss.value = embossFactor(p); // §14 relief window (E2 in, E7 fade at the handoff)
+    if (relief) {
+      // §14 handoff: mesh visible from the window open; depth floored at 0.00045 (z-guard)
+      relief.mesh.visible = p >= 0.69;
+      relief.uGeoDepth.value = geoDepth(p);
+    }
     key.intensity = KEY_INTENSITY * keyFactor(p); // §10 S3 dim → presenting rise
     rim.intensity = KEY_INTENSITY * 0.3 * rimFactor(p); // §10 rim ramp
     const d = evalDeform(p);

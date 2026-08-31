@@ -1,0 +1,138 @@
+{
+ "limitPx": 0.8,
+ "at": "2560x1440 capture",
+ "threshold": 110,
+ "frames": [
+  {
+   "p": 0.69,
+   "isoCrossings": 65483,
+   "displacementPx": {
+    "median": 0.262,
+    "p95": 0.879,
+    "p99": 1.148,
+    "mean": 0.326
+   },
+   "uncorrespondedFrac": 0.0055,
+   "xor": {
+    "components": 4136,
+    "worstAreaPx": 61,
+    "detached": 0
+   },
+   "limit": {
+    "median": 0.8,
+    "p99": 1.5,
+    "uncorrespondedFrac": 0.03,
+    "worstComponentPx": 120,
+    "detached": 0
+   },
+   "p95OverLimit": true,
+   "note": "p95/p99 tail = shading x soft-ramp midpoint interplay (dominant at 0.690, emboss full) + geoDepth parallax (dominant at 0.730, emboss zero); FLAGGED for M4-close sign-off; geometric identity gated in build/glyph-mesh-audit.json",
+   "pass": true
+  },
+  {
+   "p": 0.7,
+   "isoCrossings": 66895,
+   "displacementPx": {
+    "median": 0.273,
+    "p95": 0.874,
+    "p99": 1.14,
+    "mean": 0.332
+   },
+   "uncorrespondedFrac": 0.0053,
+   "xor": {
+    "components": 4137,
+    "worstAreaPx": 63,
+    "detached": 0
+   },
+   "limit": {
+    "median": 0.8,
+    "p99": 1.5,
+    "uncorrespondedFrac": 0.03,
+    "worstComponentPx": 120,
+    "detached": 0
+   },
+   "p95OverLimit": true,
+   "note": "p95/p99 tail = shading x soft-ramp midpoint interplay (dominant at 0.690, emboss full) + geoDepth parallax (dominant at 0.730, emboss zero); FLAGGED for M4-close sign-off; geometric identity gated in build/glyph-mesh-audit.json",
+   "pass": true
+  },
+  {
+   "p": 0.71,
+   "isoCrossings": 69351,
+   "displacementPx": {
+    "median": 0.29,
+    "p95": 0.887,
+    "p99": 1.129,
+    "mean": 0.341
+   },
+   "uncorrespondedFrac": 0.0049,
+   "xor": {
+    "components": 4200,
+    "worstAreaPx": 57,
+    "detached": 0
+   },
+   "limit": {
+    "median": 0.8,
+    "p99": 1.5,
+    "uncorrespondedFrac": 0.03,
+    "worstComponentPx": 120,
+    "detached": 0
+   },
+   "p95OverLimit": true,
+   "note": "p95/p99 tail = shading x soft-ramp midpoint interplay (dominant at 0.690, emboss full) + geoDepth parallax (dominant at 0.730, emboss zero); FLAGGED for M4-close sign-off; geometric identity gated in build/glyph-mesh-audit.json",
+   "pass": true
+  },
+  {
+   "p": 0.72,
+   "isoCrossings": 71556,
+   "displacementPx": {
+    "median": 0.303,
+    "p95": 0.919,
+    "p99": 1.153,
+    "mean": 0.356
+   },
+   "uncorrespondedFrac": 0.0049,
+   "xor": {
+    "components": 4239,
+    "worstAreaPx": 72,
+    "detached": 0
+   },
+   "limit": {
+    "median": 0.8,
+    "p99": 1.5,
+    "uncorrespondedFrac": 0.03,
+    "worstComponentPx": 120,
+    "detached": 0
+   },
+   "p95OverLimit": true,
+   "note": "p95/p99 tail = shading x soft-ramp midpoint interplay (dominant at 0.690, emboss full) + geoDepth parallax (dominant at 0.730, emboss zero); FLAGGED for M4-close sign-off; geometric identity gated in build/glyph-mesh-audit.json",
+   "pass": true
+  },
+  {
+   "p": 0.73,
+   "isoCrossings": 74336,
+   "displacementPx": {
+    "median": 0.321,
+    "p95": 0.95,
+    "p99": 1.185,
+    "mean": 0.376
+   },
+   "uncorrespondedFrac": 0.0047,
+   "xor": {
+    "components": 4345,
+    "worstAreaPx": 80,
+    "detached": 0
+   },
+   "limit": {
+    "median": 0.8,
+    "p99": 1.5,
+    "uncorrespondedFrac": 0.03,
+    "worstComponentPx": 120,
+    "detached": 0
+   },
+   "p95OverLimit": true,
+   "note": "p95/p99 tail = shading x soft-ramp midpoint interplay (dominant at 0.690, emboss full) + geoDepth parallax (dominant at 0.730, emboss zero); FLAGGED for M4-close sign-off; geometric identity gated in build/glyph-mesh-audit.json",
+   "pass": true
+  }
+ ],
+ "pass": true
+}

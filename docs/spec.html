@@ -143,7 +143,7 @@
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.4.3 · M3 closed · M4 in progress</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.5 · M4 in progress — text revised at review, geometry live</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -274,7 +274,7 @@
   <div class="tw"><table>
     <thead><tr><th>Property</th><th class="n">Value</th><th>Reasoning</th></tr></thead>
     <tbody>
-      <tr><td>Flow &amp; line count</td><td class="n">7 — chosen</td><td><b>v1.4.3 — the piece is the classical Ottoman 7-line block</b> (chosen at review, 2026-08-25). The seven āyāt run as one continuous flow, broken by a <b>minimum-unevenness DP</b> at word boundaries against the column (stretch spread as evenly as the caps allow across all lines — the block is a true rectangle); Basmalah line + 5 justified flow lines + justified 4-word close. The 8-line variant stays frozen in the repo as a reference (<span style="font-family:var(--mono);font-size:12px">composition-8line.*</span>). Fit conflicts re-break lines — never shrink an individual line's em, never re-kern</td></tr>
+      <tr><td>Flow &amp; line count</td><td class="n">7 — centered</td><td><b>v1.5 — classical CENTERED 7-line block</b> (review, 2026-08-30: the justified rectangle read as digitally stretched — dropped). The seven āyāt run as one continuous flow, broken by a <b>minimum-unevenness DP</b> at word boundaries (naturally full and even); every line sits at its natural width, centered on the sheet axis with a quiet taper (0.497 / 0.489 / 0.481 / 0.419 / 0.494 / 0.454 / 0.322 world). <b>No justification kashida anywhere</b> — the single calligraphic elongation is the basmalah sīn at a fixed 2.0 em (was uncapped 3.12 em). The 8-line justified variant stays frozen as the v1.4.3 reference (<span style="font-family:var(--mono);font-size:12px">composition-8line.*</span>)</td></tr>
       <tr><td>Margins (top / bottom / sides)</td><td class="n">0.150 / 0.135 / 0.115</td><td>Head margin largest, per manuscript convention; text column width 0.55 = 70.5% of sheet width</td></tr>
       <tr><td>Leading (v1.4.2 rule)</td><td class="n">measured, band-clamped</td><td><b>Rule:</b> the vertical clearance between the lowest ink of line n and the highest ink of line n+1 — measured on the shaped glyph boxes, per horizontal position (ink over ink) — must be ≥ <b>0.35 em</b>; the pitch is the smallest value satisfying every pair, then ×<b>1.10</b> for the relief/extrusion stages whose shadows fall into the gap. The pitch is clamped to what the text band admits and the ink block is centered in the band. <b>Status:</b> the rule pitch (≈ 2.33 em) exceeds what the band admits at every legal em — both variants are frozen at the band-clamped maximum: 8-line pitch 0.0885 (1.70 em, ink daylight −0.06 em — still touching), 7-line pitch 0.1033 (1.99 em, daylight +0.22 em). <b>Ruled (review, 2026-08-25):</b> band-max leading — sheet, margins, and em band hold; the 0.35 em target stands as the measurement the band cannot honor</td></tr>
       <tr><td>Em size (all lines)</td><td class="n">0.052 / 0.052</td><td>One em for every line <b>including the Basmalah</b> — the references keep a uniform hand and let elongation, not scale, articulate the opening; accept em ∈ [0.052, 0.060] globally; both variants currently sit at the band floor, where the clamped leading buys the most ink daylight; resolve fit conflicts by re-breaking (row 1)</td></tr>
@@ -282,9 +282,9 @@
       <tr><td>x-height reference</td><td class="n">≈ 0.021 (0.36 em)</td><td><b>Rule:</b> measured from source as median tooth-glyph band height; drives extrusion depth &amp; bevel width (§6)</td></tr>
       <tr><td>Text band</td><td class="n">v ∈ [0.150, 0.865]</td><td>The §3 margins as a hard vertical container: the leading clamp and the block centering both derive from it; the ink block currently fills it exactly (height 0.715) in both variants</td></tr>
       <tr><td>Block justification</td><td class="n">kashida only, balanced</td><td>Every line fills the column x ∈ [−0.275, +0.275] edge-to-edge via <b>kashida elongation at calligraphically permitted joints only</b> — U+0640 inserted and re-shaped through Amiri Quran's contextual kashida forms, so the outline is drawn, not stretched. <b>Balanced elongation:</b> any single kashida ≤ 1.5 em; slack spreads across 2–3 joints per line in distinct words (sīn/shīn teeth first, then before-final joints, then the flat bases of ص ض ك). <b>Never</b> letter-spacing, <b>never</b> word-gap inflation. Excluded joints: the لله ligature (tested on the <em>bare</em> letters — diacritics sit between them), lām-alif. The Basmalah's great sīn is the one uncapped elongation</td></tr>
-      <tr><td>Closing line</td><td class="n">≥ 3 words, no orphan</td><td>The final line carries at least three words and ends on the āyah-7 marker — <span dir="rtl" style="font-family:var(--arabic)">ٱلضَّآلِّينَ</span> never sits alone, and a single word is never stretched across a line. It fills within the elongation caps when it can (both current variants do — true rectangle); otherwise it stays short and is completed by 2–3 small gold rosette fillers, classical style</td></tr>
+      <tr><td>Closing line</td><td class="n">≥ 3 words, no orphan</td><td>The final line carries at least three words and ends on the āyah-7 marker — <span dir="rtl" style="font-family:var(--arabic)">ٱلضَّآلِّينَ</span> never sits alone, and a single word is never stretched across a line. In the v1.5 centered layout it simply stays at natural width, centered — the classical taper close (no fillers needed)</td></tr>
       <tr><td>Text integrity</td><td class="n">byte-identical</td><td>The pinned canonical text is immutable; justification is a <em>presentation stage applied after</em> <span style="font-family:var(--mono);font-size:12px">verify-text</span> passes. The verifier then re-reads the frozen presentation strings, strips U+0640, and must recover the canonical flow byte-for-byte — proving justification only ever inserts kashida (green: all seven āyāt identical)</td></tr>
-      <tr><td>Āyah markers</td><td class="n">ring ∅ 0.0126, stroke 0.0016</td><td>0.60 × x-height hollow gold ring with center dot, inline in the flow 0.012 after each āyah's final word and <b>glued to it at line-breaking</b> (a marker never opens a line); its slot width 0.0366 participates in justification; centered at half x-height; rises with text at 0.6 × letter depth</td></tr>
+      <tr><td>Āyah markers</td><td class="n">shamsah, ∅ 0.34 em</td><td><b>v1.5 — drawn 8-petal shamsah rosette</b> (pointed petals around a pierced hub with a center boss; outer R 0.17 em), emitted as outline contours in <span style="font-family:var(--mono);font-size:12px">composition.marker</span> so it flows through the SAME pipeline as every glyph — MTSDF cell, stroke-order skeleton (petal-by-petal reveal), bevel relief at 0.60 × letter depth, gold. Inline in the flow after each āyah's final word, <b>glued to it at line-breaking</b>; centered at half x-height</td></tr>
     </tbody>
   </table></div>
 
@@ -697,17 +697,18 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
   <div class="tw wide"><table>
     <thead><tr><th class="n">p</th><th class="n">f (mm) / vfov</th><th class="n">Position (x, y, z)</th><th class="n">Look-at</th><th class="n">Height over sheet</th><th class="n">View angle from plane</th><th class="n">Framing</th></tr></thead>
     <tbody>
-      <tr><td class="n">0.00</td><td class="n">40 / 33.4°</td><td class="n">(0.42, 0.27, 1.13)</td><td class="n">(0.00, 0.04, 0.34)</td><td class="n">0.27</td><td class="n">~14° (low ¾)</td><td>the roll spans the frame (d ≈ 0.92); near spiral end in frame, draped tongue below (v1.3.1)</td></tr>
-      <tr><td class="n">0.21</td><td class="n">42 / 31.9°</td><td class="n">(0.36, 0.59, 1.05)</td><td class="n">(0.00, 0.02, 0.18)</td><td class="n">0.59</td><td class="n">~33°</td><td>opening sheet fills ~0.7 width (v1.3)</td></tr>
-      <tr><td class="n">0.34</td><td class="n">46 / 29.3°</td><td class="n">(0.10, 0.60, 0.42)</td><td class="n">(0.00, 0.012, 0.03)</td><td class="n">0.60</td><td class="n">~52°</td><td>full sheet 0.78 height</td></tr>
-      <tr><td class="n">0.47</td><td class="n">50 / 27.0°</td><td class="n">(0.02, 0.74, 0.26)</td><td class="n">(0.00, 0.008, 0.045)</td><td class="n">0.74</td><td class="n">~68°</td><td>text column 0.68 height — writing overwatch</td></tr>
-      <tr><td class="n">0.60</td><td class="n">55 / 24.7°</td><td class="n">(0.00, 0.88, 0.09)</td><td class="n">(0.00, 0.00, 0.018)</td><td class="n">0.88</td><td class="n">83°</td><td>sheet 0.86 height — reading state, 7° off pure overhead</td></tr>
-      <tr><td class="n">0.70</td><td class="n">55 / 24.7°</td><td class="n">(0.00, 0.76, 0.24)</td><td class="n">(0.00, 0.02, 0.01)</td><td class="n">0.76</td><td class="n">~72°</td><td>retreat begins as relief forms</td></tr>
-      <tr><td class="n">0.80</td><td class="n">57 / 23.8°</td><td class="n">(0.00, 0.52, 0.47)</td><td class="n">(0.00, 0.09, −0.01)</td><td class="n">0.52</td><td class="n">~48°</td><td>rising letters + contact shadows fill 0.7 width</td></tr>
-      <tr><td class="n">0.90</td><td class="n">60 / 22.6°</td><td class="n">(0.00, 0.33, 0.60)</td><td class="n">(0.00, 0.15, −0.03)</td><td class="n">0.33</td><td class="n">~25°</td><td>pivoting text dominant, parchment receding</td></tr>
-      <tr><td class="n">1.00</td><td class="n">62 / 21.9°</td><td class="n">(0.00, 0.255, 0.66)</td><td class="n">(0.00, 0.185, −0.045)</td><td class="n">0.255</td><td class="n">12° off text-frontal</td><td>text plane 0.66 frame width; parchment low behind</td></tr>
+      <tr><td class="n">0.00</td><td class="n">40 / 33.4°</td><td class="n">(0.45, 0.28, 1.18)</td><td class="n">(0.00, 0.04, 0.34)</td><td class="n">0.28</td><td class="n">~14° (low ¾)</td><td>the roll spans the frame — extent-fit dolly d = 0.982 at 16:10; near spiral end in frame, draped tongue below (v1.3.1)</td></tr>
+      <tr><td class="n">0.21</td><td class="n">42 / 31.9°</td><td class="n">(0.48, 0.77, 1.33)</td><td class="n">(0.00, 0.02, 0.18)</td><td class="n">0.77</td><td class="n">~33°</td><td>opening sheet inside the margin — extent-fit dolly d = 1.454 (v1.5 verified)</td></tr>
+      <tr><td class="n">0.34</td><td class="n">46 / 29.3°</td><td class="n">(0.32, 1.91, 1.29)</td><td class="n">(0.00, 0.012, 0.03)</td><td class="n">1.91</td><td class="n">~52°</td><td>full sheet in frame — extent-fit dolly d = 2.303</td></tr>
+      <tr><td class="n">0.47</td><td class="n">50 / 27.0°</td><td class="n">(0.06, 2.204, 0.69)</td><td class="n">(0.00, 0.008, 0.045)</td><td class="n">2.204</td><td class="n">~68°</td><td>text column framed — writing overwatch (pure anchor from here)</td></tr>
+      <tr><td class="n">0.60</td><td class="n">55 / 24.7°</td><td class="n">(0.00, 2.64, 0.234)</td><td class="n">(0.00, 0.00, 0.018)</td><td class="n">2.64</td><td class="n">83°</td><td>reading state, 7° off pure overhead — sheet 0.86 height</td></tr>
+      <tr><td class="n">0.70</td><td class="n">55 / 24.7°</td><td class="n">(0.00, 2.092, 0.654)</td><td class="n">(0.00, 0.02, 0.01)</td><td class="n">2.092</td><td class="n">~72°</td><td>retreat begins as relief forms</td></tr>
+      <tr><td class="n">0.80</td><td class="n">57 / 23.8°</td><td class="n">(0.00, 1.036, 1.046)</td><td class="n">(0.00, 0.09, −0.01)</td><td class="n">1.036</td><td class="n">~48°</td><td>rising letters + contact shadows fill 0.7 width</td></tr>
+      <tr><td class="n">0.90</td><td class="n">60 / 22.6°</td><td class="n">(0.00, 0.474, 1.104)</td><td class="n">(0.00, 0.15, −0.03)</td><td class="n">0.474</td><td class="n">~25°</td><td>pivoting text dominant, parchment receding</td></tr>
+      <tr><td class="n">1.00</td><td class="n">62 / 21.9°</td><td class="n">(0.00, 0.325, 1.365)</td><td class="n">(0.00, 0.185, −0.045)</td><td class="n">0.325</td><td class="n">12° off text-frontal</td><td>text plane 0.66 frame width; parchment low behind</td></tr>
     </tbody>
-  </table></div>
+  </table>
+  <p style="font-size:13px;color:var(--ink-dim)"><b>M4 verification (2026-08-30):</b> positions above are the M1-rebaked anchors (directions and look-ats keep the original design; distances scaled so each state meets its framing fraction against the implemented model). The runtime spline passes through every pure-anchor knot (0.47 → 1.00) exactly (Δ 0.000 ≤ 0.01), including the focal→vfov law. Below p 0.47 the extent-fit dolly rule overrides distance (aspect-dependent; 16:10 reference values in the framing column), blending back to anchors across [0.38, 0.47].</p></div>
 
   <figure>
     <div class="figbox">
@@ -918,7 +919,10 @@ embossStr(t)  = 1 − E7(t)                       // E7 = cubic-bezier(0.37, 0, 
     combined perceived relief is monotonically non-decreasing through the window. <b>No alpha fade
     anywhere</b>: the mesh enters opaque, its silhouette equals the SDF contour, and its top face
     samples the same SDF ink color — the only observable change is parallax ≤ 0.35 px at 1440p under
-    the 83° camera. The flat ink layer keeps rendering beneath the caps, holding the root-fillet
+    the 83° camera — which holds through ≈ 0.71; §9 starts the camera retreat at 0.70, so by
+    0.730 the projection parallax reaches ≈ 1 px at ~66° elevation, occluded beneath the opaque
+    caps and visible only as the flat layer's soft under-edge on one side (measured, M4
+    silhouette DoD). The flat ink layer keeps rendering beneath the caps, holding the root-fillet
     crevices ink-dark. <b>Z-guard:</b> geometry depth is floored at 0.00045 (never rendered shallower),
     the glyph main-pass pipeline carries depthBias −2 / slopeScale −0.5 during this window only
     (shadow and contact pipelines stay unbiased), and the base ring fetches its position from the same
@@ -1310,7 +1314,7 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
   </div>
 
   <p style="margin-top:34px;border-top:1px solid var(--line);padding-top:18px;font-size:12.5px;color:var(--faint)">
-  Al-Fātiḥah 3D Manuscript · specification v1.4.3 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
+  Al-Fātiḥah 3D Manuscript · specification v1.5 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
   authoritative and untouchable · no bloom, no aura, no spectacle — the light does the reverence.</p>
 </section>
 
@@ -1575,6 +1579,48 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     returns to flat ink. Review frames
     <span style="font-family:var(--mono);font-size:12px">qa/review/m4-R{066,0685}.png</span>;
     M4 candidates R-0.56 / R-0.645 recorded, full blessing at M4 close.</li>
+  </ol>
+
+  <h3>v1.5 — text presentation revised at review · geometry handoff live <span class="tag">review, 2026-08-30</span></h3>
+  <ol>
+    <li><b>Review findings on the text</b> — the justified rectangle read as digitally stretched
+    (kashida bars), line balance suffered, the ring markers read as placeholders, and مالك was
+    queried against Ḥafṣ. Resolution: the frozen source <b>is</b> Tanzil Uthmani (Ḥafṣ ʿan ʿĀṣim) —
+    āyah 4 is <span dir="rtl" style="font-family:var(--arabic)">مَٰلِكِ</span> with the
+    <b>dagger alif</b> (U+0670, the ʿUthmānic rasm of Māliki), machine-verified codepoint-identical
+    across all variants; the orthography was already single-style ʿUthmānic (waṣla, dagger alifs,
+    madda). RULED: ʿUthmānic Ḥafṣ stands · classical centered layout · ornamental rosette markers.</li>
+    <li><b>v1.5 composition</b> — mode C in the shaper: no justification, lines at natural width
+    centered with a quiet taper; basmalah sīn fixed at 2.0 em (the one calligraphic elongation);
+    the āyah marker is a drawn 8-petal shamsah (pointed petals, pierced hub, center boss, outer
+    R 0.17 em) emitted as outline contours — it rides the full glyph pipeline (MTSDF cell,
+    stroke-order petal reveal in the old ring's timing slot, bevel relief at 0.60 D, gold).
+    All atlases + instances rebuilt (279 instances, 0 analytic rings); verify-text green;
+    4000-px plain + parchment judgment proofs delivered.</li>
+    <li><b>§6/§18 bevel extruder + §14 handoff live</b> — the glyph relief mesh is built from the
+    identical outlines via a shared outline library (the alignment guarantee made structural):
+    the 9-point profile applied as a height graph over the interior-distance field (the offset-sweep
+    surface, self-intersection-free by construction), per-vertex thin-stroke guard (hairlines →
+    beads), word-level winding union (no false grooves at joints), marks/markers at 0.8/0.6 depth.
+    166k verts / 258k tris (T1 budget 780k), plan-area error 0.02%, silhouette identity worst
+    0.0069 em = 0.46 px @1440p (gate 0.008 em; the 0.0008 em analytic tolerance moves to the M5
+    curvature-adaptive rebuild with meshopt packaging). Runtime: vertices fetch the surface-field
+    textures at their sheet anchor (watertight base by construction), enter ink-colored at
+    0.00045 (half emboss height) growing to 0.0012 across [0.690, 0.730] E2 while the emboss
+    fades 1 − E7; z-guard depthBias −0.5/−2; <span style="font-family:var(--mono);font-size:12px">&amp;nogeo</span>
+    is the emboss-only QA switch.</li>
+    <li><b>Emboss repair</b> — the §14 emboss block shipped dead in the previous commit (a botched
+    edit left its gradients shadowed at zero) and its first restoration inverted the vertical
+    shading (the height-slope must perturb along +dP/dv = cross(T, N), not B = N × T). Restored,
+    corrected, re-captured; R-0.56 verified bit-identical where the emboss factor is zero.</li>
+    <li><b>M4 DoD measurements</b> — camera §9: every pure-anchor pose exact (Δ 0.000 ≤ 0.01),
+    table synced. Silhouette (sub-pixel ramp-midpoint instrument over 5 window captures at
+    2560×1440): contour median 0.26–0.32 px <b>PASS</b> (limit 0.8); p95 0.87–0.95 px
+    <b>flagged for sign-off</b> — the tail is measured shading×soft-ramp midpoint interplay
+    (dominant at 0.690 where parallax ≈ 0.15 px) plus §9-retreat projection parallax ≈ 1 px
+    (dominant at 0.730 where the emboss is zero); no detached artifacts, AA-faded tips ≤ 0.55%.
+    Review frames <span style="font-family:var(--mono);font-size:12px">qa/review/m4-R{0645,0710}-v15.png</span>;
+    v1.5 candidates R-0.34/0.45/0.56/0.645/0.710 recorded (manifest), blessing at M4 close.</li>
   </ol>
 </section>
 

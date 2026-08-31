@@ -32,6 +32,14 @@ export function embossFactor(p: number): number {
   return E2(span(p, 0.64, 0.69)) * (1 - E7(span(p, 0.69, 0.73)));
 }
 
+/** §14 geometry depth (world): the glyph mesh enters at HALF the emboss's apparent height
+ *  (0.00045) at p = 0.690 and grows to 0.0012 across the handoff overlap, E2. Below the
+ *  window the mesh is hidden (applyFrame); the returned floor keeps the z-guard exact at
+ *  entry. The M5 per-āyah rise stagger composes as depth = max(geoDepth, kind·stagger). */
+export function geoDepth(p: number): number {
+  return 0.00045 + 0.00075 * E2(span(p, 0.69, 0.73));
+}
+
 /** §10 key-intensity factor: 1.00 through the unroll, S3 dim to 0.88 as the ink begins,
  *  rising 0.88 → 0.95 with the presenting climb [0.52, 0.60], holding 0.95 after. */
 export function keyFactor(p: number): number {

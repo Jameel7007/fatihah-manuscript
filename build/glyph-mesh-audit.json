@@ -1,0 +1,48 @@
+{
+ "built": "M4 §6/§18 bevel extruder",
+ "counts": {
+  "verts": 166003,
+  "tris": 257507,
+  "groups": 159,
+  "cells": 127541,
+  "tipSubdivisions": 3982,
+  "vertsByKind": {
+   "base": 128995,
+   "mark": 31423,
+   "ring": 5585
+  }
+ },
+ "budget": {
+  "t1": 780000,
+  "used": 257507
+ },
+ "planAreaErr": 0.00024,
+ "silhouetteIdentity": {
+  "worstOuterEm": 0.006855,
+  "worstOuterPx1440": 0.4634,
+  "samples": 87010,
+  "tolEm": 0.008,
+  "tolNote": "grid tessellation + chord refinement bound; the 0.0008 em analytic flatten tolerance moves to the M5 curvature-adaptive rebuild (meshopt repack, §18)",
+  "creviceWalls": {
+   "worstEm": 0.005883,
+   "samples": 1026,
+   "note": "narrow cracks between joined strokes; geometry paves below one raster texel — coverage difference, not silhouette"
+  },
+  "subResolutionTails": {
+   "worstEm": 0,
+   "samples": 0,
+   "gateEm": 0.004,
+   "note": "pen-entry tapers under 3 fu ink width — below one atlas texel, invisible in the rendered flat ink"
+  }
+ },
+ "guard": {
+  "minHalfWidthWorld": 0,
+  "beadVerts": 73473,
+  "totalVerts": 166003
+ },
+ "bin": {
+  "bytes": 6411692,
+  "sha256": "75d720ebebca03d1dd2d125fe737af79108e860017f1944c562ddcd4a5510bef"
+ },
+ "pitchFu": 10
+}

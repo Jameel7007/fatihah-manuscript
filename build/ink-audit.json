@@ -20,13 +20,13 @@
   },
   {
    "word": "0:0",
-   "bases": 19,
+   "bases": 13,
    "rtlOrder": true,
    "marksAfterBases": true
   },
   {
    "word": "1:3",
-   "bases": 8,
+   "bases": 7,
    "rtlOrder": true,
    "marksAfterBases": true
   },
@@ -44,7 +44,7 @@
   },
   {
    "word": "1:0",
-   "bases": 6,
+   "bases": 5,
    "rtlOrder": true,
    "marksAfterBases": true
   },
@@ -56,13 +56,13 @@
   },
   {
    "word": "2:0",
-   "bases": 7,
+   "bases": 6,
    "rtlOrder": true,
    "marksAfterBases": true
   }
  ],
  "rtlPass": true,
- "meanIoU": 0.9903455613050343,
+ "meanIoU": 0.9898891273106184,
  "worstIoU": {
   "gid": 68,
   "iou": 0.9640971488912354

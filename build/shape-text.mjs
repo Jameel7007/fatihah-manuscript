@@ -50,10 +50,64 @@ const ENV_STEP = 0.001; // x-sampling of the ink envelopes (world)
 
 // em-relative metrics (values at em 0.058 match the v1.4 absolutes)
 const MARKER_EM = 0.631; // inline āyah marker slot: gap + ∅ + gap
-const MARKER_Y_EM = 0.181; // ring center above baseline (half x-height)
-const RING_R_EM = 0.1086; // ∅ 0.0126 at em 0.058
+const MARKER_Y_EM = 0.181; // marker center above baseline (half x-height)
+const RING_R_EM = 0.1086; // v1.4 placeholder ring (kept for the legacy 8-line reference)
 const RING_STROKE_EM = 0.0276;
 const ROSETTE_R_EM = 0.1;
+
+// v1.5 classical-centered rules (user review 2026-08-30): no justification kashida —
+// elongation only where calligraphically motivated: the basmalah sīn, at a fixed 2.0 em
+// (was uncapped 3.12 em under the v1.4.1 rectangle exemption)
+const BASMALAH_SIN_EM = 2.0;
+
+/** §6 āyah marker (v1.5): drawn 8-petal shamsah rosette — pointed petals around a pierced
+ *  hub with a center boss. Emitted as outline contours (M/Q/Z, font units, y-up, centered
+ *  at the origin) so the marker flows through the SAME pipeline as every glyph: MTSDF
+ *  atlas, stroke-order skeleton, bevel extrusion, gold. Nonzero winding: petal ring CCW,
+ *  hub hole CW, boss CCW. Outer R 0.12 em — inside the 0.631 em marker slot. */
+function rosetteOutlinePath() {
+  const R = 170; // petal tip radius (fu) — outer Ø 0.34 em, muṣḥaf-proportioned
+  const RN = 78; // notch radius between petals
+  const RC = 130; // side control radius — BELOW the tip radius: sides sweep inward and the
+  const CTRL_OFF = (9 * Math.PI) / 180; // tip stays a sharp CORNER (pointed shamsah petal)
+  const HOLE = 44; // hub hole radius
+  const DOT = 20; // center boss radius
+  const pt = (r, a) => [Math.round(r * Math.cos(a)), Math.round(r * Math.sin(a))];
+  let d = '';
+  // petal ring (CCW)
+  for (let k = 0; k < 8; k++) {
+    const tip = (k * Math.PI) / 4;
+    const n0 = tip - Math.PI / 8;
+    const n1 = tip + Math.PI / 8;
+    const [nx0, ny0] = pt(RN, n0);
+    const [tx, ty] = pt(R, tip);
+    const [nx1, ny1] = pt(RN, n1);
+    const [c0x, c0y] = pt(RC, tip - CTRL_OFF);
+    const [c1x, c1y] = pt(RC, tip + CTRL_OFF);
+    d += k === 0 ? `M${nx0},${ny0}` : '';
+    d += `Q${c0x},${c0y} ${tx},${ty}Q${c1x},${c1y} ${nx1},${ny1}`;
+  }
+  d += 'Z';
+  const circle = (r, cw) => {
+    const n = 8;
+    const rc = r / Math.cos(Math.PI / n);
+    let s2 = '';
+    for (let k = 0; k <= n; k++) {
+      const a = ((cw ? -k : k) * 2 * Math.PI) / n;
+      const am = ((cw ? -(k - 0.5) : k - 0.5) * 2 * Math.PI) / n;
+      const [x, y] = pt(r, a);
+      const [cx, cy] = pt(rc, am);
+      if (k === 0) s2 += `M${x},${y}`;
+      else s2 += `Q${cx},${cy} ${x},${y}`;
+    }
+    return s2 + 'Z';
+  };
+  d += circle(HOLE, true); // hub hole (CW — subtracts)
+  d += circle(DOT, false); // center boss (CCW — ink again)
+  return d;
+}
+const ROSETTE_PATH = rosetteOutlinePath();
+const ROSETTE_OUTER_EM = 0.17;
 
 // balanced-elongation rules (§3 v1.4.1)
 const KASHIDA_CAP_EM = 1.5; // hard cap per joint (basmalah sīn excepted)
@@ -304,12 +358,22 @@ function lineNatural(i, j) {
 
 // ---- minimum-unevenness line breaking (DP over exactly nBody lines) ---------------------
 // modes: 'A' = the final line must FILL within the elongation caps (true rectangle);
-//        'B' = the final line may stay short (≥ MIN_LAST_WORDS) and takes rosette fillers.
+//        'B' = the final line may stay short (≥ MIN_LAST_WORDS) and takes rosette fillers;
+//        'C' = classical centered (v1.5): NO justification — lines sit at natural width,
+//              broken for balance (naturally full and even), the close line may taper.
 function breakBody(nBody, em, mode) {
   const targetU = targetUof(em);
   const lineCost = (i, j, isLast) => {
     const nat = lineNatural(i, j);
     const s = targetU - nat.width;
+    if (mode === 'C') {
+      if (s < 0) return null; // over the measure — nothing may compress
+      if (isLast) {
+        if (nat.words < MIN_LAST_WORDS) return null; // no orphan close
+        return 0.25 * (s / upem) ** 2; // gentle pull toward fuller; taper allowed
+      }
+      return (s / upem) ** 2; // balance: naturally full, even line-to-line
+    }
     if (s < -tatweelAdv / 2) return null; // overfull — kashida cannot compress
     // one tatweel quantum of slack: contextual shaping fills in ~tatweelAdv steps, so a
     // line admitted right at the cap ceiling could not actually reach the column edge
@@ -449,17 +513,17 @@ for (let e = EM_BAND[1]; e >= EM_BAND[0] - 1e-9; e -= 0.0005) emGrid.push(+e.toF
 // Pick, inside the legal band: the LARGEST em whose rule pitch fits the band; when none
 // does (the current state — see the feasibility report), the em with the most achievable
 // ink daylight, which is the band floor: clearance grows as the hand shrinks.
-function solveVariant(nLines) {
+function solveVariant(nLines, modes = ['A', 'B']) {
   const nBody = nLines - 1;
   const cands = [];
   for (const em of emGrid) {
-    for (const mode of ['A', 'B']) {
+    for (const mode of modes) {
       const r = breakBody(nBody, em, mode);
       if (!r) continue;
       const composed = composeVariant({ em, mode, breaks: r.breaks }, nLines);
       const lead = measureLead(composed);
       cands.push({ em, mode, composed, lead });
-      break; // prefer the rectangle close at this em; B only when A is impossible
+      break; // prefer the earlier mode at this em; later ones only when it is impossible
     }
   }
   if (!cands.length) return null;
@@ -532,9 +596,16 @@ function composeVariant(solution, nLines) {
     } else nat = lineNatural(range[0], range[1]);
 
     const rosetteClose = isLast && !basmalah && mode === 'B';
-    const justify = !rosetteClose && targetU - nat.width > tatweelAdv / 2;
+    // v1.5 mode C: no justification — the single calligraphic elongation is the basmalah
+    // sīn at a FIXED +2.0 em (targetSegsU = natural + 2 em, sīn-only joint search)
+    const justify =
+      mode === 'C'
+        ? basmalah
+        : !rosetteClose && targetU - nat.width > tatweelAdv / 2;
+    const segsNaturalU = nat.segs.reduce((a, s2) => a + s2.width, 0);
+    const justifyTargetU = mode === 'C' ? segsNaturalU + BASMALAH_SIN_EM * upem : targetU - nat.markers * markerU;
     const jres = justify
-      ? justifyLine(nat.segs, targetU - nat.markers * markerU, { sinOnlyFirstWord: basmalah })
+      ? justifyLine(nat.segs, justifyTargetU, { sinOnlyFirstWord: basmalah })
       : { texts: nat.segs.map((s2) => s2.text), alloc: [] };
     const segTexts = jres.texts;
     const segShaped = segTexts.map((t) => ({ text: t, run: shapeRun(t) }));
@@ -543,8 +614,10 @@ function composeVariant(solution, nLines) {
     // reading-order word → āyah map for this line (word indices follow token order)
     const wordAyah = toks.filter((t) => t.type === 'word').map((t) => t.ayah);
 
-    // place segments right → left (RTL flow): first segment at the RIGHT edge
-    const rightEdgeU = COLUMN_RIGHT / s; // font units at this em
+    // place segments right → left (RTL flow): first segment at the RIGHT edge.
+    // Mode C centers each line on the sheet axis (column center = x 0): the right edge
+    // sits at +half the line's own width instead of the column edge.
+    const rightEdgeU = mode === 'C' ? lineWidthU / 2 : COLUMN_RIGHT / s; // font units at this em
     const markers = [];
     const glyphItems = [];
     let cursorRight = rightEdgeU;
@@ -641,7 +714,8 @@ function composeVariant(solution, nLines) {
       baseline,
       em,
       widthWorld: U2Wv(lineWidthU),
-      justified: justify || (!rosetteClose && Math.abs(targetU - lineWidthU) <= tatweelAdv / 2),
+      justified: mode === 'C' ? false : justify || (!rosetteClose && Math.abs(targetU - lineWidthU) <= tatweelAdv / 2),
+      centered: mode === 'C' || undefined,
       kashidaAlloc: jres.alloc.length ? jres.alloc : undefined,
       fillers,
       presentation: segTexts,
@@ -690,7 +764,13 @@ function writeVariant(tag, composed) {
       svg += `<path transform="translate(${(g.x * K).toFixed(3)} ${(g.y * K).toFixed(3)}) scale(${(g.scale * K).toFixed(6)} ${(-g.scale * K).toFixed(6)})" d="${g.path}" fill="#2A211B"/>\n`;
     }
     for (const m of l.markers) {
-      svg += `<circle cx="${(m.x * K).toFixed(2)}" cy="${(m.y * K).toFixed(2)}" r="${(RING_R_EM * composed.em * K).toFixed(2)}" fill="none" stroke="#8F7440" stroke-width="${(RING_STROKE_EM * composed.em * K).toFixed(2)}"/>\n`;
+      if (composed.mode === 'C') {
+        // v1.5 drawn rosette — same placement transform convention as the glyphs (y-up path)
+        const ms = composed.em / upem;
+        svg += `<path transform="translate(${(m.x * K).toFixed(3)} ${(m.y * K).toFixed(3)}) scale(${(ms * K).toFixed(6)} ${(-ms * K).toFixed(6)})" d="${ROSETTE_PATH}" fill="#8F7440"/>\n`;
+      } else {
+        svg += `<circle cx="${(m.x * K).toFixed(2)}" cy="${(m.y * K).toFixed(2)}" r="${(RING_R_EM * composed.em * K).toFixed(2)}" fill="none" stroke="#8F7440" stroke-width="${(RING_STROKE_EM * composed.em * K).toFixed(2)}"/>\n`;
+      }
     }
     for (const f of l.fillers ?? []) svg += rosettePath(f.x, f.y, f.r, K) + '\n';
   }
@@ -706,11 +786,24 @@ function writeVariant(tag, composed) {
     JSON.stringify(
       {
         source: 'Amiri Quran (SIL OFL 1.1) shaped via HarfBuzz — FROZEN; consumers verify checksums',
-        layout: `classical justified (v1.4.2) · ${composed.lines.length}-line block · em ${composed.em} · pitch ${composed.leading.pitch} (${composed.leading.pitchEm} em, ${composed.leading.ruleMet ? 'clearance rule met' : 'band-clamped — clearance rule NOT met'}) · close: ${composed.mode === 'A' ? 'justified (true rectangle)' : 'short + rosette fillers'}`,
+        layout:
+          composed.mode === 'C'
+            ? `classical centered (v1.5) · ${composed.lines.length}-line block · em ${composed.em} · pitch ${composed.leading.pitch} (${composed.leading.pitchEm} em, ${composed.leading.ruleMet ? 'clearance rule met' : 'band-clamped — clearance rule NOT met'}) · no justification — basmalah sīn +${BASMALAH_SIN_EM} em only · markers: drawn rosette`
+            : `classical justified (v1.4.2) · ${composed.lines.length}-line block · em ${composed.em} · pitch ${composed.leading.pitch} (${composed.leading.pitchEm} em, ${composed.leading.ruleMet ? 'clearance rule met' : 'band-clamped — clearance rule NOT met'}) · close: ${composed.mode === 'A' ? 'justified (true rectangle)' : 'short + rosette fillers'}`,
         variant: tag,
         checksums: { svg: svgHash, font: fontHash },
         em: composed.em,
         leading: composed.leading,
+        marker:
+          composed.mode === 'C'
+            ? {
+                kind: 'rosette-outline',
+                path: ROSETTE_PATH,
+                upem,
+                units: `font units at upem ${upem}, y-up, centered at the origin — place at each line marker (x, y) with scale em/upem (the glyph convention)`,
+                outerEm: ROSETTE_OUTER_EM,
+              }
+            : undefined,
         lines: composed.lines,
       },
       null,
@@ -741,9 +834,12 @@ function writeVariant(tag, composed) {
 mkdirSync(join(root, 'public/text'), { recursive: true });
 
 const results = {};
-for (const nLines of [8, 7]) {
+// v1.5 (user review 2026-08-30): the active 7-line block is rebuilt CLASSICAL CENTERED
+// (mode C); the 8-line rectangle variant stays FROZEN on disk as the v1.4.3 reference —
+// regenerating it under the new marker/mode rules would muddy its provenance.
+for (const nLines of [7]) {
   const tag = `${nLines}line`;
-  const pick = solveVariant(nLines);
+  const pick = solveVariant(nLines, ['C']);
   if (!pick) {
     console.log(`\n${tag}: NOT FEASIBLE at any band em under the elongation caps.`);
     results[tag] = null;
@@ -753,7 +849,7 @@ for (const nLines of [8, 7]) {
   const meta = writeVariant(tag, composed);
   results[tag] = { composed, meta };
   const L = composed.leading;
-  console.log(`\n${tag}: em ${composed.em} · close ${composed.mode === 'A' ? 'justified — true rectangle' : 'short + rosettes'} · ${meta.nGlyphs} glyphs`);
+  console.log(`\n${tag}: em ${composed.em} · ${composed.mode === 'C' ? 'classical centered (v1.5)' : composed.mode === 'A' ? 'close justified — true rectangle' : 'close short + rosettes'} · ${meta.nGlyphs} glyphs`);
   console.log(` svg sha256 ${meta.svgHash}`);
   console.log(
     ` leading: pitch ${L.pitch} (${L.pitchEm} em) · rule wants ${L.rulePitchEm} em · ${L.ruleMet ? 'RULE MET' : 'CLAMPED BY BAND — RULE NOT MET'} · ink daylight ${L.achievedClearEm} em (target ${CLEAR_EM} em) · worst pair ${L.worstPair}→${L.worstPair + 1} · block ${L.blockHeight} of ${(BAND_BOT - BAND_TOP).toFixed(3)}`,
@@ -773,13 +869,13 @@ for (const nLines of [8, 7]) {
   console.log(`  (* = below the legal band [${EM_BAND[0]}, ${EM_BAND[1]}])`);
 }
 
-// active composition = the 7-LINE block — the layout chosen at review (2026-08-25);
-// the 8-line variant stays frozen alongside as a reference
+// active composition = the 7-LINE block — chosen 2026-08-25, classical-centered v1.5
+// per the 2026-08-30 review; the 8-line rectangle stays frozen alongside as a reference
 if (results['7line']) {
   copyFileSync(join(root, 'public/text/composition-7line.json'), join(root, 'public/text/composition.json'));
   copyFileSync(join(root, 'public/text/composition-7line.svg'), join(root, 'public/text/composition.svg'));
   copyFileSync(join(root, 'build/stroke-order-7line.json'), join(root, 'build/stroke-order.json'));
-  console.log('\nactive composition = 7line (chosen at review 2026-08-25)');
+  console.log('\nactive composition = 7line classical centered (v1.5, review 2026-08-30)');
 }
 const fontHash = createHash('sha256').update(fontData).digest('hex');
 console.log(`font sha256 ${fontHash}`);

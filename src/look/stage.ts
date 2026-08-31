@@ -57,6 +57,7 @@ import { GRID_H, GRID_W, type SilhouetteData } from '../field/silhouette';
 import { INK_DRY, INK_WET } from '../ink/ink';
 import { InkPass } from '../ink/inkPass';
 import type { InkPack } from '../ink/atlas';
+import { buildGlyphRelief, type GlyphBin, type GlyphRelief } from '../relief/mesh';
 import { THICKNESS } from '../field/deform';
 import { buildEnvironment, buildFiberTexture, buildUtilTexture } from './textures';
 
@@ -90,6 +91,8 @@ export interface Stage {
   uEmboss: { value: number };
   /** M3 ink RT pass — run once per frame before the beauty render (pure f(p)) */
   inkPass?: InkPass;
+  /** M4 §14 glyph relief — mesh + handoff-depth/rise uniforms (absent with &nogeo / no ink) */
+  relief?: GlyphRelief;
   /** scene-linear background (a physical far sphere — pass() drops scene.background) */
   setBackground(r: number, g: number, b: number): void;
 }
@@ -142,6 +145,7 @@ export function buildStage(
   sil: SilhouetteData,
   debug: DebugMode,
   ink?: InkPack,
+  glyphBin?: GlyphBin,
 ): Stage {
   const scene = new Scene();
 
@@ -175,6 +179,14 @@ export function buildStage(
   sheetRoot.add(buildSheet(field, maps, debug, inkPass?.texture, uEmboss));
   sheetRoot.add(buildRibbon(field, sil, maps, debug));
 
+  // M4 §14 glyph relief: rides sheetRoot (same pose transform as the parchment); hidden
+  // until the handoff window opens (applyFrame drives visibility + uGeoDepth)
+  let relief: GlyphRelief | undefined;
+  if (glyphBin && inkPass && debug === 'none') {
+    relief = buildGlyphRelief(glyphBin, field, maps.fiber, inkPass.texture);
+    sheetRoot.add(relief.mesh);
+  }
+
   // §8 rig
   const key = new SpotLight(0xffd2a0, KEY_INTENSITY, 0, (26 * Math.PI) / 180, 0.5, 2);
   key.position.set(...KEY_POS);
@@ -204,6 +216,7 @@ export function buildStage(
     rim,
     uEmboss,
     inkPass,
+    relief,
     setBackground: (r: number, g: number, b: number) => {
       (uBg.value as Vector3).set(r, g, b);
     },
@@ -300,9 +313,7 @@ function fieldMaterial(
   let embossGU: N = float(0);
   let embossGV: N = float(0);
   if (inkTex) {
-    let embossGU: N = float(0);
-  let embossGV: N = float(0);
-  // §14 flat ink (M3), composited from the ink RT — recto only, wet/dry colored,
+    // §14 flat ink (M3), composited from the ink RT — recto only, wet/dry colored,
     // pooled slightly darker in fiber valleys (the cavity term's albedo share).
     // NOTE: every lerp here is written as explicit mul/add — TSL mix() with a
     // texture-derived factor silently breaks this material's light integration
@@ -316,6 +327,26 @@ function fieldMaterial(
     // wet ink is glossier; dry ink still tighter than parchment
     const inkRough: N = float(0.52).sub(wetF.mul(0.24));
     rBase = rBase.mul(float(1).sub(rectoCov)).add(inkRough.mul(rectoCov));
+
+    // §14 emboss (M4): the puff channel (B) read as an apparent-height field,
+    // h = puff · 0.0009 · uEmboss (world). Central differences at 1.5 RT texels give
+    // uv-space slopes; world slope along u divides by the sheet aspect 0.78. The
+    // perturbation is applied in the field TBN below (n' = n − sU·T − sV·B) — recto only.
+    if (uEmboss) {
+      const eps = 1.5 / 2048;
+      const recto: N = float(1).sub(backAmt);
+      const pR: N = texture(inkTex, suv.add(vec2(eps, 0))).b;
+      const pL: N = texture(inkTex, suv.sub(vec2(eps, 0))).b;
+      const pU: N = texture(inkTex, suv.add(vec2(0, eps))).b;
+      const pD: N = texture(inkTex, suv.sub(vec2(0, eps))).b;
+      const hApp: N = (uEmboss as N).mul(0.0009);
+      embossGU = pR.sub(pL).div(2 * eps).mul(hApp).div(0.78).mul(recto);
+      embossGV = pU.sub(pD).div(2 * eps).mul(hApp).mul(recto);
+      // +8% border cavity darkening — fibers compressing where the relief forms (§14):
+      // normalized gradient magnitude of the puff, strongest along stroke borders
+      const border: N = pR.sub(pL).abs().add(pU.sub(pD).abs()).mul(1.5).clamp(0, 1);
+      col = col.mul(float(1).sub(border.mul(0.08).mul(uEmboss as N).mul(recto)));
+    }
   }
   m.colorNode = col;
 
@@ -336,7 +367,12 @@ function fieldMaterial(
   const Tv: N = transformNormalToView(tangentObj);
   const Bv: N = Nv.cross(Tv);
   const k = 0.00055; // §7 micro 0.55 at parchment scale — tuned against 41 cm sheet analog
-  m.normalNode = Nv.add(Tv.mul(fn.x.mul(k))).add(Bv.mul(fn.y.mul(k))).sub(Tv.mul(embossGU)).sub(Bv.mul(embossGV)).normalize();
+  // Emboss v-axis: the height slope must perturb along +dP/dv = cross(T, N) = −Bv.
+  // Bv (= N×T) points UP-page; for the sign-free fiber noise that is irrelevant, but the
+  // emboss is a signed height field — subtracting along Bv inverted its vertical shading
+  // (bumps read as dents from the key's v-component; caught while deriving the glyph-mesh
+  // TBN for the §14 handoff, where geometry makes the correct sign unambiguous).
+  m.normalNode = Nv.add(Tv.mul(fn.x.mul(k))).add(Bv.mul(fn.y.mul(k))).sub(Tv.mul(embossGU)).add(Bv.mul(embossGV)).normalize();
 
   // thin-surface wrap translucency — §7: light from behind glows through, gated by local
   // thickness (fiber height + macro). Emissive-approximated until it joins the shadowed
