@@ -662,8 +662,10 @@ async function runMain(): Promise<void> {
     sky.uPxRad.value = ((rig.camera.fov * Math.PI) / 180) / Math.max(1, (canvas as HTMLCanvasElement).height);
     uEmboss.value = embossFactor(p); // §14 relief window (E2 in, E7 fade at the handoff)
     {
-      // §11 star clearance: the assembly center (anchor → rest by the S7 lift), in world space
+      // §11 star clearance: the assembly center (anchor → rest by the S7 lift), in world space;
+      // the clearance itself fades in with the lift — only the standing block clears the stars
       const e = faceFactor(p);
+      sky.uClear.value = e;
       skyTextCenter.set(
         FACE_CENTER_ANCHOR[0] + (FACE_CENTER_REST[0] - FACE_CENTER_ANCHOR[0]) * e,
         FACE_CENTER_ANCHOR[1] + (FACE_CENTER_REST[1] - FACE_CENTER_ANCHOR[1]) * e,

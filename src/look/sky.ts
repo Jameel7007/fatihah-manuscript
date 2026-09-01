@@ -39,15 +39,19 @@ export interface Sky {
   uPxRad: { value: number };
   /** world center of the text assembly (set per frame) — stars keep clear of its screen footprint */
   uTextCenter: { value: Vector3 };
+  /** clearance strength 0..1 — drivers.faceFactor(p): only the standing block clears the stars */
+  uClear: { value: number };
 }
 
 // Star clearance (review 2026-09-01: "keep the stars on the outskirts of the 3D text so there is
 // no overlap"): the assembly's world half-extents (v1.5 block ≈ 0.50 × 0.72), projected to the
-// camera's tangent plane each frame; stars fade out inside an ellipse 1.25× the block and are
-// gone by 1.75× — so they live in the frame's outer field and never sit behind the gold.
+// camera's tangent plane each frame; stars are gone inside the block's ellipse and back by
+// 1.25× — a thin margin, so the field still reads as even with the gold simply in front of it.
+// Gated by uClear = the S7 lift (faceFactor): before the block stands, the parchment hides the
+// stars behind it anyway, and a hole around the rolled sheet read as "the stars aren't even".
 const TEXT_HALF: [number, number] = [0.26, 0.37];
-const CLEAR_INNER = 1.25;
-const CLEAR_OUTER = 1.75;
+const CLEAR_INNER = 1.02;
+const CLEAR_OUTER = 1.25;
 
 /** Sinless 3D hash → [0,1). */
 function hash3(p: N): N {
@@ -71,11 +75,12 @@ function vnoise3(p: N): N {
 }
 
 function fbm3(p: N): N {
+  // two octaves — the lobe is a whisper since the second review pass; the third octave was
+  // invisible and cost 8 hashes per background pixel
   return vnoise3(p)
     .mul(0.5)
     .add(vnoise3(p.mul(2.07).add(11.3)).mul(0.25))
-    .add(vnoise3(p.mul(4.13).add(23.7)).mul(0.125))
-    .div(0.875);
+    .div(0.75);
 }
 
 export function buildSky(floor: [number, number, number]): Sky {
@@ -83,6 +88,7 @@ export function buildSky(floor: [number, number, number]): Sky {
   const uDetail = uniform(1);
   const uPxRad = uniform(6.5e-4);
   const uTextCenter = uniform(new Vector3(0, 0, 0.0075));
+  const uClear = uniform(0);
 
   const d: N = positionWorld.sub(cameraPosition).normalize();
   const floorC: N = uFloor;
@@ -109,13 +115,14 @@ export function buildSky(floor: [number, number, number]): Sky {
   const q: N = vec2(d.y, d.z).mul(isX).add(vec2(d.x, d.z).mul(isY)).add(vec2(d.x, d.y).mul(isZ)).mul(inv);
   const sign: N = step(0, dom).mul(2).sub(1);
   const faceId: N = isY.mul(2).add(isZ.mul(4)).add(step(dom, 0));
-  const cell0: N = q.add(1).mul(0.5 * CELLS).floor();
-  // 3×3 neighbourhood so a bright star's soft halo crosses cell borders unclipped (a
-  // single-cell lookup truncated halos into 25-px squares); cells outside the face are
-  // masked — their phantom centers would exist from one face only
+  // the 2×2 cells nearest the point (floor of the half-shifted cell coordinate) — every star
+  // whose halo (≤ 0.5 cell) can reach this pixel; a single-cell lookup truncated halos into
+  // 25-px squares, the 3×3 search cost 9 candidates per background pixel. Cells outside the
+  // face are masked — their phantom centers would exist from one face only.
+  const cell0: N = q.add(1).mul(0.5 * CELLS).sub(0.5).floor();
   let stars: N = vec3(0);
-  for (let dy = -1; dy <= 1; dy++) {
-    for (let dx = -1; dx <= 1; dx++) {
+  for (let dy = 0; dy <= 1; dy++) {
+    for (let dx = 0; dx <= 1; dx++) {
       const cell: N = cell0.add(vec2(dx, dy));
       const cid: N = vec3(cell.x, cell.y, faceId);
       const hOcc: N = hash3(cid);
@@ -128,12 +135,13 @@ export function buildSky(floor: [number, number, number]): Sky {
       const theta: N = cross(d, c).length(); // small-angle exact, no acos precision loss near 1
       const b2: N = b.mul(b);
       const b6: N = b2.mul(b2).mul(b2);
-      // "stars a little smaller" (review 2026-09-01): σ 0.65–1.25 px (was 0.9–1.8), halo ×3 at 1.2%
-      const sigma: N = uPxRad.mul(b2.mul(0.6).add(0.65));
+      // "stars a little smaller" ×2 (review 2026-09-01): σ 0.55–1.05 px (was 0.9–1.8 → 0.65–1.25),
+      // halo ×2.5 at 0.8%
+      const sigma: N = uPxRad.mul(b2.mul(0.5).add(0.55));
       const peak: N = floorLum.mul(b6.mul(420).add(2.5));
       const core: N = exp(theta.mul(theta).div(sigma.mul(sigma).mul(-2)));
-      const sigmaH: N = sigma.mul(3);
-      const halo: N = exp(theta.mul(theta).div(sigmaH.mul(sigmaH).mul(-2))).mul(0.012).mul(b2.mul(b2));
+      const sigmaH: N = sigma.mul(2.5);
+      const halo: N = exp(theta.mul(theta).div(sigmaH.mul(sigmaH).mul(-2))).mul(0.008).mul(b2.mul(b2));
       const inFace: N = step(-0.5, cell.x).mul(step(cell.x, float(CELLS - 0.5))).mul(step(-0.5, cell.y)).mul(step(cell.y, float(CELLS - 0.5)));
       const occ: N = step(hOcc, float(OCCUPANCY)).mul(inFace);
       const starCol: N = lerp(vec3(1.0, 0.86, 0.72), vec3(0.78, 0.86, 1.0), temp);
@@ -148,7 +156,7 @@ export function buildSky(floor: [number, number, number]): Sky {
   const tc: N = vec2(cv.x, cv.y).div(cz);
   const half: N = vec2(TEXT_HALF[0], TEXT_HALF[1]).div(cz);
   const eDist: N = td.sub(tc).div(half).length();
-  const clear: N = smoothstep(CLEAR_INNER, CLEAR_OUTER, eDist);
+  const clear: N = float(1).sub(uClear.mul(float(1).sub(smoothstep(CLEAR_INNER, CLEAR_OUTER, eDist))));
   col = col.add(stars.mul(clear).mul(uDetail));
 
   const mat = new MeshBasicNodeMaterial();
@@ -157,5 +165,5 @@ export function buildSky(floor: [number, number, number]): Sky {
   mat.fog = false;
   const mesh = new Mesh(new SphereGeometry(3.2, 24, 16), mat);
   mesh.frustumCulled = false;
-  return { mesh, uFloor, uDetail, uPxRad, uTextCenter };
+  return { mesh, uFloor, uDetail, uPxRad, uTextCenter, uClear };
 }
