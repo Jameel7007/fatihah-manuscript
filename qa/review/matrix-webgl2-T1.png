@@ -1,0 +1,72 @@
+{
+ "backend": "webgl2",
+ "ran": "2026-09-01T23:09:05.642Z",
+ "seconds": 69.7,
+ "results": [
+  {
+   "id": "R-0.000-T1-webgl2",
+   "url": "/?capture=0&tier=1&w=1440&h=900&backend=webgl2",
+   "sha256": "251091e225b582db20034456a505b40a15d0c3c8316892b04148b15e7ecf5772"
+  },
+  {
+   "id": "R-0.080-T1-webgl2",
+   "url": "/?capture=0.08&tier=1&w=1440&h=900&backend=webgl2",
+   "sha256": "22cabed05d713fd3478d8865d5546d63365039a23aa6d647fa2572c41bfa1211"
+  },
+  {
+   "id": "R-0.210-T1-webgl2",
+   "url": "/?capture=0.21&tier=1&w=1440&h=900&backend=webgl2",
+   "sha256": "55741d0eccc605546b5431a448d5f96a249c90bf5fdb8e313aaa07d16c894c37"
+  },
+  {
+   "id": "R-0.340-T1-webgl2",
+   "url": "/?capture=0.34&tier=1&w=1440&h=900&backend=webgl2",
+   "sha256": "fc9e5e571518860534eb8642e933481b1d07fa766d958ba5778e59ec0f39d6f1"
+  },
+  {
+   "id": "R-0.450-T1-webgl2",
+   "url": "/?capture=0.45&tier=1&w=1440&h=900&backend=webgl2",
+   "sha256": "7b1e67c2f2c57b377dcf5dd2be1136dd8c76024fc3ebb4e3c4573f2a9ee2db3d"
+  },
+  {
+   "id": "R-0.560-T1-webgl2",
+   "url": "/?capture=0.56&tier=1&w=1440&h=900&backend=webgl2",
+   "sha256": "a4c0ce4a880b26f0d98182892e79906d868f9ee144927bc2cb80b88c39810e3f"
+  },
+  {
+   "id": "R-0.645-T1-webgl2",
+   "url": "/?capture=0.645&tier=1&w=1440&h=900&backend=webgl2",
+   "sha256": "afa5d7b3b616e8c8e025a6c57550b4c8488f6bda9670cb81c50325bc9a321809"
+  },
+  {
+   "id": "R-0.710-T1-webgl2",
+   "url": "/?capture=0.71&tier=1&w=1440&h=900&backend=webgl2",
+   "sha256": "7d792e483c7bf100b58e35ae5ecb58c7242cc2ae115580a3dac8d582b938492e"
+  },
+  {
+   "id": "R-0.760-T1-webgl2",
+   "url": "/?capture=0.76&tier=1&w=1440&h=900&backend=webgl2",
+   "sha256": "5714679d0311fff6b435e7dd432b2f4936ed94f74f25ac028ab0649300f257bb"
+  },
+  {
+   "id": "R-0.860-T1-webgl2",
+   "url": "/?capture=0.86&tier=1&w=1440&h=900&backend=webgl2",
+   "sha256": "f9307da00e06e490934075f06d94149510047cf224c232d98d6b595f8cb313fa"
+  },
+  {
+   "id": "R-0.930-T1-webgl2",
+   "url": "/?capture=0.93&tier=1&w=1440&h=900&backend=webgl2",
+   "sha256": "a24e08d5023e91464feaff6ec541777298e5f40a1bc6a36a1a73bb16558f99d5"
+  },
+  {
+   "id": "R-1.000-T1-webgl2",
+   "url": "/?capture=1&tier=1&w=1440&h=900&backend=webgl2",
+   "sha256": "395cf9a2b4368a9139b72458e6a09ea89f82d88e9d7feb6440e3dd8bb5c2ceed"
+  },
+  {
+   "id": "R-1.000-T1-noblob-webgl2",
+   "url": "/?capture=1.0&tier=1&w=1440&h=900&backend=webgl2&noblob",
+   "sha256": "5e18ff8ad96d6c8f048539b1ab69ccb5c85121fe8b62f18a5c37610e8bf4a3fc"
+  }
+ ]
+}

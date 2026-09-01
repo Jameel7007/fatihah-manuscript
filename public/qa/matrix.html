@@ -1,0 +1,55 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Fātiḥah regression matrix runner</title>
+<style>body{margin:0;background:#0D0906;color:#A2957A;font:12px/1.6 ui-monospace,Menlo,monospace;padding:16px} iframe{position:fixed;inset:0;width:100vw;height:100vh;border:0;opacity:.02;pointer-events:none;z-index:0} pre{position:relative;z-index:1} pre{white-space:pre-wrap} .ok{color:#C9A45B}</style>
+<h3 style="color:#C9A45B;font-weight:500">§20 regression matrix — self-driving runner</h3>
+<p>Loads every matrix frame in a full-viewport (near-invisible) iframe — an offscreen 1×1 iframe gets its rAF throttled and the captures crawl — reads its SHA-256 (window.__capture), and posts the table to <code>/qa-save?name=matrix-&lt;backend&gt;</code>. Open with <code>?backend=webgpu|webgl2</code>, optional <code>&only=T1</code>.</p>
+<pre id="log"></pre>
+<script>
+const q = new URLSearchParams(location.search);
+const backend = q.get('backend') ?? 'webgpu';
+const only = q.get('only');
+const P = [0.0, 0.08, 0.21, 0.34, 0.45, 0.56, 0.645, 0.710, 0.76, 0.86, 0.93, 1.0];
+const VIEWS = [
+  { tag: 'T1', tier: 1, w: 1440, h: 900 },
+  { tag: 'T2', tier: 2, w: 390, h: 844 },
+  { tag: 'T3', tier: 3, w: 390, h: 844 },
+];
+const specs = [];
+for (const v of VIEWS) {
+  if (only && only !== v.tag) continue;
+  for (const p of P) specs.push({ id: `R-${p.toFixed(3)}-${v.tag}-${backend}`, url: `/?capture=${p}&tier=${v.tier}&w=${v.w}&h=${v.h}&backend=${backend}` });
+}
+if (!only || only === 'T1') specs.push({ id: `R-1.000-T1-noblob-${backend}`, url: `/?capture=1.0&tier=1&w=1440&h=900&backend=${backend}&noblob` });
+const log = document.getElementById('log');
+const say = (t, cls) => { const d = document.createElement('div'); d.textContent = t; if (cls) d.className = cls; log.appendChild(d); };
+const results = [];
+(async () => {
+  const t0 = performance.now();
+  for (const s of specs) {
+    const f = document.createElement('iframe');
+    f.src = s.url + '&m=' + Math.random().toString(36).slice(2);
+    document.body.appendChild(f);
+    let hash = 'TIMEOUT';
+    for (let i = 0; i < 240; i++) {
+      await new Promise((r) => setTimeout(r, 250));
+      try {
+        const c = f.contentWindow && f.contentWindow.__capture;
+        if (c && c.hash) { hash = c.hash; break; }
+        const e = f.contentWindow && f.contentWindow.__captureError;
+        if (e) { hash = 'ERROR ' + e; break; }
+      } catch (err) { /* cross-frame timing */ }
+    }
+    f.remove();
+    results.push({ id: s.id, url: s.url, sha256: hash });
+    say(`${s.id}  ${hash}`, hash.length === 64 ? 'ok' : '');
+  }
+  const out = { backend, ran: new Date().toISOString(), seconds: +((performance.now() - t0) / 1000).toFixed(1), results };
+  window.__matrix = out;
+  try {
+    const tag = only ? `matrix-${backend}-${only}` : `matrix-${backend}`;
+    const r = await fetch(`/qa-save?name=${tag}`, { method: 'POST', body: JSON.stringify(out, null, 1) });
+    say(`posted ${tag} (${r.status}) in ${out.seconds}s`, 'ok');
+  } catch (e) { say('post failed: ' + e); }
+})();
+</script>

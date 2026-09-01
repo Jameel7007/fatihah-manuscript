@@ -8,7 +8,10 @@
   html { background: #0D0906; }
   body { margin: 0; background: #0D0906; color: #A2957A; }
   #spacer { width: 1px; }
-  canvas#gl { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; }
+  canvas#gl { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; opacity: 0; }
+  /* §15 designed first frame: inline LQIP blur-up under the 1600×1000 poster JPEG of R-p0.00 */
+  #poster { position: fixed; inset: 0; z-index: 2; background: #0D0906 center / cover no-repeat; pointer-events: none; }
+  #poster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   #hud {
     position: fixed; left: 16px; bottom: calc(14px + env(safe-area-inset-bottom));
     font: 11px/1.5 ui-monospace, Menlo, monospace; letter-spacing: .08em;
@@ -23,7 +26,8 @@
     font: 11px/1.6 ui-monospace, Menlo, monospace; color: #C9A45B; white-space: pre;
   }
   body.capture { overflow: hidden; }
-  body.capture #hud, body.capture #bar { display: none; }
+  body.capture #hud, body.capture #bar, body.capture #poster { display: none; }
+  body.capture canvas#gl { opacity: 1; }
   body.capture #cap { display: block; }
   /* capture buffer is a fixed 1440×900 (or per-params) — scale the VIEW to fit the window;
      readback uses the buffer, so hashes are unaffected */
@@ -32,6 +36,7 @@
 </head>
 <body>
 <main aria-label="Al-Fātiḥah 3D Manuscript">
+<div id="poster" aria-hidden="true" style="background-image:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAUACADASIAAhEBAxEB/8QAGAABAQADAAAAAAAAAAAAAAAAAAYCBAX/xAAoEAABAwMBBgcAAAAAAAAAAAADAAECBBESBQYhIjFBUVJhcYGRofD/xAAWAQEBAQAAAAAAAAAAAAAAAAACAAH/xAAXEQEBAQEAAAAAAAAAAAAAAAABAEEC/9oADAMBAAIRAxEAPwCHCIhyMMI5km/KMIu7v7LBb2lVgKI8SFGeT3s7iNhw+jNd+/NuipB7Q6cWOMaqspGj4mzy+cvzoKmTAdo1Fbklp9USJY1enklNmu5xQlOX23lusuftBQAp6YhmpqaDvjGM4SeD3v0i27usO8p5phEROMREVV//2Q==)"><img src="/poster.jpg" alt="" decoding="async" fetchpriority="high"></div>
 <div id="spacer" aria-hidden="true"></div>
 <canvas id="gl" role="img" aria-label="An aged parchment bearing Sūrat al-Fātiḥah, unrolled, written in ink, and raised into gilded relief as you scroll"></canvas>
 <div id="hud" role="status" aria-live="polite"></div>

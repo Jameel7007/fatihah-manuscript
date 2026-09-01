@@ -1,0 +1,96 @@
+{
+ "backend": "webgpu",
+ "ran": "2026-09-01T23:07:25.296Z",
+ "seconds": 345,
+ "frames": 12,
+ "match": 0,
+ "mismatch": 0,
+ "unblessed": 12,
+ "errors": 0,
+ "rows": [
+  {
+   "id": "R-0.000-T3-webgpu",
+   "key": "0.000-T3",
+   "status": "unblessed",
+   "sha256": "6dda8b5e85777e9dedf87b7beaf52d6feb12f334c10bffacbc36ea0eb477f9d0",
+   "blessed": null
+  },
+  {
+   "id": "R-0.080-T3-webgpu",
+   "key": "0.080-T3",
+   "status": "unblessed",
+   "sha256": "8f576d795ab15b16c2b4e11ef64a57f9dc5c00d76eade07288c74406fceec805",
+   "blessed": null
+  },
+  {
+   "id": "R-0.210-T3-webgpu",
+   "key": "0.210-T3",
+   "status": "unblessed",
+   "sha256": "f7705d6c1324d9ca15e9b393a4c1488481c24611b4ffa6f481346e5443a3b22d",
+   "blessed": null
+  },
+  {
+   "id": "R-0.340-T3-webgpu",
+   "key": "0.340-T3",
+   "status": "unblessed",
+   "sha256": "7c05ce5189a82ac3de670c6d1ad0765a1aa846523d8cfc7119ef7e3ba5d62ee5",
+   "blessed": null
+  },
+  {
+   "id": "R-0.450-T3-webgpu",
+   "key": "0.450-T3",
+   "status": "unblessed",
+   "sha256": "908a985c730e975f6ab9bbae931b21f889adf8669532478aee41257e389de967",
+   "blessed": null
+  },
+  {
+   "id": "R-0.560-T3-webgpu",
+   "key": "0.560-T3",
+   "status": "unblessed",
+   "sha256": "8415bd7245fe7473edbb0a5a47afda445388ebbf5a7c66423251ee9679d77a82",
+   "blessed": null
+  },
+  {
+   "id": "R-0.645-T3-webgpu",
+   "key": "0.645-T3",
+   "status": "unblessed",
+   "sha256": "4e8253dbbd309c1db73bfb7ab4c1d1fd621346e555b93eb8aeadc86d837187d9",
+   "blessed": null
+  },
+  {
+   "id": "R-0.710-T3-webgpu",
+   "key": "0.710-T3",
+   "status": "unblessed",
+   "sha256": "90aff2fd8f681615001de4fba09d17f45e7937f741d401c5d9ef62c77d7654d0",
+   "blessed": null
+  },
+  {
+   "id": "R-0.760-T3-webgpu",
+   "key": "0.760-T3",
+   "status": "unblessed",
+   "sha256": "4500b042cdf72a40ab7feb5d19cd84a11e0da8641d7b50968f27226947dd8295",
+   "blessed": null
+  },
+  {
+   "id": "R-0.860-T3-webgpu",
+   "key": "0.860-T3",
+   "status": "unblessed",
+   "sha256": "bdcc6288c4436084f8e925faf4e6b9d990dfe9bdb8846d78694471cd6bd6f4f0",
+   "blessed": null
+  },
+  {
+   "id": "R-0.930-T3-webgpu",
+   "key": "0.930-T3",
+   "status": "unblessed",
+   "sha256": "c726b61ee7374ff3f89395138a156f44acab7052af0117af70b8f5c145e73a9b",
+   "blessed": null
+  },
+  {
+   "id": "R-1.000-T3-webgpu",
+   "key": "1.000-T3",
+   "status": "unblessed",
+   "sha256": "202959d0b2f2dada2bb12ad53c694c32c4d7bef64909e729869147f30c85ec40",
+   "blessed": null
+  }
+ ]
+}

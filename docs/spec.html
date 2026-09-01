@@ -143,7 +143,7 @@
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.5 · M5 closed · M6 in progress — facing &amp; finish</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.5 · M6 closed · M7 in progress — performance &amp; payload</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -1692,6 +1692,40 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     1.12 % (limit 2 %), 60 s run recorded in the manifest; R-1.00-noblob captured (PCSS carries S7 — the blob
     is ≤ 4 % at rest). Frames R-0.93 / R-1.00 reproduced (f6dddb0e… / 2acc551f…). Review frames
     <span style="font-family:var(--mono);font-size:12px">qa/review/m6-R{093,100,100-noblob}.png</span>.</li>
+  </ol>
+
+  <h3>M6 closed · M7 open — performance &amp; payload <span class="tag">sign-off, 2026-09-01</span></h3>
+  <ol>
+    <li><b>M6 closed</b> on review ("signed off — bless R-0.93 and R-1.00 and continue to M7"); the S7
+    re-authoring accepted; the p = 1 hold audit measured 1.31 % flux drift over 60 s (limit 2 %).</li>
+    <li><b>§18 payload, measured</b> (<span style="font-family:var(--mono);font-size:12px">qa/payload.mjs</span>
+    after <span style="font-family:var(--mono);font-size:12px">vite build</span>): app JS 0.26 MB brotli
+    (three r185 WebGPU build + app), ink atlases 0.44 MB (PNG), glyphs.bin 1.47 MB (FGLY quantized buffers,
+    brotli), poster 44 KB + inline LQIP 1.2 KB — <b>2.15 MB total against the 8.5 MB target</b>. The
+    parchment, utility, environment and burnish maps are GPU-baked procedurally at boot, so the KTX2
+    rows for authored maps carry zero transfer in this build; meshopt/glb packaging stays deferred (it
+    would trade ≈ 1.5 → 1.2 MB for a wasm decoder). Phase A (to the live rolled parchment) is 0.24 MB.</li>
+    <li><b>§15 designed first frame</b> — an inline 32×20 LQIP under the 1600×1000 poster JPEG of R-p0.00
+    holds the screen while <span style="font-family:var(--mono);font-size:12px">renderer.compileAsync</span>
+    pre-compiles every pipeline; the canvas crossfades in over 420 ms after three presented frames.
+    Poster → live estimate at 10 Mbps: 0.2 s transfer + 1.0 s compile allowance + 0.42 s fade ≈ 1.7 s
+    (limit 2.2 s); the live boot time is published as
+    <span style="font-family:var(--mono);font-size:12px">window.__boot</span>. Capture mode bypasses the poster.</li>
+    <li><b>§19 tier logic, implemented</b> — a runtime monitor keeps a 3 s frame-time window and demotes
+    when p95 exceeds 1.25× the tier budget (12 / 14 / 27 ms), with 10 s hysteresis, applied only at
+    state-boundary crossings (DPR cap 1.75 → 2.2 → 1.25, dust 640 → 350 → 0); never promotes; the
+    thermal guard halves the DPR once more after two triggers at T3 and stops measuring.
+    <span style="font-family:var(--mono);font-size:12px">?perf=N</span> scrubs p 0 → 1 → 0 over N s and reports
+    the p50/p95/p99 frame times — the device runs (M1 Air, iPhone 15, iPhone 12) are the reviewer's;
+    the dev pane throttles rAF and cannot measure them.</li>
+    <li><b>§12 mobile overrides</b> — portrait aspects now carry the distance multipliers ×0.94 (S3) →
+    ×1.00 (S4–5) → ×1.12 (S6–7), blended; the S7 extent fit already handles portrait framing.
+    x-height record at em 0.052: x-height 0.0209 world → ≈ 15–16 CSS px in the 390-pt reading frame
+    (≈ 34 device px at DPR 2.2), ≈ 16 px at 1440×900.</li>
+    <li><b>§20 matrix runner</b> — <span style="font-family:var(--mono);font-size:12px">/qa/matrix.html?backend=…</span>
+    self-drives the 74-frame matrix through hidden iframes (12 p × {T1 1440×900, T2/T3 390×844} + noblob,
+    per backend) and posts the hash table; <span style="font-family:var(--mono);font-size:12px">qa/matrix.mjs</span>
+    checks it against the blessed references. Results in the manifest.</li>
   </ol>
 </section>
 

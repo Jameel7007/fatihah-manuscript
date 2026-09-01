@@ -1,0 +1,216 @@
+{
+ "built": "2026-09-01",
+ "budget": {
+  "target_mb": 8.5,
+  "hard_cap_mb": 10,
+  "transfer_metric": "brotli (gzip also listed)"
+ },
+ "totals": {
+  "raw_mb": 7.571,
+  "gz_mb": 3.241,
+  "br_mb": 2.147
+ },
+ "phases": {
+  "A": {
+   "files": 11,
+   "raw_mb": 0.936,
+   "gz_mb": 0.291,
+   "br_mb": 0.243,
+   "seconds_at_10mbps_br": 0.2
+  },
+  "B": {
+   "files": 3,
+   "raw_mb": 0.52,
+   "gz_mb": 0.442,
+   "br_mb": 0.438,
+   "seconds_at_10mbps_br": 0.37
+  },
+  "C": {
+   "files": 1,
+   "raw_mb": 6.115,
+   "gz_mb": 2.508,
+   "br_mb": 1.466,
+   "seconds_at_10mbps_br": 1.23
+  }
+ },
+ "posterToLive": {
+  "transfer_s": 0.2,
+  "compile_allowance_s": 1,
+  "crossfade_s": 0.42,
+  "estimate_s": 1.67,
+  "limit_s": 2.2
+ },
+ "items": [
+  {
+   "path": "dist/assets/index-_nrB4mOj.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 67583,
+   "gz": 26835,
+   "br": 23840,
+   "raw_kb": 66,
+   "gz_kb": 26.2,
+   "br_kb": 23.3
+  },
+  {
+   "path": "dist/assets/inkPass-C-i-tHxi.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 2722,
+   "gz": 1453,
+   "br": 1338,
+   "raw_kb": 2.7,
+   "gz_kb": 1.4,
+   "br_kb": 1.3
+  },
+  {
+   "path": "dist/assets/inkPass-D9ZKH8Od.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 63,
+   "gz": 74,
+   "br": 60,
+   "raw_kb": 0.1,
+   "gz_kb": 0.1,
+   "br_kb": 0.1
+  },
+  {
+   "path": "dist/assets/textures-CqkoUT5O.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 74,
+   "gz": 85,
+   "br": 70,
+   "raw_kb": 0.1,
+   "gz_kb": 0.1,
+   "br_kb": 0.1
+  },
+  {
+   "path": "dist/assets/textures-OoPKN9yW.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 2622,
+   "gz": 1210,
+   "br": 1124,
+   "raw_kb": 2.6,
+   "gz_kb": 1.2,
+   "br_kb": 1.1
+  },
+  {
+   "path": "dist/assets/three.tsl-B2KU2e1n.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 10131,
+   "gz": 3557,
+   "br": 3231,
+   "raw_kb": 9.9,
+   "gz_kb": 3.5,
+   "br_kb": 3.2
+  },
+  {
+   "path": "dist/assets/three.tsl-DwfiwqJy.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 132,
+   "gz": 123,
+   "br": 102,
+   "raw_kb": 0.1,
+   "gz_kb": 0.1,
+   "br_kb": 0.1
+  },
+  {
+   "path": "dist/assets/three.webgpu-BLWVkI-l.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 206,
+   "gz": 171,
+   "br": 142,
+   "raw_kb": 0.2,
+   "gz_kb": 0.2,
+   "br_kb": 0.1
+  },
+  {
+   "path": "dist/assets/three.webgpu-DIc7kFAo.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 849668,
+   "gz": 230699,
+   "br": 185328,
+   "raw_kb": 829.8,
+   "gz_kb": 225.3,
+   "br_kb": 181
+  },
+  {
+   "path": "dist/index.html",
+   "phase": "A",
+   "kind": "html",
+   "raw": 4004,
+   "gz": 1946,
+   "br": 1601,
+   "raw_kb": 3.9,
+   "gz_kb": 1.9,
+   "br_kb": 1.6
+  },
+  {
+   "path": "public/poster.jpg",
+   "phase": "A",
+   "kind": "poster",
+   "raw": 44452,
+   "gz": 39240,
+   "br": 37783,
+   "raw_kb": 43.4,
+   "gz_kb": 38.3,
+   "br_kb": 36.9
+  },
+  {
+   "path": "public/text/ink-mtsdf.png",
+   "phase": "B",
+   "kind": "atlas",
+   "raw": 190520,
+   "gz": 188354,
+   "br": 188142,
+   "raw_kb": 186.1,
+   "gz_kb": 183.9,
+   "br_kb": 183.7
+  },
+  {
+   "path": "public/text/ink-prog.png",
+   "phase": "B",
+   "kind": "atlas",
+   "raw": 267778,
+   "gz": 265382,
+   "br": 264251,
+   "raw_kb": 261.5,
+   "gz_kb": 259.2,
+   "br_kb": 258.1
+  },
+  {
+   "path": "public/text/ink-instances.json",
+   "phase": "B",
+   "kind": "instances",
+   "raw": 86904,
+   "gz": 9390,
+   "br": 7070,
+   "raw_kb": 84.9,
+   "gz_kb": 9.2,
+   "br_kb": 6.9
+  },
+  {
+   "path": "public/text/glyphs.bin",
+   "phase": "C",
+   "kind": "mesh",
+   "raw": 6411948,
+   "gz": 2630107,
+   "br": 1537290,
+   "raw_kb": 6261.7,
+   "gz_kb": 2568.5,
+   "br_kb": 1501.3
+  }
+ ],
+ "notes": [
+  "parchment fiber/utility/environment/burnish maps are procedural GPU bakes — zero transfer; the §18 KTX2 rows for authored maps do not apply to this build",
+  "glyphs.bin ships as the FGLY quantized planar buffers served brotli (meshopt/glb packaging would trade ~1.5 MB → ~1.2 MB at the cost of a wasm decoder; deferred)",
+  "ink atlases stay PNG (UASTC would cost more transfer for a 2048×256 atlas pair)"
+ ],
+ "pass": true
+}

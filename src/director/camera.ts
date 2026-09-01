@@ -150,7 +150,16 @@ export class CameraRig {
       };
       this.dir.copy(this.anchorPos).sub(this.lookNow).normalize();
       this.camera.position.copy(this.lookNow).addScaledVector(this.dir, d);
-    } else if (p > FACE_START) {
+    } else if (p > FACE_START || this.camera.aspect < 1) {
+      // §12 mobile overrides (portrait aspects): distance × 0.94 in S3 (the writing reads
+      // larger on a phone), × 1.00 through S4–5, × 1.12 from the rise (S6–7) — blended so
+      // the dolly never steps. Desktop aspects keep the pure anchors until the S7 fit.
+      if (p <= FACE_START) {
+        const mul = this.mobileDistMul(p);
+        this.dir.copy(this.anchorPos).sub(this.lookNow).normalize();
+        const d = this.anchorPos.distanceTo(this.lookNow) * mul;
+        this.camera.position.copy(this.lookNow).addScaledVector(this.dir, d);
+      } else {
       // S7 (M6): the gaze TRACKS the lifting assembly center (blended from the anchor look-at
       // by the facing factor), and the distance comes from the ASSEMBLY-extent fit — the v1.5
       // seven-line block is 0.72 world tall and, pitched toward the camera, overflows the §9
@@ -163,12 +172,13 @@ export class CameraRig {
       const center = cA.clone().lerp(cR, e);
       this.dir.copy(this.anchorPos).sub(this.lookNow).normalize();
       this.lookNow.lerp(center, e);
-      const dAnchor = this.anchorPos.distanceTo(this.lookNow);
+      const dAnchor = this.anchorPos.distanceTo(this.lookNow) * (this.camera.aspect < 1 ? this.mobileDistMul(p) : 1);
       const dFit = this.fitAssembly(p, this.dir, this.lookNow);
       const blend = E1(clamp01((p - FACE_START) / 0.04));
       const d = dAnchor + (Math.max(dAnchor, dFit) - dAnchor) * blend;
       (window as unknown as { __s7fit?: unknown }).__s7fit = { p: +p.toFixed(3), dAnchor: +dAnchor.toFixed(3), dFit: +dFit.toFixed(3), d: +d.toFixed(3) };
       this.camera.position.copy(this.lookNow).addScaledVector(this.dir, d);
+      }
     } else {
       this.camera.position.copy(this.anchorPos);
     }
@@ -196,6 +206,14 @@ export class CameraRig {
     this.camera.lookAt(this.lookTarget);
     this.camera.fov = (2 * Math.atan(12 / focalAt(p)) * 180) / Math.PI;
     this.camera.updateProjectionMatrix();
+  }
+
+  /** §12 portrait distance multiplier: 1.00 → 0.94 across the writing (S3), back to 1.00 by the
+   *  presenting state, 1.12 from the rise on (E1 blends, so the dolly never steps). */
+  private mobileDistMul(p: number): number {
+    const s3 = E1(clamp01((p - 0.3) / 0.06)) * (1 - E1(clamp01((p - 0.5) / 0.1)));
+    const s67 = E1(clamp01((p - 0.7) / 0.06));
+    return 1 - 0.06 * s3 + 0.12 * s67;
   }
 
   /** Smallest distance along `dir` from `look` such that the text block — pitched and lifted

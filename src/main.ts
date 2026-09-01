@@ -1,6 +1,6 @@
 import { Color, PerspectiveCamera, REVISION } from 'three/webgpu';
 import { createRenderer } from './core/renderer';
-import { DPR_CAP, detectTier } from './core/tiers';
+import { DPR_CAP, DUST_SCALE, detectTier, TierMonitor } from './core/tiers';
 import { CameraRig } from './director/camera';
 import { blobTilt, contactRamp, embossFactor, envYawDeg, FACE_CENTER_REST, faceFactor, facePitch, fillFactor, geoDepth, inkGhost, keyConeDeg, keyFactor, parchmentKeyMask, poseTransform, recede, rimFactor, RISE_START, stateLabel } from './director/drivers';
 import { IdleController, type IdleState } from './director/idle';
@@ -595,6 +595,49 @@ async function runMain(): Promise<void> {
   const grade = createGrade(renderer, scene, rig.camera);
   grade.setAspect(size.w / size.h);
 
+  // §15/§18 designed first frame: the poster (inline LQIP → poster.jpg) holds the screen while
+  // every pipeline pre-compiles behind it; the canvas crossfades in over 420 ms only after
+  // three real frames have presented. Capture mode bypasses the poster entirely.
+  const poster = document.querySelector<HTMLDivElement>('#poster');
+  const bootT0 = performance.now();
+  if (!isCapture) {
+    try {
+      await renderer.compileAsync(scene, rig.camera);
+    } catch (err) {
+      console.warn('[boot] compileAsync unavailable — pipelines compile on first frames', err);
+    }
+  }
+  let presented = 0;
+  let posterGone = isCapture;
+  const revealCanvas = (now: number): void => {
+    if (posterGone) return;
+    presented++;
+    if (presented < 3) return;
+    posterGone = true;
+    (canvas as HTMLCanvasElement).style.transition = 'opacity 420ms ease-out';
+    (canvas as HTMLCanvasElement).style.opacity = '1';
+    if (poster) {
+      poster.style.transition = 'opacity 420ms ease-out';
+      poster.style.opacity = '0';
+      setTimeout(() => poster.remove(), 500);
+    }
+    const t = (now - bootT0) / 1000;
+    (window as unknown as { __boot?: unknown }).__boot = { posterToLive_s: +t.toFixed(2), tier };
+    console.info(`[boot] poster → live in ${t.toFixed(2)}s (T${tier})`);
+  };
+  if (isCapture) {
+    (canvas as HTMLCanvasElement).style.opacity = '1';
+    poster?.remove();
+  }
+
+  // §19 runtime tier monitor: demotion at state boundaries, thermal guard; off in capture
+  const tierMon = new TierMonitor(tier);
+  let lastState = stateLabel(0);
+  // ?perf=N — scrub p 0 → 1 → 0 over N seconds repeatedly and report the frame-time histogram
+  const perfS = q.get('perf') !== null ? Number(q.get('perf') ?? '30') : 0;
+  const perfTimes: number[] = [];
+  let perfT0 = -1;
+
   window.addEventListener('resize', () => {
     if (isCapture) return;
     const s = fitViewport();
@@ -780,6 +823,23 @@ async function runMain(): Promise<void> {
       reduced.fromScroll(max > 0 ? window.scrollY / max : 0);
       reduced.tick(now);
     }
+    if (perfS > 0) {
+      // synthetic scrub: p sweeps 0 → 1 → 0 over perfS seconds (worst pass set every cycle)
+      if (perfT0 < 0) perfT0 = now;
+      const t = (now - perfT0) / 1000;
+      const cyc = (t % perfS) / perfS;
+      scroll.forced = cyc < 0.5 ? cyc * 2 : 2 - cyc * 2;
+      if (dt > 0 && dt < 0.25) perfTimes.push(dt * 1000);
+      if (t >= perfS * 2 && perfTimes.length > 30) {
+        const srt = [...perfTimes].sort((a, b) => a - b);
+        const pct = (f: number): number => srt[Math.min(srt.length - 1, Math.floor(srt.length * f))] ?? 0;
+        (window as unknown as { __perf?: unknown }).__perf = { frames: srt.length, p50: +pct(0.5).toFixed(2), p95: +pct(0.95).toFixed(2), p99: +pct(0.99).toFixed(2), tier: tierMon.tier, dprCap: tierMon.dprCap };
+        capEl!.style.display = 'block';
+        capEl!.textContent = `PERF T${tierMon.tier} · ${srt.length} frames · p50 ${pct(0.5).toFixed(1)} ms · p95 ${pct(0.95).toFixed(1)} ms (budget ${tier === 1 ? 12 : tier === 2 ? 14 : 27})`;
+        perfTimes.length = 0;
+        perfT0 = now;
+      }
+    }
     scroll.update(dt);
     const moving = Math.abs(scroll.vLpf) > 2e-3 || now - lastPointer < 300;
     const idleState = idle.update(dt, moving && holdS === 0);
@@ -789,10 +849,23 @@ async function runMain(): Promise<void> {
     // reduced motion: ink pre-dried (the trail is evaluated 0.05 ahead), sim off
     applyFrame(scroll.p, dt, !reducedMotion, idleState, reduced ? Math.min(0.64, scroll.p + 0.05) : scroll.p);
     rig.update(scroll.p, dt);
-    dust.update(dt, reducedMotion ? 0 : faceFactor(scroll.p)); // §15 dust fades in with the facing state
+    dust.update(dt, reducedMotion ? 0 : faceFactor(scroll.p) * DUST_SCALE[tierMon.tier]); // §15 dust fades in with the facing state; §19 per-tier population
     grade.setGrainSeed(Math.floor(now / 125)); // 8 Hz grain phase (§16)
     grade.render();
-    hud!.textContent = `${stateLabel(scroll.p)} · p ${scroll.p.toFixed(3)}${idleState.ramp > 0 ? ' · idle' : ''}${reduced ? ' · reduced motion' : ''}`;
+    revealCanvas(now);
+    // §19 tier monitor — changes apply only at state-boundary crossings
+    {
+      const st = stateLabel(scroll.p);
+      const atBoundary = st !== lastState;
+      lastState = st;
+      const change = tierMon.update(dt, atBoundary);
+      if (change) {
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, change.dprCap));
+        fitViewport();
+        console.info(`[tier] ${change.reason} → T${change.tier} (dpr cap ${change.dprCap.toFixed(2)})`);
+      }
+    }
+    hud!.textContent = `${stateLabel(scroll.p)} · p ${scroll.p.toFixed(3)}${idleState.ramp > 0 ? ' · idle' : ''}${reduced ? ' · reduced motion' : ''}${tierMon.tier !== tier ? ` · demoted T${tierMon.tier}` : ''}`;
     bar!.style.height = `${scroll.p * 100}%`;
 
     if (holdS > 0 && now >= holdNext) {

@@ -1,0 +1,72 @@
+{
+ "backend": "webgpu",
+ "ran": "2026-09-01T22:57:40.479Z",
+ "seconds": 108.9,
+ "results": [
+  {
+   "id": "R-0.000-T1-webgpu",
+   "url": "/?capture=0&tier=1&w=1440&h=900&backend=webgpu",
+   "sha256": "80a1f5e1ea991d3c0c9b6e08a1c14c88daf8799e42a35581e616152367305e65"
+  },
+  {
+   "id": "R-0.080-T1-webgpu",
+   "url": "/?capture=0.08&tier=1&w=1440&h=900&backend=webgpu",
+   "sha256": "a6e5de9a969ff16e17c3d51eadadf407fab33f232ed27b81d0c2ddf540f2cd1d"
+  },
+  {
+   "id": "R-0.210-T1-webgpu",
+   "url": "/?capture=0.21&tier=1&w=1440&h=900&backend=webgpu",
+   "sha256": "0828669cdc20aa2d05aefab7ca4e04d6f483e363e5bff2c80eb950659d7c7cdd"
+  },
+  {
+   "id": "R-0.340-T1-webgpu",
+   "url": "/?capture=0.34&tier=1&w=1440&h=900&backend=webgpu",
+   "sha256": "f3d119ee44ab1b7a9dc09c88f649b37d49fcd00c31e89816455df660ca4af082"
+  },
+  {
+   "id": "R-0.450-T1-webgpu",
+   "url": "/?capture=0.45&tier=1&w=1440&h=900&backend=webgpu",
+   "sha256": "3dd73e95aaa6ce16bb27f552dbc3a232e7f1bb4573aa19a1c3ce6d7a499f351b"
+  },
+  {
+   "id": "R-0.560-T1-webgpu",
+   "url": "/?capture=0.56&tier=1&w=1440&h=900&backend=webgpu",
+   "sha256": "16df1d9527c615b26f95317ae1b6c04d77673f0ba32b3d12f4c85892311a6710"
+  },
+  {
+   "id": "R-0.645-T1-webgpu",
+   "url": "/?capture=0.645&tier=1&w=1440&h=900&backend=webgpu",
+   "sha256": "e6f14cfc61dd63cfc9f6a8a097d29e667ecbfd09cbc0a7a47ee84b18e2c0132a"
+  },
+  {
+   "id": "R-0.710-T1-webgpu",
+   "url": "/?capture=0.71&tier=1&w=1440&h=900&backend=webgpu",
+   "sha256": "f69955738fd62098bb2da3d1e491e9de34ac2378b328d6e5707c786fe7436c09"
+  },
+  {
+   "id": "R-0.760-T1-webgpu",
+   "url": "/?capture=0.76&tier=1&w=1440&h=900&backend=webgpu",
+   "sha256": "12e45a53d2402452a2397e196968533951156615f937ccd01752b835168a3b84"
+  },
+  {
+   "id": "R-0.860-T1-webgpu",
+   "url": "/?capture=0.86&tier=1&w=1440&h=900&backend=webgpu",
+   "sha256": "2c5327b20e84734906715d1ba37c411e8249067ea46eb18d44fe4b985992e3a6"
+  },
+  {
+   "id": "R-0.930-T1-webgpu",
+   "url": "/?capture=0.93&tier=1&w=1440&h=900&backend=webgpu",
+   "sha256": "f6dddb0ee425709c961185d796daab452fd689ff848b24c7ff3ad7827670c7b6"
+  },
+  {
+   "id": "R-1.000-T1-webgpu",
+   "url": "/?capture=1&tier=1&w=1440&h=900&backend=webgpu",
+   "sha256": "2acc551f54a3512f0f2de3bb732fe551fed339a33fd0822b5b5437350c8902d5"
+  },
+  {
+   "id": "R-1.000-T1-noblob-webgpu",
+   "url": "/?capture=1.0&tier=1&w=1440&h=900&backend=webgpu&noblob",
+   "sha256": "6cb86572de79964fff51230a415249283e3d91c2e91db323e9309383b9184813"
+  }
+ ]
+}

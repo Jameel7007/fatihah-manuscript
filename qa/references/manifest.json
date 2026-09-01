@@ -119,23 +119,163 @@
   },
   {
    "id": "R-0.93-T1",
-   "milestone": "M6 open — facing (SS20 DoD frame): mid-pivot, gaze tracking the lifting assembly, extent-fit distance",
+   "milestone": "M6 CLOSED (user sign-off 2026-09-01) — facing (SS20 DoD frame): mid-pivot, gaze tracking the lifting assembly, extent-fit distance",
    "url": "/?capture=0.93&tier=1",
    "sha256": {
     "webgpu": "f6dddb0ee425709c961185d796daab452fd689ff848b24c7ff3ad7827670c7b6",
     "webgl2": "pending CI re-bless (see R-0.00 note)"
    },
-   "verified": "2026-09-01 — two cold loads identical (warm 15); formal blessing at M6 close with the user review"
+   "verified": "2026-09-01 — two cold loads identical (warm 15); BLESSED at M6 close on user sign-off"
   },
   {
    "id": "R-1.00-T1",
-   "milestone": "M6 open — the held ending (SS20 DoD frame): 12° off frontal, center y 0.40, parchment receded, key cone 22°",
+   "milestone": "M6 CLOSED (user sign-off 2026-09-01) — the held ending (SS20 DoD frame): 12° off frontal, center y 0.40, parchment receded, key cone 22°",
    "url": "/?capture=1.0&tier=1",
    "sha256": {
     "webgpu": "2acc551f54a3512f0f2de3bb732fe551fed339a33fd0822b5b5437350c8902d5",
     "webgl2": "pending CI re-bless (see R-0.00 note)"
    },
-   "verified": "2026-09-01 — two cold loads identical (warm 15); T2 + noblob variants recorded in m6_open; formal blessing at M6 close"
+   "verified": "2026-09-01 — two cold loads identical (warm 15); T2 + noblob variants recorded in m6_open; BLESSED at M6 close on user sign-off"
+  },
+  {
+   "id": "R-0.08-T1",
+   "milestone": "M7 — SS20 matrix member (unroll begins, 82% wrapped)",
+   "url": "/?capture=0.08&tier=1",
+   "sha256": {
+    "webgpu": "a6e5de9a969ff16e17c3d51eadadf407fab33f232ed27b81d0c2ddf540f2cd1d",
+    "webgl2": "pending (matrix runner, CI policy)"
+   },
+   "verified": "2026-09-02 — matrix runner pass + an independent cold load identical (warm 15)"
+  },
+  {
+   "id": "R-0.86-T1",
+   "milestone": "M7 — SS20 matrix member (rise complete, facing begins)",
+   "url": "/?capture=0.86&tier=1",
+   "sha256": {
+    "webgpu": "2c5327b20e84734906715d1ba37c411e8249067ea46eb18d44fe4b985992e3a6",
+    "webgl2": "pending (matrix runner, CI policy)"
+   },
+   "verified": "2026-09-02 — matrix runner pass + an independent cold load identical (warm 15)"
+  },
+  {
+   "id": "R-0.000-T2 (390x844)",
+   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+   "url": "/?capture=0.0&tier=2&w=390&h=844",
+   "sha256": {
+    "webgpu": "6dda8b5e85777e9dedf87b7beaf52d6feb12f334c10bffacbc36ea0eb477f9d0",
+    "webgl2": "pending (matrix runner, CI policy)"
+   },
+   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+  },
+  {
+   "id": "R-0.080-T2 (390x844)",
+   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+   "url": "/?capture=0.08&tier=2&w=390&h=844",
+   "sha256": {
+    "webgpu": "8f576d795ab15b16c2b4e11ef64a57f9dc5c00d76eade07288c74406fceec805",
+    "webgl2": "pending (matrix runner, CI policy)"
+   },
+   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+  },
+  {
+   "id": "R-0.210-T2 (390x844)",
+   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+   "url": "/?capture=0.21&tier=2&w=390&h=844",
+   "sha256": {
+    "webgpu": "f7705d6c1324d9ca15e9b393a4c1488481c24611b4ffa6f481346e5443a3b22d",
+    "webgl2": "pending (matrix runner, CI policy)"
+   },
+   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+  },
+  {
+   "id": "R-0.340-T2 (390x844)",
+   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+   "url": "/?capture=0.34&tier=2&w=390&h=844",
+   "sha256": {
+    "webgpu": "7c05ce5189a82ac3de670c6d1ad0765a1aa846523d8cfc7119ef7e3ba5d62ee5",
+    "webgl2": "pending (matrix runner, CI policy)"
+   },
+   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+  },
+  {
+   "id": "R-0.450-T2 (390x844)",
+   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+   "url": "/?capture=0.45&tier=2&w=390&h=844",
+   "sha256": {
+    "webgpu": "908a985c730e975f6ab9bbae931b21f889adf8669532478aee41257e389de967",
+    "webgl2": "pending (matrix runner, CI policy)"
+   },
+   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+  },
+  {
+   "id": "R-0.560-T2 (390x844)",
+   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+   "url": "/?capture=0.56&tier=2&w=390&h=844",
+   "sha256": {
+    "webgpu": "8415bd7245fe7473edbb0a5a47afda445388ebbf5a7c66423251ee9679d77a82",
+    "webgl2": "pending (matrix runner, CI policy)"
+   },
+   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+  },
+  {
+   "id": "R-0.645-T2 (390x844)",
+   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+   "url": "/?capture=0.645&tier=2&w=390&h=844",
+   "sha256": {
+    "webgpu": "4e8253dbbd309c1db73bfb7ab4c1d1fd621346e555b93eb8aeadc86d837187d9",
+    "webgl2": "pending (matrix runner, CI policy)"
+   },
+   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+  },
+  {
+   "id": "R-0.710-T2 (390x844)",
+   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+   "url": "/?capture=0.71&tier=2&w=390&h=844",
+   "sha256": {
+    "webgpu": "90aff2fd8f681615001de4fba09d17f45e7937f741d401c5d9ef62c77d7654d0",
+    "webgl2": "pending (matrix runner, CI policy)"
+   },
+   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+  },
+  {
+   "id": "R-0.760-T2 (390x844)",
+   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+   "url": "/?capture=0.76&tier=2&w=390&h=844",
+   "sha256": {
+    "webgpu": "4500b042cdf72a40ab7feb5d19cd84a11e0da8641d7b50968f27226947dd8295",
+    "webgl2": "pending (matrix runner, CI policy)"
+   },
+   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+  },
+  {
+   "id": "R-0.860-T2 (390x844)",
+   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+   "url": "/?capture=0.86&tier=2&w=390&h=844",
+   "sha256": {
+    "webgpu": "bdcc6288c4436084f8e925faf4e6b9d990dfe9bdb8846d78694471cd6bd6f4f0",
+    "webgl2": "pending (matrix runner, CI policy)"
+   },
+   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+  },
+  {
+   "id": "R-0.930-T2 (390x844)",
+   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+   "url": "/?capture=0.93&tier=2&w=390&h=844",
+   "sha256": {
+    "webgpu": "c726b61ee7374ff3f89395138a156f44acab7052af0117af70b8f5c145e73a9b",
+    "webgl2": "pending (matrix runner, CI policy)"
+   },
+   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+  },
+  {
+   "id": "R-1.000-T2 (390x844)",
+   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+   "url": "/?capture=1.0&tier=2&w=390&h=844",
+   "sha256": {
+    "webgpu": "202959d0b2f2dada2bb12ad53c694c32c4d7bef64909e729869147f30c85ec40",
+    "webgl2": "pending (matrix runner, CI policy)"
+   },
+   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
   }
  ],
  "probes": {
@@ -323,6 +463,115 @@
   "variants": {
    "R-1.00-T2": "2acc551f54a3512f0f2de3bb732fe551fed339a33fd0822b5b5437350c8902d5 (IDENTICAL to T1 — tiers differ only by the DPR cap until M7)",
    "R-1.00-noblob": "6cb86572de79964fff51230a415249283e3d91c2e91db323e9309383b9184813 (uContactBlob = 0; the long soft cast shadow on the page is PCSS — SS8 \"PCSS carries S7 alone\")"
+  },
+  "closed": "M6 CLOSED 2026-09-01 on user sign-off (\"signed off — bless R-0.93 and R-1.00 and continue to M7\"): the S7 re-authoring (center y 0.40, extent-fit distance, cone 22 deg) accepted with the sign-off; manual reduced-motion audit by the user."
+ },
+ "m7_open": {
+  "scope": "performance & payload (SS18/SS19/SS15/SS12/SS20): payload report, poster/LQIP/pre-compile/crossfade, runtime tier monitor + thermal guard, ?perf harness, mobile distance overrides, 74-frame matrix runner + checker",
+  "payload": {
+   "report": "build/payload-report.json (qa/payload.mjs after vite build)",
+   "totals_mb": {
+    "raw_mb": 7.571,
+    "gz_mb": 3.241,
+    "br_mb": 2.147
+   },
+   "phases": {
+    "A": {
+     "files": 11,
+     "raw_mb": 0.936,
+     "gz_mb": 0.291,
+     "br_mb": 0.243,
+     "seconds_at_10mbps_br": 0.2
+    },
+    "B": {
+     "files": 3,
+     "raw_mb": 0.52,
+     "gz_mb": 0.442,
+     "br_mb": 0.438,
+     "seconds_at_10mbps_br": 0.37
+    },
+    "C": {
+     "files": 1,
+     "raw_mb": 6.115,
+     "gz_mb": 2.508,
+     "br_mb": 1.466,
+     "seconds_at_10mbps_br": 1.23
+    }
+   },
+   "posterToLive": {
+    "transfer_s": 0.2,
+    "compile_allowance_s": 1,
+    "crossfade_s": 0.42,
+    "estimate_s": 1.67,
+    "limit_s": 2.2
+   },
+   "verdict": "PASS — 2.15 MB brotli vs the 8.5 MB target (10 MB cap); textures are procedural GPU bakes (KTX2 rows moot); glyphs.bin ships as FGLY buffers brotli 1.47 MB (meshopt optional, ~-0.3 MB for a wasm decoder)"
+  },
+  "poster": "public/poster.jpg 44,452 B (1600x1000, JPEG q0.80, from R-0.00 captured at 1600x1000) + inline 32x20 LQIP 1.2 KB in index.html; renderer.compileAsync before the first frame; canvas crossfades 420 ms after 3 presented frames; window.__boot.posterToLive_s per load (dev pane, hidden, cold: 6.09 s — throttled rAF + first shader compiles; the 10 Mbps DoD run is the reviewer's foregrounded cold load). Capture mode bypasses the poster (blessed hashes unaffected — verified by the matrix below).",
+  "tier_monitor": "core/tiers.ts TierMonitor: 3 s frame-time window, demote when p95 > 1.25 x budget (12/14/27 ms), 10 s hysteresis, applied at state-boundary crossings (DPR cap 1.75/2.2/1.25, dust 640/350/0), never promotes, thermal guard halves DPR after two T3 triggers and stops measuring. ?perf=N scrubs p 0->1->0 over N s and publishes window.__perf. Instrument validated in the dev pane: 201 frames, p50 8.3 / p95 9.4 / p99 32.4 ms — WITH a concurrent matrix run in another tab the monitor demoted to T3 within the 16 s scrub (expected under that contention; not a device verdict). Device runs (M1 Air / iPhone 15 / iPhone 12) are the reviewer's.",
+  "mobile": "camera.mobileDistMul: portrait aspects x0.94 (S3) -> x1.00 (S4-5) -> x1.12 (S6-7), E1 blends; the S7 assembly fit already handles portrait framing; x-height record at em 0.052: 0.0209 world = ~15-16 CSS px in the 390-pt reading frame (~34 device px at DPR 2.2), ~16 px at 1440x900",
+  "matrix": {
+   "runner": "public/qa/matrix.html?backend=webgpu|webgl2[&only=T1|T2|T3] — hidden-iframe self-driving replay of the SS20 matrix (12 p x {T1 1440x900, T2/T3 390x844} + R-1.00-noblob), posts matrix-<backend>[-only].png (JSON) to the capture sink; qa/matrix.mjs <backend> [only] checks it against frames[]",
+   "webgpu_T1": {
+    "seconds": 108.9,
+    "frames": 13,
+    "match": 10,
+    "mismatch": 0,
+    "unblessed": 3,
+    "errors": 0,
+    "verdict": "PASS — every blessed T1 frame reproduced by the runner; unblessed = R-0.08, R-0.86 (new matrix members) + R-1.00-noblob"
+   },
+   "webgpu_T2": {
+    "seconds": 13,
+    "frames": 12,
+    "hashes": {
+     "R-0.000-T2-webgpu": "6dda8b5e85777e9dedf87b7beaf52d6feb12f334c10bffacbc36ea0eb477f9d0",
+     "R-0.080-T2-webgpu": "8f576d795ab15b16c2b4e11ef64a57f9dc5c00d76eade07288c74406fceec805",
+     "R-0.210-T2-webgpu": "f7705d6c1324d9ca15e9b393a4c1488481c24611b4ffa6f481346e5443a3b22d",
+     "R-0.340-T2-webgpu": "7c05ce5189a82ac3de670c6d1ad0765a1aa846523d8cfc7119ef7e3ba5d62ee5",
+     "R-0.450-T2-webgpu": "908a985c730e975f6ab9bbae931b21f889adf8669532478aee41257e389de967",
+     "R-0.560-T2-webgpu": "8415bd7245fe7473edbb0a5a47afda445388ebbf5a7c66423251ee9679d77a82",
+     "R-0.645-T2-webgpu": "4e8253dbbd309c1db73bfb7ab4c1d1fd621346e555b93eb8aeadc86d837187d9",
+     "R-0.710-T2-webgpu": "90aff2fd8f681615001de4fba09d17f45e7937f741d401c5d9ef62c77d7654d0",
+     "R-0.760-T2-webgpu": "4500b042cdf72a40ab7feb5d19cd84a11e0da8641d7b50968f27226947dd8295",
+     "R-0.860-T2-webgpu": "bdcc6288c4436084f8e925faf4e6b9d990dfe9bdb8846d78694471cd6bd6f4f0",
+     "R-0.930-T2-webgpu": "c726b61ee7374ff3f89395138a156f44acab7052af0117af70b8f5c145e73a9b",
+     "R-1.000-T2-webgpu": "202959d0b2f2dada2bb12ad53c694c32c4d7bef64909e729869147f30c85ec40"
+    },
+    "note": "first mobile (390x844, tier 2) reference set — blessed after a second runner pass reproduces every hash"
+   },
+   "webgpu_T3": {
+    "seconds": 345,
+    "frames": 12,
+    "errors": 0,
+    "note": "tier 3 at 390x844 — hash-identical to the T2 pass frame for frame (tiers differ only by the DPR cap, forced 1 in capture) — which is also the mobile set's second independent reproduction"
+   },
+   "mobile_reproduction": "12/12 mobile frames identical across the T2 and T3 passes (two independent cold loads each) — mobile references blessed below",
+   "webgl2_T1": {
+    "seconds": 69.7,
+    "frames": 13,
+    "match": 0,
+    "mismatch": 0,
+    "unblessed": 13,
+    "errors": 0,
+    "note": "WebGL2 fallback pass over the 12 T1 frames + R-1.00 noblob in the dev pane (Chrome on the M1 Air). Hashes recorded here as the first WebGL2 candidate set; they are blessed only under the CI policy (matrix runner on the reference machine at M8), never from a single pane pass.",
+    "sha256": {
+     "R-0.000-T1-webgl2": "251091e225b582db20034456a505b40a15d0c3c8316892b04148b15e7ecf5772",
+     "R-0.080-T1-webgl2": "22cabed05d713fd3478d8865d5546d63365039a23aa6d647fa2572c41bfa1211",
+     "R-0.210-T1-webgl2": "55741d0eccc605546b5431a448d5f96a249c90bf5fdb8e313aaa07d16c894c37",
+     "R-0.340-T1-webgl2": "fc9e5e571518860534eb8642e933481b1d07fa766d958ba5778e59ec0f39d6f1",
+     "R-0.450-T1-webgl2": "7b1e67c2f2c57b377dcf5dd2be1136dd8c76024fc3ebb4e3c4573f2a9ee2db3d",
+     "R-0.560-T1-webgl2": "a4c0ce4a880b26f0d98182892e79906d868f9ee144927bc2cb80b88c39810e3f",
+     "R-0.645-T1-webgl2": "afa5d7b3b616e8c8e025a6c57550b4c8488f6bda9670cb81c50325bc9a321809",
+     "R-0.710-T1-webgl2": "7d792e483c7bf100b58e35ae5ecb58c7242cc2ae115580a3dac8d582b938492e",
+     "R-0.760-T1-webgl2": "5714679d0311fff6b435e7dd432b2f4936ed94f74f25ac028ab0649300f257bb",
+     "R-0.860-T1-webgl2": "f9307da00e06e490934075f06d94149510047cf224c232d98d6b595f8cb313fa",
+     "R-0.930-T1-webgl2": "a24e08d5023e91464feaff6ec541777298e5f40a1bc6a36a1a73bb16558f99d5",
+     "R-1.000-T1-webgl2": "395cf9a2b4368a9139b72458e6a09ea89f82d88e9d7feb6440e3dd8bb5c2ceed",
+     "R-1.000-T1-noblob-webgl2": "5e18ff8ad96d6c8f048539b1ab69ccb5c85121fe8b62f18a5c37610e8bf4a3fc"
+    }
+   },
+   "runner_note": "The runner iframe must be viewport-sized (public/qa/matrix.html): an offscreen 1x1 iframe has its rAF throttled by Chrome even in the fronted tab (the T3 pass crawled to 345 s; the same 13-frame T1 set takes ~70 s once the iframe fills the viewport)."
   }
  }
 }
