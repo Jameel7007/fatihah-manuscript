@@ -185,6 +185,9 @@ export function buildGlyphRelief(
   const vGold: N = varying(bezierE2(tGold));
 
   const m = new MeshPhysicalNodeMaterial();
+  // v1.6: gilding lives on what it reflects — the gold takes the §8 room at 1.6× (the
+  // parchment keeps 1×) so it stays luminous against the deep-blue universe ground
+  m.envMapIntensity = 1.6;
   // §14 z-guard: depthBias −2 / slopeScale −0.5 on the glyph main pass (shadow/contact
   // pipelines stay unbiased)
   m.polygonOffset = true;

@@ -573,5 +573,15 @@
    },
    "runner_note": "The runner iframe must be viewport-sized (public/qa/matrix.html): an offscreen 1x1 iframe has its rAF throttled by Chrome even in the fronted tab (the T3 pass crawled to 345 s; the same 13-frame T1 set takes ~70 s once the iframe fills the viewport)."
   }
+ },
+ "v16_pending": {
+  "note": "v1.6 universe ground (user direction 2026-09-01: deep-blue universe with tiny stars behind the gold). Changes the background floor (#0D0906 → #080D26 → #05081C (\"darker\"), re-solved through the AgX chain: linear 0.0048272/0.0048456/0.014377), adds the sky lobe/nebula/stars, cools the env base and the rim (#FFBE83 → #D6E0FF), gold env ×1.6. EVERY blessed frame above is superseded once the look is signed off — re-bless the T1 set (two cold loads each), the mobile T2/T3 set and the noblob frame from the matrix runner; regenerate poster.jpg + LQIP (done as a candidate, 67,579 B).",
+  "status": "pending user sign-off of the look (review frames qa/review/v16-sky-R{000,045,076,100}.png)",
+  "candidates": {
+   "R-0.00-T1": "8be437ee461dc2ff",
+   "R-0.45-T1": "c82d571f6cced488",
+   "R-0.76-T1": "8057bbc43dafe454",
+   "R-1.00-T1": "7a02f6a560d4c3f8"
+  }
  }
 }

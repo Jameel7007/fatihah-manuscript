@@ -139,9 +139,11 @@ export function buildEnvironment(renderer: WebGPURenderer): Texture {
   const az: N = p.x.mul(Math.PI * 2).sub(Math.PI);
   const el: N = p.y.sub(0.5).mul(Math.PI);
 
-  // near-black room with a warm lift toward the floor
-  const base: N = vec3(0.02, 0.016, 0.012).add(
-    vec3(0.06, 0.045, 0.03).mul(smoothstep(0.1, -0.9, sin(el))),
+  // v1.6: the room is the universe — a cool blue-black base with a slightly lighter,
+  // neutral-cool lift toward the floor (the gold's grazing reflections pick up the sky;
+  // the warm window and pinpoints below still carry its sparkle)
+  const base: N = vec3(0.01, 0.014, 0.028).add(
+    vec3(0.024, 0.028, 0.04).mul(smoothstep(0.1, -0.9, sin(el))),
   );
 
   // tall warm window: az −35°, el +20°, ~13° × 28°, soft 4° edges, 6× diffuse white

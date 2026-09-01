@@ -457,8 +457,9 @@ async function runReveal(): Promise<void> {
 async function runCalibrate(mode: string): Promise<void> {
   const sil = buildSilhouette();
   const field = new Field(sil);
-  const { scene, sheetRoot, key, setBackground } = buildStage(renderer, field, sil, debugMode);
+  const { scene, sheetRoot, key, setBackground, sky } = buildStage(renderer, field, sil, debugMode);
   if (calibrate === 'key') scene.environmentIntensity = 0; // card under key alone
+  sky.uDetail.value = 0; // floor alone — the lobe/nebula/stars ride on top of the solved value
   const size = fitViewport();
 
   const cam = new PerspectiveCamera((2 * Math.atan(12 / 40) * 180) / Math.PI, size.w / size.h, 0.05, 8);
@@ -500,10 +501,16 @@ async function runCalibrate(mode: string): Promise<void> {
 
   if (mode === 'bg') {
     sheetRoot.visible = false;
-    const target = [13, 9, 6]; // #0D0906
+    // target display hex (&target=RRGGBB; default the §11 v1.6 floor #05081C)
+    const hex = (q.get('target') ?? '05081C').replace('#', '');
+    const target = [0, 1, 2].map((c) => parseInt(hex.slice(c * 2, c * 2 + 2), 16));
     // Damped 3×3 Newton with numerical Jacobian — AgX's inset matrix mixes channels near
-    // black, so per-channel iteration cannot converge.
-    const lin = [0.002, 0.001, 0.0006];
+    // black, so per-channel iteration cannot converge. Seed ≈ 2.5× the naive sRGB decode
+    // (AgX's toe crushes near-black — the M2 warm solve landed 2–3× naive).
+    const lin = target.map((t) => {
+      const s = t / 255;
+      return 2.5 * (s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4);
+    });
     const evalAt = async (v: number[]): Promise<[number, number, number]> => {
       setBackground(Math.max(0, v[0] ?? 0), Math.max(0, v[1] ?? 0), Math.max(0, v[2] ?? 0));
       return renderOnce();
@@ -581,7 +588,7 @@ async function runMain(): Promise<void> {
     console.error('[relief] glyphs.bin load failed — rendering without the glyph mesh', err);
     return undefined;
   });
-  const { scene, sheetRoot, key, rim, uEmboss, inkPass, relief, contact, uContact, uGhost, uRecede, uKeyMask, fill, dust } = buildStage(renderer, field, sil, debugMode, ink, glyphBin);
+  const { scene, sheetRoot, key, rim, uEmboss, inkPass, relief, contact, uContact, uGhost, uRecede, uKeyMask, fill, dust, sky } = buildStage(renderer, field, sil, debugMode, ink, glyphBin);
   const fillBase = fill.intensity;
   const keyBaseX = key.position.x;
   // §13 reduced motion (prefers-reduced-motion, or ?reduced=1 for QA): held compositions
@@ -649,6 +656,9 @@ async function runMain(): Promise<void> {
   const IDLE_ZERO: IdleState = { ramp: 0, breath: 0, keyMod: 1, yawDeg: 0, drift: [0, 0, 0] };
   const applyFrame = (p: number, dt: number, simEnabled: boolean, idle: IdleState = IDLE_ZERO, inkP: number = p): void => {
     inkPass?.run(renderer, inkP);
+    // §11 sky: one pixel's angle (vfov / drawing-buffer height) keeps the stars ~1 px at any
+    // resolution and tier — the same value in capture (DPR 1) as the reference frames expect
+    sky.uPxRad.value = ((rig.camera.fov * Math.PI) / 180) / Math.max(1, (canvas as HTMLCanvasElement).height);
     uEmboss.value = embossFactor(p); // §14 relief window (E2 in, E7 fade at the handoff)
     if (relief) {
       // §14 handoff: mesh visible from the window open; depth floored at 0.00045 (z-guard)

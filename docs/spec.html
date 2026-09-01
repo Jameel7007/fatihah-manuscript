@@ -143,7 +143,7 @@
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.5 · M6 closed · M7 in progress — performance &amp; payload</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.6 (universe ground, pending sign-off) · M7 in progress — performance &amp; payload</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -161,10 +161,11 @@
 <section id="s1">
   <div class="sec-head"><span class="sec-num">01</span><h2>Overall composition</h2></div>
 
-  <p>A single portrait sheet (0.78 × 1.00 world units) floats near the origin in a warm near-black void
-  (<code>#0D0906</code>). The sheet lies in the world XZ plane when flat, +Y up, top of the text toward −Z.
-  It is the only bright object; everything else — dust, fog, faint construction traces — sits at least
-  20× darker. Historic register: broad Abbasid–Mamluk folio proportions, iron-gall ink, gilding over red
+  <p>A single portrait sheet (0.78 × 1.00 world units) floats near the origin in a <b>deep-blue universe</b>
+  (v1.6: floor <code>#05081C</code>, one nebular lobe behind the sheet, tiny stars — §11; through v1.5 it was
+  a warm near-black void <code>#0D0906</code>). The sheet lies in the world XZ plane when flat, +Y up, top
+  of the text toward −Z. It is the only bright object; everything else — dust, the sky's lobe, the stars —
+  sits at least 20× darker (the brightest stars excepted: a few pinpoints through the AgX shoulder). Historic register: broad Abbasid–Mamluk folio proportions, iron-gall ink, gilding over red
   bole. Suggestive, never a facsimile of any extant manuscript.</p>
 
   <p>All animation is a pure function of one smoothed scroll uniform <code>uP</code>. The only
@@ -637,10 +638,10 @@ diffuse += trans * keyColor                                    // key + rim only
           <td>Rises in S7 so risen sidewalls separate from the void; cool tone gives the museum dual-temperature read</td></tr>
       <tr><td><b>Rim</b></td><td>Spot, cone 28°, penumbra 0.6</td>
           <td class="n">(−0.35, 0.18, −1.05) → center<span class="sub">grazing ≈ 9° across sheet</span></td>
-          <td class="n">#FFBE83 · 2900 K<span class="sub">lin (1.0, 0.523, 0.231)</span></td>
+          <td class="n">#D6E0FF · ≈ 7500 K<span class="sub">lin (0.671, 0.760, 1.0) · v1.6, was #FFBE83</span></td>
           <td class="n">0.30<span class="sub">0.42 in S5 → 0.52 in S6+</span></td>
           <td>none</td>
-          <td>The bevel-crown light: intensity climbs exactly when edges are born (S5–6); powers fiber sparkle and translucent curl edges before that</td></tr>
+          <td>The bevel-crown light, and since v1.6 the universe's light: pale blue-white so the standing gold's edges and the parchment's far rim pick up the sky while the key stays candle-warm; intensity climbs exactly when edges are born (S5–6); powers fiber sparkle and translucent curl edges before that</td></tr>
       <tr><td><b>Environment</b></td><td>Authored HDRI 1024×512 (below)</td>
           <td class="n">yaw +12° at p 0 (rotation schedule §10)</td>
           <td class="n">scene-referred HDR</td>
@@ -657,8 +658,10 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
 // risen plane at h = 0.185           → ≈ 0.018 world: broad soft pool — hardening is the depth cue</code></pre>
 
   <h3>Authored environment map</h3>
-  <p>A dark room holding one warm light: near-black walls (#050403 base, +0.5 EV brown gradient toward
-  the floor), one tall 2.2:1 <b>warm window</b> (3200 K, luminance 6× diffuse white) placed 35° left of
+  <p>A dark room holding one warm light — since v1.6 the room is the universe: a cool blue-black base
+  (linear 0.010 / 0.014 / 0.028) with a neutral-cool lift toward the floor (+0.024 / 0.028 / 0.040), so the
+  gold's grazing reflections carry the sky; the gilding takes this map at <b>1.6×</b> (the parchment at 1×)
+  to stay luminous against the blue. One tall 2.2:1 <b>warm window</b> (3200 K, luminance 6× diffuse white) placed 35° left of
   +Z at 20° elevation — its vertical rectangle is the signature shape the gold bevels reflect. A cool
   4500 K floor-bounce card opposite at 3% window luminance, and three 0.5%-area 3000 K pinpoints
   (distant lamps) scattered right hemisphere for bevel sparkle variety. Authored in Blender at 2048×1024
@@ -823,7 +826,7 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
       <tr><td>Framing fractions</td><td class="n">per §9 table — roll 0.54 h → sheet 0.86 h (reading) → text 0.66 w (final)</td></tr>
       <tr><td>UI</td><td class="n">bottom-left: state label, 11 px mono, #A2957A, fades 300 ms on scroll; bottom-right: 2 px progress hairline, gold at 0.35 alpha; first-visit chevron hint, dies on first scroll, never returns (localStorage)</td></tr>
       <tr><td>Pointer parallax</td><td class="n">±0.35° per §9; additionally ±0.004 world lateral light sway on the key (disabled in reduced motion)</td></tr>
-      <tr><td>Background</td><td class="n">#0D0906 with a 1.5%-amplitude radial warm lift centered under the sheet; dithered (§16) — flat color banding on OLED is the first thing that says “webpage”</td></tr>
+      <tr><td>Background</td><td class="n"><b>v1.6 universe ground.</b> Floor <b>#05081C</b> (calibrated through AgX, §16) on a far sphere shaded purely by view direction (the sky sits at infinity — it turns with the camera, never parallaxes against the sheet). One world-anchored nebular lobe about direction (0, 0.35, −1): cos³ falloff, peak floor × 2.8, modulated ± 60% by 3-octave value noise (period ≈ 2.3 rad), tinted violet where dense / teal-blue where thin, plus a ± 18% noise breath over the bare floor. Stars: one candidate per cell of a 6 × 104² cube-face grid at 26% occupancy (≈ 500 in the 1440×900 S3 frame, ≈ 220 at p = 1), jittered inside the central 56% of the cell; brightness = floor luminance × (2.5 + 420·b⁶), b uniform — most a few × floor, the rare one white through the AgX shoulder; core Gaussian <em>in angle</em> with σ = (0.9 + 0.9·b²) px of the current render (the pixel angle vfov/height is a per-frame uniform, so a star is ~1 px on every tier and in capture), soft halo σ×4 at 2%·b⁴; tints between (1.0, 0.86, 0.72) and (0.78, 0.86, 1.0). No time term: deterministic, capture-safe. Vignette −0.35 EV and grain/dither apply after (§16). Through v1.5: #0D0906 with a 1.5% radial warm lift.</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -986,15 +989,18 @@ embossStr(t)  = 1 − E7(t)                       // E7 = cubic-bezier(0.37, 0, 
   Total T1 ≈ 9.9 ms — headroom for thermal drift.</p>
 
   <h3>Background through AgX <span class="tag">calibrated, not hoped for</span></h3>
-  <p>AgX's toe plus the grade's +0.004 black lift would render a naively-set #0D0906 clear color
-  lighter and greyer than designed. Decision: the background stays <b>inside</b> the tone-mapped pass
+  <p>AgX's toe plus the grade's +0.004 black lift would render a naively-set floor color
+  lighter and greyer than designed (v1.6 floor <b>#05081C</b>; #0D0906 through v1.5). Decision: the background stays <b>inside</b> the tone-mapped pass
   (rendering it outside would seam the fog and dust blending against it), and the clear color is
   <b>pre-compensated</b>: the <code>?calibrate=bg</code> harness solves the clear color against the
   LIVE pipeline (render → readback, damped 3×3 Newton with a numerical Jacobian — AgX's inset matrix
   mixes channels near black, so per-channel iteration cannot converge) until the displayed background
-  is <b>#0D0906 exactly</b>. Solved 2026-08-25 against AgX + sRGB: linear
-  <b>(0.00798, 0.00648, 0.00504)</b> — note ~6–15× the naive hex→linear conversion; AgX's toe crushes
-  near-black, which is this section's whole premise. The harness re-runs whenever the tone/grade
+  is the target <b>exactly</b> (<code>?calibrate=bg&amp;target=RRGGBB</code>; the sky's lobe and stars are
+  switched off for the solve and ride on top of it). v1.6 solve, 2026-09-01, #05081C through the full
+  chain: linear <b>(0.0048272, 0.0048456, 0.014377)</b> → displays (5.2, 8.3, 28.1) — the red and green
+  channels come out nearly equal for a 5:8 display ratio, AgX's inset mixing at work. (2026-08-25 warm
+  solve for #0D0906: (0.00798, 0.00648, 0.00504), ~6–15× the naive hex→linear conversion; AgX's toe
+  crushes near-black, which is this section's whole premise.) The harness re-runs whenever the tone/grade
   chain changes (it IS the build step, and stays correct by construction). Vignette is excluded from
   the calibration by definition; corners sit −0.35 EV darker by design. Grain + dither apply after
   the calibrated value, centered on it.</p>
@@ -1041,7 +1047,7 @@ embossStr(t)  = 1 − E7(t)                       // E7 = cubic-bezier(0.37, 0, 
     <div class="figbox">
     <pre class="mermaid">%%{init: {"theme":"base","themeVariables":{"primaryColor":"#1D1810","primaryTextColor":"#E7DDC6","primaryBorderColor":"#57431F","lineColor":"#8F7440","fontSize":"12.5px","fontFamily":"IBM Plex Mono, monospace"}}}%%
 graph TD
-  SC[Scene · bg 0D0906 · FogExp2 0.22] --> ENV[EnvRotator · yaw f p]
+  SC[Scene · sky floor 05081C + lobe + stars] --> ENV[EnvRotator · yaw f p]
   SC --> SR[SheetRoot · pose tilt + recede f p]
   SR --> PM[ParchmentMesh · 192x256 grid · reads posTex/nrmTex]
   SR --> ER[EdgeRibbon · perimeter strip]
@@ -1727,6 +1733,30 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     per backend) and posts the hash table; <span style="font-family:var(--mono);font-size:12px">qa/matrix.mjs</span>
     checks it against the blessed references. Results in the manifest.</li>
   </ol>
+  <h3 style="margin-top:26px">v1.6 — the universe ground <span class="tag">2026-09-01 · user direction · pending sign-off</span></h3>
+  <p>“I think I want the background to be a deeper blue / universe with tiny stars, and then the gold letters will
+  have a better contrast — the gold and blue will be more beautiful”; on the first frames: “I need the blue darker”.
+  A §7/§8/§11/§16 look revision; every reference frame changes, so the whole blessed set is re-blessed on sign-off.</p>
+  <ol>
+    <li><b>§11 / §16</b> — Floor #0D0906 → <b>#05081C</b> (first pass #080D26, darkened on review), re-solved through the
+    full AgX + grade chain with the harness now taking <code>&amp;target=RRGGBB</code> (sky detail off for the solve):
+    linear (0.0048272, 0.0048456, 0.014377) → (5.2, 8.3, 28.1). The v1.0–1.5 sphere had shipped the pre-AgX-only warm
+    solve as a shader literal; the far sphere is now a view-direction sky (<code>src/look/sky.ts</code>): a
+    world-anchored nebular lobe (cos³ about (0, 0.35, −1), peak ×2.8, ± 60% 3-octave noise, violet/teal tint) and
+    procedural stars (6 × 104² cube-face cells, 26% occupancy, b⁶ brightness law, angular Gaussian cores of
+    0.9–1.8 px via a per-frame pixel-angle uniform, 3×3-cell neighbourhood so halos never clip). No time term —
+    deterministic on every tier and in capture.</li>
+    <li><b>§8</b> — Rim #FFBE83 → <b>#D6E0FF</b> (the universe's light on the standing gold's edges); environment base
+    cooled to blue-black (0.010/0.014/0.028 + floor lift 0.024/0.028/0.040), warm window and pinpoints unchanged; the
+    gilding takes the environment at <b>1.6×</b> (parchment 1×) so it stays luminous against the blue.</li>
+    <li><b>§15 / §18</b> — poster.jpg and the inline LQIP regenerated from the blue R-0.00 (poster 67.6 KB — the star
+    field costs 23 KB of JPEG detail; phase A stays ≈ 0.27 MB).</li>
+    <li><b>QA</b> — review frames <code>qa/review/v16-sky-R{000,045,076,100}.png</code>; candidates recorded in the
+    manifest under <code>v16_pending</code>; the matrix runner re-blesses T1 (two cold loads), the mobile T2/T3 set and
+    noblob after sign-off. The runner's iframe must fill the viewport — an offscreen 1×1 iframe is rAF-throttled even in
+    the fronted tab (a 13-frame pass went from 345 s to 70 s).</li>
+  </ol>
+
 </section>
 
 </main>

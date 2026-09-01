@@ -62,22 +62,22 @@ import { THICKNESS } from '../field/deform';
 import { buildBurnishTexture, buildEnvironment, buildFiberTexture, buildUtilTexture } from './textures';
 import { BLOB_H, BLOB_W, ContactBlob } from '../relief/contact';
 import { Dust } from './dust';
+import { buildSky, type Sky } from './sky';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type N = any;
 
 export type DebugMode = 'none' | 'normal' | 'matcap' | 'graycard' | 'ink' | 'blob';
 
-// §16 background pre-compensation — scene-linear clear color that the live AgX pipeline
-// displays as exactly #0D0906. Baked from `?calibrate=bg` (secant solve against readback);
-// re-run the harness whenever the tone/grade chain changes.
-// Re-solved 2026-08-25 against the FULL grade chain: with the display-referred black lift
-// (+0.0003 linear ≈ +1 count) and grain floor, the chain's own floor displays
-// (13.6, 9.8, 6.6) — the #0D0906 target within a count on every channel — so the authored
-// background is ~zero and the graded floor carries the tone. A ≈+0.5-count warm residue in
-// the floor is unexplained (suspected pass/environment leak) — tracked for the M2 close.
-// The pre-AgX-only solve was (0.00798, 0.00648, 0.00504), kept here for reference.
-export const BG_LINEAR: [number, number, number] = [0.000002, 0.000002, 0.000002];
+// §16 background pre-compensation — the scene-linear sky FLOOR that the live AgX pipeline
+// displays as exactly the §11 floor hex. Baked from `?calibrate=bg&target=<hex>` (damped
+// Newton against readback, sky detail off); re-run whenever the tone/grade chain changes.
+// v1.6 (2026-09-01): the warm #0D0906 darkness became the deep-blue universe floor —
+// first #080D26, then "darker" on review: #05081C. (History: the v1.0–1.5 sphere shipped
+// the pre-AgX-only warm solve (0.00798, 0.00648, 0.00504) as a literal — every M2–M7
+// frame carries it.)
+// Solved 2026-09-01 through the full grade chain: displays (5.2, 8.3, 28.1) for #05081C.
+export const BG_LINEAR: [number, number, number] = [0.0048272, 0.0048456, 0.014377];
 
 // §8 key intensity — 18% gray card at sheet center under key alone displays 128/255.
 // Baked from `?calibrate=key`; re-run when key geometry/cone changes or the HDRI lands.
@@ -109,7 +109,9 @@ export interface Stage {
   fill: DirectionalLight;
   /** §15 dust motes (hidden in capture / reduced motion) */
   dust: Dust;
-  /** scene-linear background (a physical far sphere — pass() drops scene.background) */
+  /** §7/§11 v1.6 universe sky (floor + lobe + stars; per-frame pixel angle) */
+  sky: Sky;
+  /** scene-linear sky floor (a physical far sphere — pass() drops scene.background) */
   setBackground(r: number, g: number, b: number): void;
 }
 
@@ -165,18 +167,11 @@ export function buildStage(
 ): Stage {
   const scene = new Scene();
 
-  // Background as a physical far sphere: PostProcessing's pass() does not render
-  // scene.background, and ordinary scene content survives every chain. Colored by the
-  // §16 pre-compensated linear value; the ?calibrate=bg harness drives the uniform.
-  const uBg = uniform(new Vector3(BG_LINEAR[0], BG_LINEAR[1], BG_LINEAR[2]));
-  const bgMat = new MeshBasicNodeMaterial();
-  bgMat.colorNode = vec3(0.00798, 0.00648, 0.00504); // TEMP diagnostic: literal BG_LINEAR
-  void uBg;
-  bgMat.side = BackSide;
-  bgMat.fog = false;
-  const bgMesh = new Mesh(new SphereGeometry(3.2, 24, 16), bgMat);
-  bgMesh.frustumCulled = false;
-  scene.add(bgMesh);
+  // §7/§11 v1.6 background: the deep-blue universe sky on a far sphere (PostProcessing's
+  // pass() does not render scene.background; ordinary scene content survives every chain).
+  // The floor is the §16 pre-compensated linear value; ?calibrate=bg drives it detail-off.
+  const sky = buildSky(BG_LINEAR);
+  scene.add(sky.mesh);
 
   // §8 authored environment (procedural bake) — replaces the M1 hemisphere stand-in.
   // Yaw schedule is driven per frame from §10 via scene.environmentRotation.
@@ -229,7 +224,9 @@ export function buildStage(
   fill.position.set(0.85, 0.55, -0.45);
   scene.add(fill);
 
-  const rim = new SpotLight(0xffbe83, KEY_INTENSITY * 0.3, 0, (28 * Math.PI) / 180 / 2, 0.6, 2);
+  // v1.6: the rim is the universe's light — pale blue-white, so the standing gold's edges and
+  // the parchment's far rim pick up the sky while the key stays candle-warm
+  const rim = new SpotLight(0xd6e0ff, KEY_INTENSITY * 0.3, 0, (28 * Math.PI) / 180 / 2, 0.6, 2);
   rim.position.set(-0.35, 0.18, -1.05);
   rim.target.position.set(0, 0, 0);
   scene.add(rim, rim.target);
@@ -249,8 +246,9 @@ export function buildStage(
     uKeyMask,
     fill,
     dust,
+    sky,
     setBackground: (r: number, g: number, b: number) => {
-      (uBg.value as Vector3).set(r, g, b);
+      sky.uFloor.value.set(r, g, b);
     },
   };
 }
