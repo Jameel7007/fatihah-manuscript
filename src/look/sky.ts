@@ -13,7 +13,7 @@
 // (just) resolved rather than sub-pixel sparkle.
 
 import { BackSide, Mesh, MeshBasicNodeMaterial, SphereGeometry, Vector3 } from 'three/webgpu';
-import { cameraPosition, cross, dot, exp, float, fract, positionWorld, step, uniform, vec2, vec3 } from 'three/tsl';
+import { cameraPosition, cameraViewMatrix, cross, dot, exp, float, fract, positionWorld, smoothstep, step, uniform, vec2, vec3, vec4 } from 'three/tsl';
 // (dot is used by the hash and the lobe; the star unit is a constant since the third review pass)
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,7 +37,17 @@ export interface Sky {
   uDetail: { value: number };
   /** angular size of one rendered pixel (rad) — vfov / drawing-buffer height, set per frame */
   uPxRad: { value: number };
+  /** world center of the text assembly (set per frame) — stars keep clear of its screen footprint */
+  uTextCenter: { value: Vector3 };
 }
+
+// Star clearance (review 2026-09-01: "keep the stars on the outskirts of the 3D text so there is
+// no overlap"): the assembly's world half-extents (v1.5 block ≈ 0.50 × 0.72), projected to the
+// camera's tangent plane each frame; stars fade out inside an ellipse 1.25× the block and are
+// gone by 1.75× — so they live in the frame's outer field and never sit behind the gold.
+const TEXT_HALF: [number, number] = [0.26, 0.37];
+const CLEAR_INNER = 1.25;
+const CLEAR_OUTER = 1.75;
 
 /** Sinless 3D hash → [0,1). */
 function hash3(p: N): N {
@@ -72,6 +82,7 @@ export function buildSky(floor: [number, number, number]): Sky {
   const uFloor = uniform(new Vector3(floor[0], floor[1], floor[2]));
   const uDetail = uniform(1);
   const uPxRad = uniform(6.5e-4);
+  const uTextCenter = uniform(new Vector3(0, 0, 0.0075));
 
   const d: N = positionWorld.sub(cameraPosition).normalize();
   const floorC: N = uFloor;
@@ -129,7 +140,16 @@ export function buildSky(floor: [number, number, number]): Sky {
       stars = stars.add(starCol.mul(peak).mul(core.add(halo)).mul(occ));
     }
   }
-  col = col.add(stars.mul(uDetail));
+  // clearance ellipse around the text assembly, in the camera's tangent plane
+  const dv: N = cameraViewMatrix.mul(vec4(d, 0)).xyz;
+  const cv: N = cameraViewMatrix.mul(vec4(uTextCenter, 1)).xyz;
+  const td: N = vec2(dv.x, dv.y).div(dv.z.negate().max(1e-4));
+  const cz: N = cv.z.negate().max(1e-3);
+  const tc: N = vec2(cv.x, cv.y).div(cz);
+  const half: N = vec2(TEXT_HALF[0], TEXT_HALF[1]).div(cz);
+  const eDist: N = td.sub(tc).div(half).length();
+  const clear: N = smoothstep(CLEAR_INNER, CLEAR_OUTER, eDist);
+  col = col.add(stars.mul(clear).mul(uDetail));
 
   const mat = new MeshBasicNodeMaterial();
   mat.colorNode = col;
@@ -137,5 +157,5 @@ export function buildSky(floor: [number, number, number]): Sky {
   mat.fog = false;
   const mesh = new Mesh(new SphereGeometry(3.2, 24, 16), mat);
   mesh.frustumCulled = false;
-  return { mesh, uFloor, uDetail, uPxRad };
+  return { mesh, uFloor, uDetail, uPxRad, uTextCenter };
 }

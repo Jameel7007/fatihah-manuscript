@@ -2,7 +2,7 @@ import { Color, PerspectiveCamera, REVISION } from 'three/webgpu';
 import { createRenderer } from './core/renderer';
 import { DPR_CAP, DUST_SCALE, detectTier, TierMonitor } from './core/tiers';
 import { CameraRig } from './director/camera';
-import { blobTilt, contactRamp, embossFactor, envYawDeg, FACE_CENTER_REST, faceFactor, facePitch, fillFactor, geoDepth, inkGhost, keyConeDeg, keyFactor, parchmentKeyMask, poseTransform, recede, rimFactor, RISE_START, stateLabel } from './director/drivers';
+import { blobTilt, contactRamp, embossFactor, envYawDeg, FACE_CENTER_ANCHOR, FACE_CENTER_REST, faceFactor, facePitch, fillFactor, geoDepth, inkGhost, keyConeDeg, keyFactor, parchmentKeyMask, poseTransform, recede, rimFactor, RISE_START, stateLabel } from './director/drivers';
 import { IdleController, type IdleState } from './director/idle';
 import { ReducedMotion } from './director/reduced';
 import { Vector3 } from 'three/webgpu';
@@ -501,8 +501,8 @@ async function runCalibrate(mode: string): Promise<void> {
 
   if (mode === 'bg') {
     sheetRoot.visible = false;
-    // target display hex (&target=RRGGBB; default the §11 v1.6 floor #020411)
-    const hex = (q.get('target') ?? '020411').replace('#', '');
+    // target display hex (&target=RRGGBB; default the §11 v1.6 floor #01030D)
+    const hex = (q.get('target') ?? '01030D').replace('#', '');
     const target = [0, 1, 2].map((c) => parseInt(hex.slice(c * 2, c * 2 + 2), 16));
     // Damped 3×3 Newton with numerical Jacobian — AgX's inset matrix mixes channels near
     // black, so per-channel iteration cannot converge. Seed ≈ 2.5× the naive sRGB decode
@@ -654,12 +654,22 @@ async function runMain(): Promise<void> {
   });
 
   const IDLE_ZERO: IdleState = { ramp: 0, breath: 0, keyMod: 1, yawDeg: 0, drift: [0, 0, 0] };
+  const skyTextCenter = new Vector3(); // assembly center in sheet-local space (→ world after the pose)
   const applyFrame = (p: number, dt: number, simEnabled: boolean, idle: IdleState = IDLE_ZERO, inkP: number = p): void => {
     inkPass?.run(renderer, inkP);
     // §11 sky: one pixel's angle (vfov / drawing-buffer height) keeps the stars ~1 px at any
     // resolution and tier — the same value in capture (DPR 1) as the reference frames expect
     sky.uPxRad.value = ((rig.camera.fov * Math.PI) / 180) / Math.max(1, (canvas as HTMLCanvasElement).height);
     uEmboss.value = embossFactor(p); // §14 relief window (E2 in, E7 fade at the handoff)
+    {
+      // §11 star clearance: the assembly center (anchor → rest by the S7 lift), in world space
+      const e = faceFactor(p);
+      skyTextCenter.set(
+        FACE_CENTER_ANCHOR[0] + (FACE_CENTER_REST[0] - FACE_CENTER_ANCHOR[0]) * e,
+        FACE_CENTER_ANCHOR[1] + (FACE_CENTER_REST[1] - FACE_CENTER_ANCHOR[1]) * e,
+        FACE_CENTER_ANCHOR[2] + (FACE_CENTER_REST[2] - FACE_CENTER_ANCHOR[2]) * e,
+      );
+    }
     if (relief) {
       // §14 handoff: mesh visible from the window open; depth floored at 0.00045 (z-guard)
       relief.mesh.visible = p >= 0.69;
@@ -700,6 +710,10 @@ async function runMain(): Promise<void> {
     const tr = poseTransform(p, d.zTopCurl);
     sheetRoot.rotation.x = tr.rotX;
     sheetRoot.position.set(0, tr.offY, tr.offZ);
+    // §11 star clearance follows the assembly through the sheet pose (world space)
+    sheetRoot.updateMatrixWorld();
+    sky.uTextCenter.value.copy(skyTextCenter);
+    sheetRoot.localToWorld(sky.uTextCenter.value);
     scene.environmentRotation.y = ((envYawDeg(p) + idle.yawDeg) * Math.PI) / 180;
   };
 
