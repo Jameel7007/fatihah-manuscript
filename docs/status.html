@@ -1,0 +1,329 @@
+<meta charset="utf-8">
+<title>Fātiḥah Build Ledger</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,340;9..144,420;9..144,560&family=IBM+Plex+Sans:wght@400;450;600&family=IBM+Plex+Mono:wght@400;500&family=Amiri+Quran&display=swap">
+<style>
+  /* Committed single-theme companion to the spec — the same manuscript-in-darkness world.
+     Every color painted explicitly; no theme blocks by design. */
+  :root{
+    --bg:#100D09; --surface:#171209; --surface2:#1D1810; --line:#2C2517; --line-soft:#221C11;
+    --text:#E7DDC6; --muted:#A2957A; --faint:#6E6350;
+    --gold:#C9A45B; --gold-dim:#8F7440; --gold-faint:#4A3D26;
+    --warn:#C98B5B; --code-bg:#0B0906;
+    --serif:"Fraunces",Georgia,"Times New Roman",serif;
+    --sans:"IBM Plex Sans","Helvetica Neue",Arial,system-ui,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --arabic:"Amiri Quran","Amiri","Noto Naskh Arabic",serif;
+  }
+  html{color-scheme:dark}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;
+       line-height:1.62;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+  main{max-width:880px;margin:0 auto;padding:52px 24px 110px}
+  a{color:var(--gold);text-decoration-color:var(--gold-faint);text-underline-offset:3px}
+  a:hover{text-decoration-color:var(--gold)}
+  h1{font-family:var(--serif);font-weight:420;font-size:34px;line-height:1.2;margin:10px 0 6px;
+     text-wrap:balance;letter-spacing:.01em}
+  h2{font-family:var(--serif);font-weight:420;font-size:21px;margin:0 0 4px;letter-spacing:.01em}
+  section{margin-top:56px}
+  .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
+           color:var(--gold-dim);margin:0}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 14px}
+  .stamp{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .chip{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);
+        border:1px solid var(--line);border-radius:3px;padding:3px 9px;background:var(--surface)}
+  .chip b{color:var(--gold);font-weight:500}
+  .lede{font-size:16.5px;line-height:1.7;max-width:64ch;color:var(--text)}
+  .lede b{color:var(--gold)}
+
+  /* ---- milestone rail ---- */
+  .rail{display:flex;align-items:flex-start;margin:26px 0 8px;overflow-x:auto;padding-bottom:6px}
+  .rail .node{flex:1 1 0;min-width:64px;position:relative;text-align:center}
+  .rail .node::before{content:"";position:absolute;top:7px;left:-50%;width:100%;height:2px;background:var(--line)}
+  .rail .node:first-child::before{display:none}
+  .rail .node.done::before,.rail .node.now::before{background:var(--gold-dim)}
+  .dot{width:14px;height:14px;border-radius:50%;margin:0 auto 8px;position:relative;
+       border:2px solid var(--gold-dim);background:var(--bg);box-sizing:border-box}
+  .done .dot{background:var(--gold-dim);border-color:var(--gold-dim)}
+  .now .dot{border-color:var(--gold);background:var(--bg);box-shadow:0 0 0 3px rgba(201,164,91,.18)}
+  .now .dot::after{content:"";position:absolute;inset:2px;border-radius:50%;background:var(--gold)}
+  .pend .dot{border-color:var(--line);background:var(--bg)}
+  .rail .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--faint)}
+  .done .tag{color:var(--muted)}
+  .now .tag{color:var(--gold)}
+  .rail .nm{font-size:11.5px;color:var(--faint);line-height:1.35;margin-top:2px}
+  .done .nm{color:var(--muted)}
+  .now .nm{color:var(--text)}
+
+  /* ---- tables ---- */
+  .twrap{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
+  table{border-collapse:collapse;width:100%;font-size:13.5px}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+     color:var(--gold-dim);text-align:left;font-weight:500;padding:10px 14px;border-bottom:1px solid var(--line)}
+  td{padding:9px 14px;border-bottom:1px solid var(--line-soft);vertical-align:top;color:var(--text)}
+  tr:last-child td{border-bottom:none}
+  td.n,th.n{font-family:var(--mono);font-size:12.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
+  td .dim{color:var(--muted)}
+  .hash{font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.02em}
+
+  /* ---- state pills ---- */
+  .pill{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+        text-transform:uppercase;padding:2px 8px;border-radius:3px;white-space:nowrap}
+  .p-done{color:var(--gold);background:rgba(201,164,91,.10);border:1px solid var(--gold-faint)}
+  .p-now{color:#E9DFC8;background:rgba(201,164,91,.16);border:1px solid var(--gold-dim)}
+  .p-pend{color:var(--faint);background:transparent;border:1px solid var(--line)}
+  .p-pass{color:var(--gold);background:rgba(201,164,91,.10);border:1px solid var(--gold-faint)}
+  .p-flag{color:var(--warn);background:rgba(201,139,91,.10);border:1px solid rgba(201,139,91,.35)}
+  .p-wait{color:var(--muted);background:transparent;border:1px solid var(--line)}
+
+  /* ---- action panel ---- */
+  .panel{border:1px solid var(--gold-dim);border-radius:5px;background:linear-gradient(180deg,#1B150C,#171209);
+         padding:20px 22px;margin-top:18px}
+  .panel h3{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+            color:var(--gold);margin:0 0 12px;font-weight:500}
+  .panel ol{margin:0;padding-left:20px}
+  .panel li{margin:7px 0;color:var(--text)}
+  .panel li::marker{color:var(--gold-dim);font-family:var(--mono);font-size:12px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+  @media(max-width:720px){.cols{grid-template-columns:1fr}}
+  .card{border:1px solid var(--line);border-radius:4px;background:var(--surface);padding:16px 18px}
+  .card h3{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+           color:var(--gold-dim);margin:0 0 10px;font-weight:500}
+  .card ul{margin:0;padding-left:18px}
+  .card li{margin:5.5px 0;font-size:13.5px;color:var(--text)}
+  .card li::marker{color:var(--gold-faint)}
+  .card li .dim{color:var(--muted)}
+
+  /* ---- scroll axis strip ---- */
+  .axis{margin-top:20px}
+  .axisbar{position:relative;height:34px;border:1px solid var(--line);border-radius:3px;
+           background:linear-gradient(90deg,#241C10 0%,#241C10 6%,#1D1810 6%,#1D1810 32%,
+             #2A2113 32%,#2A2113 58%,#1D1810 58%,#1D1810 64%,#31261366 64%,#3A2C1499 84%,#4A3D26 100%)}
+  .axisbar .seg{position:absolute;top:0;bottom:0;border-left:1px solid var(--line)}
+  .axisbar .seg span{position:absolute;top:calc(100% + 6px);left:0;transform:translateX(-50%);
+                     font-family:var(--mono);font-size:10px;color:var(--faint);white-space:nowrap}
+  .axislbl{display:flex;justify-content:space-between;margin-top:28px;font-size:11.5px;color:var(--muted)}
+  .axislbl b{color:var(--gold-dim);font-weight:500;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em}
+  .axisnames{position:relative;height:18px;margin-top:4px}
+  .axisnames span{position:absolute;transform:translateX(-50%);font-family:var(--mono);
+                  font-size:10px;letter-spacing:.06em;color:var(--muted);white-space:nowrap}
+
+  /* ---- code ---- */
+  pre{background:var(--code-bg);border:1px solid var(--line);border-radius:4px;padding:14px 16px;
+      overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--text);margin:10px 0 0}
+  pre .c{color:var(--faint)}
+  code{font-family:var(--mono);font-size:.92em;color:var(--gold);background:var(--code-bg);
+       padding:1px 5px;border-radius:3px;border:1px solid var(--line-soft)}
+  .ayah{font-family:var(--arabic);font-size:26px;color:var(--gold);direction:rtl}
+  footer{margin-top:70px;padding-top:18px;border-top:1px solid var(--line);
+         font-family:var(--mono);font-size:11px;color:var(--faint);line-height:1.8}
+  @media (prefers-reduced-motion: no-preference){
+    .now .dot{transition:box-shadow .4s ease}
+  }
+</style>
+
+<main>
+<header>
+  <p class="eyebrow">Build Ledger · Al-Fātiḥah 3D Manuscript</p>
+  <h1>Where the piece stands</h1>
+  <p class="sub">One aged parchment, seven āyāt, everything a pure function of scroll. This page tracks the build; the
+     <a href="https://claude.ai/code/artifact/1fe75f9f-9779-4526-b424-bac53ba1143f">design &amp; engineering specification</a> holds the contract.</p>
+  <div class="stamp">
+    <span class="chip">updated <b>2026-09-01</b></span>
+    <span class="chip">spec <b>v1.5</b></span>
+    <span class="chip">milestone <b>M4 · in progress</b></span>
+    <span class="chip">head <b>e704795</b></span>
+    <span class="chip">repo <b>Jameel7007/fatihah-manuscript</b> (private)</span>
+  </div>
+</header>
+
+<section>
+  <p class="lede">Four of nine milestones are closed and signed off. The piece boots on WebGPU with a WebGL2 fallback,
+  unrolls from an 82%-wrapped scroll, carries the full look (parchment, lights, grade), writes the sūrah in ink, and now
+  <b>presses that ink into true relief</b> — the M4 emboss hands off to real extruded glyph geometry mid-scroll. Inside M4,
+  your review reshaped the text presentation itself: the justified rectangle became a <b>classical centered page</b> with
+  drawn shamsah rosettes (v1.5), and every downstream asset was rebuilt on it. What remains before M4 closes is
+  <b>your sign-off</b> — the v1.5 page, the handoff frames, and one flagged measurement.</p>
+</section>
+
+<section>
+  <h2>Milestones</h2>
+  <p class="sub">M0–M8 as specified in §20. A milestone closes only on your review.</p>
+  <div class="rail" aria-label="milestone progress">
+    <div class="node done"><div class="dot"></div><div class="tag">M0</div><div class="nm">axis &amp; boot</div></div>
+    <div class="node done"><div class="dot"></div><div class="tag">M1</div><div class="nm">field &amp; unroll</div></div>
+    <div class="node done"><div class="dot"></div><div class="tag">M2</div><div class="nm">the look</div></div>
+    <div class="node done"><div class="dot"></div><div class="tag">M3</div><div class="nm">ink</div></div>
+    <div class="node now"><div class="dot"></div><div class="tag">M4</div><div class="nm">relief &amp; handoff</div></div>
+    <div class="node pend"><div class="dot"></div><div class="tag">M5</div><div class="nm">the rise</div></div>
+    <div class="node pend"><div class="dot"></div><div class="tag">M6</div><div class="nm">facing &amp; finish</div></div>
+    <div class="node pend"><div class="dot"></div><div class="tag">M7</div><div class="nm">performance</div></div>
+    <div class="node pend"><div class="dot"></div><div class="tag">M8</div><div class="nm">ship QA</div></div>
+  </div>
+  <div class="twrap">
+  <table>
+    <tr><th>ID</th><th>Scope</th><th>State</th><th class="n">Closed</th></tr>
+    <tr><td class="n">M0</td><td>Vite + TS strict, three r185 pinned, WebGPU/WebGL2 boot, AgX verified, scroll spring, camera rig, SHA-256 capture rig</td><td><span class="pill p-done">closed</span></td><td class="n">08-24</td></tr>
+    <tr><td class="n">M1</td><td>Surface field (RTT pos/normal/tangent), analytic curl + residual sim, silhouette, rolled start (82%, 4.2 turns), extent-fit dolly</td><td><span class="pill p-done">closed</span></td><td class="n">08-25</td></tr>
+    <tr><td class="n">M2</td><td>Parchment materials, fiber/util/env textures, PCSS, grade chain, calibrations (#0D0906 bg, 18% key), text pipeline + canonical verification</td><td><span class="pill p-done">closed</span></td><td class="n">08-25</td></tr>
+    <tr><td class="n">M3</td><td>Ink: MTSDF + stroke-order atlases, per-āyah write windows, wet trail (measured 0.045 ± 10%), bleed, writing dwell (×1.35 scroll travel)</td><td><span class="pill p-done">closed</span></td><td class="n">08-28</td></tr>
+    <tr><td class="n">M4</td><td>Presenting + relief: light choreography, §14 emboss, bevel-extruded glyph mesh, geometry handoff, camera verification — <span class="dim">plus the v1.5 text revision landed mid-milestone</span></td><td><span class="pill p-now">in progress</span></td><td class="n">—</td></tr>
+    <tr><td class="n">M5</td><td>The rise: per-āyah stagger to full depth, contact shadows (height-field blob + PCSS), ink→gold transmutation, curvature-adaptive mesh + meshopt/KTX2 packaging</td><td><span class="pill p-pend">pending</span></td><td class="n">—</td></tr>
+    <tr><td class="n">M6</td><td>Facing + finish: pivot to 12° presentation, env-yaw sweep, idle motion, p = 1 hold, reduced-motion mode</td><td><span class="pill p-pend">pending</span></td><td class="n">—</td></tr>
+    <tr><td class="n">M7</td><td>Performance: three quality tiers, loading phases, poster, thermal — 60 fps desktop / iPhone 15, 30 fps iPhone 12, ≤ 8.5 MB</td><td><span class="pill p-pend">pending</span></td><td class="n">—</td></tr>
+    <tr><td class="n">M8</td><td>Ship QA: cross-browser matrix, fallback plates, <b>scholarly review of the rendered text against a printed muṣḥaf</b></td><td><span class="pill p-pend">pending</span></td><td class="n">—</td></tr>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2>The scroll axis</h2>
+  <p class="sub">Everything is a pure function of p ∈ [0, 1]. What exists today: states 1–5 render fully; past p ≈ 0.73 the relief settles back toward flat ink until the M5 rise takes over.</p>
+  <div class="axis">
+    <div class="axisbar">
+      <div class="seg" style="left:6%"><span>.06</span></div>
+      <div class="seg" style="left:32%"><span>.32</span></div>
+      <div class="seg" style="left:54%"><span>.54</span></div>
+      <div class="seg" style="left:64%"><span>.64</span></div>
+      <div class="seg" style="left:72.2%"><span>.722</span></div>
+      <div class="seg" style="left:84%"><span>.84</span></div>
+    </div>
+    <div class="axisnames">
+      <span style="left:3%">rolled</span>
+      <span style="left:19%">unrolling</span>
+      <span style="left:43%">ink written</span>
+      <span style="left:59%">presenting</span>
+      <span style="left:68%">relief</span>
+      <span style="left:78%">rising</span>
+      <span style="left:92%">facing</span>
+    </div>
+    <div class="axislbl"><b>LIVE TODAY: p 0 → 0.73</b><b>M5 – M6 TERRITORY: p 0.72 → 1.0</b></div>
+  </div>
+</section>
+
+<section>
+  <h2>Now: inside M4</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Landed this milestone</h3>
+      <ul>
+        <li>§10 light choreography — key dims to 0.88 as the pen starts, climbs to 0.95; rim ramps 0.30 → 0.52 as edges are born</li>
+        <li>§13 writing dwell — the writing takes ~35% more scroll travel <span class="dim">(your “a little slower” direction)</span></li>
+        <li>§14 emboss — puff-height normal relief + border cavity darkening <span class="dim">(shipped dead in one commit, then v-shading inverted; both repaired and re-verified)</span></li>
+        <li>§6 bevel extruder — 9-point profile, thin-stroke guard, word-level union; 258k triangles of 780k budget; silhouette identity 0.46 px worst</li>
+        <li>§14 geometry handoff — mesh enters ink-colored at half emboss height, grows to 0.0012 as the emboss fades; watertight base on the surface field</li>
+        <li><b>v1.5 text revision</b> — classical centered layout, basmalah sīn fixed at 2.0 em, drawn shamsah rosettes; all atlases + mesh rebuilt; judgment proofs delivered</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Measured (§20 DoD)</h3>
+      <ul>
+        <li>Camera vs §9 table — every pure-anchor pose <b>exact</b> (Δ 0.000 ≤ 0.01); table synced into the spec</li>
+        <li>Silhouette diff, emboss ↔ geometry — contour median 0.26–0.32 px <b>PASS</b> (limit 0.8)</li>
+        <li><span class="pill p-flag">flagged</span>&nbsp; p95 sits at 0.87–0.95 px — measured shading interplay at the rim + §9-retreat parallax, not misalignment; your call at close</li>
+        <li>No detached artifacts; AA-faded stroke tips ≤ 0.55%</li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Awaiting you — the M4 close gate</h3>
+    <ol>
+      <li>Review the <b>v1.5 page</b>: the 4000 px parchment proof (sent 08-30) and the live frames R-0.645 / R-0.710.</li>
+      <li>Rule on the <b>p95 flag</b>: accept the measured reading (median is the contour; the tail is physics), or pull the M5 curvature-adaptive mesh pass forward.</li>
+      <li>On sign-off: the five v1.5 candidates get their full-hash blessing, plus T3 and WebGL2 re-captures.</li>
+      <li>Whenever convenient, a foregrounded-browser pass for the live-feel checks the dev pane can’t run: scrub shimmer at 4×, the R-flick (key Q), the scroll storm.</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <h2>Decision log</h2>
+  <p class="sub">Your rulings, in force. Reopening one reopens its downstream assets.</p>
+  <div class="twrap">
+  <table>
+    <tr><th class="n">Date</th><th>Ruling</th><th>Effect</th></tr>
+    <tr><td class="n">08-24</td><td>Spec v1.1 approved</td><td>The numeric contract for everything after it</td></tr>
+    <tr><td class="n">08-25</td><td>Bottom curl “slighter” · rolled start 82%, 4.2 turns</td><td>Quiet C-hook; the roll is the p = 0 hero object</td></tr>
+    <tr><td class="n">08-25</td><td>Band-max leading</td><td>Sheet, margins, em band hold; pitch = the band’s maximum; em 0.052</td></tr>
+    <tr><td class="n">08-25</td><td><b>The 7-line block is the piece</b></td><td>8-line variant frozen as reference</td></tr>
+    <tr><td class="n">08-28</td><td>M3 signed off · “writing a little slower”</td><td>Write sequence approved; §13 dwell added (windows untouched)</td></tr>
+    <tr><td class="n">08-30</td><td><b>v1.5: ʿUthmānic Ḥafṣ stands · classical centered · shamsah rosettes</b></td><td>Justification retired; basmalah sīn 2.0 em; markers ride the full glyph pipeline; مالك resolved — the dagger alif was there all along</td></tr>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2>Text integrity</h2>
+  <div class="card">
+    <p style="margin:0 0 10px"><span class="ayah">مَٰلِكِ يَوْمِ ٱلدِّينِ</span></p>
+    <ul>
+      <li>Source: <b>Tanzil Uthmani</b> (Ḥafṣ ʿan ʿĀṣim), pinned with checksum <span class="hash">557e8ef1…</span> — no scripture is hardcoded anywhere</li>
+      <li><code>verify-text</code> gate: all seven āyāt <b>codepoint-identical</b> to the canonical source, re-verified after every re-shape (kashida strips clean by construction)</li>
+      <li>Āyah 4 carries the <b>dagger alif</b> (U+0670) over the mīm — the ʿUthmānic rasm of <i>Māliki</i>, exactly as printed muṣḥafs write it</li>
+      <li>Mark placement is Amiri Quran’s; <b>human review against a printed muṣḥaf is the M8 sign-off gate</b> — the 4000 px parchment proof is the review artifact</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>QA ledger</h2>
+  <p class="sub">Regression frames are SHA-256 of raw pixels, blessed only from cold loads on a settled server.</p>
+  <div class="twrap">
+  <table>
+    <tr><th>Frame</th><th>State</th><th class="n">Hash</th><th>Note</th></tr>
+    <tr><td class="n">R-0.00 · R-0.21</td><td><span class="pill p-pass">blessed</span></td><td class="n"><span class="hash">80a1f5e1… · 0828669c…</span></td><td>M2 look, pre-ink — unaffected by v1.5, still valid</td></tr>
+    <tr><td class="n">R-0.34</td><td><span class="pill p-wait">candidate</span></td><td class="n"><span class="hash">f3d119ee…</span></td><td>Basmalah mid-write (v1.5)</td></tr>
+    <tr><td class="n">R-0.45</td><td><span class="pill p-wait">candidate</span></td><td class="n"><span class="hash">3dd73e95…</span></td><td>Writing; bit-stable across mesh rebuilds</td></tr>
+    <tr><td class="n">R-0.56</td><td><span class="pill p-wait">candidate</span></td><td class="n"><span class="hash">16df1d95…</span></td><td>Presenting climb</td></tr>
+    <tr><td class="n">R-0.645</td><td><span class="pill p-wait">candidate</span></td><td class="n"><span class="hash">e6f14cfc…</span></td><td>Emboss forming (corrected shading)</td></tr>
+    <tr><td class="n">R-0.710</td><td><span class="pill p-wait">candidate</span></td><td class="n"><span class="hash">55c83049…</span></td><td>Handoff midpoint — geometry + fading emboss</td></tr>
+    <tr><td class="n">T3 · WebGL2 set</td><td><span class="pill p-pend">pending</span></td><td class="n">—</td><td>Re-capture at M4 close; WebGL2 full blessing deferred to CI</td></tr>
+  </table>
+  </div>
+  <div class="cols">
+    <div class="card">
+      <h3>Gates — all green</h3>
+      <ul>
+        <li>Text: 7/7 āyāt canonical <span class="dim">(every rebuild)</span></li>
+        <li>Atlas reconstruction IoU ≥ 0.94 · RTL write-order audit PASS</li>
+        <li>Mesh: plan-area 0.02% · silhouette identity 0.46 px · 258k/780k tris</li>
+        <li>Wet trail 0.045 ± 10% <span class="dim">(measured, M3)</span> · AgX ramp neutral/monotonic</li>
+        <li>Determinism: byte-identical asset rebuilds; capture hashes reproduce across cold loads</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Debt ledger — tracked, not blocking</h3>
+      <ul>
+        <li>meshopt/glb + KTX2 packaging <span class="dim">(§18 — with the M5 curvature-adaptive mesh rebuild)</span></li>
+        <li>Translucency into the shadowed light loop <span class="dim">(emissive-approximated today)</span></li>
+        <li>+0.5-count warm background residue <span class="dim">(suspected env leak)</span></li>
+        <li>§12 mobile x-height record at em 0.052</li>
+        <li>Per-tier mesh variants (T2/T3 pitch) · WebGL2 CI blessing</li>
+        <li>Legacy 2D reveal scene still draws ring markers <span class="dim">(cosmetic)</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Running it</h2>
+  <p class="sub">Dev server is registered as <code>fatihah</code> in launch.json (port 4521). Asset pipeline is deterministic — rebuild anything, the checksums must match.</p>
+<pre><span class="c"># see the piece (scroll = p)</span>
+npm run dev                      <span class="c"># → localhost:4521</span>
+
+<span class="c"># judgment proofs & QA scenes (URL params)</span>
+/?scene=proof&amp;layout=7&amp;bg=parchment    <span class="c"># the v1.5 page on aged ground (&export=1 → 4000px PNG)</span>
+/?capture=0.710&amp;tier=1                 <span class="c"># deterministic frame + SHA-256   (&nogeo = emboss-only A/B)</span>
+/?scene=inkrt&amp;p=0.45                   <span class="c"># flat ink-RT instrument (R=coverage, G=wetness)</span>
+
+<span class="c"># asset pipeline (each step verifies the one before)</span>
+node build/verify-text.mjs       <span class="c"># pin + verify canonical text</span>
+node build/shape-text.mjs        <span class="c"># shape → frozen composition (v1.5 centered + rosette)</span>
+node build/build-ink-atlas.mjs   <span class="c"># MTSDF + stroke-order atlases + instances</span>
+node build/build-glyph-mesh.mjs  <span class="c"># §6 bevel relief mesh → glyphs.bin</span>
+node qa/silhouette-diff.mjs      <span class="c"># M4 silhouette DoD (needs the capture pairs)</span></pre>
+</section>
+
+<footer>
+  This ledger updates at every milestone gate · repo copy at docs/status.html, kept in sync with this page ·
+  companion to the <a href="https://claude.ai/code/artifact/1fe75f9f-9779-4526-b424-bac53ba1143f">specification artifact</a> (v1.5, full Δ changelog at its end)
+</footer>
+</main>
