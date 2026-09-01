@@ -61,6 +61,7 @@ import { buildGlyphRelief, type GlyphBin, type GlyphRelief } from '../relief/mes
 import { THICKNESS } from '../field/deform';
 import { buildBurnishTexture, buildEnvironment, buildFiberTexture, buildUtilTexture } from './textures';
 import { BLOB_H, BLOB_W, ContactBlob } from '../relief/contact';
+import { Dust } from './dust';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type N = any;
@@ -100,6 +101,14 @@ export interface Stage {
   uContact: { value: number };
   /** §14/§7 flat-ink ghost factor 1 → 0.08 — drivers.inkGhost(p) */
   uGhost: { value: number };
+  /** §5 S7 parchment recede offset (world) — drivers.recede(p) */
+  uRecede: { value: Vector3 };
+  /** §10 S7 parchment key mask 1 → 0.55 — drivers.parchmentKeyMask(p) (albedo approximation) */
+  uKeyMask: { value: number };
+  /** §8 fill light — intensity driven per frame (drivers.fillFactor) */
+  fill: DirectionalLight;
+  /** §15 dust motes (hidden in capture / reduced motion) */
+  dust: Dust;
   /** scene-linear background (a physical far sphere — pass() drops scene.background) */
   setBackground(r: number, g: number, b: number): void;
 }
@@ -181,6 +190,8 @@ export function buildStage(
   const uEmboss = uniform(0); // §14 emboss factor, driven per frame
   const uContact = uniform(0); // §8 contact-blob ramp, driven per frame
   const uGhost = uniform(1); // §14 flat-ink ghost factor, driven per frame
+  const uRecede = uniform(new Vector3(0, 0, 0)); // §5 S7 parchment recede
+  const uKeyMask = uniform(1); // §10 S7 parchment key mask
 
   const sheetRoot = new Group();
   scene.add(sheetRoot);
@@ -194,9 +205,12 @@ export function buildStage(
     contact = new ContactBlob(relief.mesh, relief.heightMaterial);
   }
 
-  sheetRoot.add(buildSheet(field, maps, debug, inkPass?.texture, uEmboss, contact?.texture, uContact, uGhost));
-  sheetRoot.add(buildRibbon(field, sil, maps, debug));
+  sheetRoot.add(buildSheet(field, maps, debug, inkPass?.texture, uEmboss, contact?.texture, uContact, uGhost, uRecede, uKeyMask));
+  sheetRoot.add(buildRibbon(field, sil, maps, debug, uRecede));
   if (relief) sheetRoot.add(relief.mesh);
+
+  const dust = new Dust();
+  scene.add(dust.points);
 
   // §8 rig
   const key = new SpotLight(0xffd2a0, KEY_INTENSITY, 0, (26 * Math.PI) / 180, 0.5, 2);
@@ -231,6 +245,10 @@ export function buildStage(
     contact,
     uContact,
     uGhost,
+    uRecede,
+    uKeyMask,
+    fill,
+    dust,
     setBackground: (r: number, g: number, b: number) => {
       (uBg.value as Vector3).set(r, g, b);
     },
@@ -259,12 +277,17 @@ function fieldMaterial(
   blobTex?: import('three/webgpu').Texture,
   uContact?: N,
   uGhost?: N,
+  uRecede?: N,
+  uKeyMask?: N,
 ): MeshBasicNodeMaterial | MeshStandardNodeMaterial | MeshPhysicalNodeMaterial {
+  // §5 S7: the parchment recedes (−0.02 y, −0.10 z at rest) while the assembly lifts —
+  // applied AFTER the blob uv (which stays in the anchor frame) and the field fetch
+  const placed: N = uRecede ? positionNode.add(uRecede as N) : positionNode;
   if (debug === 'ink' && inkTex) {
     // raw ink-RT inspection: R = coverage, G = wetness (no lighting, no grade)
     const m = new MeshBasicNodeMaterial();
     m.side = DoubleSide;
-    m.positionNode = positionNode;
+    m.positionNode = placed;
     const dbg: N = texture(inkTex, suv);
     m.colorNode = vec4(dbg.r, dbg.g, float(0.08), 1);
     return m;
@@ -275,7 +298,7 @@ function fieldMaterial(
     // mapping error shows as blob and letters disagreeing
     const m = new MeshBasicNodeMaterial();
     m.side = DoubleSide;
-    m.positionNode = positionNode;
+    m.positionNode = placed;
     const bu: N = positionNode.x.div(BLOB_W).add(0.5);
     const bv: N = positionNode.z.div(BLOB_H).add(0.5); // camera-rendered RT reads back v-FLIPPED vs NDC-up (gotcha #4 — verified: the un-flipped map mirrored line 1 onto line 7)
     const dbg: N = texture(blobTex, varying(vec2(bu, bv)));
@@ -285,7 +308,7 @@ function fieldMaterial(
   if (debug === 'normal' || debug === 'matcap') {
     const m = new MeshBasicNodeMaterial();
     m.side = DoubleSide;
-    m.positionNode = positionNode;
+    m.positionNode = placed;
     m.colorNode =
       debug === 'normal'
         ? vec4(normalObj.mul(0.5).add(0.5), 1)
@@ -298,7 +321,7 @@ function fieldMaterial(
     m.side = DoubleSide;
     m.color.setRGB(0.18, 0.18, 0.18);
     m.roughness = 1.0;
-    m.positionNode = positionNode;
+    m.positionNode = placed;
     m.normalNode = transformNormalToView(normalObj).mul(faceDirection);
     return m;
   }
@@ -308,7 +331,7 @@ function fieldMaterial(
     m.side = DoubleSide;
     m.color.set('#B08F5C');
     m.roughness = 0.8;
-    m.positionNode = positionNode;
+    m.positionNode = placed;
     m.normalNode = transformNormalToView(normalObj).mul(faceDirection);
     return m;
   }
@@ -394,6 +417,9 @@ function fieldMaterial(
     const shade: N = float(1).sub(blob.r.mul(0.75).mul(hCaster.div(-0.12).exp()).mul(uContact as N).mul(float(1).sub(backAmt)));
     col = col.mul(shade);
   }
+  // §10 S7 "parchment key mask → 0.55": no per-light mask exists in the node lighting model,
+  // so the parchment's whole response scales (documented approximation — env + fill dim too)
+  if (uKeyMask) col = col.mul(uKeyMask as N);
   m.colorNode = col;
 
   // roughness: §7 0.62 ± 0.14 via fiber mod; verso +0.09 — then §15 geometric specular AA:
@@ -433,7 +459,7 @@ function fieldMaterial(
     .mul(float(1).sub(thick).mul(0.18))
     .mul(2.2);
 
-  m.positionNode = positionNode;
+  m.positionNode = placed;
   return m;
 }
 
@@ -453,6 +479,8 @@ function buildSheet(
   blobTex?: import('three/webgpu').Texture,
   uContact?: N,
   uGhost?: N,
+  uRecede?: N,
+  uKeyMask?: N,
 ): Mesh {
   const count = GRID_W * GRID_H;
   const geo = new BufferGeometry();
@@ -479,14 +507,14 @@ function buildSheet(
   const tan: N = textureLoad(field.tanRT.texture, texel).xyz;
   const suv: N = varying(vec2(ti.toFloat().div(GRID_W - 1), tj.toFloat().div(GRID_H - 1)));
 
-  const mesh = new Mesh(geo, fieldMaterial(field, maps, debug, pos, nrm, tan, suv, 'parchment', inkTex, uEmboss, blobTex, uContact, uGhost));
+  const mesh = new Mesh(geo, fieldMaterial(field, maps, debug, pos, nrm, tan, suv, 'parchment', inkTex, uEmboss, blobTex, uContact, uGhost, uRecede, uKeyMask));
   mesh.frustumCulled = false;
   mesh.castShadow = true;
   mesh.receiveShadow = true;
   return mesh;
 }
 
-function buildRibbon(field: Field, sil: SilhouetteData, maps: Maps, debug: DebugMode): Mesh {
+function buildRibbon(field: Field, sil: SilhouetteData, maps: Maps, debug: DebugMode, uRecede?: N): Mesh {
   const ring = sil.ring;
   const n = ring.length;
   const geo = new BufferGeometry();
@@ -525,7 +553,7 @@ function buildRibbon(field: Field, sil: SilhouetteData, maps: Maps, debug: Debug
   const offset: N = nrm.mul(-THICKNESS).mul(attribute('side', 'float'));
   const suv: N = varying(vec2(ax.div(GRID_W - 1), ay.div(GRID_H - 1)));
 
-  const mesh = new Mesh(geo, fieldMaterial(field, maps, debug, pos.add(offset), nrm, tan, suv, 'edge'));
+  const mesh = new Mesh(geo, fieldMaterial(field, maps, debug, pos.add(offset), nrm, tan, suv, 'edge', undefined, undefined, undefined, undefined, undefined, uRecede));
   mesh.frustumCulled = false;
   mesh.castShadow = true;
   mesh.receiveShadow = true;

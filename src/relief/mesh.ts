@@ -20,11 +20,11 @@
 // whichever pipeline compiled first, and R-0.710 flipped between two hashes across loads.
 
 import { BufferAttribute, BufferGeometry, Mesh, MeshBasicNodeMaterial, MeshPhysicalNodeMaterial, Sphere, Vector3 } from 'three/webgpu';
-import { attribute, color, cross, dFdx, dFdy, float, ivec2, step, texture, textureLoad, transformNormalToView, uniform, varying, vec2, vec3, vec4 } from 'three/tsl';
+import { attribute, color, cos, cross, dFdx, dFdy, float, ivec2, sin, step, texture, textureLoad, transformNormalToView, uniform, varying, vec2, vec3, vec4 } from 'three/tsl';
 import type { Field } from '../field/field';
 import { GRID_H, GRID_W } from '../field/silhouette';
 import { INK_DRY, INK_WET } from '../ink/ink';
-import { DEPTH_ENTRY, DEPTH_FULL, RISE_AYAH_DP, RISE_CLUSTER_DP, RISE_DUR, RISE_GOLD_LAG, RISE_START } from '../director/drivers';
+import { DEPTH_ENTRY, DEPTH_FULL, FACE_CENTER_ANCHOR, FACE_CENTER_REST, RISE_AYAH_DP, RISE_CLUSTER_DP, RISE_DUR, RISE_GOLD_LAG, RISE_START } from '../director/drivers';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type N = any;
@@ -84,6 +84,10 @@ export interface GlyphRelief {
   uP: { value: number };
   /** height-only material for the contact-shadow pass (same position node) */
   heightMaterial: MeshBasicNodeMaterial;
+  /** §5 S7 facing: assembly pitch (radians) about the block center — drivers.facePitch(p) */
+  uPitch: { value: number };
+  /** §5 S7 facing: anchor → presentation center blend 0..1 — drivers.faceFactor(p) */
+  uLift: { value: number };
 }
 
 /** cubic-bezier(0.22, 0, 0.18, 1) — the §13 E2/E4 curve — evaluated in-shader: five Newton
@@ -127,6 +131,8 @@ export function buildGlyphRelief(
 
   const uGeoDepth = uniform(0.00045);
   const uP = uniform(0);
+  const uPitch = uniform(0);
+  const uLift = uniform(0);
 
   const anc: N = attribute('aAnchor', 'vec4'); // su, sv, hn, kindScale
   const npl: N = attribute('aNrm', 'vec4'); // plan-frame relief normal
@@ -163,7 +169,18 @@ export function buildGlyphRelief(
   const stagger: N = bezierE2(tRise).mul(DEPTH_FULL - DEPTH_ENTRY).add(DEPTH_ENTRY).mul(step(start, uP));
   const depth: N = uGeoDepth.max(anc.w.mul(stagger));
   const worldH: N = anc.z.mul(depth);
-  const positionNode: N = surfPos.add(surfN.mul(worldH.add(SEAM_EPS)));
+  const anchorPos: N = surfPos.add(surfN.mul(worldH.add(SEAM_EPS)));
+  // §5 S7 "anchor-frame → presentation-frame blend": a RIGID motion — pitch about the
+  // text block's center (x axis through it) by uPitch, and carry the center toward the
+  // rest pose (the p = 1 look-at). Rigid so the assembly never distorts while it lifts.
+  const cA: N = vec3(...FACE_CENTER_ANCHOR);
+  const cR: N = vec3(...FACE_CENTER_REST);
+  const rel: N = anchorPos.sub(cA);
+  const cp: N = cos(uPitch);
+  const sp: N = sin(uPitch);
+  const rotY: N = rel.y.mul(cp).sub(rel.z.mul(sp));
+  const rotZ: N = rel.y.mul(sp).add(rel.z.mul(cp));
+  const positionNode: N = vec3(rel.x, rotY, rotZ).add(cA).add(cR.sub(cA).mul(uLift));
   const tGold: N = uP.sub(start.add(RISE_GOLD_LAG * RISE_DUR)).div(RISE_DUR).clamp(0, 1);
   const vGold: N = varying(bezierE2(tGold));
 
@@ -177,7 +194,8 @@ export function buildGlyphRelief(
 
   // plan frame → object frame: x = +su = T, y = +sv (down-page) = cross(T, N), z = N
   const Bpage: N = cross(surfT, surfN);
-  const nObj: N = surfT.mul(npl.x).add(Bpage.mul(npl.y)).add(surfN.mul(npl.z)).normalize();
+  const nAnchor: N = surfT.mul(npl.x).add(Bpage.mul(npl.y)).add(surfN.mul(npl.z)).normalize();
+  const nObj: N = vec3(nAnchor.x, nAnchor.y.mul(cp).sub(nAnchor.z.mul(sp)), nAnchor.y.mul(sp).add(nAnchor.z.mul(cp)));
   const nView: N = transformNormalToView(varying(nObj)).normalize();
   m.normalNode = nView;
 
@@ -238,5 +256,5 @@ export function buildGlyphRelief(
   mesh.castShadow = false; // enabled by applyFrame at the rise (§14: contact/shadow pipelines unbiased)
   mesh.receiveShadow = true;
   mesh.visible = false;
-  return { mesh, uGeoDepth, uP, heightMaterial };
+  return { mesh, uGeoDepth, uP, heightMaterial, uPitch, uLift };
 }

@@ -1,5 +1,5 @@
 {
- "note": "Blessed regression references. Hashes are environment-specific — re-bless when the capture environment changes. PNG blessing and SSIM/ΔE00 gates land with the CI harness. BLESSING POLICY (learned 2026-08-25): only hash from cold loads on a settled dev server — the first load after an HMR edit can serve a mixed module graph and taint the hash.",
+ "note": "Blessed regression references. Hashes are environment-specific — re-bless when the capture environment changes. PNG blessing and SSIM/ΔE00 gates land with the CI harness. BLESSING POLICY (learned 2026-08-25): only hash from cold loads on a settled dev server — the first load after an HMR edit can serve a mixed module graph and taint the hash. WARM-UP (learned M6, 2026-09-01): captures render 15 frames before readback (&warm=N, default 15) — three frames raced the WebGPU async pipeline compiles (R-1.00 hashed three ways across cold loads); every mesh-visible frame is reproduced across >=2 cold loads before blessing.",
  "environment": {
   "machine": "MacBook Pro (Apple Silicon)",
   "browser": "Chromium (Claude Code browser pane)",
@@ -102,20 +102,40 @@
    "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
    "url": "/?capture=0.710&tier=1",
    "sha256": {
-    "webgpu": "cb1429c68be2d8b7437d24631a73b822e235080e02d10d2460f0189aa5be3a43",
+    "webgpu": "f69955738fd62098bb2da3d1e491e9de34ac2378b328d6e5707c786fe7436c09",
     "webgl2": "pending CI re-bless (see R-0.00 note)"
    },
-   "verified": "2026-09-01, TWO cold loads identical (cb1429c6...). Supersedes 55c83049... which was NOT reproducible: R-0.710 flipped between 55c83049... and 2ecd244a... across cold loads (also seen as the T3 \"difference\") — a two-state z-fight at the base seam (mesh base exactly on the parchment surface; whichever pipeline compiled first drew first). Fixed in src/relief/mesh.ts: renderOrder 1 (mesh after parchment) + 1e-5 world seam clearance. M4 close — SS14 handoff midpoint."
+   "verified": "2026-09-01, TWO cold loads identical (cb1429c6...). Supersedes 55c83049... which was NOT reproducible: R-0.710 flipped between 55c83049... and 2ecd244a... across cold loads (also seen as the T3 \"difference\") — a two-state z-fight at the base seam (mesh base exactly on the parchment surface; whichever pipeline compiled first drew first). Fixed in src/relief/mesh.ts: renderOrder 1 (mesh after parchment) + 1e-5 world seam clearance. M4 close — SS14 handoff midpoint. · RE-BLESSED 2026-09-01 (M6): the M6 mesh shader adds the S7 pivot/carry ops (zero-valued at p 0.71 — identical in value, not bit-identical), and captures now warm 15 frames; supersedes cb1429c6...; two cold loads identical"
   },
   {
    "id": "R-0.76-T1",
-   "milestone": "M5 open — the rise (SS20 DoD frame): per-ayah stagger + transmutation + contact blob live",
+   "milestone": "M5 CLOSED (user sign-off 2026-09-01) — the rise: stagger + transmutation + contact blob (SS20 DoD frame)",
    "url": "/?capture=0.76&tier=1",
    "sha256": {
-    "webgpu": "21859a5150f38e1a28d32fbc063db7e8ecfe63074f475babd5210d1440d54770",
+    "webgpu": "12e45a53d2402452a2397e196968533951156615f937ccd01752b835168a3b84",
     "webgl2": "pending CI re-bless (see R-0.00 note)"
    },
-   "verified": "2026-09-01 — TWO cold loads identical; T2 identical (tier differentiation beyond the DPR cap is M7 scope). Blessing formal at M5 close with the user review."
+   "verified": "2026-09-01 — BLESSED at M5 close on user sign-off; two cold loads identical, T2 identical (tier differentiation beyond the DPR cap is M7 scope) · RE-BLESSED 2026-09-01 (M6): same M6 shader-graph change (pivot ops at zero) — supersedes 21859a51...; two cold loads identical"
+  },
+  {
+   "id": "R-0.93-T1",
+   "milestone": "M6 open — facing (SS20 DoD frame): mid-pivot, gaze tracking the lifting assembly, extent-fit distance",
+   "url": "/?capture=0.93&tier=1",
+   "sha256": {
+    "webgpu": "f6dddb0ee425709c961185d796daab452fd689ff848b24c7ff3ad7827670c7b6",
+    "webgl2": "pending CI re-bless (see R-0.00 note)"
+   },
+   "verified": "2026-09-01 — two cold loads identical (warm 15); formal blessing at M6 close with the user review"
+  },
+  {
+   "id": "R-1.00-T1",
+   "milestone": "M6 open — the held ending (SS20 DoD frame): 12° off frontal, center y 0.40, parchment receded, key cone 22°",
+   "url": "/?capture=1.0&tier=1",
+   "sha256": {
+    "webgpu": "2acc551f54a3512f0f2de3bb732fe551fed339a33fd0822b5b5437350c8902d5",
+    "webgl2": "pending CI re-bless (see R-0.00 note)"
+   },
+   "verified": "2026-09-01 — two cold loads identical (warm 15); T2 + noblob variants recorded in m6_open; formal blessing at M6 close"
   }
  ],
  "probes": {
@@ -280,6 +300,29 @@
    "R-0.80-T1": "7f9318944263d18e50837e0f8ebd1a1717e772a3fea773ec3eccc94d83a1dcb1 (reproduced across two captures)",
    "R-0.84-T1": "5439580559112d29dbdb369c1cc93feaf71dbc5747fa15e2f58fc3f781a834cc",
    "R-0.80-T3-390x844": "1bbcc08a4e6b... (mobile legibility capture)"
+  },
+  "closed": "M5 CLOSED 2026-09-01 on user sign-off (\"signed off — bless R-0.76 and continue to M6\"); the 390 px contact-shadow legibility judged by the user with the sign-off. Anisotropy (SS7 0.25 along the stroke) carried into M6 polish."
+ },
+ "m6_open": {
+  "scope": "facing + finish (SS5/SS10 S7, SS15, SS13): pivot to 12 deg off frontal, parchment recede, key mask/fill/cone/env drivers, idle micro-motion, pointer parallax, dust, reduced-motion mode, p=1 hold audit",
+  "facing": "RIGID pivot of the glyph assembly about the text-block center (x axis through (0,0,0.0075)) by 78 deg x E6 over [0.84,1.0] + carry of the center to the rest pose; parchment + ribbon recede (0,-0.02,-0.10) x E6 applied after the blob uv; key mask 1->0.55 (albedo approximation), fill 0.13->0.20, key cone 26->22 deg, env yaw ->-38, blob x cos^2(pitch). RE-AUTHORED vs spec: rest center y 0.40 (spec 0.185 assumed a much smaller assembly — the 0.72-tall v1.5 block pitched about its center dips below the page at 0.185); the SS9 gaze TRACKS the assembly center across S7 and the distance comes from an assembly-extent fit (like the S1-2 sheet fit): d 2.06 at p 1 (anchor 1.41), realized text width ~0.45 frame (spec 0.66 was for the smaller assembly); key/rim targets track the standing block; cone trim stops at 22 deg (18 deg left the basmalah outside the cone).",
+  "idle": "IdleController: arms after 4 s still (scroll vLpf < 2e-3 and no pointer motion 300 ms), 2 s smoothstep ramp; breath 2.5e-4 @0.10 Hz into the field (uBreath, spatial bump), key +-1.5% /9 s, env yaw +-2 deg /14 s, camera drift 0.002 (sum of incommensurate sines); zeroed in reduced motion + capture",
+  "parallax_dust": "pointer gimbal +-0.35 deg, spring w 12.6 zeta 0.9 (camera.ts), key sway +-0.004 world; Dust: 640 motes PointsNodeMaterial soft discs #E8DCC2 alpha 0.03-0.045, drifting through the key beam, fades in with the facing factor, hidden in capture + reduced motion",
+  "reduced_motion": "director/reduced.ts: seven held centers [0, 0.21, 0.45, 0.60, 0.685, 0.884, 1.0] (ink pre-dried: ink pass evaluated 0.05 ahead; rise at completed pose), scroll->nearest band, arrow keys/pager dots (in a <nav>) move the SCROLL (single source of truth), 300 ms DOM-overlay dissolve, camera cuts; sim/idle/parallax/dust/env drift off; ?reduced=1 QA override",
+  "dod_status": {
+   "axe": "PASS — axe-core 4.10.2 (wcag2a, wcag2aa, best-practice) on the reduced-motion page: 0 violations, 28 passes (after adding landmarks: <main>, role=img canvas, status hud, <nav> pager)",
+   "idle_amplitudes": "PASS by construction — amplitudes are the SS15 constants (breath 2.5e-4, key 1.5%, yaw 2 deg, drift 0.002)",
+   "p1_drift": "instrument ?hold=N: 20 s pilot mean luma 21.26, flux drift 1.12% (limit 2%) — 60 s run recorded below",
+   "noblob": "R-1.00-noblob captured: PCSS carries S7 (the long soft cast shadow on the page is the key shadow; the blob contributes <= cos^2(78 deg) = 4% at rest)"
+  },
+  "candidates": {
+   "R-0.80-T1": "9dac53395b39fd6e688640b0845d4d47450e789823bda49abfc5f22276ce5d28 (M6 shader graph; x2 cold loads)",
+   "R-0.84-T1": "re-capture at M6 close"
+  },
+  "review_frames": "qa/review/m6-R093.png, m6-R100.png, m6-R100-noblob.png",
+  "variants": {
+   "R-1.00-T2": "2acc551f54a3512f0f2de3bb732fe551fed339a33fd0822b5b5437350c8902d5 (IDENTICAL to T1 — tiers differ only by the DPR cap until M7)",
+   "R-1.00-noblob": "6cb86572de79964fff51230a415249283e3d91c2e91db323e9309383b9184813 (uContactBlob = 0; the long soft cast shadow on the page is PCSS — SS8 \"PCSS carries S7 alone\")"
   }
  }
 }

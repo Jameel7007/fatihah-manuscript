@@ -127,20 +127,20 @@
   <p class="sub">One aged parchment, seven āyāt, everything a pure function of scroll. This page tracks the build; the
      <a href="https://claude.ai/code/artifact/1fe75f9f-9779-4526-b424-bac53ba1143f">design &amp; engineering specification</a> holds the contract.</p>
   <div class="stamp">
-    <span class="chip">updated <b>2026-09-01 · pm</b></span>
+    <span class="chip">updated <b>2026-09-01 · late</b></span>
     <span class="chip">spec <b>v1.5</b></span>
-    <span class="chip">milestone <b>M5 · in progress</b></span>
+    <span class="chip">milestone <b>M6 · in progress</b></span>
     <span class="chip">branch <b>main · 2026-09-01</b></span>
     <span class="chip">repo <b>Jameel7007/fatihah-manuscript</b> (private)</span>
   </div>
 </header>
 
 <section>
-  <p class="lede">Five of nine milestones are closed and signed off. The piece boots on WebGPU with a WebGL2 fallback,
-  unrolls from an 82%-wrapped scroll, carries the full look, writes the sūrah in ink, presses it into relief, and now
-  <b>the text rises and turns to gold</b> — M5 is live end to end: per-āyah staggered extrusion in reading order, ink→gold
-  transmutation, and the contact-shadow blob under the risen letters. M5's own DoD is mostly measured; what remains is
-  <b>your review of the rise frames</b>, the anisotropy polish (deferred to M6), and the mobile legibility judgment.</p>
+  <p class="lede">Six of nine milestones are closed and signed off. The full journey now renders end to end — rolled scroll,
+  unroll, ink, relief, the gilded rise, and the <b>facing state</b>: the text stands off the page at 12° from frontal,
+  the parchment recedes beneath it carrying the long cast shadow, the ending holds with idle breath, parallax and dust,
+  and a reduced-motion mode of seven held compositions passes an accessibility audit. M6's DoD is measured; what remains
+  is <b>your review of the facing frames</b> and the 60 s hold reading, then M7 — performance and payload.</p>
 </section>
 
 <section>
@@ -152,8 +152,8 @@
     <div class="node done"><div class="dot"></div><div class="tag">M2</div><div class="nm">the look</div></div>
     <div class="node done"><div class="dot"></div><div class="tag">M3</div><div class="nm">ink</div></div>
     <div class="node done"><div class="dot"></div><div class="tag">M4</div><div class="nm">relief &amp; handoff</div></div>
-    <div class="node now"><div class="dot"></div><div class="tag">M5</div><div class="nm">the rise</div></div>
-    <div class="node pend"><div class="dot"></div><div class="tag">M6</div><div class="nm">facing &amp; finish</div></div>
+    <div class="node done"><div class="dot"></div><div class="tag">M5</div><div class="nm">the rise</div></div>
+    <div class="node now"><div class="dot"></div><div class="tag">M6</div><div class="nm">facing &amp; finish</div></div>
     <div class="node pend"><div class="dot"></div><div class="tag">M7</div><div class="nm">performance</div></div>
     <div class="node pend"><div class="dot"></div><div class="tag">M8</div><div class="nm">ship QA</div></div>
   </div>
@@ -165,8 +165,8 @@
     <tr><td class="n">M2</td><td>Parchment materials, fiber/util/env textures, PCSS, grade chain, calibrations (#0D0906 bg, 18% key), text pipeline + canonical verification</td><td><span class="pill p-done">closed</span></td><td class="n">08-25</td></tr>
     <tr><td class="n">M3</td><td>Ink: MTSDF + stroke-order atlases, per-āyah write windows, wet trail (measured 0.045 ± 10%), bleed, writing dwell (×1.35 scroll travel)</td><td><span class="pill p-done">closed</span></td><td class="n">08-28</td></tr>
     <tr><td class="n">M4</td><td>Presenting + relief: light choreography, §14 emboss, bevel-extruded glyph mesh, geometry handoff, camera verification — <span class="dim">plus the v1.5 text revision landed mid-milestone</span></td><td><span class="pill p-done">closed</span></td><td class="n">09-01</td></tr>
-    <tr><td class="n">M5</td><td>The rise: per-āyah stagger to full depth, contact shadows (height-field blob + PCSS), ink→gold transmutation <span class="dim">(meshopt/KTX2 packaging moved to M7)</span></td><td><span class="pill p-now">in progress</span></td><td class="n">—</td></tr>
-    <tr><td class="n">M6</td><td>Facing + finish: pivot to 12° presentation, env-yaw sweep, idle motion, p = 1 hold, reduced-motion mode</td><td><span class="pill p-pend">pending</span></td><td class="n">—</td></tr>
+    <tr><td class="n">M5</td><td>The rise: per-āyah stagger to full depth, contact shadows (height-field blob + PCSS), ink→gold transmutation <span class="dim">(meshopt/KTX2 packaging moved to M7)</span></td><td><span class="pill p-done">closed</span></td><td class="n">09-01</td></tr>
+    <tr><td class="n">M6</td><td>Facing + finish: pivot to 12° presentation, env-yaw sweep, idle motion, p = 1 hold, reduced-motion mode <span class="dim">(S7 geometry re-authored for the v1.5 block)</span></td><td><span class="pill p-now">in progress</span></td><td class="n">—</td></tr>
     <tr><td class="n">M7</td><td>Performance: three quality tiers, loading phases, poster, thermal — 60 fps desktop / iPhone 15, 30 fps iPhone 12, ≤ 8.5 MB</td><td><span class="pill p-pend">pending</span></td><td class="n">—</td></tr>
     <tr><td class="n">M8</td><td>Ship QA: cross-browser matrix, fallback plates, <b>scholarly review of the rendered text against a printed muṣḥaf</b></td><td><span class="pill p-pend">pending</span></td><td class="n">—</td></tr>
   </table>
@@ -175,7 +175,7 @@
 
 <section>
   <h2>The scroll axis</h2>
-  <p class="sub">Everything is a pure function of p ∈ [0, 1]. What exists today: states 1–6 render fully — the text is risen and gilded by p ≈ 0.88; the S7 facing pivot (M6) is not yet built.</p>
+  <p class="sub">Everything is a pure function of p ∈ [0, 1]. All seven states render; the held ending at p = 1 carries idle breath, parallax and dust (all zero in capture mode).</p>
   <div class="axis">
     <div class="axisbar">
       <div class="seg" style="left:6%"><span>.06</span></div>
@@ -194,41 +194,41 @@
       <span style="left:78%">rising</span>
       <span style="left:92%">facing</span>
     </div>
-    <div class="axislbl"><b>LIVE TODAY: p 0 → 0.88</b><b>M6 TERRITORY: p 0.84 → 1.0 (facing)</b></div>
+    <div class="axislbl"><b>LIVE TODAY: the whole axis, p 0 → 1</b><b>M7–M8: tiers, payload, ship QA</b></div>
   </div>
 </section>
 
 <section>
-  <h2>Now: inside M5</h2>
+  <h2>Now: inside M6</h2>
   <div class="cols">
     <div class="card">
       <h3>Landed this milestone</h3>
       <ul>
-        <li>§10 rise clocks — each cluster starts at 0.722 + 0.0115·(āyah−1) + 0.0012·(reading-order index), rises over 0.093 with the no-overshoot ease; the handoff and the stagger overlap without a jump</li>
-        <li>§14/§7 transmutation — gold lags each cluster's rise by a quarter window: burnished leaf face, ~8% wear to red-brown bole on the crowns, darker sidewalls toward the root, markers a touch duller</li>
-        <li>§8 contact shadow — height-field blob under the risen letters (blur radius follows caster height), ramping 0.72 → 0.80, plus PCSS from the key</li>
-        <li>§14 ghost — the flat ink under the caps fades to the 8% stain over 0.78 → 0.84</li>
-        <li>Determinism fix — the base seam no longer z-fights (draw order pinned + hair of clearance); every mesh frame now reproduces across cold loads</li>
+        <li>§5 facing — the assembly pivots rigidly to 12° off frontal and lifts to rest at y 0.40 while the page recedes; key mask, fill, cone and env-yaw drivers per §10</li>
+        <li>§9 for S7 — the gaze tracks the lifting block and the distance fits its projected extent <span class="dim">(the spec's S7 numbers assumed a much smaller assembly — re-authored, documented)</span></li>
+        <li>§15 idle — breath, key, yaw and camera drift arm after 4 s of stillness; pointer parallax on a damped gimbal; 640 dust motes in the key beam</li>
+        <li>§13 reduced motion — seven held compositions, 300 ms dissolves, pager dots and arrow keys; sim/idle/parallax/dust off; ink pre-dried</li>
+        <li>Capture warm-up — 15 frames before readback; the 3-frame window raced async pipeline compiles (three hashes at p = 1)</li>
       </ul>
     </div>
     <div class="card">
-      <h3>Measured (§20 M5 DoD)</h3>
+      <h3>Measured (§20 M6 DoD)</h3>
       <ul>
-        <li>One draw call for the assembly — <b>PASS</b> (single merged mesh; 8 calls per frame in total at p 0.80, 357k triangles)</li>
-        <li>SDF/geometry alignment ≤ 0.5 px — <b>PASS</b> (0.46 px worst, build audit)</li>
-        <li>Thin-stroke guard, no self-intersection — <b>PASS by construction</b> (height-graph tessellation)</li>
-        <li>Contact shadow legible on a 390 px capture — <span class="pill p-wait">review</span>&nbsp; capture taken (m5-R080-390px.png); your eye decides</li>
-        <li>R-0.76 DoD frame reproduced across cold loads and tiers (21859a51…)</li>
+        <li>Reduced-motion page, axe-core audit — <b>PASS</b> (0 violations, 28 checks) · the manual audit is yours</li>
+        <li>Idle amplitudes within §15 — <b>PASS by construction</b> (the constants are the spec's)</li>
+        <li>p = 1 luminance drift ≤ 2 % over 60 s — 20 s pilot 1.12 %; <span class="pill p-wait">60 s run</span>&nbsp; recorded in the manifest</li>
+        <li>R-1.00-noblob — PCSS carries state 7 (the blob is ≤ 4 % at rest) — captured</li>
+        <li>R-0.93 / R-1.00 reproduced across cold loads and tier 2 (f6dddb0e… / 2acc551f…)</li>
       </ul>
     </div>
   </div>
   <div class="panel">
-    <h3>Awaiting you — the M5 close gate</h3>
+    <h3>Awaiting you — the M6 close gate</h3>
     <ol>
-      <li>Review the <b>rise frames</b>: R-0.76 (early, ink turning), R-0.80 (mid, gold with contact pools), R-0.84 (full depth) — sent with this update.</li>
-      <li>Judge the <b>390 px contact shadow</b> (the mobile legibility DoD is a visual call).</li>
-      <li>On sign-off: R-0.76-T1/T2/T3 blessed formally; anisotropy along the stroke (§7, 0.25) lands in M6's polish.</li>
-      <li>Still open from earlier: a foregrounded-browser pass for scrub shimmer, the R-flick (key Q), and the scroll storm.</li>
+      <li>Review the <b>facing frames</b>: R-0.93 (mid-pivot) and R-1.00 (the held ending) — sent with this update.</li>
+      <li>The <b>manual reduced-motion audit</b> (open with <code>?reduced=1</code>: arrow keys / pager dots step the seven held states).</li>
+      <li>Rule on the <b>S7 re-authoring</b>: rest center y 0.40, extent-fit distance (text ≈ 0.45 frame width instead of the spec's 0.66), cone 22°.</li>
+      <li>Still open: anisotropy along the stroke (§7); a foregrounded-browser pass for the live-feel checks (scrub shimmer, R-flick, storm, and the p = 1 idle by eye).</li>
     </ol>
   </div>
 </section>
@@ -246,6 +246,7 @@
     <tr><td class="n">08-28</td><td>M3 signed off · “writing a little slower”</td><td>Write sequence approved; §13 dwell added (windows untouched)</td></tr>
     <tr><td class="n">08-30</td><td><b>v1.5: ʿUthmānic Ḥafṣ stands · classical centered · shamsah rosettes</b></td><td>Justification retired; basmalah sīn 2.0 em; markers ride the full glyph pipeline; مالك resolved — the dagger alif was there all along</td></tr>
     <tr><td class="n">09-01</td><td>M4 signed off · silhouette p95 reading accepted</td><td>Five v1.5 frames blessed; the contour median is the silhouette metric; M5 opened</td></tr>
+    <tr><td class="n">09-01</td><td>M5 signed off · 390 px contact shadow accepted</td><td>R-0.76 blessed; M6 opened</td></tr>
   </table>
   </div>
 </section>
@@ -271,9 +272,9 @@
     <tr><th>Frame</th><th>State</th><th class="n">Hash</th><th>Note</th></tr>
     <tr><td class="n">R-0.00 · R-0.21</td><td><span class="pill p-pass">blessed</span></td><td class="n"><span class="hash">80a1f5e1… · 0828669c…</span></td><td>M2 look, pre-ink — unaffected by v1.5, still valid</td></tr>
     <tr><td class="n">R-0.34 · 0.45 · 0.56 · 0.645</td><td><span class="pill p-pass">blessed</span></td><td class="n"><span class="hash">f3d119ee… · 3dd73e95… · 16df1d95… · e6f14cfc…</span></td><td>M4 close (09-01); T3 hashes equal T1 until M7 tiers</td></tr>
-    <tr><td class="n">R-0.710</td><td><span class="pill p-pass">blessed</span></td><td class="n"><span class="hash">cb1429c6…</span></td><td>Handoff midpoint — re-taken after the seam determinism fix (two cold loads identical)</td></tr>
-    <tr><td class="n">R-0.76</td><td><span class="pill p-wait">candidate</span></td><td class="n"><span class="hash">21859a51…</span></td><td>M5 DoD frame — reproduced ×2 cold loads + T2; formal blessing at M5 close</td></tr>
-    <tr><td class="n">R-0.80 · 0.84</td><td><span class="pill p-wait">candidate</span></td><td class="n"><span class="hash">7f931894… · 54395805…</span></td><td>Rise mid / full depth</td></tr>
+    <tr><td class="n">R-0.710</td><td><span class="pill p-pass">blessed</span></td><td class="n"><span class="hash">f6995573…</span></td><td>Handoff midpoint — re-blessed under the M6 shader graph + 15-frame warm-up (×2 cold loads)</td></tr>
+    <tr><td class="n">R-0.76</td><td><span class="pill p-pass">blessed</span></td><td class="n"><span class="hash">12e45a53…</span></td><td>M5 DoD frame — blessed at M5 close; re-verified under M6 (×2 cold loads)</td></tr>
+    <tr><td class="n">R-0.93 · 1.00</td><td><span class="pill p-wait">candidate</span></td><td class="n"><span class="hash">f6dddb0e… · 2acc551f…</span></td><td>M6 DoD frames — reproduced ×2 cold loads (+ T2 at 1.00); formal blessing at M6 close</td></tr>
     <tr><td class="n">WebGL2</td><td><span class="pill p-pend">CI</span></td><td class="n"><span class="hash">7b1e67c2…</span></td><td>v1.5 full pipeline smoke on the fallback (R-0.45); full blessing per CI policy</td></tr>
   </table>
   </div>
@@ -291,7 +292,8 @@
     <div class="card">
       <h3>Debt ledger — tracked, not blocking</h3>
       <ul>
-        <li>Anisotropy along the stroke (§7 aniso 0.25) <span class="dim">— M6 polish, needs a mesh tangent frame</span></li>
+        <li>Anisotropy along the stroke (§7 aniso 0.25) <span class="dim">— polish item, needs a mesh tangent frame</span></li>
+        <li>Parchment key mask is an albedo approximation <span class="dim">(no per-light mask in the node lighting model)</span></li>
         <li>meshopt/glb + KTX2 packaging <span class="dim">(§18 — M7 payload work; curvature-adaptive mesh only if the S7 closeups call for it)</span></li>
         <li>Translucency into the shadowed light loop <span class="dim">(emissive-approximated today)</span></li>
         <li>+0.5-count warm background residue <span class="dim">(suspected env leak)</span></li>

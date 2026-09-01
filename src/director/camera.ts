@@ -10,7 +10,7 @@
 import { CatmullRomCurve3, PerspectiveCamera, Vector3 } from 'three/webgpu';
 import { evalDeform, pchip } from '../field/deform';
 import { cpuPose } from '../field/cpuPose';
-import { poseTransform } from './drivers';
+import { FACE_CENTER_ANCHOR, FACE_CENTER_REST, FACE_START, faceFactor, facePitch, poseTransform } from './drivers';
 import { E1, clamp01 } from './easing';
 
 // Authored per-side margin. Sampling interval, curve smoothing, and PCHIP interval lag eat
@@ -99,10 +99,39 @@ export class CameraRig {
   private dollyCurve: ((p: number) => number) | null = null;
   private dollyAspect = 0;
 
+  // §9 pointer/gyro parallax: an orbit gimbal of ±0.35° driven by a critically-ish damped
+  // spring (ω 12.6 rad/s, ζ 0.9) toward the pointer's normalized offset; applied after the
+  // spline and before the look-at damper. Off in reduced motion and in capture.
+  private gimbal = { x: 0, y: 0, vx: 0, vy: 0 };
+  private pointerTarget = { x: 0, y: 0 };
+  /** §15 idle camera drift (world), set per frame by the idle controller */
+  drift: [number, number, number] = [0, 0, 0];
+  parallaxEnabled = true;
+
+  setPointer(nx: number, ny: number): void {
+    this.pointerTarget.x = Math.max(-1, Math.min(1, nx));
+    this.pointerTarget.y = Math.max(-1, Math.min(1, ny));
+  }
+
+  private stepGimbal(dt: number): void {
+    if (!this.parallaxEnabled || dt <= 0) return;
+    const w = 12.6;
+    const z = 0.9;
+    const g = this.gimbal;
+    for (const axis of ['x', 'y'] as const) {
+      const v = axis === 'x' ? 'vx' : 'vy';
+      const target = this.pointerTarget[axis];
+      const a = w * w * (target - g[axis]) - 2 * z * w * g[v];
+      g[v] += a * dt;
+      g[axis] += g[v] * dt;
+    }
+  }
+
   update(p: number, dt: number): void {
     this.pLook += (p - this.pLook) * (dt > 0 ? 1 - Math.exp(-dt / 0.08) : 0);
     this.posCurve.getPoint(curveT(p), this.anchorPos);
     this.lookCurve.getPoint(curveT(p), this.lookNow);
+    this.stepGimbal(dt);
 
     if (p < BLEND_END) {
       if (this.dollyAspect !== this.camera.aspect) {
@@ -121,19 +150,94 @@ export class CameraRig {
       };
       this.dir.copy(this.anchorPos).sub(this.lookNow).normalize();
       this.camera.position.copy(this.lookNow).addScaledVector(this.dir, d);
+    } else if (p > FACE_START) {
+      // S7 (M6): the gaze TRACKS the lifting assembly center (blended from the anchor look-at
+      // by the facing factor), and the distance comes from the ASSEMBLY-extent fit — the v1.5
+      // seven-line block is 0.72 world tall and, pitched toward the camera, overflows the §9
+      // anchor distance vertically. Same rule as the S1–2 sheet fit: the smallest distance
+      // along the anchor direction such that the pitched block's corners project inside the
+      // viewport with the authored margin; blends in over [0.84, 0.88], never dollies in.
+      const e = faceFactor(p);
+      const cA = new Vector3(...FACE_CENTER_ANCHOR);
+      const cR = new Vector3(...FACE_CENTER_REST);
+      const center = cA.clone().lerp(cR, e);
+      this.dir.copy(this.anchorPos).sub(this.lookNow).normalize();
+      this.lookNow.lerp(center, e);
+      const dAnchor = this.anchorPos.distanceTo(this.lookNow);
+      const dFit = this.fitAssembly(p, this.dir, this.lookNow);
+      const blend = E1(clamp01((p - FACE_START) / 0.04));
+      const d = dAnchor + (Math.max(dAnchor, dFit) - dAnchor) * blend;
+      (window as unknown as { __s7fit?: unknown }).__s7fit = { p: +p.toFixed(3), dAnchor: +dAnchor.toFixed(3), dFit: +dFit.toFixed(3), d: +d.toFixed(3) };
+      this.camera.position.copy(this.lookNow).addScaledVector(this.dir, d);
     } else {
       this.camera.position.copy(this.anchorPos);
     }
 
+    // parallax orbit about the look point (±0.35° gimbal) + idle drift
+    if (this.parallaxEnabled && (this.gimbal.x !== 0 || this.gimbal.y !== 0)) {
+      const rel = this.camera.position.clone().sub(this.lookNow);
+      const yaw = (0.35 * Math.PI / 180) * this.gimbal.x;
+      const pitch = (0.35 * Math.PI / 180) * this.gimbal.y;
+      rel.applyAxisAngle(new Vector3(0, 1, 0), yaw);
+      const right = new Vector3().crossVectors(rel, new Vector3(0, 1, 0)).normalize();
+      rel.applyAxisAngle(right, pitch);
+      this.camera.position.copy(this.lookNow).add(rel);
+    }
+    this.camera.position.x += this.drift[0];
+    this.camera.position.y += this.drift[1];
+    this.camera.position.z += this.drift[2];
+
     this.lookCurve.getPoint(curveT(this.pLook), this.lookTarget);
+    if (p > FACE_START) {
+      // the trailing gaze also tracks the assembly center in S7
+      const e = faceFactor(this.pLook);
+      this.lookTarget.lerp(new Vector3(...FACE_CENTER_ANCHOR).lerp(new Vector3(...FACE_CENTER_REST), e), e);
+    }
     this.camera.lookAt(this.lookTarget);
     this.camera.fov = (2 * Math.atan(12 / focalAt(p)) * 180) / Math.PI;
     this.camera.updateProjectionMatrix();
   }
 
-  /** Capture mode: no trailing gaze — pose must be a pure function of p. */
+  /** Smallest distance along `dir` from `look` such that the text block — pitched and lifted
+   *  per the S7 drivers — projects inside the viewport with DOLLY_MARGIN per side. Block
+   *  bbox on the sheet: x ±0.28, the §3 text band v ∈ [0.15, 0.865] (z = v − 0.5). */
+  private fitAssembly(p: number, dir: Vector3, look: Vector3): number {
+    const pitch = facePitch(p);
+    const lift = faceFactor(p);
+    const cA = new Vector3(...FACE_CENTER_ANCHOR);
+    const cR = new Vector3(...FACE_CENTER_REST);
+    const center = cA.clone().lerp(cR, lift);
+    const up = new Vector3(0, 1, 0);
+    const xAxis = new Vector3().crossVectors(up, dir).normalize();
+    const yAxis = new Vector3().crossVectors(dir, xAxis);
+    const Ty = 12 / focalAt(p); // the true focal for this p (camera.fov lags one frame / is stale on snap)
+    const Tx = Ty * this.camera.aspect;
+    const kx = Tx * (1 - DOLLY_MARGIN);
+    const ky = Ty * (1 - DOLLY_MARGIN);
+    let dFit = 0.2;
+    const rel = new Vector3();
+    for (const x of [-0.28, 0.28]) {
+      for (const z of [-0.35, 0.365]) {
+        // rigid pitch about the block center (x axis), then the carry — same law as the vertex stage
+        const rz = z - cA.z;
+        const ry = 0;
+        const py = ry * Math.cos(pitch) - rz * Math.sin(pitch);
+        const pz = ry * Math.sin(pitch) + rz * Math.cos(pitch);
+        rel.set(x, py + center.y, pz + center.z).sub(look);
+        const rx = rel.dot(xAxis);
+        const ryy = rel.dot(yAxis);
+        const rzz = rel.dot(dir);
+        dFit = Math.max(dFit, rzz + Math.abs(rx) / kx, rzz + Math.abs(ryy) / ky);
+      }
+    }
+    return dFit;
+  }
+
+  /** Capture mode: no trailing gaze, no parallax, no drift — pose must be a pure function of p. */
   snap(p: number): void {
     this.pLook = p;
+    this.parallaxEnabled = false;
+    this.drift = [0, 0, 0];
     this.update(p, 0);
   }
 }

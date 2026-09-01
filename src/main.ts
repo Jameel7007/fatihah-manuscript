@@ -2,7 +2,10 @@ import { Color, PerspectiveCamera, REVISION } from 'three/webgpu';
 import { createRenderer } from './core/renderer';
 import { DPR_CAP, detectTier } from './core/tiers';
 import { CameraRig } from './director/camera';
-import { contactRamp, embossFactor, envYawDeg, geoDepth, inkGhost, keyFactor, poseTransform, rimFactor, RISE_START, stateLabel } from './director/drivers';
+import { blobTilt, contactRamp, embossFactor, envYawDeg, FACE_CENTER_REST, faceFactor, facePitch, fillFactor, geoDepth, inkGhost, keyConeDeg, keyFactor, parchmentKeyMask, poseTransform, recede, rimFactor, RISE_START, stateLabel } from './director/drivers';
+import { IdleController, type IdleState } from './director/idle';
+import { ReducedMotion } from './director/reduced';
+import { Vector3 } from 'three/webgpu';
 import { ScrollDriver, SCROLL_DENSITY_TOTAL } from './director/scroll';
 import { evalDeform } from './field/deform';
 import { Field } from './field/field';
@@ -48,6 +51,10 @@ const tier = detectTier(q.get('tier'));
 const isCapture = captureP !== null || probeP !== null || sceneMode === 'ramp' || sceneMode === 'inkrt' || calibrate !== null;
 const capW = Number(q.get('w') ?? 1440);
 const capH = Number(q.get('h') ?? 900);
+// frames rendered before the capture readback (&warm=N). LEARNED at M6: three frames raced
+// the WebGPU backend's async pipeline compiles — R-1.00 hashed three different ways across
+// cold loads until the warm-up covered them; 15 frames settle every state (M6, 2026-09-01).
+const captureWarm = Math.max(1, Number(q.get('warm') ?? 15));
 
 const canvas = document.querySelector<HTMLCanvasElement>('#gl');
 const hud = document.querySelector<HTMLDivElement>('#hud');
@@ -574,7 +581,11 @@ async function runMain(): Promise<void> {
     console.error('[relief] glyphs.bin load failed — rendering without the glyph mesh', err);
     return undefined;
   });
-  const { scene, sheetRoot, key, rim, uEmboss, inkPass, relief, contact, uContact, uGhost } = buildStage(renderer, field, sil, debugMode, ink, glyphBin);
+  const { scene, sheetRoot, key, rim, uEmboss, inkPass, relief, contact, uContact, uGhost, uRecede, uKeyMask, fill, dust } = buildStage(renderer, field, sil, debugMode, ink, glyphBin);
+  const fillBase = fill.intensity;
+  const keyBaseX = key.position.x;
+  // §13 reduced motion (prefers-reduced-motion, or ?reduced=1 for QA): held compositions
+  const reducedMotion = q.get('reduced') !== null || matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (q.get('noshadow') !== null) key.castShadow = false; // QA: isolate the key's shadow
   const noBlob = q.get('noblob') !== null; // QA: R-1.00-noblob (§8 — PCSS carries S7 alone)
   const rig = new CameraRig();
@@ -592,8 +603,9 @@ async function runMain(): Promise<void> {
     grade.setAspect(s.w / s.h);
   });
 
-  const applyFrame = (p: number, dt: number, simEnabled: boolean): void => {
-    inkPass?.run(renderer, p);
+  const IDLE_ZERO: IdleState = { ramp: 0, breath: 0, keyMod: 1, yawDeg: 0, drift: [0, 0, 0] };
+  const applyFrame = (p: number, dt: number, simEnabled: boolean, idle: IdleState = IDLE_ZERO, inkP: number = p): void => {
+    inkPass?.run(renderer, inkP);
     uEmboss.value = embossFactor(p); // §14 relief window (E2 in, E7 fade at the handoff)
     if (relief) {
       // §14 handoff: mesh visible from the window open; depth floored at 0.00045 (z-guard)
@@ -601,11 +613,26 @@ async function runMain(): Promise<void> {
       relief.uGeoDepth.value = geoDepth(p);
       relief.uP.value = p; // per-cluster rise + transmutation clocks (§10/§14)
       relief.mesh.castShadow = p >= RISE_START; // risen letters cast PCSS (unbiased pipeline)
+      relief.uPitch.value = facePitch(p); // §5 S7: pitch to 12° off frontal (E6)
+      relief.uLift.value = faceFactor(p); // §5 S7: carry the block center to the rest pose
     }
     uGhost.value = inkGhost(p); // §14 flat-ink ghost 1 → 0.08 over [0.78, 0.84]
-    uContact.value = noBlob ? 0 : contactRamp(p); // §8 blob ramp 0.72 → 0.80
-    key.intensity = KEY_INTENSITY * keyFactor(p); // §10 S3 dim → presenting rise
+    uContact.value = noBlob ? 0 : contactRamp(p) * blobTilt(p); // §8 blob ramp 0.72 → 0.80, faded cos²θ in S7
+    const rc = recede(p); // §5 S7: parchment recedes (−0.02 y, −0.10 z at rest)
+    (uRecede.value as Vector3).set(rc[0], rc[1], rc[2]);
+    uKeyMask.value = parchmentKeyMask(p); // §10 S7 parchment key mask → 0.55
+    fill.intensity = fillBase * fillFactor(p); // §10 S7 fill 0.13 → 0.20
+    key.angle = (keyConeDeg(p) * Math.PI) / 180; // §8 S7 cone trim 26° → 18°
+    {
+      // §8 S7: the key (and rim) aim at the standing assembly as it lifts — the trimmed cone
+      // must keep the whole text lit while the shadow frustum tightens on it
+      const e = faceFactor(p);
+      key.target.position.set(0, 0.04 + (FACE_CENTER_REST[1] - 0.04) * e, 0.2 + (FACE_CENTER_REST[2] - 0.2) * e);
+      rim.target.position.set(0, FACE_CENTER_REST[1] * e, FACE_CENTER_REST[2] * e);
+    }
+    key.intensity = KEY_INTENSITY * keyFactor(p) * idle.keyMod; // §10 S3 dim → presenting rise (+§15 idle ±1.5%)
     rim.intensity = KEY_INTENSITY * 0.3 * rimFactor(p); // §10 rim ramp
+    field.setBreath(idle.breath); // §15 idle breath (0 outside the armed idle / capture)
     const d = evalDeform(p);
     if (simEnabled) {
       residual.setInputs(dt, scroll.vLpf, d.wTop, d.wBot);
@@ -620,7 +647,7 @@ async function runMain(): Promise<void> {
     const tr = poseTransform(p, d.zTopCurl);
     sheetRoot.rotation.x = tr.rotX;
     sheetRoot.position.set(0, tr.offY, tr.offZ);
-    scene.environmentRotation.y = (envYawDeg(p) * Math.PI) / 180;
+    scene.environmentRotation.y = ((envYawDeg(p) + idle.yawDeg) * Math.PI) / 180;
   };
 
   // ---- capture / probe mode (deterministic, sim off) ----
@@ -649,7 +676,7 @@ async function runMain(): Promise<void> {
           applyFrame(p, 1 / 60, false);
           grade.render(); // grain seed stays 0 in capture — deterministic
           n++;
-          if (n >= 3 && !started) {
+          if (n >= captureWarm && !started) {
             started = true;
             void (async () => {
               try {
@@ -700,6 +727,41 @@ async function runMain(): Promise<void> {
   let flickNaN = false;
   const sparkline = makeSparkline();
 
+  // §15 idle micro-motion + §9 pointer parallax + dust — all off in reduced motion
+  const idle = new IdleController(!reducedMotion);
+  rig.parallaxEnabled = !reducedMotion;
+  let lastPointer = -1e9;
+  let pointerNX = 0;
+  window.addEventListener('pointermove', (e) => {
+    lastPointer = performance.now();
+    pointerNX = (e.clientX / window.innerWidth - 0.5) * 2;
+    rig.setPointer(pointerNX, -(e.clientY / window.innerHeight - 0.5) * 2);
+  });
+  // §13 reduced motion: seven held compositions, camera cuts, 300 ms dissolves, pager dots
+  const reduced = reducedMotion
+    ? new ReducedMotion(canvas as HTMLCanvasElement, (pState) => {
+        scroll.forced = pState;
+        rig.snap(pState);
+      })
+    : null;
+  if (reduced) {
+    scroll.forced = reduced.p;
+    rig.snap(reduced.p);
+  }
+  // ?hold=N — the p = 1 held-ending audit: pin p = 1, let the idle arm, sample mean canvas
+  // luminance once per second for N s, report the flux drift (§20 M6: ≤ 2% over 60 s)
+  const holdS = q.get('hold') !== null ? Number(q.get('hold') ?? '60') : 0;
+  const holdSamples: number[] = [];
+  let holdNext = 0;
+  const holdCanvas = document.createElement('canvas');
+  holdCanvas.width = 96;
+  holdCanvas.height = 60;
+  if (holdS > 0) {
+    scroll.forced = 1;
+    rig.snap(1);
+    rig.parallaxEnabled = false;
+  }
+
   renderer.setAnimationLoop((now: number) => {
     const dt = Math.max(0, (now - last) / 1000);
     last = now;
@@ -713,13 +775,45 @@ async function runMain(): Promise<void> {
       else if (t > 8) finishFlick();
     }
 
+    if (reduced) {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      reduced.fromScroll(max > 0 ? window.scrollY / max : 0);
+      reduced.tick(now);
+    }
     scroll.update(dt);
-    applyFrame(scroll.p, dt, true);
+    const moving = Math.abs(scroll.vLpf) > 2e-3 || now - lastPointer < 300;
+    const idleState = idle.update(dt, moving && holdS === 0);
+    rig.drift = idleState.drift;
+    // key light sway ±0.004 world with the pointer (§12), off in reduced motion
+    key.position.x = keyBaseX + (reducedMotion ? 0 : 0.004 * pointerNX);
+    // reduced motion: ink pre-dried (the trail is evaluated 0.05 ahead), sim off
+    applyFrame(scroll.p, dt, !reducedMotion, idleState, reduced ? Math.min(0.64, scroll.p + 0.05) : scroll.p);
     rig.update(scroll.p, dt);
+    dust.update(dt, reducedMotion ? 0 : faceFactor(scroll.p)); // §15 dust fades in with the facing state
     grade.setGrainSeed(Math.floor(now / 125)); // 8 Hz grain phase (§16)
     grade.render();
-    hud!.textContent = `${stateLabel(scroll.p)} · p ${scroll.p.toFixed(3)}`;
+    hud!.textContent = `${stateLabel(scroll.p)} · p ${scroll.p.toFixed(3)}${idleState.ramp > 0 ? ' · idle' : ''}${reduced ? ' · reduced motion' : ''}`;
     bar!.style.height = `${scroll.p * 100}%`;
+
+    if (holdS > 0 && now >= holdNext) {
+      holdNext = now + 1000;
+      const ctx = holdCanvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(canvas as HTMLCanvasElement, 0, 0, holdCanvas.width, holdCanvas.height);
+        const d = ctx.getImageData(0, 0, holdCanvas.width, holdCanvas.height).data;
+        let sum = 0;
+        for (let i = 0; i < d.length; i += 4) sum += 0.2126 * (d[i] ?? 0) + 0.7152 * (d[i + 1] ?? 0) + 0.0722 * (d[i + 2] ?? 0);
+        holdSamples.push(sum / (d.length / 4));
+      }
+      if (holdSamples.length >= holdS) {
+        const mean = holdSamples.reduce((a, b) => a + b, 0) / holdSamples.length;
+        const drift = (Math.max(...holdSamples) - Math.min(...holdSamples)) / (mean || 1);
+        (window as unknown as { __hold?: unknown }).__hold = { seconds: holdSamples.length, mean: +mean.toFixed(3), drift: +drift.toFixed(4), samples: holdSamples.map((v) => +v.toFixed(2)) };
+        capEl!.style.display = 'block';
+        capEl!.textContent = `HOLD p=1 · ${holdSamples.length}s · mean luma ${mean.toFixed(2)} · flux drift ${(drift * 100).toFixed(2)}% (limit 2%)`;
+        holdNext = Infinity;
+      }
+    }
   });
 
   // periodic residual energy sampling for the flick trace

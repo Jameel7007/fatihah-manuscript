@@ -143,7 +143,7 @@
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.5 · M4 closed · M5 in progress — the rise</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.5 · M5 closed · M6 in progress — facing &amp; finish</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -1653,6 +1653,45 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     by construction; R-0.76-T1 reproduced across cold loads and tiers (21859a51…); 390-px contact-shadow
     capture recorded for the legibility review. Review frames
     <span style="font-family:var(--mono);font-size:12px">qa/review/m5-R{076,080,084}.png</span>.</li>
+  </ol>
+
+  <h3>M5 closed · M6 open — facing &amp; finish <span class="tag">sign-off, 2026-09-01</span></h3>
+  <ol>
+    <li><b>M5 closed</b> on review ("signed off — bless R-0.76 and continue to M6"); R-0.76-T1 blessed; the
+    390-px contact-shadow legibility judged with the sign-off. Anisotropy along the stroke stays in the
+    M6 polish list.</li>
+    <li><b>S7 re-authored for the v1.5 block.</b> The §5/§10 numbers (center y 0.185, "text 0.66 frame
+    width", cone 18°) assumed a far smaller assembly: the seven-line block is 0.72 world tall, and pitched
+    78° about its center it dipped below the page at y 0.185 and overflowed the §9 anchor distance. Now:
+    the rest center is y 0.40 (bottom line ~0.07 above the receded page, where its long PCSS shadow lands);
+    the §9 gaze <b>tracks the assembly center</b> across S7; the distance comes from an
+    <b>assembly-extent fit</b> (the S1–2 sheet-fit rule applied to the pitched block: d 2.06 at p 1 against
+    the 1.41 anchor; realized width ≈ 0.45 frame); the key and rim targets track the standing block; the
+    cone trims to 22° rather than 18° (18° left the basmalah outside it). Pitch 78° = 12° off frontal,
+    recede (−0.02, −0.10), key mask → 0.55 (an albedo approximation — no per-light mask in the node
+    lighting model), fill 0.13 → 0.20 and env yaw → −38° are as specified.</li>
+    <li><b>Mechanism</b> — the pivot is a rigid motion in the glyph vertex stage (rotation about the block
+    center's x axis + carry), so the assembly never distorts; the parchment and ribbon take the recede after
+    the blob uv (which stays in the anchor frame); the blob fades cos²θ.</li>
+    <li><b>§15 idle, §9 parallax, dust</b> — the idle controller arms after 4 s of stillness with a 2 s
+    ramp: breath 2.5e-4 at 0.10 Hz through the field, key ±1.5 % / 9 s, env yaw ±2° / 14 s, camera drift
+    0.002 (sum of incommensurate sines); pointer parallax is a ±0.35° gimbal on a ζ 0.9 spring with ±0.004
+    key sway; 640 dust motes fade in with the facing state. All zero in capture and reduced motion.</li>
+    <li><b>§13 reduced motion</b> — seven held compositions at the state centers (ink pre-dried, the rise
+    at its completed pose), camera cuts with a 300 ms opacity dissolve (a DOM overlay of the outgoing frame),
+    pager dots and arrow keys that move the scroll itself (scroll stays the single source of truth).
+    axe-core 4.10 on that page: <b>0 violations</b> after the landmark fixes (main, img-role canvas,
+    status hud, nav pager).</li>
+    <li><b>Capture warm-up</b> — three frames before readback raced the WebGPU backend's async pipeline
+    compiles: R-1.00 hashed three different ways across cold loads until the warm-up covered them. Captures
+    now render 15 frames first; the M4/M5 blessings were re-verified under it (R-0.34/0.56/0.645 unchanged;
+    R-0.710/0.76 re-blessed — the M6 mesh shader's zero-valued pivot ops are value-identical, not
+    bit-identical). Every mesh-visible frame reproduces across two cold loads before blessing.</li>
+    <li><b>M6 DoD so far</b> — axe: pass; idle amplitudes: the §15 constants by construction; p = 1 hold
+    instrument (<span style="font-family:var(--mono);font-size:12px">?hold=N</span>): 20 s pilot flux drift
+    1.12 % (limit 2 %), 60 s run recorded in the manifest; R-1.00-noblob captured (PCSS carries S7 — the blob
+    is ≤ 4 % at rest). Frames R-0.93 / R-1.00 reproduced (f6dddb0e… / 2acc551f…). Review frames
+    <span style="font-family:var(--mono);font-size:12px">qa/review/m6-R{093,100,100-noblob}.png</span>.</li>
   </ol>
 </section>
 

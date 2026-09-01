@@ -1,7 +1,7 @@
 // p-drivers: every animated quantity is a pure function of the smoothed scroll uniform.
 // M0 carries only the drivers the gray-box needs; the full DeformUBO set lands with M1.
 
-import { E1, E2, E7, span } from './easing';
+import { E1, E2, E6, E7, span } from './easing';
 
 /** Environment yaw in degrees — §10 schedule: +12° through the unroll, sweeping to −38° as
  *  the text rises so the window reflection travels along the gold (idle drift is M6's). */
@@ -76,6 +76,50 @@ export function inkGhost(p: number): number {
 /** §8/§10 contact-shadow blob ramp: starts at 0.72, full by 0.80 (E2). */
 export function contactRamp(p: number): number {
   return E2(span(p, 0.72, 0.8));
+}
+
+// ---- M6 · facing (§5/§10 S7, 0.84 → 1.00) ---------------------------------------------
+export const FACE_START = 0.84;
+export const FACE_END = 1.0;
+export const FACE_PITCH_DEG = 78; // sheet-plane pitch at rest = 12° off camera-frontal
+export const FACE_CENTER_ANCHOR: [number, number, number] = [0, 0, 0.0075]; // text-block center on the sheet (band center v 0.5075)
+// Rest center: the spec's y 0.185 was authored for a far smaller assembly — the v1.5 seven-line block is
+// 0.72 world tall, so pitched 78° about its center it needs y ≈ 0.40 to keep the bottom line ~0.07 above
+// the receded page (where its long PCSS shadow lands). The §9 gaze tracks this center across S7.
+export const FACE_CENTER_REST: [number, number, number] = [0, 0.4, -0.045];
+export const RECEDE_REST: [number, number, number] = [0, -0.02, -0.1];
+
+/** Facing progress 0..1 (E6 — the pivot ease). */
+export function faceFactor(p: number): number {
+  return E6(span(p, FACE_START, FACE_END));
+}
+/** Assembly pitch from the sheet plane (radians). */
+export function facePitch(p: number): number {
+  return (FACE_PITCH_DEG * Math.PI / 180) * faceFactor(p);
+}
+/** Parchment recede offset (world) — E6 with the pivot. */
+export function recede(p: number): [number, number, number] {
+  const e = faceFactor(p);
+  return [RECEDE_REST[0] * e, RECEDE_REST[1] * e, RECEDE_REST[2] * e];
+}
+/** §10 "parchment key mask" 1 → 0.55 across S7 (E1). */
+export function parchmentKeyMask(p: number): number {
+  return 1 - 0.45 * E1(span(p, FACE_START, FACE_END));
+}
+/** §10 fill 0.13 → 0.20 across S7, as a multiplier of the M2 base ratio (E1). */
+export function fillFactor(p: number): number {
+  return (0.13 + 0.07 * E1(span(p, FACE_START, FACE_END))) / 0.13;
+}
+/** §8 S7: the key cone trims so the shadow frustum stays resolved on the risen text. The spec's
+ *  18° assumed the smaller assembly — the v1.5 block spans ±13° from the key at rest, so the
+ *  trim stops at 22° (the basmalah at the top of the standing block stays inside the cone). */
+export function keyConeDeg(p: number): number {
+  return 26 - 4 * E1(span(p, FACE_START, FACE_END));
+}
+/** §8 S7: the contact blob fades with cos²θ of the assembly pitch — faded, not re-projected. */
+export function blobTilt(p: number): number {
+  const c = Math.cos(facePitch(p));
+  return c * c;
 }
 
 /** §10 key-intensity factor: 1.00 through the unroll, S3 dim to 0.88 as the ink begins,

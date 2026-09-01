@@ -95,6 +95,9 @@ export class Field {
   private uB2: N = uniform(new Vector4(0.24, 0, 0, 1));
   // (len0, len1, len2, simEnabled)
   private uBLen: N = uniform(new Vector4(0.1, 0.1, 0.1, 1));
+  // §15 idle breath — signed amplitude (world) along the pose normal, shaped as one soft
+  // bump over the sheet so it reads as a breath, not a translation (zero in capture)
+  private uBreath: N = uniform(0);
 
   private evalScene: Scene;
   private nrmScene: Scene;
@@ -132,7 +135,8 @@ export class Field {
     const T: N = vec3(1, 0, 0);
     const Nn: N = pose.normal;
     const B: N = cross(Nn, T);
-    const composed: N = pose.position.add(T.mul(r.x)).add(B.mul(r.y)).add(Nn.mul(r.z));
+    const breathShape: N = sin(v.mul(Math.PI)).mul(cos(u.mul(Math.PI)).mul(0.5).add(0.5));
+    const composed: N = pose.position.add(T.mul(r.x)).add(B.mul(r.y)).add(Nn.mul(r.z.add(this.uBreath.mul(breathShape))));
 
     // outputNode = raw fragment output: bypasses the color pipeline, which clamps
     // negative components — these are data passes, not color.
@@ -260,6 +264,11 @@ export class Field {
       d.bottom[2]?.len ?? 1,
       simEnabled ? 1 : 0,
     );
+  }
+
+  /** §15 idle breath amplitude (world, signed) — 0 outside the armed idle. */
+  setBreath(amp: number): void {
+    this.uBreath.value = amp;
   }
 
   /** Point the eval pass at the residual sim's freshest state (skip in capture mode). */
