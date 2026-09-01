@@ -312,7 +312,7 @@
   "dod_status": {
    "axe": "PASS — axe-core 4.10.2 (wcag2a, wcag2aa, best-practice) on the reduced-motion page: 0 violations, 28 passes (after adding landmarks: <main>, role=img canvas, status hud, <nav> pager)",
    "idle_amplitudes": "PASS by construction — amplitudes are the SS15 constants (breath 2.5e-4, key 1.5%, yaw 2 deg, drift 0.002)",
-   "p1_drift": "instrument ?hold=N: 20 s pilot mean luma 21.26, flux drift 1.12% (limit 2%) — 60 s run recorded below",
+   "p1_drift": "PASS — ?hold=60 (p pinned at 1, idle armed, dust + parallax live): 60 samples, mean luma 22.30, total flux drift 1.31% (limit 2%); 20 s pilot 1.12%. Run 2026-09-01 in the dev pane (rAF-throttled — samples are 1 s apart in frame time, so the wall-clock run is longer; the drift statistic is unaffected).",
    "noblob": "R-1.00-noblob captured: PCSS carries S7 (the long soft cast shadow on the page is the key shadow; the blob contributes <= cos^2(78 deg) = 4% at rest)"
   },
   "candidates": {
