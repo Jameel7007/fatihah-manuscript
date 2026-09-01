@@ -162,7 +162,7 @@
   <div class="sec-head"><span class="sec-num">01</span><h2>Overall composition</h2></div>
 
   <p>A single portrait sheet (0.78 × 1.00 world units) floats near the origin in a <b>deep-blue universe</b>
-  (v1.6: floor <code>#05081C</code>, one nebular lobe behind the sheet, tiny stars — §11; through v1.5 it was
+  (v1.6: floor <code>#040617</code>, a whisper of a nebular lobe behind the sheet, tiny stars — §11; through v1.5 it was
   a warm near-black void <code>#0D0906</code>). The sheet lies in the world XZ plane when flat, +Y up, top
   of the text toward −Z. It is the only bright object; everything else — dust, the sky's lobe, the stars —
   sits at least 20× darker (the brightest stars excepted: a few pinpoints through the AgX shoulder). Historic register: broad Abbasid–Mamluk folio proportions, iron-gall ink, gilding over red
@@ -826,7 +826,7 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
       <tr><td>Framing fractions</td><td class="n">per §9 table — roll 0.54 h → sheet 0.86 h (reading) → text 0.66 w (final)</td></tr>
       <tr><td>UI</td><td class="n">bottom-left: state label, 11 px mono, #A2957A, fades 300 ms on scroll; bottom-right: 2 px progress hairline, gold at 0.35 alpha; first-visit chevron hint, dies on first scroll, never returns (localStorage)</td></tr>
       <tr><td>Pointer parallax</td><td class="n">±0.35° per §9; additionally ±0.004 world lateral light sway on the key (disabled in reduced motion)</td></tr>
-      <tr><td>Background</td><td class="n"><b>v1.6 universe ground.</b> Floor <b>#05081C</b> (calibrated through AgX, §16) on a far sphere shaded purely by view direction (the sky sits at infinity — it turns with the camera, never parallaxes against the sheet). One world-anchored nebular lobe about direction (0, 0.35, −1): cos³ falloff, peak floor × 2.8, modulated ± 60% by 3-octave value noise (period ≈ 2.3 rad), tinted violet where dense / teal-blue where thin, plus a ± 18% noise breath over the bare floor. Stars: one candidate per cell of a 6 × 104² cube-face grid at 26% occupancy (≈ 500 in the 1440×900 S3 frame, ≈ 220 at p = 1), jittered inside the central 56% of the cell; brightness = floor luminance × (2.5 + 420·b⁶), b uniform — most a few × floor, the rare one white through the AgX shoulder; core Gaussian <em>in angle</em> with σ = (0.9 + 0.9·b²) px of the current render (the pixel angle vfov/height is a per-frame uniform, so a star is ~1 px on every tier and in capture), soft halo σ×4 at 2%·b⁴; tints between (1.0, 0.86, 0.72) and (0.78, 0.86, 1.0). No time term: deterministic, capture-safe. Vignette −0.35 EV and grain/dither apply after (§16). Through v1.5: #0D0906 with a 1.5% radial warm lift.</td></tr>
+      <tr><td>Background</td><td class="n"><b>v1.6 universe ground.</b> Floor <b>#040617</b> (calibrated through AgX, §16) on a far sphere shaded purely by view direction (the sky sits at infinity — it turns with the camera, never parallaxes against the sheet). One world-anchored nebular lobe about direction (0, 0.35, −1): cos³ falloff, peak floor × 1.55 (held to a whisper: the lobe is in view at p = 0 and p = 1 but not while reading, and a stronger one read as “dark, then bright again”), modulated ± 60% by 3-octave value noise (period ≈ 2.3 rad), tinted violet where dense / teal-blue where thin, plus a ± 12% noise breath over the bare floor. Stars: one candidate per cell of a 6 × 104² cube-face grid at 26% occupancy (≈ 500 in the 1440×900 S3 frame, ≈ 220 at p = 1), jittered inside the central 56% of the cell; brightness = floor luminance × (2.5 + 420·b⁶), b uniform — most a few × floor, the rare one white through the AgX shoulder; core Gaussian <em>in angle</em> with σ = (0.65 + 0.6·b²) px of the current render (the pixel angle vfov/height is a per-frame uniform, so a star is ~1 px on every tier and in capture; MSAA 4× resolves the sub-pixel cores), soft halo σ×3 at 1.2%·b⁴; tints between (1.0, 0.86, 0.72) and (0.78, 0.86, 1.0). No time term: deterministic, capture-safe. Vignette −0.35 EV and grain/dither apply after (§16). Through v1.5: #0D0906 with a 1.5% radial warm lift.</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -990,15 +990,16 @@ embossStr(t)  = 1 − E7(t)                       // E7 = cubic-bezier(0.37, 0, 
 
   <h3>Background through AgX <span class="tag">calibrated, not hoped for</span></h3>
   <p>AgX's toe plus the grade's +0.004 black lift would render a naively-set floor color
-  lighter and greyer than designed (v1.6 floor <b>#05081C</b>; #0D0906 through v1.5). Decision: the background stays <b>inside</b> the tone-mapped pass
+  lighter and greyer than designed (v1.6 floor <b>#040617</b>; #0D0906 through v1.5). Decision: the background stays <b>inside</b> the tone-mapped pass
   (rendering it outside would seam the fog and dust blending against it), and the clear color is
   <b>pre-compensated</b>: the <code>?calibrate=bg</code> harness solves the clear color against the
   LIVE pipeline (render → readback, damped 3×3 Newton with a numerical Jacobian — AgX's inset matrix
   mixes channels near black, so per-channel iteration cannot converge) until the displayed background
   is the target <b>exactly</b> (<code>?calibrate=bg&amp;target=RRGGBB</code>; the sky's lobe and stars are
-  switched off for the solve and ride on top of it). v1.6 solve, 2026-09-01, #05081C through the full
-  chain: linear <b>(0.0048272, 0.0048456, 0.014377)</b> → displays (5.2, 8.3, 28.1) — the red and green
-  channels come out nearly equal for a 5:8 display ratio, AgX's inset mixing at work. (2026-08-25 warm
+  switched off for the solve and ride on top of it). v1.6 solve, 2026-09-01, #040617 through the full
+  chain: linear <b>(0.0041577, 0.0041003, 0.011952)</b> → displays (4.2, 6.3, 23.2) — the red and green
+  channels come out nearly equal for a 4:6 display ratio, AgX's inset mixing at work (earlier passes:
+  #080D26 → (0.0065316, 0.0063597, 0.01999); #05081C → (0.0048272, 0.0048456, 0.014377)). (2026-08-25 warm
   solve for #0D0906: (0.00798, 0.00648, 0.00504), ~6–15× the naive hex→linear conversion; AgX's toe
   crushes near-black, which is this section's whole premise.) The harness re-runs whenever the tone/grade
   chain changes (it IS the build step, and stays correct by construction). Vignette is excluded from
@@ -1047,7 +1048,7 @@ embossStr(t)  = 1 − E7(t)                       // E7 = cubic-bezier(0.37, 0, 
     <div class="figbox">
     <pre class="mermaid">%%{init: {"theme":"base","themeVariables":{"primaryColor":"#1D1810","primaryTextColor":"#E7DDC6","primaryBorderColor":"#57431F","lineColor":"#8F7440","fontSize":"12.5px","fontFamily":"IBM Plex Mono, monospace"}}}%%
 graph TD
-  SC[Scene · sky floor 05081C + lobe + stars] --> ENV[EnvRotator · yaw f p]
+  SC[Scene · sky floor 040617 + lobe + stars] --> ENV[EnvRotator · yaw f p]
   SC --> SR[SheetRoot · pose tilt + recede f p]
   SR --> PM[ParchmentMesh · 192x256 grid · reads posTex/nrmTex]
   SR --> ER[EdgeRibbon · perimeter strip]
@@ -1735,16 +1736,19 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
   </ol>
   <h3 style="margin-top:26px">v1.6 — the universe ground <span class="tag">2026-09-01 · user direction · pending sign-off</span></h3>
   <p>“I think I want the background to be a deeper blue / universe with tiny stars, and then the gold letters will
-  have a better contrast — the gold and blue will be more beautiful”; on the first frames: “I need the blue darker”.
+  have a better contrast — the gold and blue will be more beautiful”; on the first frames: “I need the blue darker”;
+  on the second: “the blue starts off kind of dark and then gets bright again, but I still need it all a little bit
+  darker and I need the stars a little smaller”.
   A §7/§8/§11/§16 look revision; every reference frame changes, so the whole blessed set is re-blessed on sign-off.</p>
   <ol>
-    <li><b>§11 / §16</b> — Floor #0D0906 → <b>#05081C</b> (first pass #080D26, darkened on review), re-solved through the
-    full AgX + grade chain with the harness now taking <code>&amp;target=RRGGBB</code> (sky detail off for the solve):
-    linear (0.0048272, 0.0048456, 0.014377) → (5.2, 8.3, 28.1). The v1.0–1.5 sphere had shipped the pre-AgX-only warm
+    <li><b>§11 / §16</b> — Floor #0D0906 → <b>#040617</b> (passes: #080D26 → #05081C → #040617, darkened twice on
+    review), re-solved through the full AgX + grade chain with the harness now taking <code>&amp;target=RRGGBB</code>
+    (sky detail off for the solve): linear (0.0041577, 0.0041003, 0.011952) → (4.2, 6.3, 23.2). The v1.0–1.5 sphere had shipped the pre-AgX-only warm
     solve as a shader literal; the far sphere is now a view-direction sky (<code>src/look/sky.ts</code>): a
-    world-anchored nebular lobe (cos³ about (0, 0.35, −1), peak ×2.8, ± 60% 3-octave noise, violet/teal tint) and
+    world-anchored nebular lobe (cos³ about (0, 0.35, −1), peak ×1.55 — a stronger lobe read as “dark, then bright
+    again” because it is in view at p = 0 and p = 1 but not while reading; ± 60% 3-octave noise, violet/teal tint) and
     procedural stars (6 × 104² cube-face cells, 26% occupancy, b⁶ brightness law, angular Gaussian cores of
-    0.9–1.8 px via a per-frame pixel-angle uniform, 3×3-cell neighbourhood so halos never clip). No time term —
+    0.65–1.25 px via a per-frame pixel-angle uniform — shrunk on review — 3×3-cell neighbourhood so halos never clip). No time term —
     deterministic on every tier and in capture.</li>
     <li><b>§8</b> — Rim #FFBE83 → <b>#D6E0FF</b> (the universe's light on the standing gold's edges); environment base
     cooled to blue-black (0.010/0.014/0.028 + floor lift 0.024/0.028/0.040), warm window and pinpoints unchanged; the

@@ -501,8 +501,8 @@ async function runCalibrate(mode: string): Promise<void> {
 
   if (mode === 'bg') {
     sheetRoot.visible = false;
-    // target display hex (&target=RRGGBB; default the §11 v1.6 floor #05081C)
-    const hex = (q.get('target') ?? '05081C').replace('#', '');
+    // target display hex (&target=RRGGBB; default the §11 v1.6 floor #040617)
+    const hex = (q.get('target') ?? '040617').replace('#', '');
     const target = [0, 1, 2].map((c) => parseInt(hex.slice(c * 2, c * 2 + 2), 16));
     // Damped 3×3 Newton with numerical Jacobian — AgX's inset matrix mixes channels near
     // black, so per-channel iteration cannot converge. Seed ≈ 2.5× the naive sRGB decode

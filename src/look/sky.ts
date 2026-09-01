@@ -9,8 +9,8 @@
 // Stars: one candidate per cell of a 6 × CELLS² cube-face grid, jittered inside the cell's
 // central 56% so a star never crosses a cell (no neighbour search, no seams); brightness
 // follows b⁶ (most stars a few × floor luminance, the rare one hundreds ×, white through the
-// AgX shoulder); the core is a Gaussian in ANGLE, σ ≥ 0.9 px, so the faintest stars are
-// resolved rather than sub-pixel sparkle.
+// AgX shoulder); the core is a Gaussian in ANGLE, σ ≥ 0.65 px, so the faintest stars are
+// (just) resolved rather than sub-pixel sparkle.
 
 import { BackSide, Mesh, MeshBasicNodeMaterial, SphereGeometry, Vector3 } from 'three/webgpu';
 import { cameraPosition, cross, dot, exp, float, fract, positionWorld, step, uniform, vec2, vec3 } from 'three/tsl';
@@ -19,7 +19,10 @@ import { cameraPosition, cross, dot, exp, float, fract, positionWorld, step, uni
 type N = any;
 
 const GLOW_DIR = new Vector3(0, 0.35, -1).normalize(); // behind the sheet, slightly above the S3–S7 gaze
-const GLOW_AMP = 1.8; // lobe peak = floor × (1 + GLOW_AMP), falling as cos³
+// The lobe is world-anchored, so it is in view at p = 0 and p = 1 but not while reading
+// (the camera looks down): review 2026-09-01 — "starts dark, then gets bright again" — so
+// it is held to a whisper (×1.55 peak) and the ground reads as one darkness across the scroll.
+const GLOW_AMP = 0.55; // lobe peak = floor × (1 + GLOW_AMP), falling as cos³
 const NEBULA_AMP = 0.6; // ± modulation of the lobe by the 3-octave value noise
 const CELLS = 104; // star cells per cube face — ≈ 500 stars in the 1440×900 S3 frame
 const OCCUPANCY = 0.26;
@@ -77,7 +80,7 @@ export function buildSky(floor: [number, number, number]): Sky {
   const g: N = dot(d, vec3(GLOW_DIR.x, GLOW_DIR.y, GLOW_DIR.z)).max(0);
   const lobe: N = g.mul(g).mul(g);
   const neb: N = fbm3(d.mul(2.3).add(vec3(5.1, 2.7, 9.4))).sub(0.5).mul(2);
-  const lift: N = lobe.mul(GLOW_AMP).mul(neb.mul(NEBULA_AMP).add(1)).add(neb.mul(0.18));
+  const lift: N = lobe.mul(GLOW_AMP).mul(neb.mul(NEBULA_AMP).add(1)).add(neb.mul(0.12));
   const tint: N = lerp(vec3(0.9, 1.0, 1.08), vec3(1.15, 0.92, 1.05), neb.mul(0.5).add(0.5));
   let col: N = floorC.add(floorC.mul(lift).mul(tint).mul(uDetail));
 
@@ -110,11 +113,12 @@ export function buildSky(floor: [number, number, number]): Sky {
       const theta: N = cross(d, c).length(); // small-angle exact, no acos precision loss near 1
       const b2: N = b.mul(b);
       const b6: N = b2.mul(b2).mul(b2);
-      const sigma: N = uPxRad.mul(b2.mul(0.9).add(0.9));
+      // "stars a little smaller" (review 2026-09-01): σ 0.65–1.25 px (was 0.9–1.8), halo ×3 at 1.2%
+      const sigma: N = uPxRad.mul(b2.mul(0.6).add(0.65));
       const peak: N = floorLum.mul(b6.mul(420).add(2.5));
       const core: N = exp(theta.mul(theta).div(sigma.mul(sigma).mul(-2)));
-      const sigmaH: N = sigma.mul(4);
-      const halo: N = exp(theta.mul(theta).div(sigmaH.mul(sigmaH).mul(-2))).mul(0.02).mul(b2.mul(b2));
+      const sigmaH: N = sigma.mul(3);
+      const halo: N = exp(theta.mul(theta).div(sigmaH.mul(sigmaH).mul(-2))).mul(0.012).mul(b2.mul(b2));
       const inFace: N = step(-0.5, cell.x).mul(step(cell.x, float(CELLS - 0.5))).mul(step(-0.5, cell.y)).mul(step(cell.y, float(CELLS - 0.5)));
       const occ: N = step(hOcc, float(OCCUPANCY)).mul(inFace);
       const starCol: N = lerp(vec3(1.0, 0.86, 0.72), vec3(0.78, 0.86, 1.0), temp);
