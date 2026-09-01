@@ -120,6 +120,27 @@ if (comp.marker?.path) {
 }
 for (const r of inst.rings ?? []) groups.push({ type: 'ring', ayah: r.ayah, ring: r });
 
+// §10 rise stagger (M5): within an āyah, clusters lead by READING ORDER × Δp 0.0012 — bake
+// each group's reading-order index inside its āyah (words by (line, word); a diacritic
+// shares its word's index; the marker closes the āyah as the last cluster).
+{
+  const wordsByAyah = new Map();
+  for (const g of groups) {
+    if (g.type !== 'word') continue;
+    if (!wordsByAyah.has(g.ayah)) wordsByAyah.set(g.ayah, []);
+    wordsByAyah.get(g.ayah).push(g);
+  }
+  const idxOf = new Map();
+  for (const [ay, ws] of wordsByAyah) {
+    ws.sort((a, b) => a.line - b.line || a.word - b.word);
+    ws.forEach((g, i) => idxOf.set(`${ay}:${g.line}:${g.word}`, i));
+  }
+  for (const g of groups) {
+    if (g.type === 'word' || g.type === 'mark') g.cluster = idxOf.get(`${g.ayah}:${g.line}:${g.word}`) ?? 0;
+    else g.cluster = (wordsByAyah.get(g.ayah)?.length ?? 0); // marker/ring: last cluster of the āyah
+  }
+}
+
 // ---- per-group scalar field -------------------------------------------------------------
 // Outline groups: analytic near the boundary (nearest edge over the union outline; exact
 // snap + gradient), raster EDT inside (heights on the crown/plateau); rings: analytic.
@@ -516,6 +537,7 @@ function vertexData(field, group, x, y) {
     ayah: group.ayah,
     ao: Math.min(1, 0.72 + 0.28 * (s / 0.0018)),
     rfloor: (s < 0.0013 || (s > 0.0018 && s < 0.0042)) ? 0.28 : 0.08,
+    cluster: Math.min(255, group.cluster ?? 0),
     auvU: au,
     auvV: av,
   };
@@ -535,7 +557,7 @@ function buildGroup(group) {
     const v = vertexData(field, group, x, y);
     pos.push(v.su, v.sv, v.hn);
     nrm.push(v.n[0], v.n[1], v.n[2]);
-    aux.push(v.kind, v.ayah, v.ao, v.rfloor);
+    aux.push(v.kind, v.ayah, v.ao, v.rfloor, v.cluster);
     auv.push(v.auvU, v.auvV);
     const id = baseIndex + localVerts++;
     vcache.set(key, id);
@@ -952,15 +974,15 @@ for (let v = 0; v < verts; v++) {
   anchorQ[v * 4] = Math.round(Math.min(1, Math.max(0, pos[v * 3])) * 65535);
   anchorQ[v * 4 + 1] = Math.round(Math.min(1, Math.max(0, pos[v * 3 + 1])) * 65535);
   anchorQ[v * 4 + 2] = Math.round(Math.min(1, pos[v * 3 + 2]) * 65535);
-  anchorQ[v * 4 + 3] = Math.round(aux[v * 4] * 65535); // kind scale
+  anchorQ[v * 4 + 3] = Math.round(aux[v * 5] * 65535); // kind scale
   nrmQ[v * 4] = Math.round(Math.max(-1, Math.min(1, nrm[v * 3])) * 127);
   nrmQ[v * 4 + 1] = Math.round(Math.max(-1, Math.min(1, nrm[v * 3 + 1])) * 127);
   nrmQ[v * 4 + 2] = Math.round(Math.max(-1, Math.min(1, nrm[v * 3 + 2])) * 127);
   nrmQ[v * 4 + 3] = 0;
-  auxQ[v * 4] = Math.round((aux[v * 4 + 1] / 8) * 255); // āyah / 8
-  auxQ[v * 4 + 1] = Math.round(aux[v * 4 + 2] * 255); // baked root AO
-  auxQ[v * 4 + 2] = Math.round(aux[v * 4 + 3] * 255); // curvature roughness floor
-  auxQ[v * 4 + 3] = 0;
+  auxQ[v * 4] = Math.round((aux[v * 5 + 1] / 8) * 255); // āyah / 8
+  auxQ[v * 4 + 1] = Math.round(aux[v * 5 + 2] * 255); // baked root AO
+  auxQ[v * 4 + 2] = Math.round(aux[v * 5 + 3] * 255); // curvature roughness floor
+  auxQ[v * 4 + 3] = Math.round(aux[v * 5 + 4]); // reading-order cluster index within the āyah (§10 rise lead)
   auvQ[v * 2] = Math.round(Math.min(1, Math.max(0, auv[v * 2])) * 65535);
   auvQ[v * 2 + 1] = Math.round(Math.min(1, Math.max(0, auv[v * 2 + 1])) * 65535);
 }
@@ -968,7 +990,7 @@ const indexQ = new Uint32Array(idx);
 
 const kindCounts = { base: 0, mark: 0, ring: 0 };
 for (let v = 0; v < verts; v++) {
-  const ks = aux[v * 4];
+  const ks = aux[v * 5];
   kindCounts[ks === 1 ? 'base' : ks === 0.8 ? 'mark' : 'ring']++;
 }
 
@@ -989,7 +1011,7 @@ const meta = {
   attributes: {
     aAnchor: 'uint16x4 norm — su, sv, hn (profile height / D with guard baked), kindScale',
     aNrm: 'sint8x4 snorm — plan-frame relief normal (x = +su, y = +sv, z = +sheet normal)',
-    aAux: 'uint8x4 norm — ayah/8, baked root AO, curvature roughness floor, 0',
+    aAux: 'uint8x4 norm — ayah/8, baked root AO, curvature roughness floor, reading-order cluster index within the ayah (x255)',
     aAuv: 'uint16x2 norm — atlas uv (owning instance affine)',
   },
   buffers: {},

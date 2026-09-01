@@ -2,7 +2,7 @@ import { Color, PerspectiveCamera, REVISION } from 'three/webgpu';
 import { createRenderer } from './core/renderer';
 import { DPR_CAP, detectTier } from './core/tiers';
 import { CameraRig } from './director/camera';
-import { embossFactor, envYawDeg, geoDepth, keyFactor, poseTransform, rimFactor, stateLabel } from './director/drivers';
+import { contactRamp, embossFactor, envYawDeg, geoDepth, inkGhost, keyFactor, poseTransform, rimFactor, RISE_START, stateLabel } from './director/drivers';
 import { ScrollDriver, SCROLL_DENSITY_TOTAL } from './director/scroll';
 import { evalDeform } from './field/deform';
 import { Field } from './field/field';
@@ -574,8 +574,9 @@ async function runMain(): Promise<void> {
     console.error('[relief] glyphs.bin load failed — rendering without the glyph mesh', err);
     return undefined;
   });
-  const { scene, sheetRoot, key, rim, uEmboss, inkPass, relief } = buildStage(renderer, field, sil, debugMode, ink, glyphBin);
+  const { scene, sheetRoot, key, rim, uEmboss, inkPass, relief, contact, uContact, uGhost } = buildStage(renderer, field, sil, debugMode, ink, glyphBin);
   if (q.get('noshadow') !== null) key.castShadow = false; // QA: isolate the key's shadow
+  const noBlob = q.get('noblob') !== null; // QA: R-1.00-noblob (§8 — PCSS carries S7 alone)
   const rig = new CameraRig();
   const scroll = new ScrollDriver();
   const size = fitViewport();
@@ -598,7 +599,11 @@ async function runMain(): Promise<void> {
       // §14 handoff: mesh visible from the window open; depth floored at 0.00045 (z-guard)
       relief.mesh.visible = p >= 0.69;
       relief.uGeoDepth.value = geoDepth(p);
+      relief.uP.value = p; // per-cluster rise + transmutation clocks (§10/§14)
+      relief.mesh.castShadow = p >= RISE_START; // risen letters cast PCSS (unbiased pipeline)
     }
+    uGhost.value = inkGhost(p); // §14 flat-ink ghost 1 → 0.08 over [0.78, 0.84]
+    uContact.value = noBlob ? 0 : contactRamp(p); // §8 blob ramp 0.72 → 0.80
     key.intensity = KEY_INTENSITY * keyFactor(p); // §10 S3 dim → presenting rise
     rim.intensity = KEY_INTENSITY * 0.3 * rimFactor(p); // §10 rim ramp
     const d = evalDeform(p);
@@ -609,6 +614,7 @@ async function runMain(): Promise<void> {
     }
     field.setDeform(d, simEnabled);
     field.run(renderer);
+    if (relief && contact && !noBlob && p >= 0.7) contact.run(renderer, p); // §8 height-field blob (rise + facing)
     // Pose tilt pivots about the moving top curl line, not the origin — with the rolled
     // mass far from origin (v1.3 start pose), an origin pivot would swing the composition.
     const tr = poseTransform(p, d.zTopCurl);
@@ -628,6 +634,9 @@ async function runMain(): Promise<void> {
       pos: rig.camera.position.toArray().map((x) => +x.toFixed(4)),
       fov: +rig.camera.fov.toFixed(2),
       aspect: +rig.camera.aspect.toFixed(4),
+      // M5 DoD "1 draw call": the renderer's per-frame draw count is published after the
+      // capture frame (window.__draws) — the merged glyph mesh must add exactly one
+      drawsNote: 'see window.__draws after capture',
     };
     try {
       // Render through the same loop machinery as live mode; the loop keeps running while
@@ -656,6 +665,10 @@ async function runMain(): Promise<void> {
                 } else {
                   const frame = await captureFrame(canvas as HTMLCanvasElement);
                   window.__capture = { hash: frame.hash, p, tier, backend, dataUrl: frame.dataUrl };
+                  {
+                    const info = (renderer as unknown as { info: { render: { drawCalls?: number; calls?: number; triangles?: number } } }).info.render;
+                    (window as unknown as { __draws?: unknown }).__draws = { drawCalls: info.drawCalls ?? info.calls, triangles: info.triangles };
+                  }
                   capEl!.textContent = `R-p${p.toFixed(3)}-T${tier}-${backend}\n${frame.hash}`;
                   console.info(`[capture] p=${p} T${tier} ${backend} sha256=${frame.hash}`);
                 }

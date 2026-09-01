@@ -28,21 +28,21 @@
    "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
   },
   {
-   "id": "R-0.34-T1",
+   "id": "R-0.34-T1 (v1.4.3 text — SUPERSEDED by v1.5)",
    "milestone": "M3 ink (basmalah 60% written + wet per SS10) + M4 light choreography (key S3 dim 0.88)",
    "url": "/?capture=0.34&tier=1",
    "sha256": {
-    "webgpu": "1f3f2b5826e1c2fd0b87ae249bf2314d3809be572c8b92761fd217ab06024fcc",
+    "webgpu": "1f3f2b5826e1c2fd0b87ae249bf2314d3809be572c8b92761fd217ab06024fcc (stale — layout changed at the 2026-08-30 review)",
     "webgl2": "pending CI re-bless (see R-0.00 note)"
    },
    "verified": "2026-08-27, re-blessed at M3 close (user sign-off on the write sequence): ink present per SS10, key dim driver active"
   },
   {
-   "id": "R-0.45-T1",
+   "id": "R-0.45-T1 (v1.4.3 text — SUPERSEDED by v1.5)",
    "milestone": "M3 ink (SS20 DoD frame: ayah 4 finishing in its 0.424-0.451 window) + key dim 0.88",
    "url": "/?capture=0.45&tier=1",
    "sha256": {
-    "webgpu": "06cc7d5f711c29bfb69d5e614b0fc8b91c7a3d09e170676ba5d51552e7cc6216",
+    "webgpu": "06cc7d5f711c29bfb69d5e614b0fc8b91c7a3d09e170676ba5d51552e7cc6216 (stale — layout changed at the 2026-08-30 review)",
     "webgl2": "pending CI re-bless (see R-0.00 note)"
    },
    "verified": "2026-08-27, blessed at M3 close — reproduced across two loads on a settled server; wet-trail DoD PASS (see ink_pipeline)"
@@ -56,6 +56,66 @@
     "webgl2": "658bab87e5e10f769f6e6c5a1977c5ccce3a83d0a4bd6a642708e997b0572d50 (stale — pre-field)"
    },
    "verified": "2026-08-24 (M0); re-bless at M2 when materials land"
+  },
+  {
+   "id": "R-0.34-T1",
+   "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
+   "url": "/?capture=0.34&tier=1",
+   "sha256": {
+    "webgpu": "f3d119ee44ab1b7a9dc09c88f649b37d49fcd00c31e89816455df660ca4af082",
+    "webgl2": "pending CI re-bless (see R-0.00 note)"
+   },
+   "verified": "2026-08-30/09-01, cold loads on a settled server; reproduced across the mesh-refinement rebuilds where the mesh is invisible (p < 0.69); M4 close — v1.5 classical centered text; basmalah mid-write, key S3 dim"
+  },
+  {
+   "id": "R-0.45-T1",
+   "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
+   "url": "/?capture=0.45&tier=1",
+   "sha256": {
+    "webgpu": "3dd73e95aaa6ce16bb27f552dbc3a232e7f1bb4573aa19a1c3ce6d7a499f351b",
+    "webgl2": "pending CI re-bless (see R-0.00 note)"
+   },
+   "verified": "2026-08-30/09-01, cold loads on a settled server; reproduced across the mesh-refinement rebuilds where the mesh is invisible (p < 0.69); M4 close — SS20 ink frame on v1.5 (dagger alif of Maliki visible); T3 hashes IDENTICAL (tier differentiation beyond the DPR cap lands in M7)"
+  },
+  {
+   "id": "R-0.56-T1",
+   "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
+   "url": "/?capture=0.56&tier=1",
+   "sha256": {
+    "webgpu": "16df1d9527c615b26f95317ae1b6c04d77673f0ba32b3d12f4c85892311a6710",
+    "webgl2": "pending CI re-bless (see R-0.00 note)"
+   },
+   "verified": "2026-08-30/09-01, cold loads on a settled server; reproduced across the mesh-refinement rebuilds where the mesh is invisible (p < 0.69); M4 close — presenting climb, key 0.92, emboss factor 0"
+  },
+  {
+   "id": "R-0.645-T1",
+   "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
+   "url": "/?capture=0.645&tier=1",
+   "sha256": {
+    "webgpu": "e6f14cfc61dd63cfc9f6a8a097d29e667ecbfd09cbc0a7a47ee84b18e2c0132a",
+    "webgl2": "pending CI re-bless (see R-0.00 note)"
+   },
+   "verified": "2026-08-30/09-01, cold loads on a settled server; reproduced across the mesh-refinement rebuilds where the mesh is invisible (p < 0.69); M4 close — SS14 emboss forming (restored block, corrected v-shading)"
+  },
+  {
+   "id": "R-0.710-T1",
+   "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
+   "url": "/?capture=0.710&tier=1",
+   "sha256": {
+    "webgpu": "cb1429c68be2d8b7437d24631a73b822e235080e02d10d2460f0189aa5be3a43",
+    "webgl2": "pending CI re-bless (see R-0.00 note)"
+   },
+   "verified": "2026-09-01, TWO cold loads identical (cb1429c6...). Supersedes 55c83049... which was NOT reproducible: R-0.710 flipped between 55c83049... and 2ecd244a... across cold loads (also seen as the T3 \"difference\") — a two-state z-fight at the base seam (mesh base exactly on the parchment surface; whichever pipeline compiled first drew first). Fixed in src/relief/mesh.ts: renderOrder 1 (mesh after parchment) + 1e-5 world seam clearance. M4 close — SS14 handoff midpoint."
+  },
+  {
+   "id": "R-0.76-T1",
+   "milestone": "M5 open — the rise (SS20 DoD frame): per-ayah stagger + transmutation + contact blob live",
+   "url": "/?capture=0.76&tier=1",
+   "sha256": {
+    "webgpu": "21859a5150f38e1a28d32fbc063db7e8ecfe63074f475babd5210d1440d54770",
+    "webgl2": "pending CI re-bless (see R-0.00 note)"
+   },
+   "verified": "2026-09-01 — TWO cold loads identical; T2 identical (tier differentiation beyond the DPR cap is M7 scope). Blessing formal at M5 close with the user review."
   }
  ],
  "probes": {
@@ -149,8 +209,9 @@
    "R-0.56-T1-webgpu": "16df1d9527c615b26f95317ae1b6c04d77673f0ba32b3d12f4c85892311a6710 (presenting climb)",
    "R-0.645-T1-webgpu": "e6f14cfc61dd63cfc9f6a8a097d29e667ecbfd09cbc0a7a47ee84b18e2c0132a (emboss forming, corrected v-sign)",
    "R-0.710-T1-webgpu": "55c8304907ea8a824c33a1f1723060c191cbc72f743292023c0ed7c229baa7c1 (handoff midpoint, mesh + emboss cross-fade)",
-   "R-0.45-T3-webgpu": "re-capture at M4 close",
-   "R-0.45-T1-webgl2": "re-capture at M4 close"
+   "R-0.45-T3-webgpu": "3dd73e95aaa6ce16bb27f552dbc3a232e7f1bb4573aa19a1c3ce6d7a499f351b (IDENTICAL to T1 — tier differentiation is M7 scope)",
+   "R-0.45-T1-webgl2": "7b1e67c2f2c57b377dcf5dd2be1136dd8c76024fc3ebb4e3c4573f2a9ee2db3d (v1.5 full pipeline on the WebGL2 fallback — smoke PASS; full blessing per the CI policy)",
+   "R-0.710-T3-webgpu": "2ecd244a... was one of the two nondeterministic states (see R-0.710-T1) — re-capture after the seam fix at M5 close"
   },
   "qa_instrument": "?scene=inkrt&p=P [&w=&h=] — the ink RT rendered flat 1:1 in sheet uv (R=cov, G=wet), renderer tone mapping disabled. GOTCHA that cost a debugging session: the boot renderer carries AgX (the ?scene=ramp contract) and material.toneMapped=false is IGNORED on the direct-render path in three r185 — AgX's inset matrix bleeds R into G, which reads as phantom permanent wetness in any channel-encoded readback. Disable tone mapping on the RENDERER for QA scenes, and calibrate readback with an in-shader ramp (G := suv.x) before trusting decoded values.",
   "optimizations": "InkPass.run clamps p to [0.30, 0.64] (ink constant outside) and skips re-render on unchanged clamped p",
@@ -197,6 +258,28 @@
   "handoff": "src/relief/mesh.ts: vertex stage fetches posTex/nrmTex/tanTex (manual bilinear, 4 textureLoads - float32-linear is a WebGPU feature gamble) at the sheet anchor; position = surf + N x (hn x max(uGeoDepth, kind x uRise)); normal = plan relief normal through the T / cross(T,N) / N frame; color = the SAME flat-ink composite (ink RT sample, explicit lerps, fiber cavity) x baked root AO; polygonOffset -0.5/-2 (SS14 z-guard; shadow/contact stay unbiased - castShadow off until the M5 rise). drivers.geoDepth: 0.00045 + 0.00075 x E2(span(p, 0.69, 0.73)); mesh visible p >= 0.69; &nogeo = emboss-only QA switch. First-load pitfall fixed: FGLY meta offsets must be computed in BYTES not chars (em-dashes in meta strings).",
   "silhouette_dod": "qa/silhouette-diff.mjs + qa/png-io.mjs: 5 capture pairs (geo/&nogeo) at 2560x1440 across the window; sub-pixel RAMP-MIDPOINT edge comparison along shared gradient lines (binary masks bottom out at sqrt(2); fixed-threshold iso reads a constant crisp-vs-soft dilation ~0.5 px). RESULT: contour median 0.26-0.32 px PASS (limit 0.8), p95 0.87-0.95 px FLAGGED for M4-close sign-off, p99 <= 1.19; uncorresponded (AA-faded tips) <= 0.55%; XOR components all attached, worst 81 px2; no detached artifacts. Attribution measured by the sweep structure: at 0.690 (emboss full, parallax ~0.15 px) the tail is shading x soft-ramp midpoint interplay; at 0.730 (emboss zero, geoDepth 0.0012, elev ~66 deg) it is projection parallax ~1 px - the SS14 parallax claim (<=0.35 px) holds at the 83 deg camera through 0.710; SS9 starts the retreat at 0.70, so the window tail exceeds it (physical, occluded under the caps; spec note added).",
   "camera_ss9": "VERIFIED 2026-08-30: realized poses at every pure-anchor knot (0.47, 0.6, 0.7, 0.8, 0.9, 1.0) match the rebaked table EXACTLY (delta 0.000 <= 0.01) incl. focal->vfov law; dolly-rule distances at the 1440x900 reference: p0 0.982, p0.21 1.454, p0.34 2.303 (blend to anchors [0.38, 0.47] -> pure by 0.47). SS9 spec table synced to the M1-rebaked anchors.",
-  "review_frames": "qa/review/m4-R0645-v15.png, m4-R0710-v15.png (v1.5); older m3-R*.png kept as the M3 sign-off record (v1.4.3 text)"
+  "review_frames": "qa/review/m4-R0645-v15.png, m4-R0710-v15.png (v1.5); older m3-R*.png kept as the M3 sign-off record (v1.4.3 text)",
+  "closed": "M4 CLOSED 2026-09-01 on user sign-off (\"signed off — bless the frames and continue to M5\"). RULING RECORDED: the silhouette DoD p95 flag (0.87-0.95 px, attributed to shading x soft-ramp midpoint interplay + SS9-retreat parallax) is ACCEPTED as measured — the contour median (0.26-0.32 px) is the silhouette metric; the analytic 0.0008 em flatten tolerance moves to the M5 mesh polish only if the rise closeups call for it.",
+  "candidates_promoted": "R-0.34/0.45/0.56/0.645/0.710-T1 blessed in frames[]; R-0.45-T3 == R-0.45-T1 hash (3dd73e95...)",
+  "determinism_note": "LEARNED 2026-09-01: every mesh-visible frame must be reproduced across >=2 cold loads before blessing — coincident surfaces resolve by pipeline-compile order on WebGPU unless renderOrder pins the draw order."
+ },
+ "m5_open": {
+  "scope": "the rise (SS5/SS10/SS14): per-ayah staggered extrusion 0.0012 -> 0.0115 in reading order, ink -> gold transmutation, SS8 contact-shadow blob + PCSS on risen letters, flat-ink ghost",
+  "drivers": "riseStart = 0.722 + 0.0115 x (ayah-1) + 0.0012 x cluster (reading-order index within the ayah, baked in aux.w); duration 0.093, E4 (= E2), stagger gated at start; depth = max(geoDepth, kindScale x stagger); gold lags the rise by 0.25 of the window (E2); inkGhost 1 -> 0.08 over [0.78, 0.84] (E1); contactRamp E2 over [0.72, 0.80]; castShadow from 0.722",
+  "shader": "E2 cubic-bezier evaluated in TSL (5 Newton steps on x(t), monotone curve); SS7 gold set with EXPLICIT lerps: face #C29B52 metal 1.0 rough 0.21-0.47 by procedural burnish R, wear -> bole #7A4630 (rough 0.62, metal 0.12) thresholded ~8% crown-biased, sidewall #8F6B2E rough 0.52 metal 0.85 x0.72 toward the root, markers +0.05 rough, curvature roughness floor 0.28 (baked), baked root AO, SS15 specular AA on top. Anisotropy (0.25 along stroke) DEFERRED to the M6 polish (needs a tangent frame on the mesh).",
+  "contact_blob": "src/relief/contact.ts: ortho height pass over the glyph mesh only (frustum 0.9 x 1.15, 512^2 RGBA8: R coverage, G height/0.2), two separable 13-tap blurs with radius_texels = 2 + 640h, composited x(1 - 0.75 C exp(-h/0.12) ramp). ORIENTATION LEARNED THE HARD WAY: camera-rendered RTs read back v-flipped on three r185 WebGPU (blob uv = +z/1.15 + 0.5, not -z); the near mirror-symmetric text block made the wrong orientation look like an OFFSET ECHO of every line rather than a mirror. &noblob = QA switch (R-1.00-noblob at M6). ?debug=blob = mapping inspection.",
+  "determinism": "R-0.710 two-state z-fight fixed (renderOrder 1 + 1e-5 seam clearance); R-0.76 reproduced x2 cold loads + T2 identical",
+  "dod_status": {
+   "one_draw_call": "PASS — the glyph assembly is one merged Mesh (single geometry + material = one draw); frame total at p 0.80: 8 draw calls, 357,428 triangles (T1 budget <=14 calls, <=1.05M tris)",
+   "alignment_0_5px": "PASS — build audit: worst OUTER outline->boundary 0.0069 em = 0.46 px @1440p (glyph-mesh-audit.json)",
+   "contact_legible_390px": "captured qa/review/m5-R080-390px.png (T3, 390x844) — see review note",
+   "thin_stroke_guard": "PASS by construction — the profile is a height graph over the interior-distance field (no self-intersection possible); guard baked per vertex (38% bead verts)"
+  },
+  "review_frames": "qa/review/m5-R076.png, m5-R080.png, m5-R084.png, m5-R080-390px.png",
+  "candidates": {
+   "R-0.80-T1": "7f9318944263d18e50837e0f8ebd1a1717e772a3fea773ec3eccc94d83a1dcb1 (reproduced across two captures)",
+   "R-0.84-T1": "5439580559112d29dbdb369c1cc93feaf71dbc5747fa15e2f58fc3f781a834cc",
+   "R-0.80-T3-390x844": "1bbcc08a4e6b... (mobile legibility capture)"
+  }
  }
 }

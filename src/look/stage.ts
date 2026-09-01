@@ -59,12 +59,13 @@ import { InkPass } from '../ink/inkPass';
 import type { InkPack } from '../ink/atlas';
 import { buildGlyphRelief, type GlyphBin, type GlyphRelief } from '../relief/mesh';
 import { THICKNESS } from '../field/deform';
-import { buildEnvironment, buildFiberTexture, buildUtilTexture } from './textures';
+import { buildBurnishTexture, buildEnvironment, buildFiberTexture, buildUtilTexture } from './textures';
+import { BLOB_H, BLOB_W, ContactBlob } from '../relief/contact';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type N = any;
 
-export type DebugMode = 'none' | 'normal' | 'matcap' | 'graycard' | 'ink';
+export type DebugMode = 'none' | 'normal' | 'matcap' | 'graycard' | 'ink' | 'blob';
 
 // §16 background pre-compensation — scene-linear clear color that the live AgX pipeline
 // displays as exactly #0D0906. Baked from `?calibrate=bg` (secant solve against readback);
@@ -93,6 +94,12 @@ export interface Stage {
   inkPass?: InkPass;
   /** M4 §14 glyph relief — mesh + handoff-depth/rise uniforms (absent with &nogeo / no ink) */
   relief?: GlyphRelief;
+  /** M5 §8 contact-shadow blob pass (with the relief) */
+  contact?: ContactBlob;
+  /** §8/§10 contact-blob ramp 0..1 — drivers.contactRamp(p) */
+  uContact: { value: number };
+  /** §14/§7 flat-ink ghost factor 1 → 0.08 — drivers.inkGhost(p) */
+  uGhost: { value: number };
   /** scene-linear background (a physical far sphere — pass() drops scene.background) */
   setBackground(r: number, g: number, b: number): void;
 }
@@ -167,25 +174,29 @@ export function buildStage(
   scene.environment = buildEnvironment(renderer);
   scene.environmentIntensity = 0.32;
 
-  const maps = { fiber: buildFiberTexture(renderer), util: buildUtilTexture(renderer) };
+  const maps = { fiber: buildFiberTexture(renderer), util: buildUtilTexture(renderer), burnish: buildBurnishTexture(renderer) };
 
   // M3 ink: evaluated in its own RT pass; the parchment material samples one texture.
   const inkPass = ink ? new InkPass(ink, maps.fiber) : undefined;
   const uEmboss = uniform(0); // §14 emboss factor, driven per frame
+  const uContact = uniform(0); // §8 contact-blob ramp, driven per frame
+  const uGhost = uniform(1); // §14 flat-ink ghost factor, driven per frame
 
   const sheetRoot = new Group();
   scene.add(sheetRoot);
 
-  sheetRoot.add(buildSheet(field, maps, debug, inkPass?.texture, uEmboss));
-  sheetRoot.add(buildRibbon(field, sil, maps, debug));
-
   // M4 §14 glyph relief: rides sheetRoot (same pose transform as the parchment); hidden
-  // until the handoff window opens (applyFrame drives visibility + uGeoDepth)
+  // until the handoff window opens (applyFrame drives visibility, uGeoDepth, uP)
   let relief: GlyphRelief | undefined;
-  if (glyphBin && inkPass && debug === 'none') {
-    relief = buildGlyphRelief(glyphBin, field, maps.fiber, inkPass.texture);
-    sheetRoot.add(relief.mesh);
+  let contact: ContactBlob | undefined;
+  if (glyphBin && inkPass && (debug === 'none' || debug === 'blob')) {
+    relief = buildGlyphRelief(glyphBin, field, maps.fiber, maps.burnish, inkPass.texture);
+    contact = new ContactBlob(relief.mesh, relief.heightMaterial);
   }
+
+  sheetRoot.add(buildSheet(field, maps, debug, inkPass?.texture, uEmboss, contact?.texture, uContact, uGhost));
+  sheetRoot.add(buildRibbon(field, sil, maps, debug));
+  if (relief) sheetRoot.add(relief.mesh);
 
   // §8 rig
   const key = new SpotLight(0xffd2a0, KEY_INTENSITY, 0, (26 * Math.PI) / 180, 0.5, 2);
@@ -217,6 +228,9 @@ export function buildStage(
     uEmboss,
     inkPass,
     relief,
+    contact,
+    uContact,
+    uGhost,
     setBackground: (r: number, g: number, b: number) => {
       (uBg.value as Vector3).set(r, g, b);
     },
@@ -226,6 +240,7 @@ export function buildStage(
 interface Maps {
   fiber: import('three/webgpu').Texture;
   util: import('three/webgpu').Texture;
+  burnish: import('three/webgpu').Texture;
 }
 
 /** Shared vertex-stage fetch + debug/material wiring. `kind` picks the §7 material row.
@@ -241,6 +256,9 @@ function fieldMaterial(
   kind: 'parchment' | 'edge',
   inkTex?: import('three/webgpu').Texture,
   uEmboss?: N,
+  blobTex?: import('three/webgpu').Texture,
+  uContact?: N,
+  uGhost?: N,
 ): MeshBasicNodeMaterial | MeshStandardNodeMaterial | MeshPhysicalNodeMaterial {
   if (debug === 'ink' && inkTex) {
     // raw ink-RT inspection: R = coverage, G = wetness (no lighting, no grade)
@@ -249,6 +267,19 @@ function fieldMaterial(
     m.positionNode = positionNode;
     const dbg: N = texture(inkTex, suv);
     m.colorNode = vec4(dbg.r, dbg.g, float(0.08), 1);
+    return m;
+  }
+  if (debug === 'blob' && blobTex) {
+    // contact-blob inspection: the blurred height field mapped onto the sheet exactly as the
+    // composite maps it (R = coverage, G = height/0.2) — the glyph mesh renders on top, so a
+    // mapping error shows as blob and letters disagreeing
+    const m = new MeshBasicNodeMaterial();
+    m.side = DoubleSide;
+    m.positionNode = positionNode;
+    const bu: N = positionNode.x.div(BLOB_W).add(0.5);
+    const bv: N = positionNode.z.div(BLOB_H).add(0.5); // camera-rendered RT reads back v-FLIPPED vs NDC-up (gotcha #4 — verified: the un-flipped map mirrored line 1 onto line 7)
+    const dbg: N = texture(blobTex, varying(vec2(bu, bv)));
+    m.colorNode = vec4(dbg.r, dbg.g.mul(4), float(0.1), 1);
     return m;
   }
   if (debug === 'normal' || debug === 'matcap') {
@@ -319,7 +350,8 @@ function fieldMaterial(
     // texture-derived factor silently breaks this material's light integration
     // (three r185 WebGPU; bisected 2026-08-27, value-independent, even factor 0).
     const inkT: N = texture(inkTex, suv);
-    const rectoCov: N = inkT.r.mul(float(1).sub(backAmt));
+    // §14/§7: once the caps occlude it, the flat layer fades to the 8% ghost stain (uGhost)
+    const rectoCov: N = inkT.r.mul(float(1).sub(backAmt)).mul(uGhost ? (uGhost as N) : float(1));
     const wetF: N = inkT.g;
     const inkCol: N = color(INK_DRY).mul(float(1).sub(wetF)).add(color(INK_WET).mul(wetF));
     const cavity: N = float(1).sub(height.sub(0.5).mul(0.24));
@@ -347,6 +379,20 @@ function fieldMaterial(
       const border: N = pR.sub(pL).abs().add(pU.sub(pD).abs()).mul(1.5).clamp(0, 1);
       col = col.mul(float(1).sub(border.mul(0.08).mul(uEmboss as N).mul(recto)));
     }
+  }
+  // §8 contact-shadow blob (M5): glyph height field blurred by caster height, composited as
+  // ×(1 − 0.75·C·exp(−h/0.12)·ramp). Blob uv from the object-space position over the ortho
+  // frustum (0.9 × 1.15, centered). The height camera's up is −z, yet the RT samples with
+  // +z → +v: three r185 WebGPU camera RTs read back v-flipped (the fourth gotcha) — probed
+  // empirically, since the centered text block is nearly mirror-symmetric and the wrong
+  // orientation masquerades as an offset echo.
+  if (blobTex && uContact) {
+    const bu: N = positionNode.x.div(BLOB_W).add(0.5);
+    const bv: N = positionNode.z.div(BLOB_H).add(0.5); // camera-rendered RT reads back v-FLIPPED vs NDC-up (gotcha #4 — verified: the un-flipped map mirrored line 1 onto line 7)
+    const blob: N = texture(blobTex, varying(vec2(bu, bv)));
+    const hCaster: N = blob.g.mul(0.2);
+    const shade: N = float(1).sub(blob.r.mul(0.75).mul(hCaster.div(-0.12).exp()).mul(uContact as N).mul(float(1).sub(backAmt)));
+    col = col.mul(shade);
   }
   m.colorNode = col;
 
@@ -398,7 +444,16 @@ function matcapShade(n: N): N {
   return vec3(l1.mul(l1).add(l2));
 }
 
-function buildSheet(field: Field, maps: Maps, debug: DebugMode, inkTex?: import('three/webgpu').Texture, uEmboss?: N): Mesh {
+function buildSheet(
+  field: Field,
+  maps: Maps,
+  debug: DebugMode,
+  inkTex?: import('three/webgpu').Texture,
+  uEmboss?: N,
+  blobTex?: import('three/webgpu').Texture,
+  uContact?: N,
+  uGhost?: N,
+): Mesh {
   const count = GRID_W * GRID_H;
   const geo = new BufferGeometry();
   geo.setAttribute('position', new BufferAttribute(new Float32Array(count * 3), 3));
@@ -424,7 +479,7 @@ function buildSheet(field: Field, maps: Maps, debug: DebugMode, inkTex?: import(
   const tan: N = textureLoad(field.tanRT.texture, texel).xyz;
   const suv: N = varying(vec2(ti.toFloat().div(GRID_W - 1), tj.toFloat().div(GRID_H - 1)));
 
-  const mesh = new Mesh(geo, fieldMaterial(field, maps, debug, pos, nrm, tan, suv, 'parchment', inkTex, uEmboss));
+  const mesh = new Mesh(geo, fieldMaterial(field, maps, debug, pos, nrm, tan, suv, 'parchment', inkTex, uEmboss, blobTex, uContact, uGhost));
   mesh.frustumCulled = false;
   mesh.castShadow = true;
   mesh.receiveShadow = true;

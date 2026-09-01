@@ -1,30 +1,40 @@
-// §6/§14 glyph relief (M4) — the merged bevel-extrusion mesh, born ink-colored inside the
-// geometry-handoff window. Geometry carries NO world positions: every vertex stores its
+// §6/§14/§5 glyph relief (M4 → M5) — the merged bevel-extrusion mesh: born ink-colored
+// inside the geometry-handoff window, then RISING per āyah in reading order and turning to
+// aged gold as it takes form. Geometry carries NO world positions: every vertex stores its
 // sheet anchor (su, sv) + normalized profile height hn, and the vertex stage fetches the
-// SAME surface-field textures the parchment reads (§14 z-guard: "the base ring fetches its
-// position from the same surface-field posTex as the parchment — watertight by
-// construction"). Interior field texels are identity params (silhouette inset reaches
-// ~3 border rings; the text band is deep interior), so the anchor maps straight onto the
-// field grid with a manual bilinear (4 textureLoads — the RTs are NearestFilter, and
-// float32-linear sampling is a WebGPU feature gamble this project doesn't take).
+// SAME surface-field textures the parchment reads (§14 z-guard: watertight by construction).
+// Interior field texels are identity params, so the anchor maps straight onto the field grid
+// with a manual bilinear (4 textureLoads — the RTs are NearestFilter, and float32-linear
+// sampling is a WebGPU feature gamble this project doesn't take).
 //
-// Height: worldOffset = hn · max(uGeoDepth, kindScale · uRise). uGeoDepth follows the §14
-// handoff (0.00045 → 0.0012 over p ∈ [0.690, 0.730], drivers.geoDepth); uRise is the M5
-// per-āyah stagger hook (0 in M4 — entry is kind-uniform, §6 depth ratios engage with the
-// rise via the max()). The mesh is hidden below the window (applyFrame).
+// Depth law (§14): worldOffset = hn · max(uGeoDepth, kindScale · stagger) + seam clearance,
+//   stagger = 0.0012 → 0.0115 over [start, start + 0.093] with E4 (= E2), gated at start,
+//   start = 0.722 + 0.0115·(āyah − 1) + 0.0012·cluster   (§10: reading-order lead)
+// Gold transmutation (§14/§7) lags each cluster's rise by 0.25 of its window (E2): base color,
+// metalness and roughness blend from the flat-ink set to the §7 gold set — face (burnished
+// leaf, wear → bole), sidewalls (darker, ×0.72 toward the root), markers +0.05 rough.
+// Every lerp is explicit mul/add (the TSL mix() gotcha in the physical material).
 //
-// Color: the same flat-ink composite the parchment runs (ink RT sample at suv, wet/dry
-// explicit-lerp — the TSL mix() gotcha applies — fiber cavity), times the baked root AO,
-// so at emergence the caps are indistinguishable from the flat layer beneath them.
+// Determinism: the mesh draws AFTER the parchment (renderOrder 1) and its base sits a hair
+// (1e-5 world, 0.01 px) above the surface — without both, the seam z-fight resolved by
+// whichever pipeline compiled first, and R-0.710 flipped between two hashes across loads.
 
-import { BufferAttribute, BufferGeometry, Mesh, MeshPhysicalNodeMaterial, Sphere, Vector3 } from 'three/webgpu';
-import { attribute, color, cross, dFdx, dFdy, float, ivec2, texture, textureLoad, transformNormalToView, uniform, varying, vec2 } from 'three/tsl';
+import { BufferAttribute, BufferGeometry, Mesh, MeshBasicNodeMaterial, MeshPhysicalNodeMaterial, Sphere, Vector3 } from 'three/webgpu';
+import { attribute, color, cross, dFdx, dFdy, float, ivec2, step, texture, textureLoad, transformNormalToView, uniform, varying, vec2, vec3, vec4 } from 'three/tsl';
 import type { Field } from '../field/field';
 import { GRID_H, GRID_W } from '../field/silhouette';
 import { INK_DRY, INK_WET } from '../ink/ink';
+import { DEPTH_ENTRY, DEPTH_FULL, RISE_AYAH_DP, RISE_CLUSTER_DP, RISE_DUR, RISE_GOLD_LAG, RISE_START } from '../director/drivers';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type N = any;
+
+const SEAM_EPS = 1e-5; // base-ring clearance above the surface (world)
+
+// §7 gold set, scene-linear (sRGB → linear, 3 s.f.)
+const GOLD_FACE: [number, number, number] = [0.548, 0.335, 0.082]; // #C29B52
+const GOLD_BOLE: [number, number, number] = [0.197, 0.058, 0.025]; // #7A4630 wear → bole
+const GOLD_SIDE: [number, number, number] = [0.28, 0.148, 0.023]; // #8F6B2E sidewall
 
 export interface GlyphBin {
   meta: {
@@ -70,14 +80,39 @@ export interface GlyphRelief {
   mesh: Mesh;
   /** §14 handoff depth (world) — drivers.geoDepth(p); mesh hidden below the window */
   uGeoDepth: { value: number };
-  /** M5 per-āyah rise stagger depth (world) — 0 through M4 */
-  uRise: { value: number };
+  /** scroll p — the per-cluster rise/transmutation clocks evaluate in the vertex stage */
+  uP: { value: number };
+  /** height-only material for the contact-shadow pass (same position node) */
+  heightMaterial: MeshBasicNodeMaterial;
+}
+
+/** cubic-bezier(0.22, 0, 0.18, 1) — the §13 E2/E4 curve — evaluated in-shader: five Newton
+ *  steps on x(t) from t = x (x(t) is monotone with dx/dt ≥ 0.53 for this curve), then y(t). */
+function bezierE2(x: N): N {
+  const x1 = 0.22;
+  const y1 = 0;
+  const x2 = 0.18;
+  const y2 = 1;
+  const cx = 3 * x1;
+  const bx = 3 * (x2 - x1) - cx;
+  const ax = 1 - cx - bx;
+  const cy = 3 * y1;
+  const by = 3 * (y2 - y1) - cy;
+  const ay = 1 - cy - by;
+  let t: N = x;
+  for (let i = 0; i < 5; i++) {
+    const fx: N = t.mul(t.mul(t.mul(ax).add(bx)).add(cx)).sub(x);
+    const dfx: N = t.mul(t.mul(3 * ax).add(2 * bx)).add(cx);
+    t = t.sub(fx.div(dfx.max(1e-3))).clamp(0, 1);
+  }
+  return t.mul(t.mul(t.mul(ay).add(by)).add(cy)).clamp(0, 1);
 }
 
 export function buildGlyphRelief(
   bin: GlyphBin,
   field: Field,
   fiberTex: import('three/webgpu').Texture,
+  burnishTex: import('three/webgpu').Texture,
   inkTex: import('three/webgpu').Texture,
 ): GlyphRelief {
   const geo = new BufferGeometry();
@@ -91,19 +126,12 @@ export function buildGlyphRelief(
   geo.boundingSphere = new Sphere(new Vector3(0, 0, 0), 1.2);
 
   const uGeoDepth = uniform(0.00045);
-  const uRise = uniform(0);
-
-  const m = new MeshPhysicalNodeMaterial();
-  // §14 z-guard: depthBias −2 / slopeScale −0.5 on the glyph main pass (shadow/contact
-  // pipelines stay unbiased — the mesh casts no shadow until the M5 rise)
-  m.polygonOffset = true;
-  m.polygonOffsetFactor = -0.5;
-  m.polygonOffsetUnits = -2;
+  const uP = uniform(0);
 
   const anc: N = attribute('aAnchor', 'vec4'); // su, sv, hn, kindScale
   const npl: N = attribute('aNrm', 'vec4'); // plan-frame relief normal
-  const aux: N = attribute('aAux', 'vec4'); // ayah/8, root AO, roughness floor, 0
-  void attribute('aAuv', 'vec2'); // atlas uv — reserved for the M5 gold stage
+  const aux: N = attribute('aAux', 'vec4'); // ayah/8, root AO, roughness floor, cluster/255
+  void attribute('aAuv', 'vec2'); // atlas uv — reserved
 
   // manual bilinear over the field textures at the anchor (grid = identity params interior)
   const gx: N = anc.x.mul(GRID_W - 1);
@@ -127,8 +155,25 @@ export function buildGlyphRelief(
   const surfN: N = fetch2(field.nrmRT.texture).normalize();
   const surfT: N = fetch2(field.tanRT.texture).normalize();
 
-  const depth: N = uGeoDepth.max(anc.w.mul(uRise));
-  m.positionNode = surfPos.add(surfN.mul(anc.z.mul(depth)));
+  // §10 rise clocks — per cluster, from the baked āyah + reading-order index
+  const ayahIdx: N = aux.x.mul(8).add(0.5).floor(); // 1..7
+  const clusterIdx: N = aux.w.mul(255).add(0.5).floor();
+  const start: N = ayahIdx.sub(1).mul(RISE_AYAH_DP).add(clusterIdx.mul(RISE_CLUSTER_DP)).add(RISE_START);
+  const tRise: N = uP.sub(start).div(RISE_DUR).clamp(0, 1);
+  const stagger: N = bezierE2(tRise).mul(DEPTH_FULL - DEPTH_ENTRY).add(DEPTH_ENTRY).mul(step(start, uP));
+  const depth: N = uGeoDepth.max(anc.w.mul(stagger));
+  const worldH: N = anc.z.mul(depth);
+  const positionNode: N = surfPos.add(surfN.mul(worldH.add(SEAM_EPS)));
+  const tGold: N = uP.sub(start.add(RISE_GOLD_LAG * RISE_DUR)).div(RISE_DUR).clamp(0, 1);
+  const vGold: N = varying(bezierE2(tGold));
+
+  const m = new MeshPhysicalNodeMaterial();
+  // §14 z-guard: depthBias −2 / slopeScale −0.5 on the glyph main pass (shadow/contact
+  // pipelines stay unbiased)
+  m.polygonOffset = true;
+  m.polygonOffsetFactor = -0.5;
+  m.polygonOffsetUnits = -2;
+  m.positionNode = positionNode;
 
   // plan frame → object frame: x = +su = T, y = +sv (down-page) = cross(T, N), z = N
   const Bpage: N = cross(surfT, surfN);
@@ -138,6 +183,9 @@ export function buildGlyphRelief(
 
   const suv: N = varying(vec2(anc.x, anc.y));
   const aoV: N = varying(aux.y);
+  const rFloorV: N = varying(aux.z);
+  const hnV: N = varying(anc.z);
+  const kindV: N = varying(anc.w);
 
   // flat-ink composite (explicit lerps — the TSL mix() gotcha) × baked root AO
   const inkT: N = texture(inkTex, suv);
@@ -147,19 +195,48 @@ export function buildGlyphRelief(
   const height: N = fib.z.mul(0.7).add(det.z.mul(0.3));
   const cavity: N = float(1).sub(height.sub(0.5).mul(0.24));
   const inkCol: N = color(INK_DRY).mul(float(1).sub(wetF)).add(color(INK_WET).mul(wetF));
-  m.colorNode = inkCol.mul(cavity).mul(aoV);
-
-  // ink roughness + §15 geometric specular AA (same law as the parchment)
+  const inkBase: N = inkCol.mul(cavity);
   const rInk: N = float(0.52).sub(wetF.mul(0.24));
+
+  // §7 gold: burnish pack (R burnish → roughness 0.21..0.47, G wear → bole ~8%, crown-biased)
+  const bp: N = texture(burnishTex, suv.mul(vec2(7.0, 9.0)));
+  const burnish: N = bp.r;
+  const crown: N = hnV.smoothstep(0.55, 0.92); // top face vs wall/root
+  const wearBias: N = rFloorV.greaterThan(0.2).select(float(0.06), float(0.0)); // crown-fillet ring wears first
+  const wear: N = bp.g.add(wearBias).smoothstep(0.66, 0.74);
+  const faceCol: N = vec3(...GOLD_FACE).mul(float(1).sub(wear)).add(vec3(...GOLD_BOLE).mul(wear));
+  const sideDark: N = hnV.div(0.55).clamp(0, 1).mul(0.28).add(0.72); // ×0.72 toward the root
+  const sideCol: N = vec3(...GOLD_SIDE).mul(sideDark);
+  const goldCol: N = sideCol.mul(float(1).sub(crown)).add(faceCol.mul(crown));
+  const faceRough: N = burnish.mul(0.26).add(0.21).mul(float(1).sub(wear)).add(float(0.62).mul(wear));
+  const markerBias: N = kindV.lessThan(0.7).select(float(0.05), float(0.0)); // markers: +0.05 rough
+  const goldRough: N = float(0.52).mul(float(1).sub(crown)).add(faceRough.mul(crown)).add(markerBias).max(rFloorV);
+  const goldMetal: N = float(0.85).mul(float(1).sub(crown)).add(float(1).sub(wear.mul(0.88)).mul(crown));
+
+  const g: N = vGold;
+  m.colorNode = inkBase.mul(float(1).sub(g)).add(goldCol.mul(g)).mul(aoV);
+  m.metalnessNode = goldMetal.mul(g);
+  // roughness blend + §15 geometric specular AA (same law as the parchment)
+  const rMix: N = rInk.mul(float(1).sub(g)).add(goldRough.mul(g));
   const nDx: N = dFdx(nView);
   const nDy: N = dFdy(nView);
   const sigma2: N = nDx.dot(nDx).add(nDy.dot(nDy)).mul(0.25);
-  m.roughnessNode = rInk.mul(rInk).add(sigma2.mul(2).min(0.18)).sqrt();
+  m.roughnessNode = rMix.mul(rMix).add(sigma2.mul(2).min(0.18)).sqrt();
+
+  // contact-shadow height pass material — shares the position node; outputs coverage +
+  // height above the sheet (world / 0.2, enough range for the S7 lift)
+  const heightMaterial = new MeshBasicNodeMaterial();
+  heightMaterial.toneMapped = false;
+  heightMaterial.fog = false;
+  heightMaterial.positionNode = positionNode;
+  const vH: N = varying(worldH);
+  heightMaterial.outputNode = vec4(1, vH.div(0.2), 0, 1);
 
   const mesh = new Mesh(geo, m);
   mesh.frustumCulled = false;
-  mesh.castShadow = false; // enabled with the M5 rise — during the handoff the emboss casts none either
+  mesh.renderOrder = 1; // after the parchment — deterministic seam resolution
+  mesh.castShadow = false; // enabled by applyFrame at the rise (§14: contact/shadow pipelines unbiased)
   mesh.receiveShadow = true;
   mesh.visible = false;
-  return { mesh, uGeoDepth, uRise };
+  return { mesh, uGeoDepth, uP, heightMaterial };
 }

@@ -40,6 +40,44 @@ export function geoDepth(p: number): number {
   return 0.00045 + 0.00075 * E2(span(p, 0.69, 0.73));
 }
 
+// ---- M5 · the rise (§5/§10/§14) --------------------------------------------------------
+export const RISE_START = 0.722; // first āyah's rise begins inside the handoff tail
+export const RISE_AYAH_DP = 0.0115; // āyah offset
+export const RISE_CLUSTER_DP = 0.0012; // within an āyah, clusters lead by reading order
+export const RISE_DUR = 0.093; // per cluster, E4 (= E2, no overshoot by decree)
+export const RISE_GOLD_LAG = 0.25; // gold transmutation lags the rise by this fraction of the window
+export const DEPTH_FULL = 0.0115; // §6 D = 0.55 × x-height
+export const DEPTH_ENTRY = 0.0012; // handoff end depth — the rise continues from here
+
+/** Rise start for a cluster (āyah 1..7, reading-order cluster index within it). */
+export function riseStart(ayah: number, cluster: number): number {
+  return RISE_START + RISE_AYAH_DP * (ayah - 1) + RISE_CLUSTER_DP * cluster;
+}
+
+/** Per-cluster extrusion depth (world) — CPU reference of the vertex-stage law:
+ *  max(geoDepth, stagger) with stagger = 0.0012 → 0.0115 over [start, start + 0.093], E4. */
+export function riseDepth(p: number, ayah: number, cluster: number): number {
+  const s = riseStart(ayah, cluster);
+  const stagger = DEPTH_ENTRY + (DEPTH_FULL - DEPTH_ENTRY) * E2(span(p, s, s + RISE_DUR));
+  return Math.max(geoDepth(p), p >= s ? stagger : 0);
+}
+
+/** Gold transmutation factor for a cluster (§14): the rise window shifted by 0.25 of its length, E2. */
+export function goldFactor(p: number, ayah: number, cluster: number): number {
+  const s = riseStart(ayah, cluster) + RISE_GOLD_LAG * RISE_DUR;
+  return E2(span(p, s, s + RISE_DUR));
+}
+
+/** §14/§7 flat-ink ghost: the occluded flat layer fades to the 8% stain over [0.78, 0.84]. */
+export function inkGhost(p: number): number {
+  return 1 - 0.92 * E1(span(p, 0.78, 0.84));
+}
+
+/** §8/§10 contact-shadow blob ramp: starts at 0.72, full by 0.80 (E2). */
+export function contactRamp(p: number): number {
+  return E2(span(p, 0.72, 0.8));
+}
+
 /** §10 key-intensity factor: 1.00 through the unroll, S3 dim to 0.88 as the ink begins,
  *  rising 0.88 → 0.95 with the presenting climb [0.52, 0.60], holding 0.95 after. */
 export function keyFactor(p: number): number {

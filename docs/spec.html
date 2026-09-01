@@ -143,7 +143,7 @@
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.5 · M4 in progress — text revised at review, geometry live</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.5 · M4 closed · M5 in progress — the rise</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -1621,6 +1621,38 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     (dominant at 0.730 where the emboss is zero); no detached artifacts, AA-faded tips ≤ 0.55%.
     Review frames <span style="font-family:var(--mono);font-size:12px">qa/review/m4-R{0645,0710}-v15.png</span>;
     v1.5 candidates R-0.34/0.45/0.56/0.645/0.710 recorded (manifest), blessing at M4 close.</li>
+  </ol>
+
+  <h3>M4 closed · M5 open — the rise <span class="tag">sign-off, 2026-09-01</span></h3>
+  <ol>
+    <li><b>M4 closed</b> on review ("signed off — bless the frames and continue to M5"). Five v1.5
+    frames blessed (R-0.34/0.45/0.56/0.645/0.710-T1); the silhouette p95 reading accepted as measured.
+    T3 hashes equal T1 (tiers differ only by the DPR cap, which capture forces to 1 — differentiation is
+    M7); the WebGL2 fallback runs the full v1.5 pipeline (smoke hash recorded, CI blessing policy).</li>
+    <li><b>Determinism lesson</b> — R-0.710 flipped between two hashes across cold loads: the mesh base
+    sat exactly on the parchment surface, and WebGPU resolved the seam z-fight by pipeline-compile
+    order. Fixed with an explicit draw order (mesh after parchment) and a 1e-5 world seam clearance;
+    rule adopted: every mesh-visible frame reproduces across ≥ 2 cold loads before blessing.</li>
+    <li><b>§5/§10/§14 rise live</b> — per-cluster clocks in the vertex stage: start = 0.722 + 0.0115·(āyah − 1)
+    + 0.0012·cluster (reading-order index baked per vertex), duration 0.093, E4 = E2 evaluated in-shader
+    (five Newton steps on the bezier), depth = max(geoDepth, kind·stagger) so the handoff and the stagger
+    overlap without a discontinuity; risen letters cast PCSS from 0.722.</li>
+    <li><b>§14/§7 transmutation</b> — gold lags each cluster's rise by 0.25 of its window (E2): face
+    #C29B52 (metal 1.0, roughness 0.21–0.47 by a burnish field), wear → bole #7A4630 on ~8% crown-biased
+    area, sidewalls #8F6B2E darkening ×0.72 toward the root, markers +0.05 rough, curvature roughness floor
+    0.28 baked — all explicit lerps. The flat ink beneath fades to the 8% ghost over [0.78, 0.84].
+    Anisotropy along the stroke (0.25) is deferred to the M6 polish (needs a mesh tangent frame).</li>
+    <li><b>§8 contact-shadow blob</b> — ortho height field over the glyphs only (0.9 × 1.15, 512²),
+    two separable blurs with radius 2 + 640·h texels, composited ×(1 − 0.75·C·exp(−h/0.12)·ramp),
+    ramp E2 over [0.72, 0.80]; <span style="font-family:var(--mono);font-size:12px">&amp;noblob</span> isolates
+    it. The fourth gotcha extends to camera-rendered targets: they read back v-flipped — and because the
+    centered block is nearly mirror-symmetric, the wrong orientation looked like an offset echo of every
+    line, not a mirror (probed with <span style="font-family:var(--mono);font-size:12px">?debug=blob</span>).</li>
+    <li><b>M5 DoD so far</b> — one draw call for the assembly (single merged mesh; 8 calls/frame total at
+    p 0.80, 357k triangles); SDF/geometry alignment 0.46 px (build audit); thin-stroke guard self-intersection-free
+    by construction; R-0.76-T1 reproduced across cold loads and tiers (21859a51…); 390-px contact-shadow
+    capture recorded for the legibility review. Review frames
+    <span style="font-family:var(--mono);font-size:12px">qa/review/m5-R{076,080,084}.png</span>.</li>
   </ol>
 </section>
 

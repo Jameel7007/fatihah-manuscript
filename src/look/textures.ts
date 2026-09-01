@@ -110,6 +110,17 @@ export function buildFiberTexture(renderer: WebGPURenderer): Texture {
   return bake(renderer, 1024, 1024, vec4(nx, ny, h, rough), { repeat: true });
 }
 
+/** §7 burnish/wear pack stand-in (M5): R = burnish (indexes gold roughness 0.21 → 0.47:
+ *  crests low, valleys high), G = wear → bole field (thresholded at runtime to ~8% area),
+ *  B = anisotropy rotation (reserved — anisotropy is deferred to the M6 polish). */
+export function buildBurnishTexture(renderer: WebGPURenderer): Texture {
+  const p: N = uv();
+  const burnish: N = fbm4(p.mul(vec2(41, 37)).add(5.1)).mul(0.7).add(fbm4(p.mul(vec2(9, 8)).add(13.3)).mul(0.3));
+  const wear: N = fbm4(p.mul(vec2(11, 9)).add(29.7));
+  const aniso: N = fbm4(p.mul(vec2(5, 5)).add(41.1));
+  return bake(renderer, 1024, 1024, vec4(burnish, wear, aniso, 1), { repeat: true });
+}
+
 export function buildUtilTexture(renderer: WebGPURenderer): Texture {
   const p: N = uv();
   const macro: N = fbm4(p.mul(3.1));
