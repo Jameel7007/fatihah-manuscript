@@ -73,11 +73,12 @@ export type DebugMode = 'none' | 'normal' | 'matcap' | 'graycard' | 'ink' | 'blo
 // displays as exactly the §11 floor hex. Baked from `?calibrate=bg&target=<hex>` (damped
 // Newton against readback, sky detail off); re-run whenever the tone/grade chain changes.
 // v1.6 (2026-09-01): the warm #0D0906 darkness became the deep-blue universe floor —
-// first #080D26, then "darker" on review: #05081C, then "all a little darker": #040617.
-// (History: the v1.0–1.5 sphere shipped the pre-AgX-only warm solve (0.00798, 0.00648,
-// 0.00504) as a literal — every M2–M7 frame carries it.)
-// Solved 2026-09-01 through the full grade chain: displays (4.2, 6.3, 23.2) for #040617.
-export const BG_LINEAR: [number, number, number] = [0.0041577, 0.0041003, 0.011952];
+// first #080D26, then "darker" on review: #05081C, then "all a little darker": #040617,
+// then "a little dark like black/blue": #020411. (History: the v1.0–1.5 sphere shipped the
+// pre-AgX-only warm solve (0.00798, 0.00648, 0.00504) as a literal — every M2–M7 frame
+// carries it.)
+// Solved 2026-09-01 through the full grade chain: displays (1.6, 4, 17) for #020411.
+export const BG_LINEAR: [number, number, number] = [0.0022213, 0.0030306, 0.0091754];
 
 // §8 key intensity — 18% gray card at sheet center under key alone displays 128/255.
 // Baked from `?calibrate=key`; re-run when key geometry/cone changes or the HDRI lands.

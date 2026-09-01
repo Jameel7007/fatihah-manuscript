@@ -14,6 +14,7 @@
 
 import { BackSide, Mesh, MeshBasicNodeMaterial, SphereGeometry, Vector3 } from 'three/webgpu';
 import { cameraPosition, cross, dot, exp, float, fract, positionWorld, step, uniform, vec2, vec3 } from 'three/tsl';
+// (dot is used by the hash and the lobe; the star unit is a constant since the third review pass)
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type N = any;
@@ -26,6 +27,7 @@ const GLOW_AMP = 0.55; // lobe peak = floor × (1 + GLOW_AMP), falling as cos³
 const NEBULA_AMP = 0.6; // ± modulation of the lobe by the 3-octave value noise
 const CELLS = 104; // star cells per cube face — ≈ 500 stars in the 1440×900 S3 frame
 const OCCUPANCY = 0.26;
+const STAR_UNIT = 0.0047; // scene-linear luminance unit for the star law (see buildSky)
 
 export interface Sky {
   mesh: Mesh;
@@ -73,7 +75,9 @@ export function buildSky(floor: [number, number, number]): Sky {
 
   const d: N = positionWorld.sub(cameraPosition).normalize();
   const floorC: N = uFloor;
-  const floorLum: N = dot(floorC, vec3(0.2126, 0.7152, 0.0722));
+  // Star brightness unit: pinned to the luminance of the #040617 floor (the pass whose star
+  // brightness was approved), so darkening the ground further does not dim the stars
+  const floorLum: N = float(STAR_UNIT);
 
   // nebular lobe: cos³ about GLOW_DIR, modulated ± by the noise, tinted violet where dense
   // and teal-blue where thin; a faint noise term also breathes over the bare floor
