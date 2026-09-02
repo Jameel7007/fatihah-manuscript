@@ -41,12 +41,18 @@ const JIT = 0.137713; // same fixed jitter constant as the atlas build (winding 
 // §6 constants (world units)
 const D = 0.0115; // full extrusion depth = 0.55 × x-height
 const BEV = 0.0046; // bevel width b
+// v1.6.1 (user review 2026-09-01, "smooth"): the wall softened — the §6 original rose
+// 0.0009 → 0.0058 over 0.0006 (slope 8, narrower than a grid cell once the profile is
+// compressed onto a stroke, so its shading band jumped with the grid phase); it now rises
+// over 0.0011 with a rounded shoulder (max slope ≈ 4.5). Root, crown and lip unchanged.
 const PROFILE = [
   [0.0, 0.0],
   [0.0004, 0.0002],
   [0.0007, 0.0009],
-  [0.0013, 0.0058],
-  [0.0018, 0.0079],
+  [0.0011, 0.0027],
+  [0.0015, 0.0045],
+  [0.0018, 0.0062],
+  [0.0022, 0.0081],
   [0.0026, 0.0098],
   [0.0035, 0.011],
   [0.0042, 0.0114],
@@ -55,7 +61,7 @@ const PROFILE = [
 const KIND_SCALE = { base: 1.0, mark: 0.8, ring: 0.6, marker: 0.6 }; // §6 depth ratios
 const GUARD_REF = BEV + 0.0004; // §6: wScale = clamp(W / (b + 0.0004), 0.25, 1)
 
-const PITCH_FU = Number(process.argv.find((a) => a.startsWith('--pitch='))?.split('=')[1] ?? 10);
+const PITCH_FU = Number(process.argv.find((a) => a.startsWith('--pitch='))?.split('=')[1] ?? 8); // v1.6.1: 10 → 8 fu (smoother crowns; ≈ 400k tris)
 const P = PITCH_FU * K; // grid pitch, world
 const RES = 2 * K; // raster resolution (2 fu / px), world per px
 const TRI_BUDGET = 780000; // §6 T1
@@ -409,22 +415,41 @@ class OutlineField {
     return [nx, ny];
   }
 
-  /** Local half-width W: medial-disc radius by marching up the raster distance field. */
+  /** Local half-width W: the medial-disc radius of the stroke at this vertex's nearest
+   *  boundary foot — a ray from the foot along the inward normal, sampled every font unit,
+   *  W = the raster distance's maximum before it falls away past the medial axis.
+   *  v1.6.1 (user review 2026-09-01, "the letters are choppy"): the previous estimate marched
+   *  from the VERTEX in ≤ 8 coarse steps and stopped early near the outline, so boundary and
+   *  interior vertices of the same stroke got different W — the profile scale, and with it
+   *  the bevel foot and the wall shading, jumped from vertex to vertex. Marching from the
+   *  foot makes W a property of the place on the stroke, shared by every vertex above it. */
   halfWidth(x, y) {
-    let qx = x;
-    let qy = y;
-    let W = this.rasterD(qx, qy);
-    for (let k = 0; k < 8; k++) {
-      const [gx, gy, mag] = this.rasterGrad(qx, qy);
-      if (mag < 0.35) break; // at the medial ridge
-      const step = Math.max(RES, this.rasterD(qx, qy) * 0.6);
-      qx += gx * step;
-      qy += gy * step;
-      const d = this.rasterD(qx, qy);
-      if (d <= W) break;
-      W = d;
+    const nr = this.nearest(x, y);
+    const d0 = this.rasterD(x, y);
+    let nx;
+    let ny;
+    if (nr.d > 1e-7) {
+      const s = this.inside(x, y) ? 1 : -1;
+      nx = ((x - nr.foot[0]) / nr.d) * s;
+      ny = ((y - nr.foot[1]) / nr.d) * s;
+    } else {
+      const dp = derivEdge(nr.edge, nr.t);
+      const L = Math.hypot(dp[0], dp[1]) || 1;
+      nx = -dp[1] / L;
+      ny = dp[0] / L;
+      if (!this.inside(x + nx * K, y + ny * K)) {
+        nx = -nx;
+        ny = -ny;
+      }
     }
-    return Math.max(W, this.rasterD(x, y));
+    let W = 0;
+    const tMax = 3 * GUARD_REF;
+    for (let t = K; t <= tMax; t += K) {
+      const d = this.rasterD(nr.foot[0] + nx * t, nr.foot[1] + ny * t);
+      if (d > W) W = d;
+      else if (d < W - 2 * K) break; // past the medial axis
+    }
+    return Math.max(W, d0);
   }
 }
 

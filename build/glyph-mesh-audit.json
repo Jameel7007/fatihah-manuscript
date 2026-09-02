@@ -1,31 +1,31 @@
 {
  "built": "M4 §6/§18 bevel extruder",
  "counts": {
-  "verts": 165911,
-  "tris": 257438,
+  "verts": 256469,
+  "tris": 399384,
   "groups": 159,
-  "cells": 127541,
-  "tipSubdivisions": 3982,
+  "cells": 198795,
+  "tipSubdivisions": 6871,
   "vertsByKind": {
-   "base": 128903,
-   "mark": 31423,
-   "ring": 5585
+   "base": 196388,
+   "mark": 50272,
+   "ring": 9809
   }
  },
  "budget": {
   "t1": 780000,
-  "used": 257438
+  "used": 399384
  },
- "planAreaErr": 0.0002,
+ "planAreaErr": 0.0001,
  "silhouetteIdentity": {
-  "worstOuterEm": 0.006855,
-  "worstOuterPx1440": 0.4634,
-  "samples": 86884,
+  "worstOuterEm": 0.005547,
+  "worstOuterPx1440": 0.375,
+  "samples": 106792,
   "tolEm": 0.008,
   "tolNote": "grid tessellation + chord refinement bound; the 0.0008 em analytic flatten tolerance moves to the M5 curvature-adaptive rebuild (meshopt repack, §18)",
   "creviceWalls": {
-   "worstEm": 0.005883,
-   "samples": 1026,
+   "worstEm": 0.004809,
+   "samples": 1207,
    "note": "narrow cracks between joined strokes; geometry paves below one raster texel — coverage difference, not silhouette"
   },
   "subResolutionTails": {
@@ -36,13 +36,13 @@
   }
  },
  "guard": {
-  "minHalfWidthWorld": 0,
-  "beadVerts": 73461,
-  "totalVerts": 165911
+  "minHalfWidthWorld": 0.000013,
+  "beadVerts": 103966,
+  "totalVerts": 256469
  },
  "bin": {
-  "bytes": 6409280,
-  "sha256": "9d27dbdfecc74dc3568e0e23f82964e9558f9be091e85d5fe666c7be5629b183"
+  "bytes": 9923792,
+  "sha256": "52b246c8b76e89ec4c30ccbb5987f02bfdc88bc0ed1a0ba5eb0e086a5a2531ed"
  },
- "pitchFu": 10
+ "pitchFu": 8
 }

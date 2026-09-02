@@ -1799,6 +1799,17 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     <b>warm dome</b> overhead (linear 0.42 / 0.34 / 0.21 × smoothstep(−0.15, 0.7, sin el)) and the gold takes the
     environment at <b>2.2×</b> (was 1.6×; parchment 1×). RECEDE_REST y → <b>−0.48</b> so the page leaves the frame on
     narrow phones as well (the width-bound fit there sits at d ≈ 3.5).</li>
+    <li><b>§6 / §14 smooth bevels</b> — “the letters are a little choppy/unsmooth” (a 3× zoom of the live gold). The
+    beauty pass is multisampled (PassNode inherits the renderer's 4 samples; 907 silhouette edges probed in a 2560-px
+    capture: 0–5 intermediate levels, as MSAA gives), so the chop was in the bevel itself. Cause: the local half-width W
+    that scales the §6 profile was estimated by a ≤ 8-step coarse march <em>from the vertex</em> that stopped early near
+    the outline, so boundary and interior vertices of one stroke got different W — the profile scale, and with it the
+    bevel foot and the wall shading, jumped vertex to vertex (38% of vertices sat on the 0.25 guard clamp). W is now the
+    medial-disc radius at the vertex's nearest boundary <em>foot</em> (a ray along the inward normal sampled every font
+    unit, maximum of the raster distance before it falls past the medial axis) — a property of the place on the stroke,
+    shared by every vertex above it. The §6 wall is softened (0.0009 → 0.0058 over 0.0011 with a rounded shoulder, max
+    slope ≈ 4.5, was 8 over 0.0006 — narrower than a grid cell once compressed onto a stroke) and the grid pitch goes
+    10 → 8 fu. Rebuilt: 256,469 verts / 399,384 tris (budget 780k; 8 draw calls, 499k tris per frame with the sheet), silhouette 0.00555 em (was 0.00685), 40% of vertices on the thin-stroke guard (marks and hairlines), glyphs.bin 9.5 MB raw / 2.66 MB brotli (was 1.47) — §18 total ≈ 3.4 MB against 8.5. The T3 per-tier mesh (330k budget) is now a real debt.</li>
   </ol>
 
 
