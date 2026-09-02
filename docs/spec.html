@@ -143,7 +143,7 @@
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.6 (universe ground, pending sign-off) · M7 in progress — performance &amp; payload</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.6.1 (universe ground + text pass, pending sign-off) · M7 in progress — performance &amp; payload</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -1770,6 +1770,26 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     noblob after sign-off. The runner's iframe must fill the viewport — an offscreen 1×1 iframe is rAF-throttled even in
     the fronted tab (a 13-frame pass went from 345 s to 70 s).</li>
   </ol>
+  <h3 style="margin-top:26px">v1.6.1 — the text pass <span class="tag">2026-09-01 · user direction · pending sign-off with v1.6</span></h3>
+  <p>“Make sure you're taking a look at the text. It's gonna need to be smooth, especially the first letter they
+  stretched, and at the bottom it's still covering the paper.” Two defects, both measured on a 2560-px p = 1 capture.</p>
+  <ol>
+    <li><b>§3 / §17 smooth kashida</b> — the basmalah's 2.0 em sīn elongation was ten tatweel glyphs. Amiri's tatweel
+    is a straight bar with flared ends (a 2-unit bump and two concave corners at every joint); the §6 bevel turned every
+    joint into a ridge — ten evenly spaced ridges along the stroke. A run of tatweels is now emitted by
+    <code>shape-text</code> as <b>one synthetic glyph</b> (gid 200000+): the tatweel outline with its body stretched by the
+    run's span (straight top and bottom, flares only at the ends; <code>kashidaCount</code> keeps N × kashidaUnit in the
+    writing schedule). The ink atlas and the glyph mesh both take outlines from the composition, so the §17 guarantee
+    holds by construction. Rebuilt: 36 glyphs on line 1 (was 45), atlas IoU 0.9900 / 0.9641, RTL audit PASS, mesh
+    165,911 verts / 257,438 tris, silhouette 0.00685 em, verify-text green on all three variants; svg b5b3cd2c….</li>
+    <li><b>§5 / §9 the block floats over the page</b> — at rest the receded page's far edge (z −0.6, y −0.02) projected
+    <em>above</em> the block's bottom line from the S7 camera, so the last line lay on the paper. RECEDE_REST y −0.02 →
+    <b>−0.18</b>, and the S7 assembly fit now also keeps a 0.06 band of page in frame beneath the far edge (vertical only,
+    to the frame edge): the bottom line clears the page by ≈ 6% of the frame height with a ≈ 5% strip of page showing —
+    fit distance 2.06 → <b>2.39</b> at 16:10 (the block reads ≈ 14% smaller; portrait fits to the same 2.39). The PCSS
+    shadow still lands on the page.</li>
+  </ol>
+
 
 </section>
 

@@ -566,7 +566,7 @@ function scheduleSegment(glyphs) {
       wordEnd = cursor;
     }
     if (g.kind === 'base') {
-      const u = g.kashida ? W.kashidaUnit : W.glyphUnit;
+      const u = g.kashida ? W.kashidaUnit * (g.kashidaCount ?? 1) : W.glyphUnit; // merged tatweel runs keep N units (v1.6.1)
       items.set(g.order, { start: cursor, dur: u });
       cursor += u;
       baseEnd = cursor;

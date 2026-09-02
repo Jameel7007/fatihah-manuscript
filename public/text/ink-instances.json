@@ -41,12 +41,12 @@
  },
  "lineBreakGap": 0.002,
  "checksums": {
-  "compositionSvg": "24efcc21ecd973e3316d6255fb10bb9508dae458b675e7fae343372d733c4e3b",
-  "mtsdfPng": "2f9917c3e662450ebfd1f5b4371218f41a3f5b90f363240b1d3d053157366b10",
-  "progPng": "870572c6ed87c96a2420b4433c7a58a7763375aa389844c67075cb6c1e2248d5"
+  "compositionSvg": "b5b3cd2c230d2cb2823502a1f95ba97f9d5a782092f3bc63b53bfd208a45336d",
+  "mtsdfPng": "21a11d2799acc87bfadbb52a560a05b9ff0b7771382abae918fcf382c82e8d5b",
+  "progPng": "b79e8faf871063ad7403f4c3032747dc7e8b15d8a1a61e676aeecb57e0b941ec"
  },
  "qa": {
-  "meanIoU": 0.9899,
+  "meanIoU": 0.99,
   "worstIoU": {
    "gid": 68,
    "iou": 0.9641
@@ -56,7 +56,7 @@
  "instances": [
   {
    "gid": 67,
-   "order": 44,
+   "order": 35,
    "line": 0,
    "word": 3,
    "ayah": 1,
@@ -79,7 +79,7 @@
   },
   {
    "gid": 574,
-   "order": 40,
+   "order": 31,
    "line": 0,
    "word": 3,
    "ayah": 1,
@@ -102,7 +102,7 @@
   },
   {
    "gid": 565,
-   "order": 39,
+   "order": 30,
    "line": 0,
    "word": 3,
    "ayah": 1,
@@ -125,7 +125,7 @@
   },
   {
    "gid": 67,
-   "order": 43,
+   "order": 34,
    "line": 0,
    "word": 3,
    "ayah": 1,
@@ -148,7 +148,7 @@
   },
   {
    "gid": 483,
-   "order": 38,
+   "order": 29,
    "line": 0,
    "word": 3,
    "ayah": 1,
@@ -171,7 +171,7 @@
   },
   {
    "gid": 347,
-   "order": 41,
+   "order": 32,
    "line": 0,
    "word": 3,
    "ayah": 1,
@@ -194,7 +194,7 @@
   },
   {
    "gid": 68,
-   "order": 42,
+   "order": 33,
    "line": 0,
    "word": 3,
    "ayah": 1,
@@ -217,7 +217,7 @@
   },
   {
    "gid": 859,
-   "order": 37,
+   "order": 28,
    "line": 0,
    "word": 3,
    "ayah": 1,
@@ -240,7 +240,7 @@
   },
   {
    "gid": 857,
-   "order": 36,
+   "order": 27,
    "line": 0,
    "word": 3,
    "ayah": 1,
@@ -263,7 +263,7 @@
   },
   {
    "gid": 90,
-   "order": 35,
+   "order": 26,
    "line": 0,
    "word": 3,
    "ayah": 1,
@@ -286,7 +286,7 @@
   },
   {
    "gid": 67,
-   "order": 34,
+   "order": 25,
    "line": 0,
    "word": 2,
    "ayah": 1,
@@ -309,7 +309,7 @@
   },
   {
    "gid": 501,
-   "order": 28,
+   "order": 19,
    "line": 0,
    "word": 2,
    "ayah": 1,
@@ -332,7 +332,7 @@
   },
   {
    "gid": 89,
-   "order": 33,
+   "order": 24,
    "line": 0,
    "word": 2,
    "ayah": 1,
@@ -355,7 +355,7 @@
   },
   {
    "gid": 65,
-   "order": 32,
+   "order": 23,
    "line": 0,
    "word": 2,
    "ayah": 1,
@@ -378,7 +378,7 @@
   },
   {
    "gid": 1056,
-   "order": 27,
+   "order": 18,
    "line": 0,
    "word": 2,
    "ayah": 1,
@@ -401,7 +401,7 @@
   },
   {
    "gid": 69,
-   "order": 31,
+   "order": 22,
    "line": 0,
    "word": 2,
    "ayah": 1,
@@ -424,7 +424,7 @@
   },
   {
    "gid": 1053,
-   "order": 26,
+   "order": 17,
    "line": 0,
    "word": 2,
    "ayah": 1,
@@ -447,7 +447,7 @@
   },
   {
    "gid": 347,
-   "order": 29,
+   "order": 20,
    "line": 0,
    "word": 2,
    "ayah": 1,
@@ -470,7 +470,7 @@
   },
   {
    "gid": 68,
-   "order": 30,
+   "order": 21,
    "line": 0,
    "word": 2,
    "ayah": 1,
@@ -493,7 +493,7 @@
   },
   {
    "gid": 859,
-   "order": 25,
+   "order": 16,
    "line": 0,
    "word": 2,
    "ayah": 1,
@@ -516,7 +516,7 @@
   },
   {
    "gid": 857,
-   "order": 24,
+   "order": 15,
    "line": 0,
    "word": 2,
    "ayah": 1,
@@ -539,7 +539,7 @@
   },
   {
    "gid": 90,
-   "order": 23,
+   "order": 14,
    "line": 0,
    "word": 2,
    "ayah": 1,
@@ -562,7 +562,7 @@
   },
   {
    "gid": 67,
-   "order": 22,
+   "order": 13,
    "line": 0,
    "word": 1,
    "ayah": 1,
@@ -585,7 +585,7 @@
   },
   {
    "gid": 291,
-   "order": 19,
+   "order": 10,
    "line": 0,
    "word": 1,
    "ayah": 1,
@@ -608,7 +608,7 @@
   },
   {
    "gid": 347,
-   "order": 20,
+   "order": 11,
    "line": 0,
    "word": 1,
    "ayah": 1,
@@ -631,7 +631,7 @@
   },
   {
    "gid": 68,
-   "order": 21,
+   "order": 12,
    "line": 0,
    "word": 1,
    "ayah": 1,
@@ -654,7 +654,7 @@
   },
   {
    "gid": 290,
-   "order": 18,
+   "order": 9,
    "line": 0,
    "word": 1,
    "ayah": 1,
@@ -677,7 +677,7 @@
   },
   {
    "gid": 289,
-   "order": 17,
+   "order": 8,
    "line": 0,
    "word": 1,
    "ayah": 1,
@@ -700,7 +700,7 @@
   },
   {
    "gid": 90,
-   "order": 16,
+   "order": 7,
    "line": 0,
    "word": 1,
    "ayah": 1,
@@ -723,7 +723,7 @@
   },
   {
    "gid": 67,
-   "order": 15,
+   "order": 6,
    "line": 0,
    "word": 0,
    "ayah": 1,
@@ -746,7 +746,7 @@
   },
   {
    "gid": 498,
-   "order": 12,
+   "order": 3,
    "line": 0,
    "word": 0,
    "ayah": 1,
@@ -768,8 +768,8 @@
    "dur": 0.0007
   },
   {
-   "gid": 51,
-   "order": 11,
+   "gid": 200011,
+   "order": 2,
    "line": 0,
    "word": 0,
    "ayah": 1,
@@ -778,228 +778,21 @@
    "sheet": [
     0.106964,
     0.203716,
-    0.133172,
-    0.2215
-   ],
-   "atlas": [
-    0.587402,
-    0.382813,
-    0.603516,
-    0.46875
-   ],
-   "start": 0.3236,
-   "dur": 0.00024
-  },
-  {
-   "gid": 51,
-   "order": 10,
-   "line": 0,
-   "word": 0,
-   "ayah": 1,
-   "kind": "base",
-   "kashida": true,
-   "sheet": [
-    0.116584,
-    0.203716,
-    0.142792,
-    0.2215
-   ],
-   "atlas": [
-    0.587402,
-    0.382813,
-    0.603516,
-    0.46875
-   ],
-   "start": 0.32335,
-   "dur": 0.00024
-  },
-  {
-   "gid": 51,
-   "order": 9,
-   "line": 0,
-   "word": 0,
-   "ayah": 1,
-   "kind": "base",
-   "kashida": true,
-   "sheet": [
-    0.126204,
-    0.203716,
-    0.152412,
-    0.2215
-   ],
-   "atlas": [
-    0.587402,
-    0.382813,
-    0.603516,
-    0.46875
-   ],
-   "start": 0.32311,
-   "dur": 0.00024
-  },
-  {
-   "gid": 51,
-   "order": 8,
-   "line": 0,
-   "word": 0,
-   "ayah": 1,
-   "kind": "base",
-   "kashida": true,
-   "sheet": [
-    0.135824,
-    0.203716,
-    0.162032,
-    0.2215
-   ],
-   "atlas": [
-    0.587402,
-    0.382813,
-    0.603516,
-    0.46875
-   ],
-   "start": 0.32286,
-   "dur": 0.00024
-  },
-  {
-   "gid": 51,
-   "order": 7,
-   "line": 0,
-   "word": 0,
-   "ayah": 1,
-   "kind": "base",
-   "kashida": true,
-   "sheet": [
-    0.145444,
-    0.203716,
-    0.171652,
-    0.2215
-   ],
-   "atlas": [
-    0.587402,
-    0.382813,
-    0.603516,
-    0.46875
-   ],
-   "start": 0.32262,
-   "dur": 0.00024
-  },
-  {
-   "gid": 51,
-   "order": 6,
-   "line": 0,
-   "word": 0,
-   "ayah": 1,
-   "kind": "base",
-   "kashida": true,
-   "sheet": [
-    0.155064,
-    0.203716,
-    0.181272,
-    0.2215
-   ],
-   "atlas": [
-    0.587402,
-    0.382813,
-    0.603516,
-    0.46875
-   ],
-   "start": 0.32238,
-   "dur": 0.00024
-  },
-  {
-   "gid": 51,
-   "order": 5,
-   "line": 0,
-   "word": 0,
-   "ayah": 1,
-   "kind": "base",
-   "kashida": true,
-   "sheet": [
-    0.164684,
-    0.203716,
-    0.190892,
-    0.2215
-   ],
-   "atlas": [
-    0.587402,
-    0.382813,
-    0.603516,
-    0.46875
-   ],
-   "start": 0.32213,
-   "dur": 0.00024
-  },
-  {
-   "gid": 51,
-   "order": 4,
-   "line": 0,
-   "word": 0,
-   "ayah": 1,
-   "kind": "base",
-   "kashida": true,
-   "sheet": [
-    0.174304,
-    0.203716,
-    0.200512,
-    0.2215
-   ],
-   "atlas": [
-    0.587402,
-    0.382813,
-    0.603516,
-    0.46875
-   ],
-   "start": 0.32189,
-   "dur": 0.00024
-  },
-  {
-   "gid": 51,
-   "order": 3,
-   "line": 0,
-   "word": 0,
-   "ayah": 1,
-   "kind": "base",
-   "kashida": true,
-   "sheet": [
-    0.183924,
-    0.203716,
-    0.210132,
-    0.2215
-   ],
-   "atlas": [
-    0.587402,
-    0.382813,
-    0.603516,
-    0.46875
-   ],
-   "start": 0.32164,
-   "dur": 0.00024
-  },
-  {
-   "gid": 51,
-   "order": 2,
-   "line": 0,
-   "word": 0,
-   "ayah": 1,
-   "kind": "base",
-   "kashida": true,
-   "sheet": [
-    0.193544,
-    0.203716,
     0.219752,
     0.2215
    ],
    "atlas": [
     0.587402,
     0.382813,
-    0.603516,
+    0.655273,
     0.46875
    ],
    "start": 0.3214,
-   "dur": 0.00024
+   "dur": 0.00245
   },
   {
    "gid": 69,
-   "order": 14,
+   "order": 5,
    "line": 0,
    "word": 0,
    "ayah": 1,
@@ -1045,7 +838,7 @@
   },
   {
    "gid": 67,
-   "order": 13,
+   "order": 4,
    "line": 0,
    "word": 0,
    "ayah": 1,
@@ -1114,7 +907,7 @@
   },
   {
    "gid": 65,
-   "order": 78,
+   "order": 69,
    "line": 1,
    "word": 3,
    "ayah": 2,
@@ -1137,7 +930,7 @@
   },
   {
    "gid": 849,
-   "order": 72,
+   "order": 63,
    "line": 1,
    "word": 3,
    "ayah": 2,
@@ -1160,7 +953,7 @@
   },
   {
    "gid": 839,
-   "order": 71,
+   "order": 62,
    "line": 1,
    "word": 3,
    "ayah": 2,
@@ -1183,7 +976,7 @@
   },
   {
    "gid": 67,
-   "order": 77,
+   "order": 68,
    "line": 1,
    "word": 3,
    "ayah": 2,
@@ -1206,7 +999,7 @@
   },
   {
    "gid": 773,
-   "order": 70,
+   "order": 61,
    "line": 1,
    "word": 3,
    "ayah": 2,
@@ -1229,7 +1022,7 @@
   },
   {
    "gid": 65,
-   "order": 76,
+   "order": 67,
    "line": 1,
    "word": 3,
    "ayah": 2,
@@ -1252,7 +1045,7 @@
   },
   {
    "gid": 772,
-   "order": 69,
+   "order": 60,
    "line": 1,
    "word": 3,
    "ayah": 2,
@@ -1275,7 +1068,7 @@
   },
   {
    "gid": 89,
-   "order": 75,
+   "order": 66,
    "line": 1,
    "word": 3,
    "ayah": 2,
@@ -1298,7 +1091,7 @@
   },
   {
    "gid": 65,
-   "order": 74,
+   "order": 65,
    "line": 1,
    "word": 3,
    "ayah": 2,
@@ -1321,7 +1114,7 @@
   },
   {
    "gid": 439,
-   "order": 68,
+   "order": 59,
    "line": 1,
    "word": 3,
    "ayah": 2,
@@ -1344,7 +1137,7 @@
   },
   {
    "gid": 69,
-   "order": 73,
+   "order": 64,
    "line": 1,
    "word": 3,
    "ayah": 2,
@@ -1367,7 +1160,7 @@
   },
   {
    "gid": 496,
-   "order": 67,
+   "order": 58,
    "line": 1,
    "word": 3,
    "ayah": 2,
@@ -1390,7 +1183,7 @@
   },
   {
    "gid": 90,
-   "order": 66,
+   "order": 57,
    "line": 1,
    "word": 3,
    "ayah": 2,
@@ -1413,7 +1206,7 @@
   },
   {
    "gid": 67,
-   "order": 64,
+   "order": 55,
    "line": 1,
    "word": 2,
    "ayah": 2,
@@ -1436,7 +1229,7 @@
   },
   {
    "gid": 68,
-   "order": 65,
+   "order": 56,
    "line": 1,
    "word": 2,
    "ayah": 2,
@@ -1459,7 +1252,7 @@
   },
   {
    "gid": 32,
-   "order": 62,
+   "order": 53,
    "line": 1,
    "word": 2,
    "ayah": 2,
@@ -1482,7 +1275,7 @@
   },
   {
    "gid": 65,
-   "order": 63,
+   "order": 54,
    "line": 1,
    "word": 2,
    "ayah": 2,
@@ -1505,7 +1298,7 @@
   },
   {
    "gid": 41,
-   "order": 61,
+   "order": 52,
    "line": 1,
    "word": 2,
    "ayah": 2,
@@ -1528,7 +1321,7 @@
   },
   {
    "gid": 67,
-   "order": 60,
+   "order": 51,
    "line": 1,
    "word": 1,
    "ayah": 2,
@@ -1551,7 +1344,7 @@
   },
   {
    "gid": 291,
-   "order": 56,
+   "order": 47,
    "line": 1,
    "word": 1,
    "ayah": 2,
@@ -1574,7 +1367,7 @@
   },
   {
    "gid": 347,
-   "order": 57,
+   "order": 48,
    "line": 1,
    "word": 1,
    "ayah": 2,
@@ -1597,7 +1390,7 @@
   },
   {
    "gid": 68,
-   "order": 59,
+   "order": 50,
    "line": 1,
    "word": 1,
    "ayah": 2,
@@ -1620,7 +1413,7 @@
   },
   {
    "gid": 290,
-   "order": 55,
+   "order": 46,
    "line": 1,
    "word": 1,
    "ayah": 2,
@@ -1643,7 +1436,7 @@
   },
   {
    "gid": 67,
-   "order": 58,
+   "order": 49,
    "line": 1,
    "word": 1,
    "ayah": 2,
@@ -1666,7 +1459,7 @@
   },
   {
    "gid": 289,
-   "order": 54,
+   "order": 45,
    "line": 1,
    "word": 1,
    "ayah": 2,
@@ -1689,7 +1482,7 @@
   },
   {
    "gid": 66,
-   "order": 53,
+   "order": 44,
    "line": 1,
    "word": 0,
    "ayah": 2,
@@ -1712,7 +1505,7 @@
   },
   {
    "gid": 468,
-   "order": 49,
+   "order": 40,
    "line": 1,
    "word": 0,
    "ayah": 2,
@@ -1735,7 +1528,7 @@
   },
   {
    "gid": 69,
-   "order": 52,
+   "order": 43,
    "line": 1,
    "word": 0,
    "ayah": 2,
@@ -1758,7 +1551,7 @@
   },
   {
    "gid": 500,
-   "order": 48,
+   "order": 39,
    "line": 1,
    "word": 0,
    "ayah": 2,
@@ -1781,7 +1574,7 @@
   },
   {
    "gid": 65,
-   "order": 51,
+   "order": 42,
    "line": 1,
    "word": 0,
    "ayah": 2,
@@ -1804,7 +1597,7 @@
   },
   {
    "gid": 675,
-   "order": 47,
+   "order": 38,
    "line": 1,
    "word": 0,
    "ayah": 2,
@@ -1827,7 +1620,7 @@
   },
   {
    "gid": 69,
-   "order": 50,
+   "order": 41,
    "line": 1,
    "word": 0,
    "ayah": 2,
@@ -1850,7 +1643,7 @@
   },
   {
    "gid": 549,
-   "order": 46,
+   "order": 37,
    "line": 1,
    "word": 0,
    "ayah": 2,
@@ -1873,7 +1666,7 @@
   },
   {
    "gid": 90,
-   "order": 45,
+   "order": 36,
    "line": 1,
    "word": 0,
    "ayah": 2,
@@ -1919,7 +1712,7 @@
   },
   {
    "gid": 67,
-   "order": 90,
+   "order": 81,
    "line": 1,
    "word": 4,
    "ayah": 3,
@@ -1942,7 +1735,7 @@
   },
   {
    "gid": 501,
-   "order": 84,
+   "order": 75,
    "line": 1,
    "word": 4,
    "ayah": 3,
@@ -1965,7 +1758,7 @@
   },
   {
    "gid": 89,
-   "order": 89,
+   "order": 80,
    "line": 1,
    "word": 4,
    "ayah": 3,
@@ -1988,7 +1781,7 @@
   },
   {
    "gid": 65,
-   "order": 88,
+   "order": 79,
    "line": 1,
    "word": 4,
    "ayah": 3,
@@ -2011,7 +1804,7 @@
   },
   {
    "gid": 1056,
-   "order": 83,
+   "order": 74,
    "line": 1,
    "word": 4,
    "ayah": 3,
@@ -2034,7 +1827,7 @@
   },
   {
    "gid": 69,
-   "order": 87,
+   "order": 78,
    "line": 1,
    "word": 4,
    "ayah": 3,
@@ -2057,7 +1850,7 @@
   },
   {
    "gid": 1053,
-   "order": 82,
+   "order": 73,
    "line": 1,
    "word": 4,
    "ayah": 3,
@@ -2080,7 +1873,7 @@
   },
   {
    "gid": 347,
-   "order": 85,
+   "order": 76,
    "line": 1,
    "word": 4,
    "ayah": 3,
@@ -2103,7 +1896,7 @@
   },
   {
    "gid": 68,
-   "order": 86,
+   "order": 77,
    "line": 1,
    "word": 4,
    "ayah": 3,
@@ -2126,7 +1919,7 @@
   },
   {
    "gid": 859,
-   "order": 81,
+   "order": 72,
    "line": 1,
    "word": 4,
    "ayah": 3,
@@ -2149,7 +1942,7 @@
   },
   {
    "gid": 857,
-   "order": 80,
+   "order": 71,
    "line": 1,
    "word": 4,
    "ayah": 3,
@@ -2172,7 +1965,7 @@
   },
   {
    "gid": 90,
-   "order": 79,
+   "order": 70,
    "line": 1,
    "word": 4,
    "ayah": 3,
@@ -2195,7 +1988,7 @@
   },
   {
    "gid": 67,
-   "order": 100,
+   "order": 91,
    "line": 2,
    "word": 0,
    "ayah": 3,
@@ -2218,7 +2011,7 @@
   },
   {
    "gid": 574,
-   "order": 96,
+   "order": 87,
    "line": 2,
    "word": 0,
    "ayah": 3,
@@ -2241,7 +2034,7 @@
   },
   {
    "gid": 565,
-   "order": 95,
+   "order": 86,
    "line": 2,
    "word": 0,
    "ayah": 3,
@@ -2264,7 +2057,7 @@
   },
   {
    "gid": 67,
-   "order": 99,
+   "order": 90,
    "line": 2,
    "word": 0,
    "ayah": 3,
@@ -2287,7 +2080,7 @@
   },
   {
    "gid": 483,
-   "order": 94,
+   "order": 85,
    "line": 2,
    "word": 0,
    "ayah": 3,
@@ -2310,7 +2103,7 @@
   },
   {
    "gid": 347,
-   "order": 97,
+   "order": 88,
    "line": 2,
    "word": 0,
    "ayah": 3,
@@ -2333,7 +2126,7 @@
   },
   {
    "gid": 68,
-   "order": 98,
+   "order": 89,
    "line": 2,
    "word": 0,
    "ayah": 3,
@@ -2356,7 +2149,7 @@
   },
   {
    "gid": 859,
-   "order": 93,
+   "order": 84,
    "line": 2,
    "word": 0,
    "ayah": 3,
@@ -2379,7 +2172,7 @@
   },
   {
    "gid": 857,
-   "order": 92,
+   "order": 83,
    "line": 2,
    "word": 0,
    "ayah": 3,
@@ -2402,7 +2195,7 @@
   },
   {
    "gid": 90,
-   "order": 91,
+   "order": 82,
    "line": 2,
    "word": 0,
    "ayah": 3,
@@ -2448,7 +2241,7 @@
   },
   {
    "gid": 67,
-   "order": 121,
+   "order": 112,
    "line": 2,
    "word": 3,
    "ayah": 4,
@@ -2471,7 +2264,7 @@
   },
   {
    "gid": 697,
-   "order": 118,
+   "order": 109,
    "line": 2,
    "word": 3,
    "ayah": 4,
@@ -2494,7 +2287,7 @@
   },
   {
    "gid": 688,
-   "order": 117,
+   "order": 108,
    "line": 2,
    "word": 3,
    "ayah": 4,
@@ -2517,7 +2310,7 @@
   },
   {
    "gid": 67,
-   "order": 120,
+   "order": 111,
    "line": 2,
    "word": 3,
    "ayah": 4,
@@ -2540,7 +2333,7 @@
   },
   {
    "gid": 68,
-   "order": 119,
+   "order": 110,
    "line": 2,
    "word": 3,
    "ayah": 4,
@@ -2563,7 +2356,7 @@
   },
   {
    "gid": 1043,
-   "order": 116,
+   "order": 107,
    "line": 2,
    "word": 3,
    "ayah": 4,
@@ -2586,7 +2379,7 @@
   },
   {
    "gid": 1038,
-   "order": 115,
+   "order": 106,
    "line": 2,
    "word": 3,
    "ayah": 4,
@@ -2609,7 +2402,7 @@
   },
   {
    "gid": 90,
-   "order": 114,
+   "order": 105,
    "line": 2,
    "word": 3,
    "ayah": 4,
@@ -2632,7 +2425,7 @@
   },
   {
    "gid": 67,
-   "order": 113,
+   "order": 104,
    "line": 2,
    "word": 2,
    "ayah": 4,
@@ -2655,7 +2448,7 @@
   },
   {
    "gid": 56,
-   "order": 110,
+   "order": 101,
    "line": 2,
    "word": 2,
    "ayah": 4,
@@ -2678,7 +2471,7 @@
   },
   {
    "gid": 69,
-   "order": 112,
+   "order": 103,
    "line": 2,
    "word": 2,
    "ayah": 4,
@@ -2701,7 +2494,7 @@
   },
   {
    "gid": 526,
-   "order": 109,
+   "order": 100,
    "line": 2,
    "word": 2,
    "ayah": 4,
@@ -2724,7 +2517,7 @@
   },
   {
    "gid": 65,
-   "order": 111,
+   "order": 102,
    "line": 2,
    "word": 2,
    "ayah": 4,
@@ -2747,7 +2540,7 @@
   },
   {
    "gid": 447,
-   "order": 108,
+   "order": 99,
    "line": 2,
    "word": 2,
    "ayah": 4,
@@ -2770,7 +2563,7 @@
   },
   {
    "gid": 67,
-   "order": 107,
+   "order": 98,
    "line": 2,
    "word": 1,
    "ayah": 4,
@@ -2793,7 +2586,7 @@
   },
   {
    "gid": 1157,
-   "order": 103,
+   "order": 94,
    "line": 2,
    "word": 1,
    "ayah": 4,
@@ -2816,7 +2609,7 @@
   },
   {
    "gid": 67,
-   "order": 106,
+   "order": 97,
    "line": 2,
    "word": 1,
    "ayah": 4,
@@ -2839,7 +2632,7 @@
   },
   {
    "gid": 1154,
-   "order": 102,
+   "order": 93,
    "line": 2,
    "word": 1,
    "ayah": 4,
@@ -2862,7 +2655,7 @@
   },
   {
    "gid": 89,
-   "order": 105,
+   "order": 96,
    "line": 2,
    "word": 1,
    "ayah": 4,
@@ -2885,7 +2678,7 @@
   },
   {
    "gid": 65,
-   "order": 104,
+   "order": 95,
    "line": 2,
    "word": 1,
    "ayah": 4,
@@ -2908,7 +2701,7 @@
   },
   {
    "gid": 499,
-   "order": 101,
+   "order": 92,
    "line": 2,
    "word": 1,
    "ayah": 4,
@@ -2954,7 +2747,7 @@
   },
   {
    "gid": 65,
-   "order": 129,
+   "order": 120,
    "line": 2,
    "word": 4,
    "ayah": 5,
@@ -2977,7 +2770,7 @@
   },
   {
    "gid": 54,
-   "order": 125,
+   "order": 116,
    "line": 2,
    "word": 4,
    "ayah": 5,
@@ -3000,7 +2793,7 @@
   },
   {
    "gid": 430,
-   "order": 124,
+   "order": 115,
    "line": 2,
    "word": 4,
    "ayah": 5,
@@ -3023,7 +2816,7 @@
   },
   {
    "gid": 347,
-   "order": 127,
+   "order": 118,
    "line": 2,
    "word": 4,
    "ayah": 5,
@@ -3046,7 +2839,7 @@
   },
   {
    "gid": 68,
-   "order": 128,
+   "order": 119,
    "line": 2,
    "word": 4,
    "ayah": 5,
@@ -3069,7 +2862,7 @@
   },
   {
    "gid": 982,
-   "order": 123,
+   "order": 114,
    "line": 2,
    "word": 4,
    "ayah": 5,
@@ -3092,7 +2885,7 @@
   },
   {
    "gid": 351,
-   "order": 126,
+   "order": 117,
    "line": 2,
    "word": 4,
    "ayah": 5,
@@ -3115,7 +2908,7 @@
   },
   {
    "gid": 29,
-   "order": 122,
+   "order": 113,
    "line": 2,
    "word": 4,
    "ayah": 5,
@@ -3138,7 +2931,7 @@
   },
   {
    "gid": 66,
-   "order": 158,
+   "order": 149,
    "line": 3,
    "word": 2,
    "ayah": 5,
@@ -3161,7 +2954,7 @@
   },
   {
    "gid": 849,
-   "order": 153,
+   "order": 144,
    "line": 3,
    "word": 2,
    "ayah": 5,
@@ -3184,7 +2977,7 @@
   },
   {
    "gid": 839,
-   "order": 152,
+   "order": 143,
    "line": 3,
    "word": 2,
    "ayah": 5,
@@ -3207,7 +3000,7 @@
   },
   {
    "gid": 67,
-   "order": 157,
+   "order": 148,
    "line": 3,
    "word": 2,
    "ayah": 5,
@@ -3230,7 +3023,7 @@
   },
   {
    "gid": 439,
-   "order": 151,
+   "order": 142,
    "line": 3,
    "word": 2,
    "ayah": 5,
@@ -3253,7 +3046,7 @@
   },
   {
    "gid": 65,
-   "order": 156,
+   "order": 147,
    "line": 3,
    "word": 2,
    "ayah": 5,
@@ -3276,7 +3069,7 @@
   },
   {
    "gid": 462,
-   "order": 150,
+   "order": 141,
    "line": 3,
    "word": 2,
    "ayah": 5,
@@ -3299,7 +3092,7 @@
   },
   {
    "gid": 69,
-   "order": 155,
+   "order": 146,
    "line": 3,
    "word": 2,
    "ayah": 5,
@@ -3322,7 +3115,7 @@
   },
   {
    "gid": 712,
-   "order": 149,
+   "order": 140,
    "line": 3,
    "word": 2,
    "ayah": 5,
@@ -3345,7 +3138,7 @@
   },
   {
    "gid": 65,
-   "order": 154,
+   "order": 145,
    "line": 3,
    "word": 2,
    "ayah": 5,
@@ -3368,7 +3161,7 @@
   },
   {
    "gid": 706,
-   "order": 148,
+   "order": 139,
    "line": 3,
    "word": 2,
    "ayah": 5,
@@ -3391,7 +3184,7 @@
   },
   {
    "gid": 65,
-   "order": 147,
+   "order": 138,
    "line": 3,
    "word": 1,
    "ayah": 5,
@@ -3414,7 +3207,7 @@
   },
   {
    "gid": 54,
-   "order": 142,
+   "order": 133,
    "line": 3,
    "word": 1,
    "ayah": 5,
@@ -3437,7 +3230,7 @@
   },
   {
    "gid": 430,
-   "order": 141,
+   "order": 132,
    "line": 3,
    "word": 1,
    "ayah": 5,
@@ -3460,7 +3253,7 @@
   },
   {
    "gid": 347,
-   "order": 145,
+   "order": 136,
    "line": 3,
    "word": 1,
    "ayah": 5,
@@ -3483,7 +3276,7 @@
   },
   {
    "gid": 68,
-   "order": 146,
+   "order": 137,
    "line": 3,
    "word": 1,
    "ayah": 5,
@@ -3506,7 +3299,7 @@
   },
   {
    "gid": 982,
-   "order": 140,
+   "order": 131,
    "line": 3,
    "word": 1,
    "ayah": 5,
@@ -3529,7 +3322,7 @@
   },
   {
    "gid": 351,
-   "order": 143,
+   "order": 134,
    "line": 3,
    "word": 1,
    "ayah": 5,
@@ -3552,7 +3345,7 @@
   },
   {
    "gid": 1171,
-   "order": 139,
+   "order": 130,
    "line": 3,
    "word": 1,
    "ayah": 5,
@@ -3575,7 +3368,7 @@
   },
   {
    "gid": 65,
-   "order": 144,
+   "order": 135,
    "line": 3,
    "word": 1,
    "ayah": 5,
@@ -3598,7 +3391,7 @@
   },
   {
    "gid": 59,
-   "order": 138,
+   "order": 129,
    "line": 3,
    "word": 1,
    "ayah": 5,
@@ -3621,7 +3414,7 @@
   },
   {
    "gid": 66,
-   "order": 137,
+   "order": 128,
    "line": 3,
    "word": 0,
    "ayah": 5,
@@ -3644,7 +3437,7 @@
   },
   {
    "gid": 468,
-   "order": 133,
+   "order": 124,
    "line": 3,
    "word": 0,
    "ayah": 5,
@@ -3667,7 +3460,7 @@
   },
   {
    "gid": 66,
-   "order": 136,
+   "order": 127,
    "line": 3,
    "word": 0,
    "ayah": 5,
@@ -3690,7 +3483,7 @@
   },
   {
    "gid": 459,
-   "order": 132,
+   "order": 123,
    "line": 3,
    "word": 0,
    "ayah": 5,
@@ -3713,7 +3506,7 @@
   },
   {
    "gid": 69,
-   "order": 135,
+   "order": 126,
    "line": 3,
    "word": 0,
    "ayah": 5,
@@ -3736,7 +3529,7 @@
   },
   {
    "gid": 439,
-   "order": 131,
+   "order": 122,
    "line": 3,
    "word": 0,
    "ayah": 5,
@@ -3759,7 +3552,7 @@
   },
   {
    "gid": 65,
-   "order": 134,
+   "order": 125,
    "line": 3,
    "word": 0,
    "ayah": 5,
@@ -3782,7 +3575,7 @@
   },
   {
    "gid": 450,
-   "order": 130,
+   "order": 121,
    "line": 3,
    "word": 0,
    "ayah": 5,
@@ -3828,7 +3621,7 @@
   },
   {
    "gid": 430,
-   "order": 163,
+   "order": 154,
    "line": 3,
    "word": 3,
    "ayah": 6,
@@ -3851,7 +3644,7 @@
   },
   {
    "gid": 65,
-   "order": 166,
+   "order": 157,
    "line": 3,
    "word": 3,
    "ayah": 6,
@@ -3874,7 +3667,7 @@
   },
   {
    "gid": 985,
-   "order": 162,
+   "order": 153,
    "line": 3,
    "word": 3,
    "ayah": 6,
@@ -3897,7 +3690,7 @@
   },
   {
    "gid": 67,
-   "order": 165,
+   "order": 156,
    "line": 3,
    "word": 3,
    "ayah": 6,
@@ -3920,7 +3713,7 @@
   },
   {
    "gid": 468,
-   "order": 161,
+   "order": 152,
    "line": 3,
    "word": 3,
    "ayah": 6,
@@ -3943,7 +3736,7 @@
   },
   {
    "gid": 69,
-   "order": 164,
+   "order": 155,
    "line": 3,
    "word": 3,
    "ayah": 6,
@@ -3966,7 +3759,7 @@
   },
   {
    "gid": 490,
-   "order": 160,
+   "order": 151,
    "line": 3,
    "word": 3,
    "ayah": 6,
@@ -3989,7 +3782,7 @@
   },
   {
    "gid": 90,
-   "order": 159,
+   "order": 150,
    "line": 3,
    "word": 3,
    "ayah": 6,
@@ -4012,7 +3805,7 @@
   },
   {
    "gid": 65,
-   "order": 190,
+   "order": 181,
    "line": 4,
    "word": 1,
    "ayah": 6,
@@ -4035,7 +3828,7 @@
   },
   {
    "gid": 574,
-   "order": 184,
+   "order": 175,
    "line": 4,
    "word": 1,
    "ayah": 6,
@@ -4058,7 +3851,7 @@
   },
   {
    "gid": 565,
-   "order": 183,
+   "order": 174,
    "line": 4,
    "word": 1,
    "ayah": 6,
@@ -4081,7 +3874,7 @@
   },
   {
    "gid": 67,
-   "order": 189,
+   "order": 180,
    "line": 4,
    "word": 1,
    "ayah": 6,
@@ -4104,7 +3897,7 @@
   },
   {
    "gid": 476,
-   "order": 182,
+   "order": 173,
    "line": 4,
    "word": 1,
    "ayah": 6,
@@ -4127,7 +3920,7 @@
   },
   {
    "gid": 65,
-   "order": 188,
+   "order": 179,
    "line": 4,
    "word": 1,
    "ayah": 6,
@@ -4150,7 +3943,7 @@
   },
   {
    "gid": 462,
-   "order": 181,
+   "order": 172,
    "line": 4,
    "word": 1,
    "ayah": 6,
@@ -4173,7 +3966,7 @@
   },
   {
    "gid": 69,
-   "order": 187,
+   "order": 178,
    "line": 4,
    "word": 1,
    "ayah": 6,
@@ -4196,7 +3989,7 @@
   },
   {
    "gid": 517,
-   "order": 180,
+   "order": 171,
    "line": 4,
    "word": 1,
    "ayah": 6,
@@ -4219,7 +4012,7 @@
   },
   {
    "gid": 66,
-   "order": 186,
+   "order": 177,
    "line": 4,
    "word": 1,
    "ayah": 6,
@@ -4242,7 +4035,7 @@
   },
   {
    "gid": 500,
-   "order": 179,
+   "order": 170,
    "line": 4,
    "word": 1,
    "ayah": 6,
@@ -4265,7 +4058,7 @@
   },
   {
    "gid": 69,
-   "order": 185,
+   "order": 176,
    "line": 4,
    "word": 1,
    "ayah": 6,
@@ -4288,7 +4081,7 @@
   },
   {
    "gid": 496,
-   "order": 178,
+   "order": 169,
    "line": 4,
    "word": 1,
    "ayah": 6,
@@ -4311,7 +4104,7 @@
   },
   {
    "gid": 90,
-   "order": 177,
+   "order": 168,
    "line": 4,
    "word": 1,
    "ayah": 6,
@@ -4334,7 +4127,7 @@
   },
   {
    "gid": 65,
-   "order": 176,
+   "order": 167,
    "line": 4,
    "word": 0,
    "ayah": 6,
@@ -4357,7 +4150,7 @@
   },
   {
    "gid": 47,
-   "order": 171,
+   "order": 162,
    "line": 4,
    "word": 0,
    "ayah": 6,
@@ -4380,7 +4173,7 @@
   },
   {
    "gid": 89,
-   "order": 175,
+   "order": 166,
    "line": 4,
    "word": 0,
    "ayah": 6,
@@ -4403,7 +4196,7 @@
   },
   {
    "gid": 65,
-   "order": 174,
+   "order": 165,
    "line": 4,
    "word": 0,
    "ayah": 6,
@@ -4426,7 +4219,7 @@
   },
   {
    "gid": 894,
-   "order": 170,
+   "order": 161,
    "line": 4,
    "word": 0,
    "ayah": 6,
@@ -4449,7 +4242,7 @@
   },
   {
    "gid": 67,
-   "order": 173,
+   "order": 164,
    "line": 4,
    "word": 0,
    "ayah": 6,
@@ -4472,7 +4265,7 @@
   },
   {
    "gid": 68,
-   "order": 172,
+   "order": 163,
    "line": 4,
    "word": 0,
    "ayah": 6,
@@ -4495,7 +4288,7 @@
   },
   {
    "gid": 954,
-   "order": 169,
+   "order": 160,
    "line": 4,
    "word": 0,
    "ayah": 6,
@@ -4518,7 +4311,7 @@
   },
   {
    "gid": 496,
-   "order": 168,
+   "order": 159,
    "line": 4,
    "word": 0,
    "ayah": 6,
@@ -4541,7 +4334,7 @@
   },
   {
    "gid": 90,
-   "order": 167,
+   "order": 158,
    "line": 4,
    "word": 0,
    "ayah": 6,
@@ -4587,7 +4380,7 @@
   },
   {
    "gid": 65,
-   "order": 206,
+   "order": 197,
    "line": 4,
    "word": 3,
    "ayah": 7,
@@ -4610,7 +4403,7 @@
   },
   {
    "gid": 697,
-   "order": 202,
+   "order": 193,
    "line": 4,
    "word": 3,
    "ayah": 7,
@@ -4633,7 +4426,7 @@
   },
   {
    "gid": 688,
-   "order": 201,
+   "order": 192,
    "line": 4,
    "word": 3,
    "ayah": 7,
@@ -4656,7 +4449,7 @@
   },
   {
    "gid": 67,
-   "order": 205,
+   "order": 196,
    "line": 4,
    "word": 3,
    "ayah": 7,
@@ -4679,7 +4472,7 @@
   },
   {
    "gid": 1042,
-   "order": 200,
+   "order": 191,
    "line": 4,
    "word": 3,
    "ayah": 7,
@@ -4702,7 +4495,7 @@
   },
   {
    "gid": 347,
-   "order": 203,
+   "order": 194,
    "line": 4,
    "word": 3,
    "ayah": 7,
@@ -4725,7 +4518,7 @@
   },
   {
    "gid": 68,
-   "order": 204,
+   "order": 195,
    "line": 4,
    "word": 3,
    "ayah": 7,
@@ -4748,7 +4541,7 @@
   },
   {
    "gid": 1038,
-   "order": 199,
+   "order": 190,
    "line": 4,
    "word": 3,
    "ayah": 7,
@@ -4771,7 +4564,7 @@
   },
   {
    "gid": 90,
-   "order": 198,
+   "order": 189,
    "line": 4,
    "word": 3,
    "ayah": 7,
@@ -4794,7 +4587,7 @@
   },
   {
    "gid": 65,
-   "order": 197,
+   "order": 188,
    "line": 4,
    "word": 2,
    "ayah": 7,
@@ -4817,7 +4610,7 @@
   },
   {
    "gid": 47,
-   "order": 193,
+   "order": 184,
    "line": 4,
    "word": 2,
    "ayah": 7,
@@ -4840,7 +4633,7 @@
   },
   {
    "gid": 89,
-   "order": 196,
+   "order": 187,
    "line": 4,
    "word": 2,
    "ayah": 7,
@@ -4863,7 +4656,7 @@
   },
   {
    "gid": 65,
-   "order": 195,
+   "order": 186,
    "line": 4,
    "word": 2,
    "ayah": 7,
@@ -4886,7 +4679,7 @@
   },
   {
    "gid": 894,
-   "order": 192,
+   "order": 183,
    "line": 4,
    "word": 2,
    "ayah": 7,
@@ -4909,7 +4702,7 @@
   },
   {
    "gid": 67,
-   "order": 194,
+   "order": 185,
    "line": 4,
    "word": 2,
    "ayah": 7,
@@ -4932,7 +4725,7 @@
   },
   {
    "gid": 952,
-   "order": 191,
+   "order": 182,
    "line": 4,
    "word": 2,
    "ayah": 7,
@@ -4955,7 +4748,7 @@
   },
   {
    "gid": 67,
-   "order": 244,
+   "order": 235,
    "line": 5,
    "word": 3,
    "ayah": 7,
@@ -4978,7 +4771,7 @@
   },
   {
    "gid": 32,
-   "order": 239,
+   "order": 230,
    "line": 5,
    "word": 3,
    "ayah": 7,
@@ -5001,7 +4794,7 @@
   },
   {
    "gid": 526,
-   "order": 238,
+   "order": 229,
    "line": 5,
    "word": 3,
    "ayah": 7,
@@ -5024,7 +4817,7 @@
   },
   {
    "gid": 66,
-   "order": 243,
+   "order": 234,
    "line": 5,
    "word": 3,
    "ayah": 7,
@@ -5047,7 +4840,7 @@
   },
   {
    "gid": 511,
-   "order": 237,
+   "order": 228,
    "line": 5,
    "word": 3,
    "ayah": 7,
@@ -5070,7 +4863,7 @@
   },
   {
    "gid": 69,
-   "order": 242,
+   "order": 233,
    "line": 5,
    "word": 3,
    "ayah": 7,
@@ -5093,7 +4886,7 @@
   },
   {
    "gid": 438,
-   "order": 236,
+   "order": 227,
    "line": 5,
    "word": 3,
    "ayah": 7,
@@ -5116,7 +4909,7 @@
   },
   {
    "gid": 65,
-   "order": 241,
+   "order": 232,
    "line": 5,
    "word": 3,
    "ayah": 7,
@@ -5139,7 +4932,7 @@
   },
   {
    "gid": 500,
-   "order": 235,
+   "order": 226,
    "line": 5,
    "word": 3,
    "ayah": 7,
@@ -5162,7 +4955,7 @@
   },
   {
    "gid": 69,
-   "order": 240,
+   "order": 231,
    "line": 5,
    "word": 3,
    "ayah": 7,
@@ -5185,7 +4978,7 @@
   },
   {
    "gid": 496,
-   "order": 234,
+   "order": 225,
    "line": 5,
    "word": 3,
    "ayah": 7,
@@ -5208,7 +5001,7 @@
   },
   {
    "gid": 90,
-   "order": 233,
+   "order": 224,
    "line": 5,
    "word": 3,
    "ayah": 7,
@@ -5231,7 +5024,7 @@
   },
   {
    "gid": 67,
-   "order": 232,
+   "order": 223,
    "line": 5,
    "word": 2,
    "ayah": 7,
@@ -5254,7 +5047,7 @@
   },
   {
    "gid": 727,
-   "order": 229,
+   "order": 220,
    "line": 5,
    "word": 2,
    "ayah": 7,
@@ -5277,7 +5070,7 @@
   },
   {
    "gid": 69,
-   "order": 231,
+   "order": 222,
    "line": 5,
    "word": 2,
    "ayah": 7,
@@ -5300,7 +5093,7 @@
   },
   {
    "gid": 716,
-   "order": 228,
+   "order": 219,
    "line": 5,
    "word": 2,
    "ayah": 7,
@@ -5323,7 +5116,7 @@
   },
   {
    "gid": 65,
-   "order": 230,
+   "order": 221,
    "line": 5,
    "word": 2,
    "ayah": 7,
@@ -5346,7 +5139,7 @@
   },
   {
    "gid": 939,
-   "order": 227,
+   "order": 218,
    "line": 5,
    "word": 2,
    "ayah": 7,
@@ -5369,7 +5162,7 @@
   },
   {
    "gid": 69,
-   "order": 226,
+   "order": 217,
    "line": 5,
    "word": 1,
    "ayah": 7,
@@ -5392,7 +5185,7 @@
   },
   {
    "gid": 498,
-   "order": 221,
+   "order": 212,
    "line": 5,
    "word": 1,
    "ayah": 7,
@@ -5415,7 +5208,7 @@
   },
   {
    "gid": 67,
-   "order": 225,
+   "order": 216,
    "line": 5,
    "word": 1,
    "ayah": 7,
@@ -5438,7 +5231,7 @@
   },
   {
    "gid": 1146,
-   "order": 220,
+   "order": 211,
    "line": 5,
    "word": 1,
    "ayah": 7,
@@ -5461,7 +5254,7 @@
   },
   {
    "gid": 69,
-   "order": 224,
+   "order": 215,
    "line": 5,
    "word": 1,
    "ayah": 7,
@@ -5484,7 +5277,7 @@
   },
   {
    "gid": 1137,
-   "order": 219,
+   "order": 210,
    "line": 5,
    "word": 1,
    "ayah": 7,
@@ -5507,7 +5300,7 @@
   },
   {
    "gid": 65,
-   "order": 223,
+   "order": 214,
    "line": 5,
    "word": 1,
    "ayah": 7,
@@ -5530,7 +5323,7 @@
   },
   {
    "gid": 497,
-   "order": 218,
+   "order": 209,
    "line": 5,
    "word": 1,
    "ayah": 7,
@@ -5553,7 +5346,7 @@
   },
   {
    "gid": 65,
-   "order": 222,
+   "order": 213,
    "line": 5,
    "word": 1,
    "ayah": 7,
@@ -5576,7 +5369,7 @@
   },
   {
    "gid": 940,
-   "order": 217,
+   "order": 208,
    "line": 5,
    "word": 1,
    "ayah": 7,
@@ -5599,7 +5392,7 @@
   },
   {
    "gid": 65,
-   "order": 216,
+   "order": 207,
    "line": 5,
    "word": 0,
    "ayah": 7,
@@ -5622,7 +5415,7 @@
   },
   {
    "gid": 440,
-   "order": 211,
+   "order": 202,
    "line": 5,
    "word": 0,
    "ayah": 7,
@@ -5645,7 +5438,7 @@
   },
   {
    "gid": 69,
-   "order": 215,
+   "order": 206,
    "line": 5,
    "word": 0,
    "ayah": 7,
@@ -5668,7 +5461,7 @@
   },
   {
    "gid": 500,
-   "order": 210,
+   "order": 201,
    "line": 5,
    "word": 0,
    "ayah": 7,
@@ -5691,7 +5484,7 @@
   },
   {
    "gid": 65,
-   "order": 214,
+   "order": 205,
    "line": 5,
    "word": 0,
    "ayah": 7,
@@ -5714,7 +5507,7 @@
   },
   {
    "gid": 439,
-   "order": 209,
+   "order": 200,
    "line": 5,
    "word": 0,
    "ayah": 7,
@@ -5737,7 +5530,7 @@
   },
   {
    "gid": 69,
-   "order": 213,
+   "order": 204,
    "line": 5,
    "word": 0,
    "ayah": 7,
@@ -5760,7 +5553,7 @@
   },
   {
    "gid": 450,
-   "order": 208,
+   "order": 199,
    "line": 5,
    "word": 0,
    "ayah": 7,
@@ -5783,7 +5576,7 @@
   },
   {
    "gid": 1257,
-   "order": 212,
+   "order": 203,
    "line": 5,
    "word": 0,
    "ayah": 7,
@@ -5806,7 +5599,7 @@
   },
   {
    "gid": 27,
-   "order": 207,
+   "order": 198,
    "line": 5,
    "word": 0,
    "ayah": 7,
@@ -5829,7 +5622,7 @@
   },
   {
    "gid": 65,
-   "order": 271,
+   "order": 262,
    "line": 6,
    "word": 2,
    "ayah": 7,
@@ -5852,7 +5645,7 @@
   },
   {
    "gid": 849,
-   "order": 266,
+   "order": 257,
    "line": 6,
    "word": 2,
    "ayah": 7,
@@ -5875,7 +5668,7 @@
   },
   {
    "gid": 839,
-   "order": 265,
+   "order": 256,
    "line": 6,
    "word": 2,
    "ayah": 7,
@@ -5898,7 +5691,7 @@
   },
   {
    "gid": 67,
-   "order": 270,
+   "order": 261,
    "line": 6,
    "word": 2,
    "ayah": 7,
@@ -5921,7 +5714,7 @@
   },
   {
    "gid": 68,
-   "order": 269,
+   "order": 260,
    "line": 6,
    "word": 2,
    "ayah": 7,
@@ -5944,7 +5737,7 @@
   },
   {
    "gid": 496,
-   "order": 264,
+   "order": 255,
    "line": 6,
    "word": 2,
    "ayah": 7,
@@ -5967,7 +5760,7 @@
   },
   {
    "gid": 432,
-   "order": 263,
+   "order": 254,
    "line": 6,
    "word": 2,
    "ayah": 7,
@@ -5990,7 +5783,7 @@
   },
   {
    "gid": 347,
-   "order": 267,
+   "order": 258,
    "line": 6,
    "word": 2,
    "ayah": 7,
@@ -6013,7 +5806,7 @@
   },
   {
    "gid": 68,
-   "order": 268,
+   "order": 259,
    "line": 6,
    "word": 2,
    "ayah": 7,
@@ -6036,7 +5829,7 @@
   },
   {
    "gid": 511,
-   "order": 262,
+   "order": 253,
    "line": 6,
    "word": 2,
    "ayah": 7,
@@ -6059,7 +5852,7 @@
   },
   {
    "gid": 496,
-   "order": 261,
+   "order": 252,
    "line": 6,
    "word": 2,
    "ayah": 7,
@@ -6082,7 +5875,7 @@
   },
   {
    "gid": 90,
-   "order": 260,
+   "order": 251,
    "line": 6,
    "word": 2,
    "ayah": 7,
@@ -6105,7 +5898,7 @@
   },
   {
    "gid": 650,
-   "order": 257,
+   "order": 248,
    "line": 6,
    "word": 1,
    "ayah": 7,
@@ -6128,7 +5921,7 @@
   },
   {
    "gid": 65,
-   "order": 259,
+   "order": 250,
    "line": 6,
    "word": 1,
    "ayah": 7,
@@ -6151,7 +5944,7 @@
   },
   {
    "gid": 648,
-   "order": 256,
+   "order": 247,
    "line": 6,
    "word": 1,
    "ayah": 7,
@@ -6174,7 +5967,7 @@
   },
   {
    "gid": 65,
-   "order": 258,
+   "order": 249,
    "line": 6,
    "word": 1,
    "ayah": 7,
@@ -6197,7 +5990,7 @@
   },
   {
    "gid": 59,
-   "order": 255,
+   "order": 246,
    "line": 6,
    "word": 1,
    "ayah": 7,
@@ -6220,7 +6013,7 @@
   },
   {
    "gid": 69,
-   "order": 254,
+   "order": 245,
    "line": 6,
    "word": 0,
    "ayah": 7,
@@ -6243,7 +6036,7 @@
   },
   {
    "gid": 498,
-   "order": 249,
+   "order": 240,
    "line": 6,
    "word": 0,
    "ayah": 7,
@@ -6266,7 +6059,7 @@
   },
   {
    "gid": 67,
-   "order": 253,
+   "order": 244,
    "line": 6,
    "word": 0,
    "ayah": 7,
@@ -6289,7 +6082,7 @@
   },
   {
    "gid": 1146,
-   "order": 248,
+   "order": 239,
    "line": 6,
    "word": 0,
    "ayah": 7,
@@ -6312,7 +6105,7 @@
   },
   {
    "gid": 69,
-   "order": 252,
+   "order": 243,
    "line": 6,
    "word": 0,
    "ayah": 7,
@@ -6335,7 +6128,7 @@
   },
   {
    "gid": 1137,
-   "order": 247,
+   "order": 238,
    "line": 6,
    "word": 0,
    "ayah": 7,
@@ -6358,7 +6151,7 @@
   },
   {
    "gid": 65,
-   "order": 251,
+   "order": 242,
    "line": 6,
    "word": 0,
    "ayah": 7,
@@ -6381,7 +6174,7 @@
   },
   {
    "gid": 497,
-   "order": 246,
+   "order": 237,
    "line": 6,
    "word": 0,
    "ayah": 7,
@@ -6404,7 +6197,7 @@
   },
   {
    "gid": 65,
-   "order": 250,
+   "order": 241,
    "line": 6,
    "word": 0,
    "ayah": 7,
@@ -6427,7 +6220,7 @@
   },
   {
    "gid": 940,
-   "order": 245,
+   "order": 236,
    "line": 6,
    "word": 0,
    "ayah": 7,

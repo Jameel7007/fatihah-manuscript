@@ -10,7 +10,7 @@
 import { CatmullRomCurve3, PerspectiveCamera, Vector3 } from 'three/webgpu';
 import { evalDeform, pchip } from '../field/deform';
 import { cpuPose } from '../field/cpuPose';
-import { FACE_CENTER_ANCHOR, FACE_CENTER_REST, FACE_START, faceFactor, facePitch, poseTransform } from './drivers';
+import { FACE_CENTER_ANCHOR, FACE_CENTER_REST, FACE_START, RECEDE_REST, faceFactor, facePitch, poseTransform } from './drivers';
 import { E1, clamp01 } from './easing';
 
 // Authored per-side margin. Sampling interval, curve smoothing, and PCHIP interval lag eat
@@ -247,6 +247,18 @@ export class CameraRig {
         const rzz = rel.dot(dir);
         dFit = Math.max(dFit, rzz + Math.abs(rx) / kx, rzz + Math.abs(ryy) / ky);
       }
+    }
+    // v1.6.1: the receded page stays in frame BELOW the standing block (user review
+    // 2026-09-01 — the last line read as still lying on the paper). The page drops to
+    // RECEDE_REST.y with the lift; its far edge (z −0.5 + recede) plus a 0.06 band of page
+    // beneath must project inside the frame (to the edge, no margin — the page is cropped by
+    // the frame anyway; vertical only — the page's width may crop at the sides), so the block
+    // floats over a visible strip of page. A 0.06 band costs ≈ 16% distance at 16:10.
+    {
+      rel.set(0, RECEDE_REST[1] * lift - 0.06, -0.5 + RECEDE_REST[2] * lift).sub(look);
+      const ryy = rel.dot(yAxis);
+      const rzz = rel.dot(dir);
+      dFit = Math.max(dFit, rzz + Math.abs(ryy) / Ty);
     }
     return dFit;
   }

@@ -1,26 +1,26 @@
 {
  "built": "M4 §6/§18 bevel extruder",
  "counts": {
-  "verts": 166003,
-  "tris": 257507,
+  "verts": 165911,
+  "tris": 257438,
   "groups": 159,
   "cells": 127541,
   "tipSubdivisions": 3982,
   "vertsByKind": {
-   "base": 128995,
+   "base": 128903,
    "mark": 31423,
    "ring": 5585
   }
  },
  "budget": {
   "t1": 780000,
-  "used": 257507
+  "used": 257438
  },
- "planAreaErr": 0.00024,
+ "planAreaErr": 0.0002,
  "silhouetteIdentity": {
   "worstOuterEm": 0.006855,
   "worstOuterPx1440": 0.4634,
-  "samples": 87010,
+  "samples": 86884,
   "tolEm": 0.008,
   "tolNote": "grid tessellation + chord refinement bound; the 0.0008 em analytic flatten tolerance moves to the M5 curvature-adaptive rebuild (meshopt repack, §18)",
   "creviceWalls": {
@@ -37,12 +37,12 @@
  },
  "guard": {
   "minHalfWidthWorld": 0,
-  "beadVerts": 73473,
-  "totalVerts": 166003
+  "beadVerts": 73461,
+  "totalVerts": 165911
  },
  "bin": {
-  "bytes": 6411948,
-  "sha256": "ea9ed4dbc46a4f4770089c8c254e313dade54e4aa587c4326f53b50186c2e72f"
+  "bytes": 6409280,
+  "sha256": "9d27dbdfecc74dc3568e0e23f82964e9558f9be091e85d5fe666c7be5629b183"
  },
  "pitchFu": 10
 }

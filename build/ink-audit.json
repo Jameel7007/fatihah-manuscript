@@ -20,7 +20,7 @@
   },
   {
    "word": "0:0",
-   "bases": 13,
+   "bases": 4,
    "rtlOrder": true,
    "marksAfterBases": true
   },
@@ -62,7 +62,7 @@
   }
  ],
  "rtlPass": true,
- "meanIoU": 0.9898891273106184,
+ "meanIoU": 0.9899565183034438,
  "worstIoU": {
   "gid": 68,
   "iou": 0.9640971488912354

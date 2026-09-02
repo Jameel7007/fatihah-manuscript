@@ -201,6 +201,31 @@ function findJoints(text, { sinOnlyFirstWord = false } = {}) {
   return joints.sort((a, b) => b.priority - a.priority || b.insertAt - a.insertAt);
 }
 
+/** v1.6.1 smooth kashida: stretch a glyph outline's body — every coordinate right of
+ *  `midFu` moves by `shiftFu` (font units). Amiri's tatweel is a straight bar with flared
+ *  ends, so this yields one long bar with the flares only at its ends. Absolute path
+ *  commands (M/L/Q/C/Z) as harfbuzz emits them. */
+function stretchPath(d, midFu, shiftFu) {
+  const toks = d.match(/[MLQCZmlqcz]|-?\d*\.?\d+(?:e-?\d+)?/g) ?? [];
+  let out = '';
+  let i = 0;
+  while (i < toks.length) {
+    const t = toks[i];
+    if (/[A-Za-z]/.test(t)) {
+      out += t;
+      i++;
+      continue;
+    }
+    const x = Number(toks[i]);
+    const y = Number(toks[i + 1]);
+    const xs = x > midFu ? x + shiftFu : x;
+    out += `${out.endsWith('Z') || /[A-Za-z]$/.test(out) ? '' : ' '}${+xs.toFixed(2)},${+y.toFixed(2)}`;
+    i += 2;
+  }
+  return out;
+}
+let kashidaRuns = 0; // synthetic gids 200000+ for merged tatweel runs
+
 /** Insert kashida runs into a segment: alloc = [{insertAt, count}]. */
 function withKashida(text, alloc) {
   let out = text;
@@ -650,6 +675,7 @@ function composeVariant(solution, nLines) {
             } else wt[i] = w;
           }
         }
+        const segStart = glyphItems.length;
         for (const g of seg.run.glyphs) {
           const path = glyphPath(g.gid);
           if (path === '') continue;
@@ -666,6 +692,43 @@ function composeVariant(solution, nLines) {
             ext: { x: ext.xBearing * s, y: -ext.yBearing * s, w: ext.width * s, h: -ext.height * s },
             penX: U2Wv(segLeftU + g.x),
           });
+        }
+        // v1.6.1 smooth kashida (user review 2026-09-01: "the first letter they stretched
+        // needs to be smooth"): Amiri's tatweel is a bar with flared ends, so a run of N of
+        // them unions into a bar with a flare bump and two concave corners at every joint —
+        // the §6 bevel turns each into a ridge (ten across the basmalah's sīn). A run becomes
+        // ONE synthetic glyph: the tatweel outline with its body stretched by the run's span —
+        // straight top and bottom, flares only at the ends. Both the ink atlas and the glyph
+        // mesh take outlines from the composition, so the §17 guarantee holds by
+        // construction; the writing schedule keeps N × kashidaUnit via `kashidaCount`.
+        {
+          let i = segStart;
+          while (i < glyphItems.length) {
+            const a = glyphItems[i];
+            if (!a.kashida) {
+              i++;
+              continue;
+            }
+            let j = i;
+            while (j + 1 < glyphItems.length && glyphItems[j + 1].kashida && glyphItems[j + 1].gid === a.gid && glyphItems[j + 1].word === a.word) j++;
+            const n = j - i + 1;
+            if (n >= 2) {
+              const run = glyphItems.slice(i, j + 1).sort((p, q) => p.x - q.x);
+              const first = run[0];
+              const last = run[n - 1];
+              const spanFu = (last.x - first.x) / first.scale;
+              const merged = {
+                ...first,
+                gid: 200000 + kashidaRuns++,
+                path: stretchPath(glyphPath(first.gid), tatweelAdv / 2, spanFu),
+                kashidaCount: n,
+                ext: { ...first.ext, w: first.ext.w + spanFu * first.scale },
+                penX: Math.max(...run.map((r) => r.penX)),
+              };
+              glyphItems.splice(i, n, merged);
+            }
+            i++;
+          }
         }
         cursorRight = segLeftU;
         wordBase += grp.words;
@@ -726,13 +789,14 @@ function composeVariant(solution, nLines) {
         ayah: wordAyah[g.word] ?? 0,
         kind: g.kind,
         kashida: g.kashida || undefined,
+        kashidaCount: g.kashidaCount,
         order: g.order,
         delay: g.delay,
         x: +g.x.toFixed(6),
         y: +g.y.toFixed(6),
         scale: +g.scale.toFixed(8),
         ext: g.ext,
-        path: glyphPath(g.gid),
+        path: g.path ?? glyphPath(g.gid),
       })),
     });
   }

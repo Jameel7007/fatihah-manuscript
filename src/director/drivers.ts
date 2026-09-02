@@ -87,7 +87,13 @@ export const FACE_CENTER_ANCHOR: [number, number, number] = [0, 0, 0.0075]; // t
 // 0.72 world tall, so pitched 78° about its center it needs y ≈ 0.40 to keep the bottom line ~0.07 above
 // the receded page (where its long PCSS shadow lands). The §9 gaze tracks this center across S7.
 export const FACE_CENTER_REST: [number, number, number] = [0, 0.4, -0.045];
-export const RECEDE_REST: [number, number, number] = [0, -0.02, -0.1];
+// Recede: the page drops well below the standing block. At −0.02 the page's far edge (z −0.6)
+// projected ABOVE the block's bottom line from the S7 camera, so the last line read as still
+// lying on the paper (user review 2026-09-01). At −0.18, with the S7 fit keeping a 0.06 band
+// of page in frame (camera.ts), the far edge clears the bottom line by ≈ 6% of the frame
+// height and a ≈ 5% strip of page shows beneath — the block floats over the page. Cost: the
+// fit distance grows ≈ 16% (2.06 → 2.40 at 16:10); the PCSS shadow still lands on the page.
+export const RECEDE_REST: [number, number, number] = [0, -0.18, -0.1];
 
 /** Facing progress 0..1 (E6 — the pivot ease). */
 export function faceFactor(p: number): number {
