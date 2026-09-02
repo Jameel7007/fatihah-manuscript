@@ -115,9 +115,11 @@ export function buildFiberTexture(renderer: WebGPURenderer): Texture {
  *  B = anisotropy rotation (reserved — anisotropy is deferred to the M6 polish). */
 export function buildBurnishTexture(renderer: WebGPURenderer): Texture {
   const p: N = uv();
-  // v1.6.1: the broad octave leads (0.6) so the burnish varies over ≈ 1.7 em, not per stroke width
-  const burnish: N = fbm4(p.mul(vec2(41, 37)).add(5.1)).mul(0.4).add(fbm4(p.mul(vec2(9, 8)).add(13.3)).mul(0.6));
-  const wear: N = fbm4(p.mul(vec2(11, 9)).add(29.7));
+  // v1.6.1: two low octaves only — fbm4's finest octaves were 2–3 px wide at 1440p, and on a
+  // polished crest they read as speckle ("still some roughness", user review 2026-09-01).
+  // Burnish now varies over ≥ 0.4 em, wear over ≥ 0.35 em.
+  const burnish: N = vnoise(p.mul(vec2(9, 8)).add(13.3)).mul(0.65).add(vnoise(p.mul(vec2(18, 16)).add(5.1)).mul(0.35));
+  const wear: N = vnoise(p.mul(vec2(11, 9)).add(29.7)).mul(0.65).add(vnoise(p.mul(vec2(22, 18)).add(41.9)).mul(0.35));
   const aniso: N = fbm4(p.mul(vec2(5, 5)).add(41.1));
   return bake(renderer, 1024, 1024, vec4(burnish, wear, aniso, 1), { repeat: true });
 }
@@ -175,7 +177,7 @@ export function buildEnvironment(renderer: WebGPURenderer): Texture {
   const pins: N = pin((60 * Math.PI) / 180, (5 * Math.PI) / 180, 0.035)
     .add(pin((100 * Math.PI) / 180, (15 * Math.PI) / 180, 0.03))
     .add(pin((140 * Math.PI) / 180, (-5 * Math.PI) / 180, 0.03));
-  const pinCol: N = vec3(2.5, 1.5, 0.7);
+  const pinCol: N = vec3(1.6, 0.96, 0.45); // v1.6.1: ×0.64 — pinpoints on a polished crest read as specks
 
   const col: N = base
     .add(winCol.mul(window_))

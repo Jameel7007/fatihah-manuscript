@@ -263,12 +263,12 @@ export function buildGlyphRelief(
   const burnish: N = bp.r;
   const crown: N = hnV.smoothstep(0.55, 0.92); // top face vs wall/root
   const wearBias: N = rFloorV.greaterThan(0.2).select(float(0.04), float(0.0)); // crown-fillet ring wears first
-  const wear: N = bp.g.add(wearBias).smoothstep(0.76, 0.82);
+  const wear: N = bp.g.add(wearBias).smoothstep(0.80, 0.86); // ≈ 1.5% bole
   const faceCol: N = vec3(...GOLD_FACE).mul(float(1).sub(wear)).add(vec3(...GOLD_BOLE).mul(wear));
   const sideDark: N = hnV.div(0.55).clamp(0, 1).mul(0.28).add(0.72); // ×0.72 toward the root
   const sideCol: N = vec3(...GOLD_SIDE).mul(sideDark);
   const goldCol: N = sideCol.mul(float(1).sub(crown)).add(faceCol.mul(crown));
-  const faceRough: N = burnish.mul(0.16).add(0.18).mul(float(1).sub(wear)).add(float(0.62).mul(wear));
+  const faceRough: N = burnish.mul(0.14).add(0.22).mul(float(1).sub(wear)).add(float(0.62).mul(wear)); // 0.22–0.36: the crest highlight is a band, not a wire
   const markerBias: N = kindV.lessThan(0.7).select(float(0.05), float(0.0)); // markers: +0.05 rough
   const goldRough: N = float(0.52).mul(float(1).sub(crown)).add(faceRough.mul(crown)).add(markerBias).max(rFloorV);
   const goldMetal: N = float(0.85).mul(float(1).sub(crown)).add(float(1).sub(wear.mul(0.88)).mul(crown));

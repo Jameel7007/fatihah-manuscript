@@ -8,7 +8,10 @@
 
 export type Tier = 1 | 2 | 3;
 
-export const DPR_CAP: Readonly<Record<Tier, number>> = { 1: 1.75, 2: 2.2, 3: 1.25 };
+// v1.6.1: T1 cap 1.75 → 2.0 — on a DPR-2 laptop the gilding's crest highlights are 1–2 px
+// wide, and shading is evaluated once per pixel (MSAA only supersamples edges); rendering
+// at the native 2× is the cheapest smoothing there is. The monitor still demotes if it costs.
+export const DPR_CAP: Readonly<Record<Tier, number>> = { 1: 2.0, 2: 2.2, 3: 1.25 };
 /** §19 frame-total budgets (ms, p95) */
 export const FRAME_BUDGET_MS: Readonly<Record<Tier, number>> = { 1: 12, 2: 14, 3: 27 };
 /** §19 dust population per tier (fraction of the authored 640) */

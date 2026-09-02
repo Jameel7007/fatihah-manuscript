@@ -820,7 +820,7 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
   <div class="tw"><table>
     <thead><tr><th>Property</th><th class="n">Value</th></tr></thead>
     <tbody>
-      <tr><td>Canvas</td><td class="n">full viewport, DPR capped 1.75 (T1) — render 2520×1575 max; MSAA 4×</td></tr>
+      <tr><td>Canvas</td><td class="n">full viewport, DPR capped 2.0 (T1; v1.6.1 — was 1.75) — render 2880×1800 max; MSAA 4×</td></tr>
       <tr><td>Scroll length</td><td class="n">7200 px virtual (8 × vh) · full journey ≈ 40 s at a reading pace</td></tr>
       <tr><td>Sheet placement</td><td class="n">horizontal center; optical center 0.52 vh (slightly high) in S1–2; text plane center 0.46 vh at p = 1</td></tr>
       <tr><td>Framing fractions</td><td class="n">per §9 table — roll 0.54 h → sheet 0.86 h (reading) → text 0.66 w (final)</td></tr>
@@ -1821,6 +1821,14 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     half-width W is additionally averaged over three feet (±5 fu along the outline tangent) so the raster distance's
     texel quantization does not ripple it along a stroke. glyphs.bin 11.4 MB raw / 3.57 MB brotli; the loader fetches
     with <code>cache: 'no-cache'</code> (a rebuilt file had been shadowed by the browser's copy of the old format).</li>
+    <li><b>§7 / §8 / §11 the last speckle</b> — “a little better but not perfect” (a 4× zoom of وإياك). What remained on
+    the crests was pixel-scale: the burnish and wear packs were 4-octave noise whose finest octaves were 2–3 px wide at
+    1440p, and a polished crest turns that into speckle; they are now two low octaves (burnish varies over ≥ 0.4 em,
+    wear over ≥ 0.35 em); crown roughness 0.18–0.34 → <b>0.22–0.36</b> so the crest highlight is a band rather than a
+    wire; wear ≈ 1.5%; the three environment pinpoints ×0.64 (they read as specks on polished gold). And because
+    shading is evaluated once per pixel (MSAA supersamples edges only), the T1 DPR cap goes <b>1.75 → 2.0</b>: a
+    DPR-2 laptop now shades at native resolution — the cheapest smoothing there is; the tier monitor still demotes if it
+    costs. Beyond this, what a browser zoom shows is the render's own pixel raster.</li>
   </ol>
 
 
