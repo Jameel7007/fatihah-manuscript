@@ -1782,12 +1782,14 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     writing schedule). The ink atlas and the glyph mesh both take outlines from the composition, so the §17 guarantee
     holds by construction. Rebuilt: 36 glyphs on line 1 (was 45), atlas IoU 0.9900 / 0.9641, RTL audit PASS, mesh
     165,911 verts / 257,438 tris, silhouette 0.00685 em, verify-text green on all three variants; svg b5b3cd2c….</li>
-    <li><b>§5 / §9 the block floats over the page</b> — at rest the receded page's far edge (z −0.6, y −0.02) projected
-    <em>above</em> the block's bottom line from the S7 camera, so the last line lay on the paper. RECEDE_REST y −0.02 →
-    <b>−0.18</b>, and the S7 assembly fit now also keeps a 0.06 band of page in frame beneath the far edge (vertical only,
-    to the frame edge): the bottom line clears the page by ≈ 6% of the frame height with a ≈ 5% strip of page showing —
-    fit distance 2.06 → <b>2.39</b> at 16:10 (the block reads ≈ 14% smaller; portrait fits to the same 2.39). The PCSS
-    shadow still lands on the page.</li>
+    <li><b>§5 / §9 the page leaves the frame</b> — at rest the receded page's far edge (z −0.6, y −0.02) projected
+    <em>above</em> the block's bottom line from the S7 camera (the far edge is 0.6 farther, and perspective lifts it), so
+    the last line lay on the paper. Two options were framed: keep a strip of page in frame beneath the floating block
+    (RECEDE y −0.18 + a 0.06 band in the S7 fit — costs 16% of the text size, d 2.06 → 2.39), or let the page fall out
+    of frame. <b>Ruled: “keep the text big, let the page leave the frame.”</b> RECEDE_REST y −0.02 → <b>−0.26</b>; the S7
+    fit stays the block's alone (d 2.06 at 16:10). The far edge projects below the frame bottom at 16:10 and at the
+    0.8 portrait aspect; on very narrow phones (0.46) the width-bound fit sits farther and a strip of page may show
+    beneath the block — never behind it. The PCSS shadow still lands on the page while it is in view (S7 transition).</li>
   </ol>
 
 

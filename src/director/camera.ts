@@ -248,18 +248,11 @@ export class CameraRig {
         dFit = Math.max(dFit, rzz + Math.abs(rx) / kx, rzz + Math.abs(ryy) / ky);
       }
     }
-    // v1.6.1: the receded page stays in frame BELOW the standing block (user review
-    // 2026-09-01 — the last line read as still lying on the paper). The page drops to
-    // RECEDE_REST.y with the lift; its far edge (z −0.5 + recede) plus a 0.06 band of page
-    // beneath must project inside the frame (to the edge, no margin — the page is cropped by
-    // the frame anyway; vertical only — the page's width may crop at the sides), so the block
-    // floats over a visible strip of page. A 0.06 band costs ≈ 16% distance at 16:10.
-    {
-      rel.set(0, RECEDE_REST[1] * lift - 0.06, -0.5 + RECEDE_REST[2] * lift).sub(look);
-      const ryy = rel.dot(yAxis);
-      const rzz = rel.dot(dir);
-      dFit = Math.max(dFit, rzz + Math.abs(ryy) / Ty);
-    }
+    // v1.6.1: the fit is the BLOCK's alone. Keeping a strip of the receded page in frame
+    // beneath it cost ≈ 16% of the text size (d 2.06 → 2.39), and the user ruled "keep the
+    // text big, let the page leave the frame" — RECEDE_REST (drivers) drops the page below
+    // the frame bottom instead.
+    void RECEDE_REST;
     return dFit;
   }
 

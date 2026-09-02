@@ -576,7 +576,7 @@
  },
  "v16_pending": {
   "note": "v1.6 universe ground (user direction 2026-09-01: deep-blue universe with tiny stars behind the gold). Changes the background floor (#0D0906 → #080D26 → #05081C → #040617 → #020411 → #01030D (\"darker\" four times, \"black/blue, a tad darker\"), re-solved through the AgX chain: linear 0.00021515/0.0023545/0.0078083), adds the sky lobe/nebula/stars, cools the env base and the rim (#FFBE83 → #D6E0FF), gold env ×1.6. EVERY blessed frame above is superseded once the look is signed off — re-bless the T1 set (two cold loads each), the mobile T2/T3 set and the noblob frame from the matrix runner; regenerate poster.jpg + LQIP (done as a candidate, 67,579 B). Second review pass: lobe held to ×1.55 (a ×2.8 lobe read as \"dark, then bright again\" — it is in view at p 0 and 1, not while reading), stars σ 0.65–1.25 px (was 0.9–1.8), halo ×3 at 1.2%. Poster 59,189 B. Third pass: floor #020411 (displays 1.6/4/17); the star law unit pinned to 0.0047 scene-linear (the #040617 floor luminance) so the stars did not dim with the ground. Poster 59,041 B. Fourth pass: floor #01030D (displays 1.1/2.9/13.6 — red on the +1-count lift); star clearance: the assembly footprint (center anchor→rest through the sheet pose, half-extents 0.26×0.37, camera tangent plane) fades the stars from 1.25× to 1.75× its ellipse. Poster 53,556 B. Fifth pass (live p=0 screenshot: \"dumb when the stars aren't even\"): clearance gated by faceFactor (only the standing block clears), margin tightened to 1.02-1.25x; stars sigma 0.55-1.05 px; sky cost cut (4-cell star search, 2-octave nebula) after the user's M1 Air showed DEMOTED T2. Poster 56,591 B.",
-  "status": "pending user sign-off of the look + text pass (review frames qa/review/text3-R100{,-portrait,-basmalah-crop}.png)",
+  "status": "pending user sign-off of the look + text pass (review frames qa/review/text4-R100{,-portrait,-phone}.png, text4-R093.png)",
   "candidates": {
    "R-0.00-T1": "eda2ed128101b764",
    "R-0.45-T1": "674287792b2facd2",
@@ -585,11 +585,12 @@
   },
   "text_pass": {
    "date": "2026-09-01",
-   "note": "v1.6.1 text pass (user: \"smooth, especially the first letter they stretched; at the bottom it is still covering the paper\"): (1) a run of tatweel glyphs is emitted by shape-text as ONE stretched outline (gid 200000+, kashidaCount N) — the basmalah sīn was ten tatweels whose flare joints the §6 bevel rendered as ten ridges; atlas + mesh rebuilt (IoU 0.9900/0.9641, RTL PASS, 165,911 verts / 257,438 tris, silhouette 0.00685 em, verify-text green x3, svg b5b3cd2c); (2) RECEDE_REST y -0.02 -> -0.18 and the S7 fit keeps a 0.06 band of page in frame beneath the far edge (fit distance 2.06 -> 2.39 at 16:10). Every frame from p >= 0.32 changes (ink atlas cell for the merged kashida) and every S7 frame reframes; p = 0 poster unchanged.",
+   "note": "v1.6.1 text pass (user: \"smooth, especially the first letter they stretched; at the bottom it is still covering the paper\"): (1) a run of tatweel glyphs is emitted by shape-text as ONE stretched outline (gid 200000+, kashidaCount N) — the basmalah sīn was ten tatweels whose flare joints the §6 bevel rendered as ten ridges; atlas + mesh rebuilt (IoU 0.9900/0.9641, RTL PASS, 165,911 verts / 257,438 tris, silhouette 0.00685 em, verify-text green x3, svg b5b3cd2c); (2) the page leaves the frame at p=1 — user ruling \"keep the text big, let the page leave the frame\": RECEDE_REST y -0.02 -> -0.26, the S7 fit is the block's alone (d 2.057 at 16:10 and at the 0.8 portrait aspect; 3.48 on the 390x844 phone where the width-bound fit leaves a strip of page visible beneath the block). Every frame from p >= 0.32 changes (ink atlas cell for the merged kashida) and every S7 frame reframes; p = 0 poster unchanged.",
    "candidates": {
-    "R-1.00-T1": "6772628ef2f2131c",
-    "R-1.00-T1-2560": "5b766d328a36d501",
-    "R-1.00-T2-1304x1640": "5eac812175bea49c"
+    "R-1.00-T1": "96c09f5886f64523",
+    "R-0.93-T1": "ecd891da937f7634",
+    "R-1.00-T2-1304x1640": "b266ab904a96829b",
+    "R-1.00-T2-390x844": "0737630cb52e7268"
    }
   }
  }
