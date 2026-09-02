@@ -66,19 +66,64 @@ const P = PITCH_FU * K; // grid pitch, world
 const RES = 2 * K; // raster resolution (2 fu / px), world per px
 const TRI_BUDGET = 780000; // §6 T1
 
+// v1.6.1 (user review 2026-09-01, "still some roughness"): the profile is evaluated as a
+// monotone cubic (PCHIP, Fritsch–Carlson) through the §6 knots — C¹, so the runtime's
+// PER-PIXEL shading normal has no creases at the knots. Heights use the same curve. The
+// segment coefficients ship in the FGLY meta (profileSpline) so the shader evaluates the
+// identical curve: slope(ŝ) = A·t² + B·t + C on each segment, t = (ŝ − x0)/dx, in
+// normalized units ŝ = s/BEV, ĥ = h/D.
+const PROF_N = PROFILE.map(([x, y]) => [x / BEV, y / D]);
+const PROF_M = (() => {
+  const n = PROF_N.length;
+  const dx = [];
+  const dl = [];
+  for (let i = 0; i + 1 < n; i++) {
+    dx.push(PROF_N[i + 1][0] - PROF_N[i][0]);
+    dl.push((PROF_N[i + 1][1] - PROF_N[i][1]) / dx[i]);
+  }
+  const m = new Array(n).fill(0);
+  m[0] = dl[0];
+  m[n - 1] = dl[n - 2];
+  for (let i = 1; i + 1 < n; i++) {
+    if (dl[i - 1] * dl[i] <= 0) m[i] = 0;
+    else {
+      const w1 = 2 * dx[i] + dx[i - 1];
+      const w2 = dx[i] + 2 * dx[i - 1];
+      m[i] = (w1 + w2) / (w1 / dl[i - 1] + w2 / dl[i]);
+    }
+  }
+  return m;
+})();
+const PROF_SEG = PROF_N.slice(0, -1).map(([x0, h0], i) => {
+  const [x1, h1] = PROF_N[i + 1];
+  const dx = x1 - x0;
+  const m0 = PROF_M[i];
+  const m1 = PROF_M[i + 1];
+  const dd = (h0 - h1) / dx;
+  return { x0, dx, h0, h1, m0, m1, A: 6 * dd + 3 * (m0 + m1), B: -6 * dd - 4 * m0 - 2 * m1, C: m0 };
+});
+function profSeg(u) {
+  for (let i = PROF_SEG.length - 1; i >= 0; i--) if (u >= PROF_SEG[i].x0) return PROF_SEG[i];
+  return PROF_SEG[0];
+}
 function profileY(s) {
   if (s <= 0) return 0;
   if (s >= BEV) return D;
-  for (let i = 1; i < PROFILE.length; i++) {
-    if (s <= PROFILE[i][0]) {
-      const [x0, y0] = PROFILE[i - 1];
-      const [x1, y1] = PROFILE[i];
-      return y0 + ((s - x0) / (x1 - x0)) * (y1 - y0);
-    }
-  }
-  return D;
+  const u = s / BEV;
+  const g = profSeg(u);
+  const t = (u - g.x0) / g.dx;
+  const t2 = t * t;
+  const t3 = t2 * t;
+  const h = g.h0 * (2 * t3 - 3 * t2 + 1) + g.dx * g.m0 * (t3 - 2 * t2 + t) + g.h1 * (-2 * t3 + 3 * t2) + g.dx * g.m1 * (t3 - t2);
+  return Math.min(D, Math.max(0, h * D));
 }
-const profileSlope = (s) => (profileY(Math.min(s + 0.0002, BEV)) - profileY(Math.max(s - 0.0002, 0))) / (Math.min(s + 0.0002, BEV) - Math.max(s - 0.0002, 0) || 1);
+function profileSlope(s) {
+  if (s <= 0 || s >= BEV) return s <= 0 ? profileSlope(1e-9) : 0;
+  const u = s / BEV;
+  const g = profSeg(u);
+  const t = (u - g.x0) / g.dx;
+  return Math.max(0, (g.A * t * t + g.B * t + g.C) * (D / BEV));
+}
 
 // ---- group formation --------------------------------------------------------------------
 const instBy = new Map();
@@ -442,14 +487,24 @@ class OutlineField {
         ny = -ny;
       }
     }
-    let W = 0;
+    // averaged over three feet along the outline (±5 fu along the edge tangent) so the
+    // raster distance's texel quantization does not ripple W along the stroke
     const tMax = 3 * GUARD_REF;
-    for (let t = K; t <= tMax; t += K) {
-      const d = this.rasterD(nr.foot[0] + nx * t, nr.foot[1] + ny * t);
-      if (d > W) W = d;
-      else if (d < W - 2 * K) break; // past the medial axis
+    const tx = -ny;
+    const ty = nx;
+    let Wsum = 0;
+    for (const off of [-5 * K, 0, 5 * K]) {
+      const fx0 = nr.foot[0] + tx * off;
+      const fy0 = nr.foot[1] + ty * off;
+      let W = 0;
+      for (let t = K; t <= tMax; t += K) {
+        const d = this.rasterD(fx0 + nx * t, fy0 + ny * t);
+        if (d > W) W = d;
+        else if (d < W - 2 * K) break; // past the medial axis
+      }
+      Wsum += W;
     }
-    return Math.max(W, d0);
+    return Math.max(Wsum / 3, d0);
   }
 }
 
@@ -512,6 +567,7 @@ const pos = []; // su, sv, hn  (per vertex)
 const nrm = []; // plan normal xyz
 const aux = []; // kind, ayah, ao, rfloor
 const auv = []; // atlas uv
+const prof = []; // sN (s/BEV), k (hScale/wScale), gx, gy — per-pixel profile shading (v1.6.1)
 const idx = [];
 const guardStats = { minW: Infinity, beads: 0, verts: 0 };
 let cellsEmitted = 0;
@@ -558,6 +614,10 @@ function vertexData(field, group, x, y) {
     sv: y,
     hn,
     n: [(-slope * gx) / nl, (-slope * gy) / nl, 1 / nl],
+    // per-pixel profile shading (runtime): normalized profile position, guard ratio, gradient
+    sN: Math.min(1, s / BEV),
+    k: hScale / wScale,
+    g: [gx, gy],
     kind: KIND_SCALE[kindKey],
     ayah: group.ayah,
     ao: Math.min(1, 0.72 + 0.28 * (s / 0.0018)),
@@ -584,6 +644,7 @@ function buildGroup(group) {
     nrm.push(v.n[0], v.n[1], v.n[2]);
     aux.push(v.kind, v.ayah, v.ao, v.rfloor, v.cluster);
     auv.push(v.auvU, v.auvV);
+    prof.push(v.sN, v.k, v.g[0], v.g[1]);
     const id = baseIndex + localVerts++;
     vcache.set(key, id);
     return id;
@@ -995,6 +1056,14 @@ const anchorQ = new Uint16Array(verts * 4);
 const nrmQ = new Int8Array(verts * 4);
 const auxQ = new Uint8Array(verts * 4);
 const auvQ = new Uint16Array(verts * 2);
+const profQ = new Uint16Array(verts * 4); // unorm16x4: sN, k/4, gx·0.5+0.5, gy·0.5+0.5
+for (let i = 0; i < verts; i++) {
+  const q = (v) => Math.max(0, Math.min(65535, Math.round(v * 65535)));
+  profQ[i * 4] = q(prof[i * 4]);
+  profQ[i * 4 + 1] = q(Math.min(1, prof[i * 4 + 1] / 4));
+  profQ[i * 4 + 2] = q(prof[i * 4 + 2] * 0.5 + 0.5);
+  profQ[i * 4 + 3] = q(prof[i * 4 + 3] * 0.5 + 0.5);
+}
 for (let v = 0; v < verts; v++) {
   anchorQ[v * 4] = Math.round(Math.min(1, Math.max(0, pos[v * 3])) * 65535);
   anchorQ[v * 4 + 1] = Math.round(Math.min(1, Math.max(0, pos[v * 3 + 1])) * 65535);
@@ -1021,7 +1090,8 @@ for (let v = 0; v < verts; v++) {
 
 const meta = {
   format: 'FGLY',
-  version: 1,
+  version: 2,
+  profileSpline: PROF_SEG.map((g) => ({ x0: +g.x0.toFixed(6), dx: +g.dx.toFixed(6), A: +g.A.toFixed(6), B: +g.B.toFixed(6), C: +g.C.toFixed(6) })),
   source: 'built from the FROZEN 7-line composition via outline-lib.mjs — the ink atlases consume the identical outlines',
   checksums: { compositionSvg: comp.checksums.svg, instances: inst.checksums.compositionSvg },
   em: EM,
@@ -1038,6 +1108,7 @@ const meta = {
     aNrm: 'sint8x4 snorm — plan-frame relief normal (x = +su, y = +sv, z = +sheet normal)',
     aAux: 'uint8x4 norm — ayah/8, baked root AO, curvature roughness floor, reading-order cluster index within the ayah (x255)',
     aAuv: 'uint16x2 norm — atlas uv (owning instance affine)',
+    aProf: 'uint16x4 norm — sN = s/BEV (profile position), k/4 = (hScale/wScale)/4, gx·0.5+0.5, gy·0.5+0.5 (plan gradient direction) — the runtime evaluates the PCHIP profile slope PER PIXEL from these (v1.6.1)',
   },
   buffers: {},
 };
@@ -1047,6 +1118,7 @@ const buffers = [
   ['nrm', Buffer.from(nrmQ.buffer)],
   ['aux', Buffer.from(auxQ.buffer)],
   ['auv', Buffer.from(auvQ.buffer)],
+  ['prof', Buffer.from(profQ.buffer)],
   ['index', Buffer.from(indexQ.buffer)],
 ];
 let jsonB = null;
@@ -1075,7 +1147,7 @@ let jsonB = null;
 const totalLen = Math.max(...Object.values(meta.buffers).map((b) => b.offset + b.length));
 const out = Buffer.alloc(Math.ceil(totalLen / 4) * 4);
 out.write('FGLY', 0, 'ascii');
-out.writeUInt32LE(1, 4);
+out.writeUInt32LE(2, 4);
 out.writeUInt32LE(jsonB.length, 8);
 jsonB.copy(out, 12);
 for (const [name, buf] of buffers) buf.copy(out, meta.buffers[name].offset);

@@ -1810,6 +1810,17 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     shared by every vertex above it. The §6 wall is softened (0.0009 → 0.0058 over 0.0011 with a rounded shoulder, max
     slope ≈ 4.5, was 8 over 0.0006 — narrower than a grid cell once compressed onto a stroke) and the grid pitch goes
     10 → 8 fu. Rebuilt: 256,469 verts / 399,384 tris (budget 780k; 8 draw calls, 499k tris per frame with the sheet), silhouette 0.00555 em (was 0.00685), 40% of vertices on the thin-stroke guard (marks and hairlines), glyphs.bin 9.5 MB raw / 2.66 MB brotli (was 1.47) — §18 total ≈ 3.4 MB against 8.5. The T3 per-tier mesh (330k budget) is now a real debt.</li>
+    <li><b>§6 / §14 per-pixel profile normals</b> — “a little better but still some roughness” (a 4× zoom of ال):
+    a ladder along the straight stems — the crown highlight stepped wherever the grid gained or lost a column inside
+    a tapered stroke, because the bevel's curvature lived in <em>per-vertex</em> normals interpolated across triangles.
+    The §6 profile is now evaluated <b>per fragment</b>: the mesh carries, per vertex, the normalized profile position
+    ŝ = s/b, the guard ratio hScale/wScale and the plan gradient direction (FGLY <b>v2</b>, <code>aProf</code>
+    unorm16×4, +2 MB raw), and the shader evaluates the slope of a C¹ <b>PCHIP</b> (Fritsch–Carlson) through the §6
+    knots at the interpolated ŝ — the segment coefficients ship in the FGLY meta, and the builder's heights use the
+    same curve, so geometry and shading agree and the bevel's curvature no longer depends on the tessellation. The
+    half-width W is additionally averaged over three feet (±5 fu along the outline tangent) so the raster distance's
+    texel quantization does not ripple it along a stroke. glyphs.bin 11.4 MB raw / 3.57 MB brotli; the loader fetches
+    with <code>cache: 'no-cache'</code> (a rebuilt file had been shadowed by the browser's copy of the old format).</li>
   </ol>
 
 

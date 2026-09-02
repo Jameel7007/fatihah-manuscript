@@ -44,22 +44,29 @@ export interface GlyphBin {
     counts: { verts: number; tris: number; groups: number };
     depth: number;
     bevel: number;
+    /** v2: PCHIP segments of the §6 profile in normalized units — slope(ŝ) = A·t² + B·t + C, t = (ŝ − x0)/dx */
+    profileSpline: Array<{ x0: number; dx: number; A: number; B: number; C: number }>;
   };
   anchor: Uint16Array;
   nrm: Int8Array;
   aux: Uint8Array;
   auvQ: Uint16Array;
+  /** v2: sN, k/4, gx, gy (unorm16) — per-pixel profile shading */
+  prof: Uint16Array;
   index: Uint32Array;
 }
 
 export async function loadGlyphBin(url: string): Promise<GlyphBin> {
-  const res = await fetch(url);
+  // no-cache = revalidate (conditional GET): a rebuilt glyphs.bin must never be shadowed by
+  // the browser's copy of the previous format (it was, silently, after the v2 rebuild)
+  const res = await fetch(url, { cache: 'no-cache' });
   if (!res.ok) throw new Error(`glyphs.bin: HTTP ${res.status}`);
   const buf = await res.arrayBuffer();
   const dv = new DataView(buf);
   const magic = String.fromCharCode(dv.getUint8(0), dv.getUint8(1), dv.getUint8(2), dv.getUint8(3));
   if (magic !== 'FGLY') throw new Error(`glyphs.bin: bad magic ${magic}`);
   const version = dv.getUint32(4, true);
+  if (version < 2) throw new Error(`glyphs.bin: FGLY v${version} — v2 (per-pixel profile attributes) required; rebuild with build/build-glyph-mesh.mjs`);
   const jsonLen = dv.getUint32(8, true);
   const meta = JSON.parse(new TextDecoder().decode(new Uint8Array(buf, 12, jsonLen)));
   const bufs = meta.buffers as Record<string, { offset: number; length: number } | undefined>;
@@ -74,6 +81,7 @@ export async function loadGlyphBin(url: string): Promise<GlyphBin> {
     nrm: new Int8Array(buf, b('nrm').offset, b('nrm').length),
     aux: new Uint8Array(buf, b('aux').offset, b('aux').length),
     auvQ: new Uint16Array(buf, b('auv').offset, b('auv').length / 2),
+    prof: new Uint16Array(buf, b('prof').offset, b('prof').length / 2),
     index: new Uint32Array(buf, b('index').offset, b('index').length / 4),
   };
 }
@@ -128,6 +136,7 @@ export function buildGlyphRelief(
   geo.setAttribute('aNrm', new BufferAttribute(bin.nrm, 4, true));
   geo.setAttribute('aAux', new BufferAttribute(bin.aux, 4, true));
   geo.setAttribute('aAuv', new BufferAttribute(bin.auvQ, 2, true));
+  geo.setAttribute('aProf', new BufferAttribute(bin.prof, 4, true));
   geo.setIndex(new BufferAttribute(bin.index, 1));
   geo.boundingSphere = new Sphere(new Vector3(0, 0, 0), 1.2);
 
@@ -137,9 +146,10 @@ export function buildGlyphRelief(
   const uLift = uniform(0);
 
   const anc: N = attribute('aAnchor', 'vec4'); // su, sv, hn, kindScale
-  const npl: N = attribute('aNrm', 'vec4'); // plan-frame relief normal
+  void attribute('aNrm', 'vec4'); // per-vertex plan normal — superseded by the per-pixel profile normal (v1.6.1)
   const aux: N = attribute('aAux', 'vec4'); // ayah/8, root AO, roughness floor, cluster/255
   void attribute('aAuv', 'vec2'); // atlas uv — reserved
+  const prof: N = attribute('aProf', 'vec4'); // sN, k/4, gx·0.5+0.5, gy·0.5+0.5
 
   // manual bilinear over the field textures at the anchor (grid = identity params interior)
   const gx: N = anc.x.mul(GRID_W - 1);
@@ -199,9 +209,33 @@ export function buildGlyphRelief(
 
   // plan frame → object frame: x = +su = T, y = +sv (down-page) = cross(T, N), z = N
   const Bpage: N = cross(surfT, surfN);
-  const nAnchor: N = surfT.mul(npl.x).add(Bpage.mul(npl.y)).add(surfN.mul(npl.z)).normalize();
+  // v1.6.1 PER-PIXEL profile normal (user review 2026-09-01, "a ladder along the stems"):
+  // per-vertex normals interpolated across triangles let the crown highlight step wherever
+  // the grid gained or lost a column inside a stroke. The §6 profile's slope is now evaluated
+  // per fragment — a C¹ PCHIP through the knots (segment coefficients from the FGLY meta) at
+  // the interpolated profile position sN, scaled by the guard ratio k = hScale/wScale, along
+  // the interpolated plan gradient — so the bevel's curvature no longer depends on the mesh.
+  const sNv: N = varying(prof.x);
+  const kV: N = varying(prof.y.mul(4));
+  const gV: N = varying(vec2(prof.z.mul(2).sub(1), prof.w.mul(2).sub(1)));
+  const surfTv: N = varying(surfT);
+  const BpageV: N = varying(Bpage);
+  const surfNv: N = varying(surfN);
+  let slopeN: N = float(0);
+  const segs = bin.meta.profileSpline;
+  for (let i = 0; i < segs.length; i++) {
+    const g = segs[i] as { x0: number; dx: number; A: number; B: number; C: number };
+    const x1 = i === segs.length - 1 ? g.x0 + g.dx + 1e-4 : g.x0 + g.dx;
+    const t: N = sNv.sub(g.x0).div(g.dx);
+    const mask: N = step(g.x0, sNv).sub(step(x1, sNv)); // x0 ≤ sN < x1
+    slopeN = slopeN.add(t.mul(t).mul(g.A).add(t.mul(g.B)).add(g.C).mul(mask));
+  }
+  const slopeW: N = slopeN.max(0).mul(bin.meta.depth / bin.meta.bevel).mul(kV);
+  const gdir: N = gV.div(gV.length().max(1e-4));
+  const nPlan: N = vec3(gdir.x.mul(slopeW).negate(), gdir.y.mul(slopeW).negate(), float(1)).normalize();
+  const nAnchor: N = surfTv.normalize().mul(nPlan.x).add(BpageV.normalize().mul(nPlan.y)).add(surfNv.normalize().mul(nPlan.z)).normalize();
   const nObj: N = vec3(nAnchor.x, nAnchor.y.mul(cp).sub(nAnchor.z.mul(sp)), nAnchor.y.mul(sp).add(nAnchor.z.mul(cp)));
-  const nView: N = transformNormalToView(varying(nObj)).normalize();
+  const nView: N = transformNormalToView(nObj).normalize();
   m.normalNode = nView;
 
   const suv: N = varying(vec2(anc.x, anc.y));

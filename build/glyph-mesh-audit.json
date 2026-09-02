@@ -37,12 +37,12 @@
  },
  "guard": {
   "minHalfWidthWorld": 0.000013,
-  "beadVerts": 103966,
+  "beadVerts": 104036,
   "totalVerts": 256469
  },
  "bin": {
-  "bytes": 9923792,
-  "sha256": "52b246c8b76e89ec4c30ccbb5987f02bfdc88bc0ed1a0ba5eb0e086a5a2531ed"
+  "bytes": 11976312,
+  "sha256": "ecfe41c2d3da13ee6edf01105af015fec580d4710181d3fce27cc5dbf189db4e"
  },
  "pitchFu": 8
 }
