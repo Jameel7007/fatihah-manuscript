@@ -115,7 +115,8 @@ export function buildFiberTexture(renderer: WebGPURenderer): Texture {
  *  B = anisotropy rotation (reserved — anisotropy is deferred to the M6 polish). */
 export function buildBurnishTexture(renderer: WebGPURenderer): Texture {
   const p: N = uv();
-  const burnish: N = fbm4(p.mul(vec2(41, 37)).add(5.1)).mul(0.7).add(fbm4(p.mul(vec2(9, 8)).add(13.3)).mul(0.3));
+  // v1.6.1: the broad octave leads (0.6) so the burnish varies over ≈ 1.7 em, not per stroke width
+  const burnish: N = fbm4(p.mul(vec2(41, 37)).add(5.1)).mul(0.4).add(fbm4(p.mul(vec2(9, 8)).add(13.3)).mul(0.6));
   const wear: N = fbm4(p.mul(vec2(11, 9)).add(29.7));
   const aniso: N = fbm4(p.mul(vec2(5, 5)).add(41.1));
   return bake(renderer, 1024, 1024, vec4(burnish, wear, aniso, 1), { repeat: true });
@@ -144,6 +145,11 @@ export function buildEnvironment(renderer: WebGPURenderer): Texture {
   // the warm window and pinpoints below still carry its sparkle)
   const base: N = vec3(0.01, 0.014, 0.028).add(
     vec3(0.024, 0.028, 0.04).mul(smoothstep(0.1, -0.9, sin(el))),
+  ).add(
+    // v1.6.1 "a little brighter": a broad, soft warm dome overhead — gilding is a mirror of its
+    // room, and a standing block tilted 12° toward the camera reflects the sky above and
+    // behind the viewer; the universe alone reflected as near-black on every crown
+    vec3(0.42, 0.34, 0.21).mul(smoothstep(-0.15, 0.7, sin(el))),
   );
 
   // tall warm window: az −35°, el +20°, ~13° × 28°, soft 4° edges, 6× diffuse white

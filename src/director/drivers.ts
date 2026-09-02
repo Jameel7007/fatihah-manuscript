@@ -92,9 +92,9 @@ export const FACE_CENTER_REST: [number, number, number] = [0, 0.4, -0.045];
 // last line read as still lying on the paper (user review 2026-09-01). Keeping a strip of
 // page in frame cost 16% of the text size, so the user ruled "keep the text big, let the page
 // leave the frame": at −0.26 the far edge projects below the frame bottom at 16:10 and at the
-// 0.8 portrait aspect with the block-only fit (d 2.06); on very narrow phones (0.46) the
-// width-bound fit sits farther and a strip of page may show beneath the block — never behind it.
-export const RECEDE_REST: [number, number, number] = [0, -0.26, -0.1];
+// 0.8 portrait aspect with the block-only fit (d 2.06); narrow phones (0.46) are width-bound
+// at d ≈ 3.5 and needed −0.45 — so −0.48: "the entire page leaves and the text alone is floating".
+export const RECEDE_REST: [number, number, number] = [0, -0.48, -0.1];
 
 /** Facing progress 0..1 (E6 — the pivot ease). */
 export function faceFactor(p: number): number {

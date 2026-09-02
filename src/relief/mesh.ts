@@ -32,7 +32,9 @@ type N = any;
 const SEAM_EPS = 1e-5; // base-ring clearance above the surface (world)
 
 // §7 gold set, scene-linear (sRGB → linear, 3 s.f.)
-const GOLD_FACE: [number, number, number] = [0.548, 0.335, 0.082]; // #C29B52
+// v1.6.1 ("the text needs to be smoothed and a little brighter", user review 2026-09-01): the face
+// moves from aged leaf #C29B52 (lin 0.548/0.335/0.082) toward real gold — #DDB768 (lin 0.723/0.478/0.142)
+const GOLD_FACE: [number, number, number] = [0.723, 0.478, 0.142]; // #DDB768
 const GOLD_BOLE: [number, number, number] = [0.197, 0.058, 0.025]; // #7A4630 wear → bole
 const GOLD_SIDE: [number, number, number] = [0.28, 0.148, 0.023]; // #8F6B2E sidewall
 
@@ -187,7 +189,7 @@ export function buildGlyphRelief(
   const m = new MeshPhysicalNodeMaterial();
   // v1.6: gilding lives on what it reflects — the gold takes the §8 room at 1.6× (the
   // parchment keeps 1×) so it stays luminous against the deep-blue universe ground
-  m.envMapIntensity = 1.6;
+  m.envMapIntensity = 2.2; // v1.6.1: "a little brighter" (with the warm dome in the §8 env)
   // §14 z-guard: depthBias −2 / slopeScale −0.5 on the glyph main pass (shadow/contact
   // pipelines stay unbiased)
   m.polygonOffset = true;
@@ -220,16 +222,19 @@ export function buildGlyphRelief(
   const rInk: N = float(0.52).sub(wetF.mul(0.24));
 
   // §7 gold: burnish pack (R burnish → roughness 0.21..0.47, G wear → bole ~8%, crown-biased)
-  const bp: N = texture(burnishTex, suv.mul(vec2(7.0, 9.0)));
+  // v1.6.1 smooth gold: the burnish pack sampled at sheet scale (was ×7/×9 — a roughness
+  // speckle finer than a stroke width that broke every highlight into dots), roughness
+  // 0.18–0.34 (was 0.21–0.47), wear ≈ 3% (was ≈ 8%)
+  const bp: N = texture(burnishTex, suv);
   const burnish: N = bp.r;
   const crown: N = hnV.smoothstep(0.55, 0.92); // top face vs wall/root
-  const wearBias: N = rFloorV.greaterThan(0.2).select(float(0.06), float(0.0)); // crown-fillet ring wears first
-  const wear: N = bp.g.add(wearBias).smoothstep(0.66, 0.74);
+  const wearBias: N = rFloorV.greaterThan(0.2).select(float(0.04), float(0.0)); // crown-fillet ring wears first
+  const wear: N = bp.g.add(wearBias).smoothstep(0.76, 0.82);
   const faceCol: N = vec3(...GOLD_FACE).mul(float(1).sub(wear)).add(vec3(...GOLD_BOLE).mul(wear));
   const sideDark: N = hnV.div(0.55).clamp(0, 1).mul(0.28).add(0.72); // ×0.72 toward the root
   const sideCol: N = vec3(...GOLD_SIDE).mul(sideDark);
   const goldCol: N = sideCol.mul(float(1).sub(crown)).add(faceCol.mul(crown));
-  const faceRough: N = burnish.mul(0.26).add(0.21).mul(float(1).sub(wear)).add(float(0.62).mul(wear));
+  const faceRough: N = burnish.mul(0.16).add(0.18).mul(float(1).sub(wear)).add(float(0.62).mul(wear));
   const markerBias: N = kindV.lessThan(0.7).select(float(0.05), float(0.0)); // markers: +0.05 rough
   const goldRough: N = float(0.52).mul(float(1).sub(crown)).add(faceRough.mul(crown)).add(markerBias).max(rFloorV);
   const goldMetal: N = float(0.85).mul(float(1).sub(crown)).add(float(1).sub(wear.mul(0.88)).mul(crown));

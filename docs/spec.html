@@ -572,7 +572,7 @@ profile' = profile × (inset: wScale, height: hScale)</code></pre>
           <td>Same atlases; dry state is the wet state's channels at wet = 0</td>
           <td>Warm brown-black, fully matte; absorption edge width 0.0009 + bleed model (§17)</td></tr>
       <tr><td><b>Gold — face</b></td>
-          <td class="n">#C29B52 → (0.548, 0.335, 0.082)</td>
+          <td class="n">#DDB768 <span class="sub">(v1.6.1; #C29B52 through v1.6)</span> → (0.548, 0.335, 0.082)</td>
           <td class="n">0.21–0.47<span class="sub">burnish crests 0.21 · mid 0.33 · valleys 0.47</span></td>
           <td class="n">1.0 leaf<span class="sub">→ 0.12 in wear</span></td>
           <td class="n">leaf wrinkle 0.25</td>
@@ -1790,6 +1790,15 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     fit stays the block's alone (d 2.06 at 16:10). The far edge projects below the frame bottom at 16:10 and at the
     0.8 portrait aspect; on very narrow phones (0.46) the width-bound fit sits farther and a strip of page may show
     beneath the block — never behind it. The PCSS shadow still lands on the page while it is in view (S7 transition).</li>
+    <li><b>§7 / §8 smooth, brighter gold</b> — “the text needs to be smoothed and a little brighter” (with the page gone,
+    the text floats alone). The burnish pack had been sampled at ×7/×9 sheet tiling — a roughness speckle finer than a
+    stroke width that broke every crown highlight into dots — it now samples at sheet scale with the broad octave
+    leading (0.4/0.6), so the burnish varies over ≈ 1.7 em; face roughness 0.21–0.47 → <b>0.18–0.34</b>; wear → bole
+    ≈ 8% → <b>≈ 3%</b>; face color aged leaf #C29B52 → <b>#DDB768</b> (toward real gold). Gilding is a mirror of its
+    room, and the universe alone reflected as near-black on every crown, so the §8 environment gains a broad soft
+    <b>warm dome</b> overhead (linear 0.42 / 0.34 / 0.21 × smoothstep(−0.15, 0.7, sin el)) and the gold takes the
+    environment at <b>2.2×</b> (was 1.6×; parchment 1×). RECEDE_REST y → <b>−0.48</b> so the page leaves the frame on
+    narrow phones as well (the width-bound fit there sits at d ≈ 3.5).</li>
   </ol>
 
 
