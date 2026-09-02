@@ -869,6 +869,13 @@ async function runMain(): Promise<void> {
     scroll.update(dt);
     const moving = Math.abs(scroll.vLpf) > 2e-3 || now - lastPointer < 300;
     const idleState = idle.update(dt, moving && holdS === 0);
+    // v1.6.1 idle supersampling (user review 2026-09-01, "I want it 100% smooth"): once the
+    // idle controller is armed (no scroll or pointer for 4 s) on T1, or in reduced motion,
+    // the beauty pass renders at 2× and averages down — shading and edges alike — at a
+    // frame-rate cost only the slow idle motion pays; scrolling drops it back at once.
+    // (?ss=N pins the factor for captures and A/B.)
+    if (q.get('ss') === null) grade.setSupersample(tierMon.tier === 1 && (idleState.ramp > 0.999 || reducedMotion) ? 2 : 1);
+    (window as unknown as { __ss?: number }).__ss = grade.supersample;
     rig.drift = idleState.drift;
     // key light sway ±0.004 world with the pointer (§12), off in reduced motion
     key.position.x = keyBaseX + (reducedMotion ? 0 : 0.004 * pointerNX);

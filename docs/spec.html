@@ -1829,6 +1829,18 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     shading is evaluated once per pixel (MSAA supersamples edges only), the T1 DPR cap goes <b>1.75 → 2.0</b>: a
     DPR-2 laptop now shades at native resolution — the cheapest smoothing there is; the tier monitor still demotes if it
     costs. Beyond this, what a browser zoom shows is the render's own pixel raster.</li>
+    <li><b>§15 / §19 idle supersampling</b> — “this isn't going to cut it, I want it 100% smooth.” Diagnosis on the same
+    region as the reviewer's 4× crop: the key's shadow contributes nothing to the p = 1 frame (identical hash with
+    <code>&amp;noshadow</code> — the relief never receives shadows), the grain is invisible on the gold (A/B with
+    <code>&amp;gb=6</code>), so what remains under magnification is the render's own raster: MSAA 4× resolves edges to
+    five levels and shading is evaluated once per pixel. Supersampling is the one lever left: a 3840-px render
+    box-filtered to 2560 and the in-engine pass at 1.5× / 2× (the beauty pass's <code>setResolution</code>, sampled down
+    bilinearly by the chain) both remove the crest sparkle and soften the silhouettes decisively. Cost is fill: ss²
+    pixels. So it is spent where it is seen — <b>idle supersampling</b>: on T1, once the §15 idle controller is armed
+    (no scroll or pointer for 4 s, i.e. exactly when someone leans in), or in reduced motion, the beauty pass renders
+    at <b>2×</b> and averages down; scrolling drops it back at once, so the scroll feel and the 60 fps budget are
+    untouched and only the slow idle motion pays. <code>?ss=N</code> pins the factor (captures, A/B). What a browser
+    zoom shows beyond this is not a defect any real-time renderer removes.</li>
   </ol>
 
 

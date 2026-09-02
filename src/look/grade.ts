@@ -32,6 +32,9 @@ export interface Grade {
   /** 8 Hz grain phase — call with floor(t·8) in live mode; stays 0 in capture. */
   setGrainSeed(seed: number): void;
   setAspect(aspect: number): void;
+  /** beauty-pass supersample factor (1 = native); the chain samples it down bilinearly */
+  setSupersample(s: number): void;
+  readonly supersample: number;
 }
 
 export function createGrade(renderer: WebGPURenderer, scene: Scene, camera: Camera): Grade {
@@ -45,6 +48,18 @@ export function createGrade(renderer: WebGPURenderer, scene: Scene, camera: Came
   const uAspect: N = uniform(16 / 9);
 
   const scenePass: N = pass(scene, camera);
+  // v1.6.1 supersampling knob (?ss=1.5): the beauty pass renders at ss× the canvas
+  // resolution and the chain samples it bilinearly at output resolution — shading (not just
+  // edges) is averaged over ss² samples per pixel. Costs ss² fill; T1-only by policy.
+  const SS = Number(new URLSearchParams(location.search).get('ss') ?? '1');
+  let ssNow = 1;
+  const setSupersample = (s: number): void => {
+    const v = Math.max(1, Math.min(2, s));
+    if (v === ssNow || typeof scenePass.setResolution !== 'function') return;
+    ssNow = v;
+    scenePass.setResolution(v);
+  };
+  if (SS > 1) setSupersample(SS);
   let c: N = (toneMapping as N)(AgXToneMapping, 1, scenePass.rgb);
 
   // saturation 1.05 (§1: compensate AgX mid desaturation) — TSL's saturation node; the
@@ -91,6 +106,10 @@ export function createGrade(renderer: WebGPURenderer, scene: Scene, camera: Came
     },
     setAspect: (a: number) => {
       uAspect.value = a;
+    },
+    setSupersample,
+    get supersample() {
+      return ssNow;
     },
   };
 }
