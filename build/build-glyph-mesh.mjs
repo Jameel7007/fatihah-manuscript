@@ -16,7 +16,7 @@
 // normalization"), so letter joints carry no false grooves; each diacritic and each
 // āyah ring is its own solid at its §6 depth ratio.
 //
-// Output: public/text/glyphs.bin (FGLY v1, quantized planar attributes + u32 index;
+// Output: public/text/glyphs*.bin (FGLY v2, quantized planar attributes + u32 index;
 // meshopt/glb packaging is tracked §18 debt alongside KTX2) + build/glyph-mesh-audit.json.
 //
 // Determinism: pure function of the frozen inputs — fixed iteration orders, no clocks,
@@ -61,10 +61,19 @@ const PROFILE = [
 const KIND_SCALE = { base: 1.0, mark: 0.8, ring: 0.6, marker: 0.6 }; // §6 depth ratios
 const GUARD_REF = BEV + 0.0004; // §6: wScale = clamp(W / (b + 0.0004), 0.25, 1)
 
-const PITCH_FU = Number(process.argv.find((a) => a.startsWith('--pitch='))?.split('=')[1] ?? 8); // v1.6.1: 10 → 8 fu (smoother crowns; ≈ 400k tris)
+const BUILD_TIER = Number(process.argv.find((a) => a.startsWith('--tier='))?.split('=')[1] ?? 1);
+if (BUILD_TIER !== 1 && BUILD_TIER !== 3) throw new Error('--tier must be 1 or 3');
+const PITCH_FU = Number(process.argv.find((a) => a.startsWith('--pitch='))?.split('=')[1] ?? (BUILD_TIER === 3 ? 10 : 6.75));
 const P = PITCH_FU * K; // grid pitch, world
 const RES = 2 * K; // raster resolution (2 fu / px), world per px
-const TRI_BUDGET = 780000; // §6 T1
+const TRI_BUDGET = BUILD_TIER === 3 ? 330000 : 780000;
+const BIN_NAME = BUILD_TIER === 3 ? 'glyphs-t3.bin' : 'glyphs.bin';
+const AUDIT_NAME = BUILD_TIER === 3 ? 'glyph-mesh-audit-t3.json' : 'glyph-mesh-audit.json';
+// v1.6.3: spend extra vertices only where a curved outline would otherwise be represented
+// by a visible chord. T1/T2 use the tighter tolerance; T3 keeps the proven mobile bound.
+const CURVE_CHORD_TOL_FU = BUILD_TIER === 3 ? 0.6 : 0.15;
+const CURVE_MIN_SEG_FU = BUILD_TIER === 3 ? 2 : 0.75;
+const CURVE_MAX_DEPTH = BUILD_TIER === 3 ? 4 : 6;
 
 // v1.6.1 (user review 2026-09-01, "still some roughness"): the profile is evaluated as a
 // monotone cubic (PCHIP, Fritsch–Carlson) through the §6 knots — C¹, so the runtime's
@@ -774,15 +783,15 @@ function buildGroup(group) {
     if (poly.length < 3) return;
     // chord refinement: Amiri rounds serif corners at ~5-8 fu radius — the outline can
     // bend 90° WITHIN one cell, so a crossing-to-crossing chord cuts a many-fu sagitta.
-    // Recursively snap chord midpoints to the outline until the sagitta is < 0.6 fu.
+    // Recursively snap chord midpoints to the outline until the tier's curvature tolerance.
     if (field.nearest) {
       const refine = (a, b, depth2) => {
-        if (depth2 >= 4) return [a, b];
+        if (depth2 >= CURVE_MAX_DEPTH) return [a, b];
         const mx = (a.x + b.x) / 2;
         const my = (a.y + b.y) / 2;
-        if (Math.hypot(b.x - a.x, b.y - a.y) < 2 * K) return [a, b];
+        if (Math.hypot(b.x - a.x, b.y - a.y) < CURVE_MIN_SEG_FU * K) return [a, b];
         const nr = field.nearest(mx, my);
-        if (!nr.foot || nr.d < 0.6 * K || nr.d > 0.75 * size) return [a, b];
+        if (!nr.foot || nr.d < CURVE_CHORD_TOL_FU * K || nr.d > 0.75 * size) return [a, b];
         const m = { x: nr.foot[0], y: nr.foot[1], inside: true, corner: false, key: keyOf(nr.foot[0], nr.foot[1]) };
         boundaryVerts.push([m.x, m.y]);
         const left = refine(a, m, depth2 + 1);
@@ -990,7 +999,7 @@ const evalEdgePt = (e, t) => {
 };
 const silhouetteAudit = { worst: 0, worstCrevice: 0, creviceSamples: 0, worstTail: 0, tailSamples: 0, samples: 0, at: null, top: [] };
 
-console.log(`extruding ${groups.length} groups (pitch ${PITCH_FU} fu = ${(P * 1000).toFixed(3)} mm-world, §6 profile, guard ref ${GUARD_REF})…`);
+console.log(`extruding ${groups.length} groups for T${BUILD_TIER} (pitch ${PITCH_FU} fu = ${(P * 1000).toFixed(3)} mm-world, §6 profile, guard ref ${GUARD_REF})…`);
 const t0 = performance.now();
 let done = 0;
 for (const g of groups) {
@@ -1000,7 +1009,7 @@ for (const g of groups) {
 }
 const tris = idx.length / 3;
 const verts = pos.length / 3;
-console.log(`mesh: ${verts} verts, ${tris} tris (§6 T1 budget ${TRI_BUDGET}), ${cellsEmitted} cells, ${subdivTips} tip subdivisions, ${((performance.now() - t0) / 1000).toFixed(1)}s`);
+console.log(`mesh: ${verts} verts, ${tris} tris (§19 T${BUILD_TIER} budget ${TRI_BUDGET}), ${cellsEmitted} cells, ${subdivTips} tip subdivisions, ${((performance.now() - t0) / 1000).toFixed(1)}s`);
 if (tris > TRI_BUDGET) throw new Error(`triangle budget exceeded: ${tris} > ${TRI_BUDGET} — raise --pitch`);
 {
   // §14 identity gate — grid tessellation with midpoint chord refinement holds the worst
@@ -1101,8 +1110,9 @@ const meta = {
   guard: 'wScale = clamp(W/(b+0.0004), 0.25, 1); hScale = clamp(sqrt(wScale), 0.55, 1) — §6, baked per vertex into hn',
   kindScales: KIND_SCALE,
   pitchFu: PITCH_FU,
+  curveRefinement: { chordToleranceFu: CURVE_CHORD_TOL_FU, minSegmentFu: CURVE_MIN_SEG_FU, maxDepth: CURVE_MAX_DEPTH },
   counts: { verts, tris, groups: groups.length, cells: cellsEmitted, tipSubdivisions: subdivTips, vertsByKind: kindCounts },
-  budget: { t1: TRI_BUDGET, used: tris },
+  budget: { tier: BUILD_TIER, limit: TRI_BUDGET, used: tris },
   attributes: {
     aAnchor: 'uint16x4 norm — su, sv, hn (profile height / D with guard baked), kindScale',
     aNrm: 'sint8x4 snorm — plan-frame relief normal (x = +su, y = +sv, z = +sheet normal)',
@@ -1126,7 +1136,7 @@ let jsonB = null;
   // two passes: offsets depend on the JSON length, which contains the offsets — fix by
   // padding the JSON to a stable quantized length
   let jl = 0;
-  for (let pass = 0; pass < 2; pass++) {
+  for (let pass = 0; pass < 8; pass++) {
     let off = 12 + jl;
     for (const [name, buf] of buffers) {
       off = Math.ceil(off / 4) * 4;
@@ -1144,6 +1154,7 @@ let jsonB = null;
     jl = padded;
   }
 }
+if (!jsonB) throw new Error('FGLY metadata offsets did not converge');
 const totalLen = Math.max(...Object.values(meta.buffers).map((b) => b.offset + b.length));
 const out = Buffer.alloc(Math.ceil(totalLen / 4) * 4);
 out.write('FGLY', 0, 'ascii');
@@ -1151,15 +1162,15 @@ out.writeUInt32LE(2, 4);
 out.writeUInt32LE(jsonB.length, 8);
 jsonB.copy(out, 12);
 for (const [name, buf] of buffers) buf.copy(out, meta.buffers[name].offset);
-writeFileSync(join(root, 'public/text/glyphs.bin'), out);
+writeFileSync(join(root, `public/text/${BIN_NAME}`), out);
 const sha = createHash('sha256').update(out).digest('hex');
-console.log(`glyphs.bin ${(out.length / 1048576).toFixed(1)} MB sha256 ${sha.slice(0, 16)}…`);
+console.log(`${BIN_NAME} ${(out.length / 1048576).toFixed(1)} MB sha256 ${sha.slice(0, 16)}…`);
 
 writeFileSync(
-  join(root, 'build/glyph-mesh-audit.json'),
+  join(root, `build/${AUDIT_NAME}`),
   JSON.stringify(
     {
-      built: 'M4 §6/§18 bevel extruder',
+      built: `M7 T${BUILD_TIER} §6/§18 bevel extruder`,
       counts: meta.counts,
       budget: meta.budget,
       planAreaErr: +globalThis.__areaErr.toFixed(5),
@@ -1168,7 +1179,7 @@ writeFileSync(
         worstOuterPx1440: +(silhouetteAudit.worst * 1300).toFixed(4),
         samples: silhouetteAudit.samples,
         tolEm: 0.008,
-        tolNote: 'grid tessellation + chord refinement bound; the 0.0008 em analytic flatten tolerance moves to the M5 curvature-adaptive rebuild (meshopt repack, §18)',
+        tolNote: `grid tessellation + tiered curvature-adaptive chord refinement (${CURVE_CHORD_TOL_FU} fu sagitta target); 0.008 em is the rendered outer-silhouette gate`,
         creviceWalls: { worstEm: +(silhouetteAudit.worstCrevice / EM).toFixed(6), samples: silhouetteAudit.creviceSamples, note: 'narrow cracks between joined strokes; geometry paves below one raster texel — coverage difference, not silhouette' },
         subResolutionTails: { worstEm: +(silhouetteAudit.worstTail / EM).toFixed(6), samples: silhouetteAudit.tailSamples, gateEm: 0.004, note: 'pen-entry tapers under 3 fu ink width — below one atlas texel, invisible in the rendered flat ink' },
       },
@@ -1179,9 +1190,10 @@ writeFileSync(
       },
       bin: { bytes: out.length, sha256: sha },
       pitchFu: PITCH_FU,
+      curveRefinement: meta.curveRefinement,
     },
     null,
     1,
   ),
 );
-console.log('audit → build/glyph-mesh-audit.json');
+console.log(`audit → build/${AUDIT_NAME}`);

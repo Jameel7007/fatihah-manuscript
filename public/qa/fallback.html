@@ -1,0 +1,59 @@
+<!doctype html><meta charset="utf-8"><title>Fallback QA</title>
+<style>body{background:#111;color:white;font:14px monospace}iframe{border:1px solid #aaa}pre{white-space:pre-wrap}</style>
+<button id="run">Run fallback checks</button><pre id="result">Ready</pre><div id="view"></div>
+<script type="module">
+const result=document.querySelector('#result'),q=new URLSearchParams(location.search);
+document.querySelector('#run').onclick=async function(){
+ this.disabled=true;const results=[],layouts=[];let failure=null;
+ try{
+ for(const [mode,width,height] of [['fallback',1440,900],['failRenderer',390,844]]){
+  const frame=document.createElement('iframe');frame.width=width;frame.height=height;
+  frame.src=`/?${mode}=1`;document.querySelector('#view').replaceChildren(frame);
+  await new Promise((resolve,reject)=>{const start=Date.now();const timer=setInterval(()=>{
+   const images=[...frame.contentDocument.querySelectorAll('#folio img')];
+   if(images.length===7&&images.every(img=>img.complete&&img.naturalWidth>0)){clearInterval(timer);resolve();}
+   else if(Date.now()-start>30000){clearInterval(timer);reject(Error('Images did not load'));}
+  },100);});
+  const doc=frame.contentDocument,win=frame.contentWindow,track=doc.querySelector('.folio-track');
+  const check=(condition,label)=>{if(!condition)throw Error(`${mode}: ${label}`);results.push(`PASS ${width}×${height} ${mode}: ${label}`);};
+  check(win.getComputedStyle(doc.querySelector('#gl')).display==='none','broken canvas hidden');
+  check(doc.documentElement.scrollWidth===width,'no horizontal page overflow');
+  const bounds=doc.querySelector('#folio').getBoundingClientRect();
+  layouts.push({mode,width,height,bounds:bounds.toJSON(),innerHeight:win.innerHeight});
+  // Viewport dimensions are integer-rounded while zoomed DOM rects retain fractions.
+  // Allow half a CSS pixel for this layout check only, never for capture comparisons.
+  check(bounds.bottom<=height+.5,'controls inside viewport (0.5px integer-viewport rounding tolerance)');
+  const buttons=doc.querySelectorAll('#folio button');
+  buttons[1].click();await new Promise(r=>requestAnimationFrame(r));
+  check(doc.querySelector('#folio [role=status]').textContent.startsWith('Plate 2 '),'next button');
+  track.dispatchEvent(new win.KeyboardEvent('keydown',{key:'End',bubbles:true}));
+  check(doc.querySelector('#folio [role=status]').textContent.startsWith('Plate 7 '),'End key and final plate');
+  check(buttons[1].disabled,'last boundary disabled');
+  track.dispatchEvent(new win.KeyboardEvent('keydown',{key:'Home',bubbles:true}));
+  check(buttons[0].disabled,'Home key and first boundary disabled');
+  if(mode==='fallback')check(!win.performance.getEntriesByType('resource').some(r=>/three|\/src\/main\.ts/.test(r.name)),'forced static mode never loads Three or main');
+  result.textContent=results.join('\n');
+ }
+ for(const failed of [true,false]){
+  const frame=document.createElement('iframe');frame.width=390;frame.height=844;
+  frame.src=`/?capture=0&tier=3&w=390&h=844${failed?'&failRenderer=1':''}`;
+  document.querySelector('#view').replaceChildren(frame);
+  await new Promise((resolve,reject)=>{const start=Date.now();const timer=setInterval(()=>{
+   const win=frame.contentWindow;
+   if(win.__captureError||win.__capture){clearInterval(timer);resolve();}
+   else if(Date.now()-start>60000){clearInterval(timer);reject(Error('Capture smoke timed out'));}
+  },100);});
+  const win=frame.contentWindow;
+  if(failed?!win.__captureError:!win.__capture)throw Error('Incorrect capture success/failure result');
+  if(frame.contentDocument.querySelector('#folio'))throw Error('Capture failure masked by folio');
+  if(win.performance.getEntriesByType('resource').some(r=>/\/fallback[/-]/.test(r.name)))throw Error('Capture requested fallback resources');
+  results.push(`PASS capture ${failed?'failure stays explicit':'normal render succeeds'}; no fallback resources requested`);
+ }
+ result.textContent=results.join('\n')+'\nComplete: local DOM checks only; not physical touch or cross-browser certification.';
+ }catch(error){failure=String(error);result.textContent=results.join('\n')+'\nFAIL '+error;}
+ const report={date:new Date().toISOString(),userAgent:navigator.userAgent,url:location.href,scope:'Local DOM/resource/synthetic keyboard and capture success/failure checks; not physical touch, cross-browser or capture repeatability certification',layouts,results,error:failure,pass:!failure};window.__fallbackQA=report;
+ if(q.has('save')){try{const saved=await fetch('/qa-save?name=v166-fallback-'+Date.now(),{method:'POST',body:JSON.stringify(report,null,2),signal:AbortSignal.timeout(10000)});if(!saved.ok)throw Error(`HTTP ${saved.status}`);result.textContent+='\nREPORT SAVED';}catch(error){result.textContent+='\nSAVE FAILED '+error;}}
+ this.disabled=false;
+};
+if(q.has('autorun'))document.querySelector('#run').click();
+</script>

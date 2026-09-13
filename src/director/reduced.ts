@@ -7,6 +7,8 @@
 // The dissolve is a DOM overlay: the outgoing frame is copied off the canvas once per state
 // change and faded out over the new state — no double rendering, no extra pass.
 
+import './reduced.css';
+
 export const REDUCED_CENTERS: readonly number[] = [0.0, 0.21, 0.45, 0.6, 0.685, 0.884, 1.0];
 const LABELS = ['rolled', 'unrolling', 'ink', 'presenting', 'relief', 'risen', 'facing'];
 const DISSOLVE_MS = 300;
@@ -29,29 +31,34 @@ export class ReducedMotion {
     const nav = document.createElement('nav');
     nav.setAttribute('aria-label', 'Manuscript states');
     this.dots = document.createElement('div');
-    this.dots.setAttribute('role', 'tablist');
-    this.dots.setAttribute('aria-label', 'Manuscript states');
-    this.dots.style.cssText =
-      'position:fixed;right:18px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:6';
+    this.dots.className = 'state-pager';
     nav.appendChild(this.dots);
     REDUCED_CENTERS.forEach((_, i) => {
       const b = document.createElement('button');
       b.type = 'button';
-      b.setAttribute('role', 'tab');
+      b.className = 'state-pager__button';
       b.setAttribute('aria-label', `State ${i + 1}: ${LABELS[i]}`);
-      b.style.cssText =
-        'width:12px;height:12px;border-radius:50%;border:1px solid #8F7440;background:transparent;padding:0;cursor:pointer';
+      const dot = document.createElement('span');
+      dot.setAttribute('aria-hidden', 'true');
+      b.appendChild(dot);
       b.addEventListener('click', () => this.goUser(i));
       this.dots.appendChild(b);
     });
     document.body.appendChild(nav);
     window.addEventListener('keydown', (e) => {
+      // Do not hijack browser shortcuts or editing keys in any future form/control.
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.defaultPrevented) return;
+      const target = e.target;
+      if (target instanceof HTMLElement && (target.isContentEditable || target.closest('input,textarea,select'))) return;
       if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown') {
         e.preventDefault();
         this.goUser(this.index + 1);
       } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
         e.preventDefault();
         this.goUser(this.index - 1);
+      } else if (e.key === 'Home' || e.key === 'End') {
+        e.preventDefault();
+        this.goUser(e.key === 'Home' ? 0 : REDUCED_CENTERS.length - 1);
       }
     });
     this.paintDots();
@@ -67,9 +74,11 @@ export class ReducedMotion {
    *  source of truth, so the per-frame fromScroll() agrees instead of fighting the jump. */
   private goUser(i: number): void {
     const next = Math.min(REDUCED_CENTERS.length - 1, Math.max(0, i));
+    const focusInPager = this.dots.contains(document.activeElement);
     const max = document.documentElement.scrollHeight - window.innerHeight;
     if (max > 0) window.scrollTo({ top: (next / (REDUCED_CENTERS.length - 1)) * max, behavior: 'auto' });
     this.go(next);
+    if (focusInPager) (this.dots.children[next] as HTMLButtonElement).focus({ preventScroll: true });
   }
 
   go(i: number): void {
@@ -106,9 +115,8 @@ export class ReducedMotion {
   private paintDots(): void {
     Array.from(this.dots.children).forEach((c, i) => {
       const b = c as HTMLButtonElement;
-      b.style.background = i === this.index ? '#C9A45B' : 'transparent';
-      b.setAttribute('aria-selected', i === this.index ? 'true' : 'false');
-      b.tabIndex = i === this.index ? 0 : -1;
+      if (i === this.index) b.setAttribute('aria-current', 'step');
+      else b.removeAttribute('aria-current');
     });
   }
 }

@@ -1,0 +1,54 @@
+{
+ "built": "M7 T3 §6/§18 bevel extruder",
+ "counts": {
+  "verts": 165911,
+  "tris": 257438,
+  "groups": 159,
+  "cells": 127541,
+  "tipSubdivisions": 3982,
+  "vertsByKind": {
+   "base": 128903,
+   "mark": 31423,
+   "ring": 5585
+  }
+ },
+ "budget": {
+  "tier": 3,
+  "limit": 330000,
+  "used": 257438
+ },
+ "planAreaErr": 0.0002,
+ "silhouetteIdentity": {
+  "worstOuterEm": 0.006855,
+  "worstOuterPx1440": 0.4634,
+  "samples": 86884,
+  "tolEm": 0.008,
+  "tolNote": "grid tessellation + tiered curvature-adaptive chord refinement (0.6 fu sagitta target); 0.008 em is the rendered outer-silhouette gate",
+  "creviceWalls": {
+   "worstEm": 0.005883,
+   "samples": 1026,
+   "note": "narrow cracks between joined strokes; geometry paves below one raster texel — coverage difference, not silhouette"
+  },
+  "subResolutionTails": {
+   "worstEm": 0,
+   "samples": 0,
+   "gateEm": 0.004,
+   "note": "pen-entry tapers under 3 fu ink width — below one atlas texel, invisible in the rendered flat ink"
+  }
+ },
+ "guard": {
+  "minHalfWidthWorld": 0,
+  "beadVerts": 66615,
+  "totalVerts": 165911
+ },
+ "bin": {
+  "bytes": 7737592,
+  "sha256": "63e173eee0b49e530eaf145b8cfa1f276f790670d5fb501c7eb50dbf9921c5b9"
+ },
+ "pitchFu": 10,
+ "curveRefinement": {
+  "chordToleranceFu": 0.6,
+  "minSegmentFu": 2,
+  "maxDepth": 4
+ }
+}

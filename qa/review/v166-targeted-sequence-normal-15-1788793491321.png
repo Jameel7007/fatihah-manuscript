@@ -1,0 +1,944 @@
+{
+  "date": "2026-09-07T15:04:51.321Z",
+  "options": "?sequence=1&shadeDebug=color",
+  "warm": 15,
+  "noshadow": false,
+  "rows": [
+    {
+      "key": "0-T1",
+      "repeat": 0,
+      "hash": "192e1784cd516673056a42fec445dca093eda31e9908b18995aa03d975b36750",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T1",
+      "repeat": 0,
+      "hash": "47c542e1a3aeed32a95f2adaba4b0caad13541a88b9d8a824af13d4b5b4e1f97",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T1",
+      "repeat": 0,
+      "hash": "fe8179cb39b934d2805d14e8f8ffc756342266af42216a86cafa72a928f75ca0",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T1",
+      "repeat": 0,
+      "hash": "18819839820afa217c16a4d60e702ac2e16143a0a22fb66a65849e2d410a3b62",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T1",
+      "repeat": 0,
+      "hash": "aec87e470d8f36f38496021b097c66cfd78125c71bb32b98ef17cc238a0edd81",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T1",
+      "repeat": 0,
+      "hash": "1a85528bee80d3e289249180e96b1fd9f7f6cff2e78bd18dde2043ebc3ca69fb",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T1",
+      "repeat": 0,
+      "hash": "4605b604bfff866b9474ed39f4fcff903876cf5441c1e4afd2186af8ee666219",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T1",
+      "repeat": 0,
+      "hash": "bbdc3342c9cb0f5a82604d4ae9fb5796e2574019fa00dff33d77404d1dc69069",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T1",
+      "repeat": 0,
+      "hash": "10df2baee7436b88083ba67d09a48e26876dd6f7e8321e72c540577082ee01a8",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.86-T1",
+      "repeat": 0,
+      "hash": "0133c6e497e6376133386588bbf00a2f153fea10b5e5c54ca34684608a1357cf",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T1",
+      "repeat": 0,
+      "hash": "726d422fff7f6dd98a8d3f9317a7b05f5a4137a76163683a382e99587698d0db",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T1",
+      "repeat": 0,
+      "hash": "bb8c6cba9ae0b91c47a961e7d84a9ddae497e11fe7edcdedc3621993ab2dae05",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0-T2",
+      "repeat": 0,
+      "hash": "8a638cd17941d857aef7c7406a69dba66ee2b92c5182c1d6126a41074e59edae",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T2",
+      "repeat": 0,
+      "hash": "f2df2b8fb3e8985808bdf96e5ac88730967fc6dc630d55cc68c1397d3d46919a",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T2",
+      "repeat": 0,
+      "hash": "ea45b734aa0ee42265b36096c309597a2f5db83e7bf74569334a96f2c87dd07c",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T2",
+      "repeat": 0,
+      "hash": "546e92051fdd70ba09892fecba33227dc9c865eb9703084ae7a7e5c9709db6cf",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T2",
+      "repeat": 0,
+      "hash": "47bda69f4048b825858c410ec5709c19dad8065de6df5455d1e0723d854292d9",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T2",
+      "repeat": 0,
+      "hash": "6df06a8e9ff0a771233580e614aa7f1b9c6aff232aa94cb091d1339f00f25e05",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T2",
+      "repeat": 0,
+      "hash": "4270d37047a2f6bcc99c51bb6df02a901ee777759e35c09379e00b26fe065691",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T2",
+      "repeat": 0,
+      "hash": "051939795b3d71fbbeeb3cdd1e942bd1d42621644ffc0168c692559bde17af06",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T2",
+      "repeat": 0,
+      "hash": "68055b73edcaa30ea9cc00df2bca8cc2a9ef662fa88b432b3da6ef62f76c5cc5",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.86-T2",
+      "repeat": 0,
+      "hash": "8cea53908b33f3235e1b75b8a19ba916bbce40022d4b0dcbc246f84012b186d0",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T2",
+      "repeat": 0,
+      "hash": "d38942686227b48b88673a3fb639f09f21bf80c8f66ba0ec9c9844756cc1fac4",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T2",
+      "repeat": 0,
+      "hash": "29bbea72428f772a69e755575e89247a4aea1ad5d2be1a672ec8b370cf63c0b6",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0-T3",
+      "repeat": 0,
+      "hash": "8a638cd17941d857aef7c7406a69dba66ee2b92c5182c1d6126a41074e59edae",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T3",
+      "repeat": 0,
+      "hash": "f2df2b8fb3e8985808bdf96e5ac88730967fc6dc630d55cc68c1397d3d46919a",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T3",
+      "repeat": 0,
+      "hash": "ea45b734aa0ee42265b36096c309597a2f5db83e7bf74569334a96f2c87dd07c",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T3",
+      "repeat": 0,
+      "hash": "546e92051fdd70ba09892fecba33227dc9c865eb9703084ae7a7e5c9709db6cf",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T3",
+      "repeat": 0,
+      "hash": "47bda69f4048b825858c410ec5709c19dad8065de6df5455d1e0723d854292d9",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T3",
+      "repeat": 0,
+      "hash": "6df06a8e9ff0a771233580e614aa7f1b9c6aff232aa94cb091d1339f00f25e05",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T3",
+      "repeat": 0,
+      "hash": "4270d37047a2f6bcc99c51bb6df02a901ee777759e35c09379e00b26fe065691",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T3",
+      "repeat": 0,
+      "hash": "eacc1ff3f8752ff55782bb7ef727f2ee35bb3f69658ac2652d784b4415f80430",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T3",
+      "repeat": 0,
+      "hash": "b7e65f8a4a3ebe8409febc9b718c2f404e16077e769ca807fbc9349fecd619c8",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.86-T3",
+      "repeat": 0,
+      "hash": "8e15291729e2652a15c1a04b409ab283fcca0fa2f9ccc43e0377ca86f671bdae",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T3",
+      "repeat": 0,
+      "hash": "d9ce74c205642e7393071f3cc411420c21362fee5755dd392d573bcd71d7ce52",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T3",
+      "repeat": 0,
+      "hash": "8d4702f2586c399e5a6d400b2c33bb4d70b9b66dfa953ad052fbe0954003d3b2",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0-T1",
+      "repeat": 1,
+      "hash": "192e1784cd516673056a42fec445dca093eda31e9908b18995aa03d975b36750",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T1",
+      "repeat": 1,
+      "hash": "47c542e1a3aeed32a95f2adaba4b0caad13541a88b9d8a824af13d4b5b4e1f97",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T1",
+      "repeat": 1,
+      "hash": "fe8179cb39b934d2805d14e8f8ffc756342266af42216a86cafa72a928f75ca0",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T1",
+      "repeat": 1,
+      "hash": "18819839820afa217c16a4d60e702ac2e16143a0a22fb66a65849e2d410a3b62",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T1",
+      "repeat": 1,
+      "hash": "aec87e470d8f36f38496021b097c66cfd78125c71bb32b98ef17cc238a0edd81",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T1",
+      "repeat": 1,
+      "hash": "1a85528bee80d3e289249180e96b1fd9f7f6cff2e78bd18dde2043ebc3ca69fb",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T1",
+      "repeat": 1,
+      "hash": "4605b604bfff866b9474ed39f4fcff903876cf5441c1e4afd2186af8ee666219",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T1",
+      "repeat": 1,
+      "hash": "bbdc3342c9cb0f5a82604d4ae9fb5796e2574019fa00dff33d77404d1dc69069",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T1",
+      "repeat": 1,
+      "hash": "10df2baee7436b88083ba67d09a48e26876dd6f7e8321e72c540577082ee01a8",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.86-T1",
+      "repeat": 1,
+      "hash": "0133c6e497e6376133386588bbf00a2f153fea10b5e5c54ca34684608a1357cf",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T1",
+      "repeat": 1,
+      "hash": "726d422fff7f6dd98a8d3f9317a7b05f5a4137a76163683a382e99587698d0db",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T1",
+      "repeat": 1,
+      "hash": "bb8c6cba9ae0b91c47a961e7d84a9ddae497e11fe7edcdedc3621993ab2dae05",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0-T2",
+      "repeat": 1,
+      "hash": "8a638cd17941d857aef7c7406a69dba66ee2b92c5182c1d6126a41074e59edae",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T2",
+      "repeat": 1,
+      "hash": "f2df2b8fb3e8985808bdf96e5ac88730967fc6dc630d55cc68c1397d3d46919a",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T2",
+      "repeat": 1,
+      "hash": "ea45b734aa0ee42265b36096c309597a2f5db83e7bf74569334a96f2c87dd07c",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T2",
+      "repeat": 1,
+      "hash": "546e92051fdd70ba09892fecba33227dc9c865eb9703084ae7a7e5c9709db6cf",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T2",
+      "repeat": 1,
+      "hash": "47bda69f4048b825858c410ec5709c19dad8065de6df5455d1e0723d854292d9",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T2",
+      "repeat": 1,
+      "hash": "6df06a8e9ff0a771233580e614aa7f1b9c6aff232aa94cb091d1339f00f25e05",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T2",
+      "repeat": 1,
+      "hash": "4270d37047a2f6bcc99c51bb6df02a901ee777759e35c09379e00b26fe065691",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T2",
+      "repeat": 1,
+      "hash": "64c052a74ce02a8f535800fba9cc4006dff9f397b2aee5dbaebecc572a5bdf79",
+      "changedPixels": 57,
+      "maxDelta": 1,
+      "bounds": [
+        43,
+        140,
+        342,
+        729
+      ]
+    },
+    {
+      "key": "0.76-T2",
+      "repeat": 1,
+      "hash": "68055b73edcaa30ea9cc00df2bca8cc2a9ef662fa88b432b3da6ef62f76c5cc5",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.86-T2",
+      "repeat": 1,
+      "hash": "8cea53908b33f3235e1b75b8a19ba916bbce40022d4b0dcbc246f84012b186d0",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T2",
+      "repeat": 1,
+      "hash": "d38942686227b48b88673a3fb639f09f21bf80c8f66ba0ec9c9844756cc1fac4",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T2",
+      "repeat": 1,
+      "hash": "ed3b76eb60c9cffc1a9e583adb720d12392c269f031fbfcdb1c63f175cfe9f81",
+      "changedPixels": 6,
+      "maxDelta": 1,
+      "bounds": [
+        227,
+        214,
+        341,
+        627
+      ]
+    },
+    {
+      "key": "0-T3",
+      "repeat": 1,
+      "hash": "8a638cd17941d857aef7c7406a69dba66ee2b92c5182c1d6126a41074e59edae",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T3",
+      "repeat": 1,
+      "hash": "f2df2b8fb3e8985808bdf96e5ac88730967fc6dc630d55cc68c1397d3d46919a",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T3",
+      "repeat": 1,
+      "hash": "ea45b734aa0ee42265b36096c309597a2f5db83e7bf74569334a96f2c87dd07c",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T3",
+      "repeat": 1,
+      "hash": "546e92051fdd70ba09892fecba33227dc9c865eb9703084ae7a7e5c9709db6cf",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T3",
+      "repeat": 1,
+      "hash": "47bda69f4048b825858c410ec5709c19dad8065de6df5455d1e0723d854292d9",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T3",
+      "repeat": 1,
+      "hash": "6df06a8e9ff0a771233580e614aa7f1b9c6aff232aa94cb091d1339f00f25e05",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T3",
+      "repeat": 1,
+      "hash": "4270d37047a2f6bcc99c51bb6df02a901ee777759e35c09379e00b26fe065691",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T3",
+      "repeat": 1,
+      "hash": "eacc1ff3f8752ff55782bb7ef727f2ee35bb3f69658ac2652d784b4415f80430",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T3",
+      "repeat": 1,
+      "hash": "b7e65f8a4a3ebe8409febc9b718c2f404e16077e769ca807fbc9349fecd619c8",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.86-T3",
+      "repeat": 1,
+      "hash": "8e15291729e2652a15c1a04b409ab283fcca0fa2f9ccc43e0377ca86f671bdae",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T3",
+      "repeat": 1,
+      "hash": "d9ce74c205642e7393071f3cc411420c21362fee5755dd392d573bcd71d7ce52",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T3",
+      "repeat": 1,
+      "hash": "8d4702f2586c399e5a6d400b2c33bb4d70b9b66dfa953ad052fbe0954003d3b2",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    }
+  ]
+}

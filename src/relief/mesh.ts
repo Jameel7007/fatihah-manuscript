@@ -20,7 +20,7 @@
 // whichever pipeline compiled first, and R-0.710 flipped between two hashes across loads.
 
 import { BufferAttribute, BufferGeometry, Mesh, MeshBasicNodeMaterial, MeshPhysicalNodeMaterial, Sphere, Vector3 } from 'three/webgpu';
-import { attribute, color, cos, cross, dFdx, dFdy, float, ivec2, sin, step, texture, textureLoad, transformNormalToView, uniform, varying, vec2, vec3, vec4 } from 'three/tsl';
+import { attribute, color, cos, cross, dFdx, dFdy, float, fwidth, ivec2, sin, step, texture, textureLoad, transformNormalToView, uniform, varying, vec2, vec3, vec4 } from 'three/tsl';
 import type { Field } from '../field/field';
 import { GRID_H, GRID_W } from '../field/silhouette';
 import { INK_DRY, INK_WET } from '../ink/ink';
@@ -34,9 +34,8 @@ const SEAM_EPS = 1e-5; // base-ring clearance above the surface (world)
 // §7 gold set, scene-linear (sRGB → linear, 3 s.f.)
 // v1.6.1 ("the text needs to be smoothed and a little brighter", user review 2026-09-01): the face
 // moves from aged leaf #C29B52 (lin 0.548/0.335/0.082) toward real gold — #DDB768 (lin 0.723/0.478/0.142)
-const GOLD_FACE: [number, number, number] = [0.723, 0.478, 0.142]; // #DDB768
-const GOLD_BOLE: [number, number, number] = [0.197, 0.058, 0.025]; // #7A4630 wear → bole
-const GOLD_SIDE: [number, number, number] = [0.28, 0.148, 0.023]; // #8F6B2E sidewall
+const GOLD_FACE: [number, number, number] = [0.776, 0.527, 0.159]; // #E4C06F — warm leaf that stays gold outside the highlight
+const GOLD_SIDE: [number, number, number] = [0.50, 0.32, 0.10]; // v1.6.4: softer face/side contrast on thin strokes
 
 export interface GlyphBin {
   meta: {
@@ -126,7 +125,7 @@ export function buildGlyphRelief(
   bin: GlyphBin,
   field: Field,
   fiberTex: import('three/webgpu').Texture,
-  burnishTex: import('three/webgpu').Texture,
+  _burnishTex: import('three/webgpu').Texture,
   inkTex: import('three/webgpu').Texture,
 ): GlyphRelief {
   const geo = new BufferGeometry();
@@ -137,6 +136,14 @@ export function buildGlyphRelief(
   geo.setAttribute('aAux', new BufferAttribute(bin.aux, 4, true));
   geo.setAttribute('aAuv', new BufferAttribute(bin.auvQ, 2, true));
   geo.setAttribute('aProf', new BufferAttribute(bin.prof, 4, true));
+  // A standard sheet-space UV is required by the physical material's TBN when anisotropy
+  // is enabled. Keep it quantized: it is derived from aAnchor, not another shipped buffer.
+  const sheetUv = new Uint16Array(nVerts * 2);
+  for (let i = 0; i < nVerts; i++) {
+    sheetUv[i * 2] = bin.anchor[i * 4] ?? 0;
+    sheetUv[i * 2 + 1] = bin.anchor[i * 4 + 1] ?? 0;
+  }
+  geo.setAttribute('uv', new BufferAttribute(sheetUv, 2, true));
   geo.setIndex(new BufferAttribute(bin.index, 1));
   geo.boundingSphere = new Sphere(new Vector3(0, 0, 0), 1.2);
 
@@ -221,18 +228,40 @@ export function buildGlyphRelief(
   const surfTv: N = varying(surfT);
   const BpageV: N = varying(Bpage);
   const surfNv: N = varying(surfN);
-  let slopeN: N = float(0);
   const segs = bin.meta.profileSpline;
-  for (let i = 0; i < segs.length; i++) {
-    const g = segs[i] as { x0: number; dx: number; A: number; B: number; C: number };
-    const x1 = i === segs.length - 1 ? g.x0 + g.dx + 1e-4 : g.x0 + g.dx;
-    const t: N = sNv.sub(g.x0).div(g.dx);
-    const mask: N = step(g.x0, sNv).sub(step(x1, sNv)); // x0 ≤ sN < x1
-    slopeN = slopeN.add(t.mul(t).mul(g.A).add(t.mul(g.B)).add(g.C).mul(mask));
-  }
-  const slopeW: N = slopeN.max(0).mul(bin.meta.depth / bin.meta.bevel).mul(kV);
-  const gdir: N = gV.div(gV.length().max(1e-4));
-  const nPlan: N = vec3(gdir.x.mul(slopeW).negate(), gdir.y.mul(slopeW).negate(), float(1)).normalize();
+  const slopeAt = (s: N): N => {
+    let out: N = float(0);
+    for (let i = 0; i < segs.length; i++) {
+      const g = segs[i] as { x0: number; dx: number; A: number; B: number; C: number };
+      const x1 = i === segs.length - 1 ? g.x0 + g.dx + 1e-4 : g.x0 + g.dx;
+      const t: N = s.sub(g.x0).div(g.dx);
+      const mask: N = step(g.x0, s).sub(step(x1, s)); // x0 ≤ s < x1
+      out = out.add(t.mul(t).mul(g.A).add(t.mul(g.B)).add(g.C).mul(mask));
+    }
+    return out.max(0);
+  };
+  // The bevel can cross most of a display pixel on hairlines. Sampling only at the pixel
+  // centre turns the warm reflection into a one-pixel staircase even when the mesh and its
+  // silhouette are correct. Integrate the analytic profile over the fragment footprint;
+  // this is a normal prefilter, not blur, and remains stable while scrolling.
+  const profileFw: N = fwidth(sNv).clamp(0, 0.4);
+  const sLo: N = sNv.sub(profileFw.mul(0.5)).clamp(0, 1);
+  const sHi: N = sNv.add(profileFw.mul(0.5)).clamp(0, 1);
+  const slopeN: N = slopeAt(sLo).mul(0.25).add(slopeAt(sNv).mul(0.5)).add(slopeAt(sHi).mul(0.25));
+  // Keep the stable baked profile scale; the animated-depth varying experiment caused
+  // relief to disappear on subsequent cold loads and is not part of this candidate.
+  // v1.6.6: broad monotonic shading bevel for gold. Keep the authored profile during
+  // ink handoff; ease to a simple quadratic slope as each cluster becomes gold.
+  // Geometry/depth stay unchanged: this deliberately softens lighting, not scripture.
+  const softSlopeAt = (s: N): N => float(1).sub(s.clamp(0, 1)).pow(2).mul(1.2);
+  const softSlope: N = softSlopeAt(sLo).mul(0.25).add(softSlopeAt(sNv).mul(0.5)).add(softSlopeAt(sHi).mul(0.25));
+  const shadedSlope: N = slopeN.mul(float(1).sub(vGold)).add(softSlope.mul(vGold));
+  const slopeW: N = shadedSlope.max(0).mul(bin.meta.depth / bin.meta.bevel).mul(kV);
+  // v1.6.5: opposing boundary gradients naturally cancel across a stroke's crown.
+  // Renormalizing that near-zero vector before applying slope amplifies tiny changes
+  // into full-strength left/right normals (the jagged metallic ridge in closeups).
+  // Preserve its interpolated magnitude and normalize only the final 3D normal.
+  const nPlan: N = vec3(gV.x.mul(slopeW).negate(), gV.y.mul(slopeW).negate(), float(1)).normalize();
   const nAnchor: N = surfTv.normalize().mul(nPlan.x).add(BpageV.normalize().mul(nPlan.y)).add(surfNv.normalize().mul(nPlan.z)).normalize();
   const nObj: N = vec3(nAnchor.x, nAnchor.y.mul(cp).sub(nAnchor.z.mul(sp)), nAnchor.y.mul(sp).add(nAnchor.z.mul(cp)));
   const nView: N = transformNormalToView(nObj).normalize();
@@ -240,9 +269,7 @@ export function buildGlyphRelief(
 
   const suv: N = varying(vec2(anc.x, anc.y));
   const aoV: N = varying(aux.y);
-  const rFloorV: N = varying(aux.z);
   const hnV: N = varying(anc.z);
-  const kindV: N = varying(anc.w);
 
   // flat-ink composite (explicit lerps — the TSL mix() gotcha) × baked root AO
   const inkT: N = texture(inkTex, suv);
@@ -255,27 +282,24 @@ export function buildGlyphRelief(
   const inkBase: N = inkCol.mul(cavity);
   const rInk: N = float(0.52).sub(wetF.mul(0.24));
 
-  // §7 gold: burnish pack (R burnish → roughness 0.21..0.47, G wear → bole ~8%, crown-biased)
-  // v1.6.1 smooth gold: the burnish pack sampled at sheet scale (was ×7/×9 — a roughness
-  // speckle finer than a stroke width that broke every highlight into dots), roughness
-  // 0.18–0.34 (was 0.21–0.47), wear ≈ 3% (was ≈ 8%)
-  const bp: N = texture(burnishTex, suv);
-  const burnish: N = bp.r;
+  // v1.6.6 clean satin gold: no burnish/wear texture or per-ring roughness changes.
   const crown: N = hnV.smoothstep(0.55, 0.92); // top face vs wall/root
-  const wearBias: N = rFloorV.greaterThan(0.2).select(float(0.04), float(0.0)); // crown-fillet ring wears first
-  const wear: N = bp.g.add(wearBias).smoothstep(0.80, 0.86); // ≈ 1.5% bole
-  const faceCol: N = vec3(...GOLD_FACE).mul(float(1).sub(wear)).add(vec3(...GOLD_BOLE).mul(wear));
+  const faceCol: N = vec3(...GOLD_FACE);
   const sideDark: N = hnV.div(0.55).clamp(0, 1).mul(0.28).add(0.72); // ×0.72 toward the root
   const sideCol: N = vec3(...GOLD_SIDE).mul(sideDark);
   const goldCol: N = sideCol.mul(float(1).sub(crown)).add(faceCol.mul(crown));
-  const faceRough: N = burnish.mul(0.14).add(0.22).mul(float(1).sub(wear)).add(float(0.62).mul(wear)); // 0.22–0.36: the crest highlight is a band, not a wire
-  const markerBias: N = kindV.lessThan(0.7).select(float(0.05), float(0.0)); // markers: +0.05 rough
-  const goldRough: N = float(0.52).mul(float(1).sub(crown)).add(faceRough.mul(crown)).add(markerBias).max(rFloorV);
-  const goldMetal: N = float(0.85).mul(float(1).sub(crown)).add(float(1).sub(wear.mul(0.88)).mul(crown));
+  const goldRough: N = float(0.52);
+  const goldMetal: N = float(0.72);
 
   const g: N = vGold;
   m.colorNode = inkBase.mul(float(1).sub(g)).add(goldCol.mul(g)).mul(aoV);
   m.metalnessNode = goldMetal.mul(g);
+  // Isotropic finish avoids tangent-direction flips where opposing stroke gradients meet.
+  m.anisotropy = 0;
+  // v1.6.4: the extruded outline already defines coverage. Cutting its sidewalls with the
+  // flat ink RT removes boundary samples as the block turns. Let opaque geometry + MSAA
+  // and spatial supersampling resolve the silhouette, including real bevels and sides.
+  m.opacityNode = float(1);
   // roughness blend + §15 geometric specular AA (same law as the parchment)
   const rMix: N = rInk.mul(float(1).sub(g)).add(goldRough.mul(g));
   const nDx: N = dFdx(nView);

@@ -18,10 +18,8 @@ type N = any;
 
 export const BLOB_W = 0.9; // ortho frustum, world (sheet is 0.78 × 1.0)
 export const BLOB_H = 1.15;
-const SIZE = 512;
-
-function makeRT(): RenderTarget {
-  const rt = new RenderTarget(SIZE, SIZE, {
+function makeRT(size: number): RenderTarget {
+  const rt = new RenderTarget(size, size, {
     format: RGBAFormat,
     type: UnsignedByteType,
     minFilter: LinearFilter,
@@ -35,9 +33,9 @@ function makeRT(): RenderTarget {
 }
 
 export class ContactBlob {
-  private rtH = makeRT();
-  private rtA = makeRT();
-  private rtB = makeRT();
+  private rtH: RenderTarget;
+  private rtA: RenderTarget;
+  private rtB: RenderTarget;
   private cam = new OrthographicCamera(-BLOB_W / 2, BLOB_W / 2, BLOB_H / 2, -BLOB_H / 2, 0.01, 2.0);
   private heightScene = new Scene();
   private blurScene = new Scene();
@@ -52,7 +50,10 @@ export class ContactBlob {
   private cam2 = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
   private savedClear = new Color();
 
-  constructor(mesh: Mesh, heightMat: MeshBasicNodeMaterial) {
+  constructor(mesh: Mesh, heightMat: MeshBasicNodeMaterial, size = 512, tapCount = 13) {
+    this.rtH = makeRT(size);
+    this.rtA = makeRT(size);
+    this.rtB = makeRT(size);
     this.mesh = mesh;
     this.heightMat = heightMat;
     // camera above the sheet, looking straight down; +z (down the page) maps to −v of the
@@ -71,11 +72,11 @@ export class ContactBlob {
     this.blurSrc = srcTex;
     const center: N = srcTex;
     const hWorld: N = center.g.mul(0.2);
-    const radius: N = hWorld.mul(640).add(2).div(SIZE); // texels → uv
+    const radius: N = hWorld.mul(size * 1.25).add(2).div(size); // texels → uv
     let accC: N = float(0);
     let accH: N = float(0);
     let wsum = 0;
-    const TAPS = 13;
+    const TAPS = Math.max(5, tapCount | 1); // odd so one tap stays at the caster centre
     for (let k = 0; k < TAPS; k++) {
       const o = (k - (TAPS - 1) / 2) / ((TAPS - 1) / 2); // −1..1
       const w = Math.exp(-2.2 * o * o);
@@ -94,6 +95,7 @@ export class ContactBlob {
   get texture(): import('three/webgpu').Texture {
     return this.rtB.texture;
   }
+  get diagnosticTarget(): RenderTarget { return this.rtB; }
 
   /** Render the blob for p (the rise + facing states). Skips unchanged p. */
   run(renderer: import('three/webgpu').WebGPURenderer, p: number): void {

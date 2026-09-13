@@ -48,16 +48,20 @@ export class ScrollDriver {
   forced: number | null = null;
 
   private v = 0;
+  private forcedPrev: number | null = null;
   private readonly reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   update(dtRaw: number): void {
     if (this.forced !== null) {
+      const prev = this.forcedPrev ?? this.forced;
       this.p = this.forced;
       this.target = this.forced;
-      this.v = 0;
-      this.vLpf = 0;
+      this.v = dtRaw > 0 ? (this.forced - prev) / dtRaw : 0;
+      this.vLpf += (this.v - this.vLpf) * (dtRaw > 0 ? 1 - Math.exp(-dtRaw / 0.06) : 0);
+      this.forcedPrev = this.forced;
       return;
     }
+    this.forcedPrev = null;
     const max = document.documentElement.scrollHeight - window.innerHeight;
     this.target = max > 0 ? scrollToP(window.scrollY / max) : 0;
 

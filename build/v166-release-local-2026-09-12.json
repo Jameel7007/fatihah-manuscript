@@ -1,0 +1,99 @@
+{
+  "date_local": "2026-09-12",
+  "timezone": "America/Mexico_City",
+  "version": "v1.6.6",
+  "status": "Local release-hardening checks pass; project not release-certified; M7/M8 open",
+  "approval": {
+    "visual_approval_date": "2026-09-09",
+    "reaffirmation_date": "2026-09-12",
+    "user_statement": "its fone let's jusy finish this the best we can",
+    "scope": "Keep current gold and finish engineering. No waiver of repeatability, device, content or final release gates inferred."
+  },
+  "changes": [
+    "Reduced-motion pager retains 12px gold dots inside 44px targets, adds visible keyboard focus and compact layouts.",
+    "Seven ordinary labelled buttons with aria-current replace incomplete tab semantics; Arrow/Page/Home/End navigation moves pager focus with selection and leaves modified/editing keys alone.",
+    "A separate atomic polite status announces state/loading changes; the per-frame HUD is aria-hidden.",
+    "Production QA pages retain local keyboard/layout and startup-fallback results, with explicit evidence-save errors.",
+    "Opt-in perf export now checks HTTP success, times out after ten seconds and displays save success/failure; measurements remain in window.__perf.",
+    "Current README/spec/ledger/readiness/manifest summaries reconciled with September 9 visual approval and the unresolved technical gates. Historical evidence retained."
+  ],
+  "unchanged": [
+    "Approved satin-gold material, geometry, canonical scripture and authored pose/dissolve timing",
+    "Raw-pixel capture equality requirement and reference blessing policy",
+    "All 27 historical reference-table entries, verified equal to HEAD",
+    "Pre-existing uncommitted work; no commit, push, deployment or external artifact republication"
+  ],
+  "verification": {
+    "production_build": "PASS: npm run build, including TypeScript; existing Three large-chunk warning remains",
+    "automated_tests": {
+      "command": "node --test qa/perf.test.mjs qa/tiers.test.mjs qa/assets.test.mjs qa/gpuTrace.test.mjs",
+      "passed": 22,
+      "failed": 0
+    },
+    "canonical_text": "PASS: node build/verify-text.mjs; all seven ayahs in all three composition variants match the pinned source. Upstream service unreachable; no new upstream or scholarly verification claimed.",
+    "accessibility": {
+      "report": "qa/review/v166-accessibility-1789260890132.png",
+      "format": "JSON despite receiver .png extension",
+      "passed": 66,
+      "cases": ["1440x900 WebGPU", "390x844 WebGL2", "320x320 WebGL2"],
+      "runtime_options": "reduced=1, tier=3, ss=1; layout and input checks, not tier performance certification",
+      "scope": "DOM/synthetic keyboard checks for all seven poses, focus, boundaries, target bounds, shortcut/editing guards, semantic labels and stable announcements",
+      "native_keyboard_smoke": "Fresh production reduced=1&tier=1 page: Tab focused state 1; End changed pose/announcement and focused state 7; Home then Right changed pose/announcement and focused state 2. Screenshot visually confirmed the focus outline. Not a screen-reader audit.",
+      "rounding": "0.02 CSS px tolerance for fractional zoom layout measurements only; no tolerance applied to capture pixels/hashes",
+      "earlier_pass": "qa/review/v166-accessibility-1789250134705.png",
+      "initial_failed_checks": "Two saved early failures expose fractional 43.9986px measurements for 44px targets. A subsequent compact-layout failure was corrected with a four-column pager; its save failed while the sink was down. These are not passing evidence."
+    },
+    "renderer_failure_fallback": {
+      "report": "qa/review/v166-fallback-1789260750059.png",
+      "format": "JSON despite receiver .png extension",
+      "passed": 17,
+      "scope": "1440x900 forced static mode; 390x844 startup rejection; image loading, containment, keyboard/buttons/boundaries, no Three import for forced static mode; successful capture and explicit capture failure without fallback substitution",
+      "rounding": "0.5 CSS px tolerance for integer-rounded viewport dimensions versus fractional zoom DOM bounds only",
+      "provenance": "build/fallback-plates.json; existing seven real unblessed prerendered plates unchanged"
+    },
+    "payload": {
+      "report": "build/payload-report.json",
+      "passed": true,
+      "brotli_mb": 7.092,
+      "gzip_mb": 11.251,
+      "target_brotli_mb": 8.5,
+      "poster_to_live_model_seconds": 1.69,
+      "scope": "Measured compressed asset sizes, not actual compressed hosting or a 10 Mbps physical-device cold-load measurement"
+    },
+    "local_performance": {
+      "report": "qa/review/v166-perf-1789261176657.png",
+      "format": "JSON despite receiver .png extension; raw samples saved",
+      "timestamp_utc": "2026-09-13T00:59:36.656Z",
+      "url": "http://localhost:4521/?tier=1&perf=30&save=1",
+      "browser": "In-app Chromium 152 / WebGPU / production preview",
+      "machine": "Local M2 Pro, not a required named device",
+      "duration_seconds": 60.007,
+      "raf_intervals": 7089,
+      "initial_tier": 1,
+      "final_tier": 1,
+      "foreground_throughout": true,
+      "usable_foreground_sample": true,
+      "backing_canvas": "850x1454, DPR 2",
+      "sampled_p_range": [0, 0.9999933333333334],
+      "sampled_ss_range": [1, 1.5],
+      "raf_p50_ms": 8.3,
+      "raf_p95_ms": 9.3,
+      "raf_p99_ms": 16.6,
+      "raf_max_ms": 17.6,
+      "stalls_over_250ms": 0,
+      "cpu_update_submit_p95_ms": 0.70,
+      "scope": "Functional local smoke, not an isolated benchmark: payload compression and another manuscript tab were present. rAF pacing and CPU submission exclude GPU completion; no 12/14/27ms work-budget, 1440x900 viewport or physical-device certification inferred.",
+      "earlier_unsaved_smoke": "HUD-only: T1 to T1, 7090 intervals, rAF p95 9.2ms, max 25.0ms, no >250ms stalls; CPU submit p95 2.50ms. Sink stopped and raw export was lost. Kept separate from the saved final run."
+    }
+  },
+  "remaining_release_requirements": [
+    "Resolve intermittent WebGPU cold-capture differences, then repeat complete matrices and obtain authorized reference blessing; build/v166-step1-investigation.json remains open.",
+    "M1 Air, iPhone 15 and iPhone 12: frame-work budgets, playback, thermal/memory/compile checks and 10 Mbps cold loading.",
+    "Actual cross-browser, axe, screen-reader, physical touch and final live-feel/flick/storm review.",
+    "Authoritative calligraphy/content comparison and scholarly review against a printed mushaf; pinned text verification is not a substitute.",
+    "Confirm hosting/delivery target, republish spec/ledger copies when possible, and obtain explicit final M7/M8 release sign-off."
+  ],
+  "blessed_hashes_added": [],
+  "milestones_closed": [],
+  "checklist": "docs/release-checklist.md"
+}

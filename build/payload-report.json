@@ -1,81 +1,165 @@
 {
- "built": "2026-09-01",
+ "built": "2026-09-13",
  "budget": {
   "target_mb": 8.5,
   "hard_cap_mb": 10,
   "transfer_metric": "brotli (gzip also listed)"
  },
  "totals": {
-  "raw_mb": 7.571,
-  "gz_mb": 3.241,
-  "br_mb": 2.147
+  "raw_mb": 24.12,
+  "gz_mb": 11.251,
+  "br_mb": 7.092
  },
  "phases": {
   "A": {
-   "files": 11,
-   "raw_mb": 0.936,
-   "gz_mb": 0.291,
-   "br_mb": 0.243,
-   "seconds_at_10mbps_br": 0.2
+   "files": 15,
+   "raw_mb": 0.963,
+   "gz_mb": 0.308,
+   "br_mb": 0.26,
+   "seconds_at_10mbps_br": 0.22
+  },
+  "F": {
+   "files": 9,
+   "raw_mb": 0.244,
+   "gz_mb": 0.226,
+   "br_mb": 0.223,
+   "seconds_at_10mbps_br": 0.19
   },
   "B": {
    "files": 3,
-   "raw_mb": 0.52,
-   "gz_mb": 0.442,
-   "br_mb": 0.438,
+   "raw_mb": 0.523,
+   "gz_mb": 0.447,
+   "br_mb": 0.443,
    "seconds_at_10mbps_br": 0.37
   },
   "C": {
-   "files": 1,
-   "raw_mb": 6.115,
-   "gz_mb": 2.508,
-   "br_mb": 1.466,
-   "seconds_at_10mbps_br": 1.23
+   "files": 2,
+   "raw_mb": 22.39,
+   "gz_mb": 10.27,
+   "br_mb": 6.166,
+   "seconds_at_10mbps_br": 5.17
   }
  },
  "posterToLive": {
-  "transfer_s": 0.2,
+  "transfer_s": 0.22,
   "compile_allowance_s": 1,
   "crossfade_s": 0.42,
-  "estimate_s": 1.67,
+  "estimate_s": 1.69,
   "limit_s": 2.2
  },
  "items": [
   {
-   "path": "dist/assets/index-_nrB4mOj.js",
+   "path": "dist/assets/assets-VGxV9dsf.js",
    "phase": "A",
    "kind": "app",
-   "raw": 67583,
-   "gz": 26835,
-   "br": 23840,
-   "raw_kb": 66,
-   "gz_kb": 26.2,
-   "br_kb": 23.3
-  },
-  {
-   "path": "dist/assets/inkPass-C-i-tHxi.js",
-   "phase": "A",
-   "kind": "app",
-   "raw": 2722,
-   "gz": 1453,
-   "br": 1338,
-   "raw_kb": 2.7,
-   "gz_kb": 1.4,
-   "br_kb": 1.3
-  },
-  {
-   "path": "dist/assets/inkPass-D9ZKH8Od.js",
-   "phase": "A",
-   "kind": "app",
-   "raw": 63,
-   "gz": 74,
-   "br": 60,
+   "raw": 102,
+   "gz": 110,
+   "br": 84,
    "raw_kb": 0.1,
    "gz_kb": 0.1,
    "br_kb": 0.1
   },
   {
-   "path": "dist/assets/textures-CqkoUT5O.js",
+   "path": "dist/assets/fallback-D6fTd1Ep.js",
+   "phase": "F",
+   "kind": "app",
+   "raw": 2108,
+   "gz": 988,
+   "br": 810,
+   "raw_kb": 2.1,
+   "gz_kb": 1,
+   "br_kb": 0.8
+  },
+  {
+   "path": "dist/assets/fallback-S_5ZZkaC.css",
+   "phase": "F",
+   "kind": "app",
+   "raw": 1353,
+   "gz": 641,
+   "br": 482,
+   "raw_kb": 1.3,
+   "gz_kb": 0.6,
+   "br_kb": 0.5
+  },
+  {
+   "path": "dist/assets/index-BJ7lwOz0.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 1806,
+   "gz": 905,
+   "br": 791,
+   "raw_kb": 1.8,
+   "gz_kb": 0.9,
+   "br_kb": 0.8
+  },
+  {
+   "path": "dist/assets/inkPass-B-goph1m.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 63,
+   "gz": 74,
+   "br": 64,
+   "raw_kb": 0.1,
+   "gz_kb": 0.1,
+   "br_kb": 0.1
+  },
+  {
+   "path": "dist/assets/inkPass-CUWAz6Mp.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 2728,
+   "gz": 1456,
+   "br": 1344,
+   "raw_kb": 2.7,
+   "gz_kb": 1.4,
+   "br_kb": 1.3
+  },
+  {
+   "path": "dist/assets/main-MFTCUyNQ.css",
+   "phase": "A",
+   "kind": "app",
+   "raw": 837,
+   "gz": 427,
+   "br": 333,
+   "raw_kb": 0.8,
+   "gz_kb": 0.4,
+   "br_kb": 0.3
+  },
+  {
+   "path": "dist/assets/main-zXze4vTw.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 79488,
+   "gz": 31415,
+   "br": 27740,
+   "raw_kb": 77.6,
+   "gz_kb": 30.7,
+   "br_kb": 27.1
+  },
+  {
+   "path": "dist/assets/preload-helper-Czpn1I53.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 1196,
+   "gz": 675,
+   "br": 558,
+   "raw_kb": 1.2,
+   "gz_kb": 0.7,
+   "br_kb": 0.5
+  },
+  {
+   "path": "dist/assets/textures-CY6_0-hG.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 2798,
+   "gz": 1302,
+   "br": 1191,
+   "raw_kb": 2.7,
+   "gz_kb": 1.3,
+   "br_kb": 1.2
+  },
+  {
+   "path": "dist/assets/textures-svg937-U.js",
    "phase": "A",
    "kind": "app",
    "raw": 74,
@@ -86,67 +170,56 @@
    "br_kb": 0.1
   },
   {
-   "path": "dist/assets/textures-OoPKN9yW.js",
+   "path": "dist/assets/three.tsl-BR-lMKkP.js",
    "phase": "A",
    "kind": "app",
-   "raw": 2622,
-   "gz": 1210,
-   "br": 1124,
-   "raw_kb": 2.6,
-   "gz_kb": 1.2,
-   "br_kb": 1.1
-  },
-  {
-   "path": "dist/assets/three.tsl-B2KU2e1n.js",
-   "phase": "A",
-   "kind": "app",
-   "raw": 10131,
-   "gz": 3557,
-   "br": 3231,
+   "raw": 10165,
+   "gz": 3583,
+   "br": 3250,
    "raw_kb": 9.9,
    "gz_kb": 3.5,
    "br_kb": 3.2
   },
   {
-   "path": "dist/assets/three.tsl-DwfiwqJy.js",
+   "path": "dist/assets/three.tsl-nJMxWyeZ.js",
    "phase": "A",
    "kind": "app",
    "raw": 132,
    "gz": 123,
-   "br": 102,
+   "br": 103,
    "raw_kb": 0.1,
    "gz_kb": 0.1,
    "br_kb": 0.1
   },
   {
-   "path": "dist/assets/three.webgpu-BLWVkI-l.js",
+   "path": "dist/assets/three.webgpu-B5xlNN-N.js",
    "phase": "A",
    "kind": "app",
    "raw": 206,
-   "gz": 171,
-   "br": 142,
+   "gz": 170,
+   "br": 152,
    "raw_kb": 0.2,
    "gz_kb": 0.2,
    "br_kb": 0.1
   },
   {
-   "path": "dist/assets/three.webgpu-DIc7kFAo.js",
+   "path": "dist/assets/three.webgpu-CoxseguE.js",
    "phase": "A",
    "kind": "app",
-   "raw": 849668,
-   "gz": 230699,
-   "br": 185328,
-   "raw_kb": 829.8,
-   "gz_kb": 225.3,
-   "br_kb": 181
+   "raw": 849516,
+   "gz": 230872,
+   "br": 185425,
+   "raw_kb": 829.6,
+   "gz_kb": 225.5,
+   "br_kb": 181.1
   },
   {
    "path": "dist/index.html",
    "phase": "A",
    "kind": "html",
-   "raw": 4004,
-   "gz": 1946,
-   "br": 1601,
+   "raw": 3994,
+   "gz": 1965,
+   "br": 1602,
    "raw_kb": 3.9,
    "gz_kb": 1.9,
    "br_kb": 1.6
@@ -155,61 +228,149 @@
    "path": "public/poster.jpg",
    "phase": "A",
    "kind": "poster",
-   "raw": 44452,
-   "gz": 39240,
-   "br": 37783,
-   "raw_kb": 43.4,
-   "gz_kb": 38.3,
-   "br_kb": 36.9
+   "raw": 56591,
+   "gz": 49947,
+   "br": 49432,
+   "raw_kb": 55.3,
+   "gz_kb": 48.8,
+   "br_kb": 48.3
+  },
+  {
+   "path": "public/fallback/plate-1.jpg",
+   "phase": "F",
+   "kind": "fallback-plate",
+   "raw": 20040,
+   "gz": 17462,
+   "br": 17218,
+   "raw_kb": 19.6,
+   "gz_kb": 17.1,
+   "br_kb": 16.8
+  },
+  {
+   "path": "public/fallback/plate-2.jpg",
+   "phase": "F",
+   "kind": "fallback-plate",
+   "raw": 19820,
+   "gz": 17336,
+   "br": 17091,
+   "raw_kb": 19.4,
+   "gz_kb": 16.9,
+   "br_kb": 16.7
+  },
+  {
+   "path": "public/fallback/plate-3.jpg",
+   "phase": "F",
+   "kind": "fallback-plate",
+   "raw": 27214,
+   "gz": 24786,
+   "br": 24553,
+   "raw_kb": 26.6,
+   "gz_kb": 24.2,
+   "br_kb": 24
+  },
+  {
+   "path": "public/fallback/plate-4.jpg",
+   "phase": "F",
+   "kind": "fallback-plate",
+   "raw": 38129,
+   "gz": 36007,
+   "br": 35657,
+   "raw_kb": 37.2,
+   "gz_kb": 35.2,
+   "br_kb": 34.8
+  },
+  {
+   "path": "public/fallback/plate-5.jpg",
+   "phase": "F",
+   "kind": "fallback-plate",
+   "raw": 42662,
+   "gz": 40962,
+   "br": 40488,
+   "raw_kb": 41.7,
+   "gz_kb": 40,
+   "br_kb": 39.5
+  },
+  {
+   "path": "public/fallback/plate-6.jpg",
+   "phase": "F",
+   "kind": "fallback-plate",
+   "raw": 51627,
+   "gz": 49338,
+   "br": 49001,
+   "raw_kb": 50.4,
+   "gz_kb": 48.2,
+   "br_kb": 47.9
+  },
+  {
+   "path": "public/fallback/plate-7.jpg",
+   "phase": "F",
+   "kind": "fallback-plate",
+   "raw": 52890,
+   "gz": 49255,
+   "br": 48789,
+   "raw_kb": 51.7,
+   "gz_kb": 48.1,
+   "br_kb": 47.6
   },
   {
    "path": "public/text/ink-mtsdf.png",
    "phase": "B",
    "kind": "atlas",
-   "raw": 190520,
-   "gz": 188354,
-   "br": 188142,
+   "raw": 190519,
+   "gz": 188382,
+   "br": 188164,
    "raw_kb": 186.1,
-   "gz_kb": 183.9,
-   "br_kb": 183.7
+   "gz_kb": 184,
+   "br_kb": 183.8
   },
   {
    "path": "public/text/ink-prog.png",
    "phase": "B",
    "kind": "atlas",
-   "raw": 267778,
-   "gz": 265382,
-   "br": 264251,
-   "raw_kb": 261.5,
-   "gz_kb": 259.2,
-   "br_kb": 258.1
+   "raw": 273311,
+   "gz": 271167,
+   "br": 269701,
+   "raw_kb": 266.9,
+   "gz_kb": 264.8,
+   "br_kb": 263.4
   },
   {
    "path": "public/text/ink-instances.json",
    "phase": "B",
    "kind": "instances",
-   "raw": 86904,
-   "gz": 9390,
-   "br": 7070,
-   "raw_kb": 84.9,
-   "gz_kb": 9.2,
-   "br_kb": 6.9
+   "raw": 84144,
+   "gz": 9246,
+   "br": 6983,
+   "raw_kb": 82.2,
+   "gz_kb": 9,
+   "br_kb": 6.8
   },
   {
    "path": "public/text/glyphs.bin",
    "phase": "C",
    "kind": "mesh",
-   "raw": 6411948,
-   "gz": 2630107,
-   "br": 1537290,
-   "raw_kb": 6261.7,
-   "gz_kb": 2568.5,
-   "br_kb": 1501.3
+   "raw": 15740324,
+   "gz": 7237394,
+   "br": 4334761,
+   "raw_kb": 15371.4,
+   "gz_kb": 7067.8,
+   "br_kb": 4233.2
+  },
+  {
+   "path": "public/text/glyphs-t3.bin",
+   "phase": "C",
+   "kind": "mesh-t3",
+   "raw": 7737592,
+   "gz": 3531973,
+   "br": 2130729,
+   "raw_kb": 7556.2,
+   "gz_kb": 3449.2,
+   "br_kb": 2080.8
   }
  ],
  "notes": [
   "parchment fiber/utility/environment/burnish maps are procedural GPU bakes — zero transfer; the §18 KTX2 rows for authored maps do not apply to this build",
-  "glyphs.bin ships as the FGLY quantized planar buffers served brotli (meshopt/glb packaging would trade ~1.5 MB → ~1.2 MB at the cost of a wasm decoder; deferred)",
+  "glyphs.bin and glyphs-t3.bin ship as FGLY quantized planar buffers; each client requests only its selected tier (meshopt/glb remains optional while the aggregate payload is under budget)",
   "ink atlases stay PNG (UASTC would cost more transfer for a 2048×256 atlas pair)"
  ],
  "pass": true

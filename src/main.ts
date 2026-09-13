@@ -1,6 +1,6 @@
-import { Color, PerspectiveCamera, REVISION } from 'three/webgpu';
+import { Color, PerspectiveCamera, REVISION, RenderTarget, UnsignedByteType } from 'three/webgpu';
 import { createRenderer } from './core/renderer';
-import { DPR_CAP, DUST_SCALE, detectTier, TierMonitor } from './core/tiers';
+import { DPR_CAP, DUST_SCALE, FRAME_BUDGET_MS, detectTier, TierMonitor } from './core/tiers';
 import { CameraRig } from './director/camera';
 import { blobTilt, contactRamp, embossFactor, envYawDeg, FACE_CENTER_ANCHOR, FACE_CENTER_REST, faceFactor, facePitch, fillFactor, geoDepth, inkGhost, keyConeDeg, keyFactor, parchmentKeyMask, poseTransform, recede, rimFactor, RISE_START, stateLabel } from './director/drivers';
 import { IdleController, type IdleState } from './director/idle';
@@ -13,7 +13,10 @@ import { Residual } from './field/residual';
 import { buildSilhouette } from './field/silhouette';
 import { buildRamp, buildStage, KEY_INTENSITY, type DebugMode } from './look/stage';
 import { createGrade } from './look/grade';
-import { captureFrame, samplePixel, type CaptureFrame } from './qa/capture';
+import { diagnosticBakes } from './look/textures';
+import { gpuTraceSnapshot } from './qa/gpuTrace';
+import { PerfAudit } from './qa/perf';
+import { captureFrame, captureTarget, sha256Hex, samplePixel, type CaptureFrame } from './qa/capture';
 import { flickProfile, runProbes, runStorm, sampleResidualEnergy, type ProbeReport } from './qa/probes';
 import { WRITING, buildSchedule } from './director/writing';
 import { loadInk } from './ink/atlas';
@@ -25,6 +28,7 @@ interface CaptureResult {
   tier: number;
   backend: string;
   dataUrl: string;
+  sources?: Record<string, string>;
   ramp?: Array<{ input: number; out: [number, number, number, number] }>;
   rampOk?: boolean;
 }
@@ -39,6 +43,11 @@ declare global {
   }
 }
 
+// Measure from the first response byte—the earliest moment the inline poster can appear—
+// so the M7 number includes module fetch/evaluation, renderer init, stage build and compile.
+const navigationTiming = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+const posterClockT0 = navigationTiming?.responseStart ?? 0;
+
 const q = new URLSearchParams(location.search);
 const captureP = q.get('capture');
 const probeP = q.get('probe');
@@ -51,13 +60,13 @@ const tier = detectTier(q.get('tier'));
 const isCapture = captureP !== null || probeP !== null || sceneMode === 'ramp' || sceneMode === 'inkrt' || calibrate !== null;
 const capW = Number(q.get('w') ?? 1440);
 const capH = Number(q.get('h') ?? 900);
-// frames rendered before the capture readback (&warm=N). LEARNED at M6: three frames raced
-// the WebGPU backend's async pipeline compiles — R-1.00 hashed three different ways across
-// cold loads until the warm-up covered them; 15 frames settle every state (M6, 2026-09-01).
+// Frames before capture readback (&warm=N). Fifteen is the historical M6 setting,
+// not a readiness guarantee: v1.6.6 fresh-load repeatability remains under investigation.
 const captureWarm = Math.max(1, Number(q.get('warm') ?? 15));
 
 const canvas = document.querySelector<HTMLCanvasElement>('#gl');
 const hud = document.querySelector<HTMLDivElement>('#hud');
+const announcement = document.querySelector<HTMLDivElement>('#announce');
 const bar = document.querySelector<HTMLDivElement>('#bar');
 const capEl = document.querySelector<HTMLDivElement>('#cap');
 const spacer = document.querySelector<HTMLDivElement>('#spacer');
@@ -578,17 +587,22 @@ async function runMain(): Promise<void> {
   const sil = buildSilhouette();
   const residual = new Residual();
   const field = new Field(sil);
-  // M3 ink — awaited before the stage builds so capture frames are complete
-  const ink = q.get('noink') !== null ? undefined : await loadInk().catch((err: unknown) => {
-    console.error('[ink] atlas load failed — rendering without the ink layer', err);
-    return undefined;
-  });
-  // M4 §14 glyph relief mesh (&nogeo: emboss-only — the silhouette-DoD A/B switch)
-  const glyphBin = q.get('nogeo') !== null || !ink ? undefined : await loadGlyphBin('/text/glyphs.bin').catch((err: unknown) => {
-    console.error('[relief] glyphs.bin load failed — rendering without the glyph mesh', err);
-    return undefined;
-  });
-  const { scene, sheetRoot, key, rim, uEmboss, inkPass, relief, contact, uContact, uGhost, uRecede, uKeyMask, fill, dust, sky } = buildStage(renderer, field, sil, debugMode, ink, glyphBin);
+  const wantsInk = q.get('noink') === null;
+  const wantsRelief = wantsInk && q.get('nogeo') === null;
+  const glyphUrl = tier === 3 ? '/text/glyphs-t3.bin' : '/text/glyphs.bin';
+  // Capture stays all-at-once and deterministic. Live mode builds the rolled parchment
+  // from phase A, then streams phase B/C only after the first canvas presentation.
+  let initialInk: Awaited<ReturnType<typeof loadInk>> | undefined;
+  let initialGlyph: Awaited<ReturnType<typeof loadGlyphBin>> | undefined;
+  if (isCapture && wantsInk) {
+    const { loadCaptureAssets } = await import('./qa/assets');
+    const assets = await loadCaptureAssets(loadInk, () => loadGlyphBin(glyphUrl), wantsRelief);
+    initialInk = assets.ink;
+    initialGlyph = assets.glyph;
+  }
+  const stage = buildStage(renderer, field, sil, debugMode, initialInk, initialGlyph, tier);
+  const { scene, sheetRoot, key, rim, uEmboss, uContact, uGhost, uRecede, uKeyMask, fill, dust, sky } = stage;
+  if (q.has('noenv')) scene.environment = null; // QA isolation only
   const fillBase = fill.intensity;
   const keyBaseX = key.position.x;
   // §13 reduced motion (prefers-reduced-motion, or ?reduced=1 for QA): held compositions
@@ -606,7 +620,6 @@ async function runMain(): Promise<void> {
   // every pipeline pre-compiles behind it; the canvas crossfades in over 420 ms only after
   // three real frames have presented. Capture mode bypasses the poster entirely.
   const poster = document.querySelector<HTMLDivElement>('#poster');
-  const bootT0 = performance.now();
   if (!isCapture) {
     try {
       await renderer.compileAsync(scene, rig.camera);
@@ -616,6 +629,39 @@ async function runMain(): Promise<void> {
   }
   let presented = 0;
   let posterGone = isCapture;
+  let assetsReady = isCapture || !wantsInk;
+  let assetError: string | null = null;
+  let hydrationStarted = false;
+  const hydrateStage = async (): Promise<void> => {
+    if (hydrationStarted || assetsReady) return;
+    hydrationStarted = true;
+    const status: { inkReady: boolean; reliefReady: boolean; tier: number; glyphUrl: string; error?: string } = { inkReady: false, reliefReady: !wantsRelief, tier, glyphUrl };
+    (window as unknown as { __assets?: unknown }).__assets = status;
+    try {
+      // Network work overlaps; attachment order stays ink → relief because the relief
+      // material consumes the ink render target.
+      const [ink, glyphBin] = await Promise.all([
+        loadInk(),
+        wantsRelief ? loadGlyphBin(glyphUrl) : Promise.resolve(undefined),
+      ]);
+      stage.attachInk(ink);
+      status.inkReady = true;
+      if (glyphBin) {
+        stage.attachRelief(glyphBin);
+        status.reliefReady = true;
+      }
+      await renderer.compileAsync(scene, rig.camera);
+    } catch (err) {
+      assetError = String(err);
+      status.error = assetError;
+      console.error('[assets] streamed manuscript load failed', err);
+    } finally {
+      assetsReady = status.inkReady && status.reliefReady;
+      const readyAt = +((performance.now() - posterClockT0) / 1000).toFixed(2);
+      (window as unknown as { __assets?: unknown }).__assets = { ...status, ready: assetsReady, readyAt_s: readyAt };
+      if (assetsReady) console.info(`[assets] phase B/C ready in ${readyAt.toFixed(2)}s`);
+    }
+  };
   const revealCanvas = (now: number): void => {
     if (posterGone) return;
     presented++;
@@ -628,9 +674,10 @@ async function runMain(): Promise<void> {
       poster.style.opacity = '0';
       setTimeout(() => poster.remove(), 500);
     }
-    const t = (now - bootT0) / 1000;
-    (window as unknown as { __boot?: unknown }).__boot = { posterToLive_s: +t.toFixed(2), tier };
+    const t = (now - posterClockT0) / 1000;
+    (window as unknown as { __boot?: unknown }).__boot = { posterToLive_s: +t.toFixed(2), tier, start: 'navigation.responseStart', phaseAOnly: true };
     console.info(`[boot] poster → live in ${t.toFixed(2)}s (T${tier})`);
+    void hydrateStage();
   };
   if (isCapture) {
     (canvas as HTMLCanvasElement).style.opacity = '1';
@@ -642,7 +689,8 @@ async function runMain(): Promise<void> {
   let lastState = stateLabel(0);
   // ?perf=N — scrub p 0 → 1 → 0 over N seconds repeatedly and report the frame-time histogram
   const perfS = q.get('perf') !== null ? Number(q.get('perf') ?? '30') : 0;
-  const perfTimes: number[] = [];
+  const perfAudit = perfS > 0 ? new PerfAudit(perfS * 2) : null;
+  document.addEventListener('visibilitychange', () => { if (document.hidden) perfAudit?.markHidden(); });
   let perfT0 = -1;
 
   window.addEventListener('resize', () => {
@@ -654,8 +702,24 @@ async function runMain(): Promise<void> {
   });
 
   const IDLE_ZERO: IdleState = { ramp: 0, breath: 0, keyMod: 1, yawDeg: 0, drift: [0, 0, 0] };
+  // v1.6.3 motion smoothing: spend fill rate where the flat inscription becomes physical.
+  // Capture remains pinned to its explicit `?ss=` value (normally 1), so regression frames
+  // stay deterministic. Live T1 ramps 1 → 1.5× across emboss/handoff, T2 1 → 1.25× and
+  // T3 stays native. The existing T1 stillness pass then climbs from 1.5 → 2× over the
+  // idle controller's two-second ease. Eighth-step quantization avoids reallocating the
+  // RenderPipeline target every frame while keeping the resolution change visually quiet.
+  const liveSupersample = (activeTier: 1 | 2 | 3, p: number, idleRamp: number): number => {
+    const t0 = Math.max(0, Math.min(1, (p - 0.62) / 0.11));
+    const reliefRamp = t0 * t0 * (3 - 2 * t0);
+    const movingTarget = activeTier === 1 ? 1 + 0.5 * reliefRamp : activeTier === 2 ? 1 + 0.25 * reliefRamp : 1;
+    const idleTarget = activeTier === 1 ? 1 + Math.max(0, Math.min(1, idleRamp)) : 1;
+    return Math.round(Math.max(movingTarget, idleTarget) * 8) / 8;
+  };
   const skyTextCenter = new Vector3(); // assembly center in sheet-local space (→ world after the pose)
   const applyFrame = (p: number, dt: number, simEnabled: boolean, idle: IdleState = IDLE_ZERO, inkP: number = p): void => {
+    const inkPass = stage.inkPass;
+    const relief = stage.relief;
+    const contact = stage.contact;
     inkPass?.run(renderer, inkP);
     // §11 sky: one pixel's angle (vfov / drawing-buffer height) keeps the stars ~1 px at any
     // resolution and tier — the same value in capture (DPR 1) as the reference frames expect
@@ -699,12 +763,12 @@ async function runMain(): Promise<void> {
     rim.intensity = KEY_INTENSITY * 0.3 * rimFactor(p); // §10 rim ramp
     field.setBreath(idle.breath); // §15 idle breath (0 outside the armed idle / capture)
     const d = evalDeform(p);
-    if (simEnabled) {
+    if (simEnabled && tierMon.tier < 3) {
       residual.setInputs(dt, scroll.vLpf, d.wTop, d.wBot);
       residual.step(renderer);
       field.bindResidual(residual.freshRT().texture);
     }
-    field.setDeform(d, simEnabled);
+    field.setDeform(d, simEnabled && tierMon.tier < 3);
     field.run(renderer);
     if (relief && contact && !noBlob && p >= 0.7) contact.run(renderer, p); // §8 height-field blob (rise + facing)
     // Pose tilt pivots about the moving top curl line, not the origin — with the rolled
@@ -721,6 +785,7 @@ async function runMain(): Promise<void> {
 
   // ---- capture / probe mode (deterministic, sim off) ----
   if (isCapture) {
+    const diagnosticTarget = q.has('gpuReadback') ? new RenderTarget(capW, capH, { type: UnsignedByteType, depthBuffer: false }) : null;
     const pStr = captureP ?? q.get('p') ?? '0';
     const p = Math.min(1, Math.max(0, Number(pStr === '1' && probeP ? (q.get('p') ?? '0') : pStr)));
     scroll.forced = p;
@@ -744,6 +809,7 @@ async function runMain(): Promise<void> {
         renderer.setAnimationLoop(() => {
           applyFrame(p, 1 / 60, false);
           grade.render(); // grain seed stays 0 in capture — deterministic
+          if (diagnosticTarget) grade.renderTo(diagnosticTarget);
           n++;
           if (n >= captureWarm && !started) {
             started = true;
@@ -759,8 +825,26 @@ async function runMain(): Promise<void> {
                     `derived: topTip ${report.derived.topTipLift.toFixed(4)} · botTip ${report.derived.botTipLift.toFixed(4)} · botApex ${report.derived.botApex.toFixed(4)}`;
                   console.info('[probe]', report);
                 } else {
-                  const frame = await captureFrame(canvas as HTMLCanvasElement);
+                  const frame = diagnosticTarget ? await captureTarget(renderer, diagnosticTarget) : await captureFrame(canvas as HTMLCanvasElement);
                   window.__capture = { hash: frame.hash, p, tier, backend, dataUrl: frame.dataUrl };
+                  if (q.has('gpuTrace')) window.__capture.sources = await gpuTraceSnapshot();
+                  if (q.has('traceSources')) {
+                    const sources: Record<string, string> = {};
+                    const targets: Array<[string, RenderTarget]> = [['pos',field.posRT],['normal',field.nrmRT],['tangent',field.tanRT]];
+                    if (stage.inkPass) targets.push(['ink',stage.inkPass.rt]);
+                    if (stage.contact) targets.push(['contact',stage.contact.diagnosticTarget]);
+                    diagnosticBakes.forEach((rt,i)=>targets.push(['bake'+i,rt]));
+                    for (const [name,rt] of targets) {
+                      const raw = await renderer.readRenderTargetPixelsAsync(rt,0,0,rt.width,rt.height);
+                      const bytes = new Uint8ClampedArray(raw.buffer,raw.byteOffset,raw.byteLength);
+                      const row = rt.width * 4 * raw.BYTES_PER_ELEMENT;
+                      const stride = bytes.length === row*rt.height ? row : Math.ceil(row/256)*256;
+                      const packed = new Uint8ClampedArray(row*rt.height);
+                      for(let y=0;y<rt.height;y++)packed.set(bytes.subarray(y*stride,y*stride+row),y*row);
+                      sources[name] = await sha256Hex(packed);
+                    }
+                    window.__capture.sources=sources;
+                  }
                   {
                     const info = (renderer as unknown as { info: { render: { drawCalls?: number; calls?: number; triangles?: number } } }).info.render;
                     (window as unknown as { __draws?: unknown }).__draws = { drawCalls: info.drawCalls ?? info.calls, triangles: info.triangles };
@@ -822,6 +906,8 @@ async function runMain(): Promise<void> {
   const holdS = q.get('hold') !== null ? Number(q.get('hold') ?? '60') : 0;
   const holdSamples: number[] = [];
   let holdNext = 0;
+  let holdReadySince = -1;
+  let holdConfiguration = '';
   const holdCanvas = document.createElement('canvas');
   holdCanvas.width = 96;
   holdCanvas.height = 60;
@@ -832,6 +918,7 @@ async function runMain(): Promise<void> {
   }
 
   renderer.setAnimationLoop((now: number) => {
+    const cpuStart = perfAudit && !perfAudit.done ? performance.now() : null;
     const dt = Math.max(0, (now - last) / 1000);
     last = now;
 
@@ -849,32 +936,32 @@ async function runMain(): Promise<void> {
       reduced.fromScroll(max > 0 ? window.scrollY / max : 0);
       reduced.tick(now);
     }
-    if (perfS > 0) {
+    // Do not let a fast first gesture outrun phase B/C. Forced mode is released as soon
+    // as the inscription has attached and compiled; failures remain visibly safe at p=0.
+    if (!assetsReady) scroll.forced = 0;
+    else if (holdS > 0) scroll.forced = 1;
+    else if (reduced) scroll.forced = reduced.p;
+    else if (perfS === 0) scroll.forced = null;
+    if (perfS > 0 && assetsReady) {
       // synthetic scrub: p sweeps 0 → 1 → 0 over perfS seconds (worst pass set every cycle)
       if (perfT0 < 0) perfT0 = now;
       const t = (now - perfT0) / 1000;
       const cyc = (t % perfS) / perfS;
       scroll.forced = cyc < 0.5 ? cyc * 2 : 2 - cyc * 2;
-      if (dt > 0 && dt < 0.25) perfTimes.push(dt * 1000);
-      if (t >= perfS * 2 && perfTimes.length > 30) {
-        const srt = [...perfTimes].sort((a, b) => a - b);
-        const pct = (f: number): number => srt[Math.min(srt.length - 1, Math.floor(srt.length * f))] ?? 0;
-        (window as unknown as { __perf?: unknown }).__perf = { frames: srt.length, p50: +pct(0.5).toFixed(2), p95: +pct(0.95).toFixed(2), p99: +pct(0.99).toFixed(2), tier: tierMon.tier, dprCap: tierMon.dprCap };
-        capEl!.style.display = 'block';
-        capEl!.textContent = `PERF T${tierMon.tier} · ${srt.length} frames · p50 ${pct(0.5).toFixed(1)} ms · p95 ${pct(0.95).toFixed(1)} ms (budget ${tier === 1 ? 12 : tier === 2 ? 14 : 27})`;
-        perfTimes.length = 0;
-        perfT0 = now;
-      }
+    } else if (perfS > 0) {
+      scroll.forced = 0;
     }
     scroll.update(dt);
-    const moving = Math.abs(scroll.vLpf) > 2e-3 || now - lastPointer < 300;
+    const moving = perfS > 0 || Math.abs(scroll.vLpf) > 2e-3 || now - lastPointer < 300;
     const idleState = idle.update(dt, moving && holdS === 0);
-    // v1.6.1 idle supersampling (user review 2026-09-01, "I want it 100% smooth"): once the
-    // idle controller is armed (no scroll or pointer for 4 s) on T1, or in reduced motion,
-    // the beauty pass renders at 2× and averages down — shading and edges alike — at a
-    // frame-rate cost only the slow idle motion pays; scrolling drops it back at once.
+    // v1.6.3 selective supersampling: smooth the actual emboss/rise/facing motion, then
+    // continue to the v1.6.1 2× T1 stillness pass after four quiet seconds. Reduced motion
+    // remains a T1 2× held composition. T2 tops out at 1.25×; T3 stays at native resolution.
     // (?ss=N pins the factor for captures and A/B.)
-    if (q.get('ss') === null) grade.setSupersample(tierMon.tier <= 2 && (idleState.ramp > 0.999 || reducedMotion) ? 2 : 1); // T1 and T2 (a demoted laptop keeps it; T3 never)
+    if (q.get('ss') === null) {
+      const idleRamp = reducedMotion && tierMon.tier === 1 ? 1 : idleState.ramp;
+      grade.setSupersample(liveSupersample(tierMon.tier, scroll.p, idleRamp));
+    }
     (window as unknown as { __ss?: number }).__ss = grade.supersample;
     rig.drift = idleState.drift;
     // key light sway ±0.004 world with the pointer (§12), off in reduced motion
@@ -882,26 +969,59 @@ async function runMain(): Promise<void> {
     // reduced motion: ink pre-dried (the trail is evaluated 0.05 ahead), sim off
     applyFrame(scroll.p, dt, !reducedMotion, idleState, reduced ? Math.min(0.64, scroll.p + 0.05) : scroll.p);
     rig.update(scroll.p, dt);
-    dust.update(dt, reducedMotion ? 0 : faceFactor(scroll.p) * DUST_SCALE[tierMon.tier]); // §15 dust fades in with the facing state; §19 per-tier population
+    dust.update(dt, reducedMotion ? 0 : faceFactor(scroll.p), DUST_SCALE[tierMon.tier]); // §15 dust fades in with the facing state; §19 per-tier population
     grade.setGrainSeed(Math.floor(now / 125)); // 8 Hz grain phase (§16)
     grade.render();
     revealCanvas(now);
+    if (perfAudit && assetsReady) {
+      const cpuMs = cpuStart === null ? undefined : performance.now() - cpuStart;
+      const report = perfAudit.tick(now, {p:scroll.p,tier:tierMon.tier,ss:grade.supersample,dpr:renderer.getPixelRatio(),width:canvas!.width,height:canvas!.height}, !document.hidden, cpuMs);
+      if (report) {
+        const result = {...report,backend,requestedTier:tier,userAgent:navigator.userAgent,url:location.href,date:new Date().toISOString()};
+        (window as unknown as {__perf?:unknown}).__perf=result;
+        capEl!.style.display='block';
+        capEl!.textContent=`PERF ${report.usableForegroundSample?'LOCAL SAMPLE':'INVALID: hidden/too short'} · T${report.initialTier}→T${report.finalTier} · ${report.frames} frames\np50 ${report.p50.toFixed(1)} · p95 ${report.p95.toFixed(1)} · p99 ${report.p99.toFixed(1)} · max ${report.max.toFixed(1)} ms\n${report.stallsOver250ms} stalls >250ms · rAF pacing, not GPU time`;
+        console.info('[perf]',result);
+        if (report.cpuUpdateSubmit.summary) capEl!.textContent += `\nCPU update/submit p95 ${report.cpuUpdateSubmit.summary.p95.toFixed(2)} ms · excludes GPU completion`;
+        if(q.has('save')) void (async () => {
+          const saved = await fetch('/qa-save?name=v166-perf-'+Date.now(), {method:'POST',body:JSON.stringify(result,null,2),signal:AbortSignal.timeout(10000)});
+          if (!saved.ok) throw new Error(`HTTP ${saved.status}`);
+          capEl!.textContent += '\nREPORT SAVED';
+        })().catch(err => {
+          capEl!.textContent += '\nREPORT SAVE FAILED — measurements remain in window.__perf';
+          console.warn('[perf] save failed',err);
+        });
+      }
+    }
     // §19 tier monitor — changes apply only at state-boundary crossings
     {
       const st = stateLabel(scroll.p);
       const atBoundary = st !== lastState;
       lastState = st;
-      const change = tierMon.update(dt, atBoundary);
+      const change = assetsReady ? tierMon.update(dt, atBoundary) : null;
       if (change) {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, change.dprCap));
         fitViewport();
         console.info(`[tier] ${change.reason} → T${change.tier} (dpr cap ${change.dprCap.toFixed(2)})`);
       }
     }
-    hud!.textContent = `${stateLabel(scroll.p)} · p ${scroll.p.toFixed(3)}${idleState.ramp > 0 ? ' · idle' : ''}${reduced ? ' · reduced motion' : ''}${tierMon.tier !== tier ? ` · demoted T${tierMon.tier}` : ''}`;
+    hud!.textContent = `${stateLabel(scroll.p)} · p ${scroll.p.toFixed(3)}${assetError ? ' · text unavailable' : !assetsReady ? ' · loading text' : ''}${idleState.ramp > 0 ? ' · idle' : ''}${reduced ? ' · reduced motion' : ''}${tierMon.tier !== tier ? ` · demoted T${tierMon.tier}` : ''}${q.get('showss') !== null ? ` · ss ${grade.supersample.toFixed(3)}×` : ''}`;
+    // Announce state/loading changes only, not a new progress string every rendered frame.
+    const message = `${stateLabel(scroll.p)}${assetError ? ' · text unavailable' : !assetsReady ? ' · loading text' : ''}${reduced ? ' · reduced motion' : ''}`;
+    if (announcement && announcement.textContent !== message) announcement.textContent = message;
     bar!.style.height = `${scroll.p * 100}%`;
 
-    if (holdS > 0 && now >= holdNext) {
+    // The held-ending audit must not count staged loading, the p=0→1 arrival,
+    // idle arming, or supersample/tier allocation as steady-state brightness drift.
+    // Restart its settling interval on configuration changes; retain all samples
+    // once measurement begins so genuine in-run instability cannot be hidden.
+    if (holdS > 0 && holdSamples.length === 0) {
+      const config = `${tierMon.tier}/${grade.supersample}/${canvas!.width}/${canvas!.height}`;
+      if (!assetsReady || Math.abs(scroll.p - 1) > 1e-5) holdReadySince = -1;
+      else if (holdReadySince < 0 || config !== holdConfiguration) holdReadySince = now;
+      holdConfiguration = config;
+    }
+    if (holdS > 0 && holdReadySince >= 0 && now - holdReadySince >= 8000 && now >= holdNext) {
       holdNext = now + 1000;
       const ctx = holdCanvas.getContext('2d');
       if (ctx) {

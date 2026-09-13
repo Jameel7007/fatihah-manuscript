@@ -143,7 +143,10 @@
 <main>
 
 <header class="masthead">
-  <p class="eyebrow">Design &amp; Engineering Specification · v1.6.1 (universe ground + text pass, pending sign-off) · M7 in progress — performance &amp; payload</p>
+  <p class="eyebrow">Design &amp; Engineering Specification · v1.6.6 (clean satin visually approved 2026-09-09) · M7/M8 technical gates open</p>
+  <p><b>v1.6.6 active override of §§6/7:</b> gold has constant base roughness 0.52 and metalness 0.72, no burnish/wear sampling, no marker/ring roughness bias, and anisotropy 0. Existing geometric specular AA remains. Its shading slope is 1.2 × (1 − clamp(s,0,1))², integrated using the existing three footprint samples and multiplied by depth/bevel and guard ratio. Blend from the authored slope using each cluster's gold factor. Geometry, actual extrusion profile, palette, AO, scripture and supersampling are unchanged. This is a deliberate lighting simplification, not a geometry rebuild; it supersedes the older material overrides below.</p>
+  <p><b>v1.6.5 active override of §§6/18/19:</b> T1/T2 use a 6.75-font-unit grid, 0.15-fu chord tolerance, 0.75-fu minimum segment and recursion depth 6. Mesh: 332,367 vertices / 535,935 triangles; measured outer silhouette error 0.00469 em (0.317 px at the audit resolution). T3 is unchanged at 257,438 triangles. Crown shading preserves the interpolated boundary-gradient magnitude before normalizing the final 3D normal, avoiding amplification of opposing gradients near stroke centers. Aggregate payload is 6.866 MB brotli (T1/T2 mesh 4.134 MB). These values supersede older mesh/payload rows below; v1.6.4 material overrides remain. No gate or reference is blessed.</p>
+  <p><b>v1.6.4 active override of §§7/15:</b> gold crown roughness is 0.48–0.54, side/crown metalness 0.65/0.72 (wear reduces crown metalness by up to 0.48). Relief is opaque: its authored geometry, MSAA and existing spatial supersampling define the edge. The flat-ink RT no longer cuts out the extruded sidewalls. Gold hue and universe background remain as authored. Earlier alpha-to-coverage and 0.30–0.42 roughness descriptions below are historical until consolidated after review.</p>
   <h1>Al-Fātiḥah 3D Manuscript</h1>
   <p class="dek">One aged parchment bearing the seven āyāt, floating in darkness, transformed by scroll:
   rolled → unrolled → written → presented → embossed → risen → facing. Every value below is typed into code,
@@ -572,16 +575,16 @@ profile' = profile × (inset: wScale, height: hScale)</code></pre>
           <td>Same atlases; dry state is the wet state's channels at wet = 0</td>
           <td>Warm brown-black, fully matte; absorption edge width 0.0009 + bleed model (§17)</td></tr>
       <tr><td><b>Gold — face</b></td>
-          <td class="n">#DDB768 <span class="sub">(v1.6.1; #C29B52 through v1.6)</span> → (0.548, 0.335, 0.082)</td>
-          <td class="n">0.21–0.47<span class="sub">burnish crests 0.21 · mid 0.33 · valleys 0.47</span></td>
-          <td class="n">1.0 leaf<span class="sub">→ 0.12 in wear</span></td>
+          <td class="n">#E4C06F <span class="sub">(v1.6.2; #DDB768 in v1.6.1)</span> → (0.776, 0.527, 0.159)</td>
+          <td class="n">0.30–0.42<span class="sub">broad burnish variation; + geometric specular AA</span></td>
+          <td class="n">0.94 leaf<span class="sub">→ 0.24 in wear</span></td>
           <td class="n">leaf wrinkle 0.25</td>
-          <td>Burnish/wear pack 1024² UASTC: R burnish, G wear→bole, B aniso rotation · aniso strength 0.25</td>
-          <td>Aged gilding: anisotropy follows stroke direction (rotation = progression-atlas gradient, baked); <b>no clearcoat, no uniform metalness</b></td></tr>
+          <td>Procedural burnish/wear pack: R burnish, G wear→bole; mesh gradient supplies stroke tangent · aniso strength 0.25</td>
+          <td>Aged gilding: anisotropy follows the local stroke tangent from the signed-distance gradient; <b>no clearcoat, no uniform metalness</b></td></tr>
       <tr><td><b>Gold — wear → bole</b></td>
           <td class="n">#7A4630 → (0.197, 0.058, 0.025)</td>
           <td class="n">0.62</td><td class="n">0.12</td><td class="n">—</td>
-          <td>Driven by wear channel G; ~8% of face area, biased to crown fillet where handling wears leaf first</td>
+          <td>Driven by wear channel G; ~1% of face area, biased to crown fillet where handling wears leaf first</td>
           <td>Red-brown bole showing through is what says <em>gilded by hand, centuries ago</em></td></tr>
       <tr><td><b>Gold — sidewall</b></td>
           <td class="n">#8F6B2E → (0.280, 0.148, 0.023)</td>
@@ -755,7 +758,7 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
   <div class="tw"><table>
     <thead><tr><th>Camera subsystem</th><th class="n">Value</th></tr></thead>
     <tbody>
-      <tr><td>Extent-driven dolly (states 1–2, v1.3.2)</td><td class="n">across p &lt; 0.47 the camera DISTANCE comes from the sheet's posed extent, not the anchors: sample the pose (5 u × 33 v via the CPU oracle, tilt applied), closed-form smallest d along the anchors' ¾ direction such that every point projects inside the viewport — d ≥ r_z + |r_xy|/(T·(1−m)) per point, authored margin m = 0.09 (realizes ≥ 5% after sampling/smoothing slack) · per-aspect curve, 64 samples over p ∈ [0, 0.5], running-max (never dollies back in) + 2× Gaussian smooth floored at the raw constraint (the ease never eats the margin) · blends to the anchor distances over [0.38, 0.47] (E1) · direction, look-at, focal, and trail unchanged · portrait aspects phase in a side-overflow allowance (up to 35%/side by p ≈ 0.25, E1 from 0.10): the roll fits at p = 0, the opening sheet crops the sides per §12's mobile arc, vertical stays strict</td></tr>
+      <tr><td>Extent-driven dolly (states 1–2, v1.3.2; portrait correction v1.6.2)</td><td class="n">across p &lt; 0.47 the camera DISTANCE comes from the sheet's posed extent, not the anchors: sample the pose (5 u × 33 v via the CPU oracle, tilt applied), closed-form smallest d along the anchors' ¾ direction such that every point projects inside the viewport — d ≥ r_z + |r_xy|/(T·(1−m)) per point, authored margin m = 0.09 (realizes ≥ 5% after sampling/smoothing slack) · per-aspect curve, 64 samples over p ∈ [0, 0.5], running-max (never dollies back in) + 2× Gaussian smooth floored at the raw constraint (the ease never eats the margin) · blends to the anchor distances over [0.38, 0.47] (E1) · direction, look-at, focal, and trail unchanged · portrait aspects phase in a restrained side-overflow allowance (up to 12%/side by p ≈ 0.25, E1 from 0.10), then fit the frozen text bounds with a 4% margin through the reading state: the roll still fits at p = 0 and no Arabic line clips at p ≈ 0.5.</td></tr>
       <tr><td>Pointer / gyro parallax</td><td class="n">orbit gimbal ±0.35°, spring ω 12.6 rad/s, ζ 0.9; applied after spline, before look-at damper; off in reduced motion</td></tr>
       <tr><td>Depth of field</td><td class="n">none (no DoF pass) — dust quieting done by size + opacity falloff (§15); saves a full-res CoC chain on mobile</td></tr>
       <tr><td>Near / far</td><td class="n">0.05 / 4.0 · reversed-Z on WebGPU (default), logarithmic off</td></tr>
@@ -829,6 +832,9 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
       <tr><td>Background</td><td class="n"><b>v1.6 universe ground.</b> Floor <b>#01030D</b> (black/blue; red sits on the +1-count lift) (calibrated through AgX, §16) on a far sphere shaded purely by view direction (the sky sits at infinity — it turns with the camera, never parallaxes against the sheet). One world-anchored nebular lobe about direction (0, 0.35, −1): cos³ falloff, peak floor × 1.55 (held to a whisper: the lobe is in view at p = 0 and p = 1 but not while reading, and a stronger one read as “dark, then bright again”), modulated ± 60% by 3-octave value noise (period ≈ 2.3 rad), tinted violet where dense / teal-blue where thin, plus a ± 12% noise breath over the bare floor. Stars: one candidate per cell of a 6 × 104² cube-face grid at 26% occupancy (≈ 500 in the 1440×900 S3 frame, ≈ 220 at p = 1), jittered inside the central 56% of the cell, the 2 × 2 nearest cells searched per pixel (every star whose halo can reach it); brightness = 0.0047 scene-linear (the luminance of the #040617 pass, pinned so later darkening of the ground does not dim the stars) × (2.5 + 420·b⁶), b uniform — most a few × floor, the rare one white through the AgX shoulder; core Gaussian <em>in angle</em> with σ = (0.55 + 0.5·b²) px of the current render (the pixel angle vfov/height is a per-frame uniform, so a star is ~1 px on every tier and in capture; MSAA 4× resolves the sub-pixel cores), soft halo σ×2.5 at 0.8%·b⁴; tints between (1.0, 0.86, 0.72) and (0.78, 0.86, 1.0). <b>Clearance:</b> no star sits behind the standing gold — the assembly center (anchor → rest with the S7 lift, through the sheet pose) and its half-extents (0.26 × 0.37 world) are projected to the camera tangent plane each frame; stars are gone inside that ellipse and back by 1.25× (a thin margin, so the field still reads as even with the block simply in front of it). The clearance fades in with the S7 lift (faceFactor): before the block stands, the parchment hides the stars behind it anyway, and a hole around the rolled sheet read as “the stars aren’t even”. No time term: deterministic, capture-safe. Vignette −0.35 EV and grain/dither apply after (§16). Through v1.5: #0D0906 with a 1.5% radial warm lift.</td></tr>
     </tbody>
   </table></div>
+  <p class="sub"><b>v1.6.2 shipped correction:</b> the performance-cut nebular modulation uses two
+  noise octaves, superseding the three-octave phrase in the background row above; all other authored
+  floor, star and clearance values are unchanged.</p>
 </section>
 
 <!-- ================================================================ -->
@@ -839,7 +845,7 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
     <tbody>
       <tr><td>Parchment width on screen</td><td class="n">S1–2: 0.66 vw (roll must float, not fill) · S3: text column framed — 0.62 world across 359 px → sheet slightly overflows, intentional · S4–5: sheet 0.92 vw · S7: text plane 0.84 vw</td></tr>
       <tr><td>Vertical scale</td><td class="n">sheet height ≤ 0.72 vh in any state; camera distance overrides ×1.30 / ×0.94 / ×1.00 / ×1.12 per state group (§9)</td></tr>
-      <tr><td>Minimum rendered x-height</td><td class="n"><b>11.1 CSS px</b> in S3 reading frame · 12.5 px at p = 1 — floor is 10 px; if the supplied art's measured x-height lands lower, the S3 camera distance override tightens first (rule), never the layout</td></tr>
+      <tr><td>Minimum rendered x-height</td><td class="n">Frozen text bounds fit inside the portrait viewport with a 4% reading margin; the prior 11.1 CSS px S3 figure is superseded by v1.6.2 and is re-measured at visual sign-off — if it lands below 10 px, the camera changes, never the text</td></tr>
       <tr><td>DPR / AA</td><td class="n">T2: DPR cap 2.2, MSAA 4× · T3: DPR 1.25, MSAA 4× (tile GPUs resolve MSAA nearly free)</td></tr>
       <tr><td>Safe-area UI</td><td class="n">progress hairline right edge, inset by env(safe-area-inset-right/top/bottom); state label bottom-center above home indicator (+12 px); no other chrome</td></tr>
       <tr><td>Swipe-to-scroll mapping</td><td class="n">native scroll on a 5486 px (6.5 × vh) container, p = scrollTop/(H − vh); platform momentum preserved; the p-spring (§13) rides on top; gentle magnetism: when |dp/dt| &lt; 0.004 s⁻¹, drift toward nearest hold point {0.04, 0.60, 1.00} at 0.02 s⁻¹</td></tr>
@@ -849,11 +855,11 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
 
   <h3>Tier-3 simplifications <span class="tag">exact list — iPhone 12 / mid Android target, 30 fps</span></h3>
   <ul>
-    <li>Grid 96×128; residual XPBD replaced by the analytic damped-wave term (§17); POM off (normal-only fiber).</li>
-    <li>Shadow map 512², PCSS → 9-tap PCF with fixed 1.8-texel radius; contact blob kept (it is the mobile depth cue) but single-pass 5-tap blur at 256².</li>
-    <li>Glyph mesh at tolerance 0.0028 (~190k tris), bevel rings 9 → 5.</li>
-    <li>No temporal accumulation; dust off; background traces off; grain kept (cheapest banding fix).</li>
-    <li>Env 512×256; anisotropy term off (plain GGX); translucency kept (it defines the curl states).</li>
+    <li>The shared 192×256 surface field stays (the sheet is the piece); residual simulation is disabled and the analytic pose carries the motion. POM is not shipped; fiber is normal-only on every tier.</li>
+    <li>Shadow map 512², PCSS → fixed 5-tap PCF; contact blob kept (it is the mobile depth cue) with a 5-tap blur at 256².</li>
+    <li>Dedicated pitch-10 FGLY v2 glyph mesh: 165,911 vertices / 257,438 triangles, beneath the 330k mesh budget; T1/T2 use the pitch-6.75 535,935-triangle mesh with tighter curved boundary chords.</li>
+    <li>No relief or idle supersampling; dust population zero; deterministic universe shader and grain kept.</li>
+    <li>The procedural environment stays shared; stroke-tangent anisotropy remains at 0.25 because it replaces point sparkle with a continuous highlight; translucency stays (it defines the curl states).</li>
   </ul>
 </section>
 
@@ -894,6 +900,14 @@ penumbra_texels = clamp(penumbra_world / texelWorld, 1.0, 28.0)         // texel
     state-center poses over 300 ms opacity dissolve with <b>camera cuts, not moves</b>. All seven states
     remain reachable; ink appears pre-dried; the rise presents at its completed pose per state. Same
     deterministic uP axis, so regression frames cover this mode too.</p>
+    <p><b>Accessible pager (2026-09-12):</b> labelled navigation with seven ordinary buttons, all
+    Tab-reachable; selected state uses <code>aria-current="step"</code>. Retain 12 px gold dots inside
+    44×44 px targets and a 2 px visible keyboard focus outline. Arrow/Page keys change state; Home/End
+    reach the first/last state. When focus is in the pager it follows the selected button; modified
+    shortcuts and editing keys are not intercepted. At heights ≤340 px use a horizontal row above
+    the HUD (48 px plus safe-area bottom); at widths ≤360 px use four columns. Announce state/loading
+    changes through one atomic polite status region, not each rendered progress value. Authored poses,
+    300 ms dissolve, gold, geometry and canonical scripture remain unchanged.</p>
   </div>
 </section>
 <!-- ================================================================ -->
@@ -952,12 +966,12 @@ embossStr(t)  = 1 − E7(t)                       // E7 = cubic-bezier(0.37, 0, 
   <div class="tw"><table>
     <thead><tr><th>Detail</th><th>Specification</th></tr></thead>
     <tbody>
-      <tr><td><b>Stroke AA</b></td><td>Flat ink: analytic — <code>smoothstep(0.5 − w, 0.5 + w, sdf)</code>, <code>w = 0.5·length(vec2(dFdx(sdf), dFdy(sdf)))</code>; resolution-independent, MSAA-independent. Geometry edges: MSAA 4×. This split is why thin naskh hairlines stay clean at every zoom.</td></tr>
-      <tr><td><b>Gold shimmer prevention</b></td><td>Three layers: (1) geometric specular AA — Kaplanyan-style roughness kernel from screen-space normal derivatives, <code>r′ = sqrt(r² + min(2·σ²(N), 0.18))</code>, in the gold BRDF always; (2) curvature-baked roughness floor 0.28 on the crown-fillet ring (baked per-vertex at build); (3) idle temporal supersample — 8-tap Halton jitter, exponential α 0.15, luma-clamped, engaged only when camera + scroll velocity ≈ 0, faded over 120 ms on motion. No TAA while moving → no ghosting, ever; MSAA + specular AA carry motion.</td></tr>
+      <tr><td><b>Stroke AA</b></td><td>Flat ink: analytic — <code>smoothstep(0.5 − w, 0.5 + w, sdf)</code>, <code>w = 0.5·length(vec2(dFdx(sdf), dFdy(sdf)))</code>. Relief: the same authoritative 2048-tall analytic coverage drives opacity + alpha-to-coverage over the physical mesh; MSAA 4× resolves the boundary while geometry supplies real sides, depth and parallax. Thin naskh hairlines stay continuous without blurring the letterform.</td></tr>
+      <tr><td><b>Gold shimmer prevention</b></td><td>Four layers: (1) geometric specular AA — <code>r′ = sqrt(r² + min(2·σ²(N), 0.18))</code>; (2) the analytic C¹ bevel slope is integrated at three points across each fragment footprint (0.25 / 0.5 / 0.25), suppressing one-pixel crown staircases; (3) broad 0.30–0.42 crown roughness plus 0.25 stroke-tangent anisotropy turns pin sparkle into a continuous calligraphic highlight; (4) as relief appears, the full beauty pass ramps spatially over p = 0.62–0.73 to 1.5× on T1 and 1.25× on T2, then downsamples; T3 stays 1×. After 4 s still, T1 eases to 2×. The factors are quantized to eighth steps and there is no temporal accumulation, so scroll reversals leave no ghost trail.</td></tr>
       <tr><td><b>Bevel rim choreography</b></td><td>The crown fillet's normal fan spans ~55°, so the 9°-grazing rim light always finds a ~2 px band somewhere on every stroke; the env-yaw sweep (§8) walks the window reflection along that band as the text rises. This is the “gold catches the light” moment and it is authored, not lucky.</td></tr>
       <tr><td><b>Micro-imperfections</b></td><td>Residual end-curl and paired corner twist (§4); crease at t 0.545 (§5); ±6% albedo discoloration; 0.04-alpha historic stains (two, lower-left quadrant, ∅ 0.06/0.09); leaf wrinkle normal 0.25 on gold; one deliberately weaker gilding pass on āyah 5's marker (wear channel ×1.6) — the human error that proves the hand.</td></tr>
       <tr><td><b>Contact shadow</b></td><td>Height-field blob + PCSS union per §8; ramps 0.72–0.80; opacity 0.75, radius 2 + 640·h texels; decays exp(−h/0.12)·cos²(tilt) as text departs and pivots (§8) — the letters' “lift-off” reads on a 390 px screen because the blob is noise-free by construction.</td></tr>
-      <tr><td><b>Designed first frame</b></td><td>Inline 1.1 KB blur-up LQIP → 42 KB 1600×1000 poster JPEG of regression frame R-p0.00-T1, color-managed through the same AgX grade. Behind it, all WebGPU pipelines pre-compile against dummy draws; canvas crossfades in over 420 ms only after 3 real frames have presented. First scroll never hitches.</td></tr>
+      <tr><td><b>Designed first frame</b></td><td>Inline blur-up LQIP → 56.6 KB 1600×1000 poster JPEG of regression frame R-p0.00-T1. Phase A builds and compiles the rolled parchment, presents three real frames, then crossfades the canvas over 420 ms. Phase B ink and the tier-selected phase C relief stream and compile immediately afterward; until they are ready, the live view remains safely at p = 0.</td></tr>
       <tr><td><b>Idle micro-motion</b></td><td>Arms after 4 s still, 2 s ramp-in: parchment breath via residual field (amp 2.5e-4, 0.10 Hz), key intensity ±1.5% over 9 s, env yaw ±2° over 14 s, camera position simplex drift 0.002 @ 0.07 Hz. All zeroed in reduced motion; all excluded from capture mode.</td></tr>
       <tr><td><b>p = 1 (the held ending)</b></td><td>Risen gold text at 12°, filling 0.66 frame width, window reflection slowly traversing the bevels; parchment low and behind at 55% key, carrying the 8% ghost of its own inscription and the text's long soft PCSS shadow; two dust motes per second crossing the key beam; total luminance flux drift ≤ 2% — quiet, present, finished. Nothing pulses, nothing glows.</td></tr>
       <tr><td><b>Reduced motion</b></td><td>Per §13 — seven held compositions, 300 ms dissolves, pager dots, pre-dried ink.</td></tr>
@@ -1193,36 +1207,34 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
   <div class="sec-head"><span class="sec-num">18</span><h2>Asset pipeline and payload budget</h2></div>
 
   <pre><code>SVG (shaped, kerned — authoritative, checksum-gated)
- ├─ svgo → flatten (tol 0.0015em) ─┬─ msdfgen mtsdf 64px/em ──→ atlasMTSDF.ktx2 (UASTC+zstd)
- │                                 ├─ skeleton + geodesic w ──→ atlasProg.ktx2  (UASTC+zstd)
- │                                 └─ bevel extruder + merge ─→ glyphs.glb      (meshopt)
- ├─ parchment maps (authored) ────→ toktx: UASTC color/normal · ETC1S utility
- │      └─ Toksvig step: normal-map variance → roughness mip flow-down (kills sparkle at distance)
- └─ HDRI (Blender EXR 2k) ───────→ 1024×512 UASTC-HDR ktx2  (+RGBM8 PNG fallback for WebGL2)</code></pre>
+ ├─ flattened outlines ────────────┬─ MTSDF + analytic coverage ─→ ink-mtsdf.png
+ │                                 ├─ skeleton + geodesic w ─────→ ink-prog.png
+ │                                 ├─ pitch-6.75 bevel + merge ─────→ glyphs.bin       (T1/T2, FGLY v2)
+ │                                 └─ pitch-10 bevel + merge ────→ glyphs-t3.bin    (T3, FGLY v2)
+ ├─ parchment / burnish / utility maps ─→ deterministic GPU bakes (zero transfer)
+ └─ universe / lighting environment ────→ deterministic TSL shader (zero transfer)</code></pre>
 
   <div class="tw"><table>
     <thead><tr><th>Asset</th><th class="n">Format</th><th class="n">Transfer (br/gz)</th><th>Load phase</th></tr></thead>
     <tbody>
-      <tr><td>App JS (three r182 WebGPU build, tree-shaken + app)</td><td class="n">ES module, brotli</td><td class="n">≈ 650 KB</td><td>A</td></tr>
-      <tr><td>Transcoder WASM (basis + meshopt)</td><td class="n">wasm</td><td class="n">≈ 210 KB</td><td>A</td></tr>
-      <tr><td>Poster + LQIP</td><td class="n">JPEG + inline base64</td><td class="n">43 KB</td><td>inline / A</td></tr>
-      <tr><td>Parchment proxy set (512² albedo + fiber)</td><td class="n">KTX2</td><td class="n">≈ 190 KB</td><td>A</td></tr>
-      <tr><td>Parchment full: albedo 2048 · fiber pack 2048 · utility 1024</td><td class="n">UASTC ×2 + ETC1S</td><td class="n">≈ 3.15 MB</td><td>B</td></tr>
-      <tr><td>Ink atlases (MTSDF + progression, 2048² ×2)</td><td class="n">UASTC</td><td class="n">≈ 1.8 MB</td><td>B</td></tr>
-      <tr><td>Environment 1024×512</td><td class="n">UASTC-HDR</td><td class="n">≈ 0.55 MB</td><td>B</td></tr>
-      <tr><td>Glyph mesh (merged, quantized)</td><td class="n">glb + meshopt</td><td class="n">≈ 1.9 MB</td><td>C</td></tr>
-      <tr><td>Static-plates fallback set</td><td class="n">JPEG ×7</td><td class="n">280 KB</td><td>lazy, only on renderer failure</td></tr>
-      <tr><td><b>Total (happy path)</b></td><td class="n">—</td><td class="n"><b>≈ 8.5 MB target · 10 MB hard cap</b></td><td>—</td></tr>
+      <tr><td>App JS + HTML (three r185 WebGPU build + app)</td><td class="n">ES modules, brotli</td><td class="n">0.208 MB</td><td>A</td></tr>
+      <tr><td>Poster + inline LQIP</td><td class="n">JPEG + base64</td><td class="n">0.049 MB</td><td>inline / A</td></tr>
+      <tr><td>Procedural parchment + environment maps</td><td class="n">GPU-generated</td><td class="n">0</td><td>A</td></tr>
+      <tr><td>Ink atlases + instance schedule</td><td class="n">PNG ×2 + JSON</td><td class="n">0.443 MB</td><td>B</td></tr>
+      <tr><td>T1/T2 glyph mesh (535,935 tris)</td><td class="n">FGLY v2 binary</td><td class="n">4.134 MB</td><td>C, selected by tier</td></tr>
+      <tr><td>T3 glyph mesh (257,438 tris)</td><td class="n">FGLY v2 binary</td><td class="n">2.032 MB</td><td>C, selected by tier</td></tr>
+      <tr><td>Static-plates fallback set</td><td class="n">JPEG ×7</td><td class="n">252,382 B / 280 KB budget</td><td>M8 · lazy, renderer failure only; local QA, gate open</td></tr>
+      <tr><td><b>Measured shipped set</b></td><td class="n">—</td><td class="n"><b>5.813 MB brotli · target 8.5 MB · cap 10 MB</b></td><td>both meshes counted; one requested per client</td></tr>
     </tbody>
   </table></div>
 
-  <p><b>Loading strategy.</b> Phase A (≈ 1.1 MB) reaches the live rolled parchment — proxies + analytic
-  curl need no glyph data. Poster → live crossfade at ≤ 2.2 s on a 10 Mbps connection, pipelines
-  pre-compiled behind the poster (§15). Phase B streams immediately after first present; textures hot-swap
-  at mip boundaries (never mid-state — swaps queue for the next state boundary crossing). Phase C
-  (glyph mesh) must resolve before p = 0.55; scroll past 0.50 without it shows the ink state
-  indefinitely (writing is SDF-only) — the piece never blocks, the rise simply waits. Everything hashed
-  + immutable-cached; a service worker is optional and ships off by default.</p>
+  <p><b>Loading strategy.</b> Phase A is 0.257 MB brotli and reaches a compiled live rolled parchment;
+  the poster → live estimate is 1.69 s at 10 Mbps (0.22 s transfer + 1.0 s compile allowance + 0.42 s
+  crossfade), beneath the 2.2 s gate. After three presented frames, phase B ink (0.443 MB) and exactly one
+  tier-selected phase C mesh stream in parallel, attach to the stage and compile. The live scroll stays at
+  p = 0 until both are ready, so no user can outrun an absent inscription. Capture mode eagerly loads the
+  same tier-selected assets before its deterministic warm-up. Mesh audits record SHA-256 values;
+  a service worker remains optional and ships off by default.</p>
 </section>
 
 <!-- ================================================================ -->
@@ -1232,22 +1244,29 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
   <div class="tw wide"><table>
     <thead><tr><th>Budget</th><th class="n">T1 · desktop dGPU / Apple Si</th><th class="n">T2 · iPhone 15 class</th><th class="n">T3 · iPhone 12 / mid Android</th></tr></thead>
     <tbody>
-      <tr><td>Target</td><td class="n">60 fps @ DPR ≤ 1.75</td><td class="n">60 fps @ DPR ≤ 2.2 (390 pt)</td><td class="n">30 fps @ DPR 1.25</td></tr>
-      <tr><td>Triangles (peak, S6)</td><td class="n">≤ 1.05 M (890k planned)</td><td class="n">≤ 620k</td><td class="n">≤ 330k</td></tr>
+      <tr><td>Target</td><td class="n">60 fps @ DPR ≤ 2.0</td><td class="n">60 fps @ DPR ≤ 2.2 (390 pt)</td><td class="n">30 fps @ DPR 1.25</td></tr>
+      <tr><td>Glyph mesh triangles (S6)</td><td class="n">535,935 / 1.05 M</td><td class="n">535,935 / 620k</td><td class="n">257,438 / 330k</td></tr>
       <tr><td>Draw calls / render passes</td><td class="n">≤ 14 / 9</td><td class="n">≤ 12 / 8</td><td class="n">≤ 10 / 6</td></tr>
       <tr><td>Texture memory (resident)</td><td class="n">≤ 120 MB (≈ 100 planned)</td><td class="n">≤ 80 MB</td><td class="n">≤ 48 MB</td></tr>
       <tr><td>Compute dispatch</td><td class="n">≤ 0.35 ms</td><td class="n">≤ 0.45 ms</td><td class="n">0 (analytic wave)</td></tr>
       <tr><td>Frame total</td><td class="n">≤ 12 ms p95</td><td class="n">≤ 14 ms p95</td><td class="n">≤ 27 ms p95</td></tr>
-      <tr><td>Grid / shadow / atlas res</td><td class="n">192×256 / 2048 / 2048</td><td class="n">128×176 / 1024 / 2048</td><td class="n">96×128 / 512 PCF / 2048 (atlases never drop — text is sacred)</td></tr>
-      <tr><td>Dust / temporal / POM</td><td class="n">900 / idle-8-tap / on</td><td class="n">500 / idle-8-tap / off</td><td class="n">0 / off / off</td></tr>
+      <tr><td>Grid / shadow / atlas res</td><td class="n">192×256 / 2048 PCSS / 2048</td><td class="n">192×256 / 1024 PCSS / 2048</td><td class="n">192×256 analytic-only / 512 5-tap PCF / 2048</td></tr>
+      <tr><td>Dust / relief spatial SS → idle / POM</td><td class="n">640 / 1.5× → 2× / off</td><td class="n">352 / 1.25× → 1.25× / off</td><td class="n">0 / 1× → 1× / off</td></tr>
     </tbody>
   </table></div>
 
   <p><b>Tier logic.</b> Initial: WebGPU adapter info + <code>deviceMemory</code> + physical resolution
-  heuristic. Demote when p95 frame time exceeds 1.25× budget over a 3 s window; 10 s hysteresis; tier
-  changes apply only at state-boundary crossings so nothing pops mid-composition. Never auto-promote
-  during a session. Thermal guard: two consecutive demote triggers at T3 → halve DPR once more and stop
-  measuring.</p>
+  heuristic. Runtime fallback measures rAF pacing, not frame work: demote when p95 interval exceeds
+  1.25× the playback interval (1000/60 ms for T1/T2, 1000/30 ms for T3), after a complete 3 s window
+  retained by elapsed timestamps (not a sample count inferred from the last frame); 10 s
+  hysteresis; tier changes apply only at state-boundary crossings so nothing pops mid-composition.
+  The initial tier selects the mesh, shadow filter and contact resolution; a live demotion immediately
+  lowers DPR and dust population without reloading geometry mid-state. A demotion's DPR cap is
+  <code>min(previous cap, destination tier cap)</code>; T1→T2 must not raise 2.0 to 2.2.
+  A client initially selected as T2 still starts with the authored 2.2 cap. Never auto-promote during a
+  session. Thermal guard: two consecutive demote triggers at T3 → halve DPR once more and stop measuring.
+  The separate 12/14/27 ms frame-total work budgets remain unchanged and require independent profiling;
+  stable runtime pacing is not proof of compliance with those budgets.</p>
 
   <h3>Platform floor <span class="tag">WebGPU vs WebGL2, stated</span></h3>
   <div class="tw"><table>
@@ -1276,7 +1295,7 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     <li>Scrub storm: synthetic 120 Hz wheel + flick reversals for 60 s — no missed state boundary, no residual-sim divergence (energy monitor), no &gt; 2-frame hitch.</li>
     <li>Thermal soak: 5 min at p oscillating 0.6–0.9 (worst pass set) on device — tier system engages before the OS throttles.</li>
     <li>renderer.info audit: draw calls / tris vs budget at p = {0.05, 0.35, 0.55, 0.78, 1.0}.</li>
-    <li>Shader compile audit: all pipelines compiled behind poster; zero mid-scroll compiles (WebGPU <code>pipeline-creation</code> tracing).</li>
+    <li>Shader compile audit: phase-A pipelines compile behind the poster; phase B/C compile before scroll is released; zero mid-scroll compiles (WebGPU <code>pipeline-creation</code> tracing).</li>
     <li>Memory ceiling: adapter limits respected at T3 floor devices (2 GB Androids): resident ≤ 48 MB textures verified via estimator + native capture.</li>
     <li>WebGL2 fallback parity run of the full checklist on Intel UHD 620.</li>
     <li>Battery/energy note per release: 10-min session drain on iPhone 15 ≤ 4%.</li>
@@ -1322,7 +1341,7 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
   </div>
 
   <p style="margin-top:34px;border-top:1px solid var(--line);padding-top:18px;font-size:12.5px;color:var(--faint)">
-  Al-Fātiḥah 3D Manuscript · specification v1.5 · axis-locked to p ∈ [0, 1] · supplied calligraphy is
+  Al-Fātiḥah 3D Manuscript · specification v1.6.6, visually approved · axis-locked to p ∈ [0, 1] · supplied calligraphy is
   authoritative and untouchable · no bloom, no aura, no spectacle — the light does the reverence.</p>
 </section>
 
@@ -1843,8 +1862,111 @@ world(u,v) = P(u,v) + T·r_t + B·r_b + N·r_n</code></pre>
     zoom shows beyond this is not a defect any real-time renderer removes.</li>
   </ol>
 
+  <h3 style="margin-top:26px">v1.6.2 — finish candidate <span class="tag">2026-09-02 · user direction · pending sign-off</span></h3>
+  <p>“The 3D text [is] not very smooth; it's choppy and not beautiful. Pick up and finish the project.”
+  This pass addresses the visible complaint and the M7 implementation debts without closing a gate.</p>
+  <ol>
+    <li><b>§6 / §7 / §15 continuous gold</b> — the analytic bevel slope is now prefiltered across the
+    fragment footprint with a three-sample 0.25 / 0.5 / 0.25 kernel, so sub-pixel profile motion does
+    not turn into a one-pixel highlight staircase. The authoritative ink coverage drives relief opacity
+    with alpha-to-coverage, preserving fine hairlines at the physical mesh boundary. Stroke direction
+    comes from the baked signed-distance gradient and drives anisotropy 0.25. The face moves to
+    <b>#E4C06F</b>, roughness <b>0.30–0.42</b>, crown metalness 0.94 and ≈ 1% wear: brighter, broader and
+    calmer rather than sparkly.</li>
+    <li><b>§9 / §12 portrait framing</b> — the portrait overflow allowance tightens from 35% to 12% and
+    the camera fits the frozen text bounds with a 4% reading margin. At 390×844, p = 0.5 and p = 1 keep
+    every line inside the frame; the scripture is unchanged.</li>
+    <li><b>§18 / §19 real tiers and loading</b> — phase A now presents the compiled rolled sheet before
+    requesting ink and the tier-selected relief. Phase B/C attach and compile before scroll is released;
+    capture mode stays eager. T3 receives a real pitch-10 FGLY mesh (165,911 vertices / 257,438 triangles,
+    under 330k), 512² 5-tap PCF, a 256² 5-tap contact pass, no residual simulation and no dust. T1/T2
+    keep the 399,384-triangle mesh; idle 2× supersampling is T1-only. The tier monitor waits for a full
+    3 s sample window, and the perf harness retains real forced-scroll velocity so it never measures an
+    accidental idle pass.</li>
+    <li><b>§15 WebGPU dust correction</b> — native point primitives cannot provide a soft-disc coordinate
+    or sizes above one pixel in WebGPU. The 640 deterministic motes are instanced camera-facing quads
+    instead (T2 352, T3 0), eliminating both the missing-UV warning and the invalid
+    <code>gl_PointCoord</code> shader while retaining soft circular falloff. Sprite diameter is
+    0.012 world units with perspective attenuation; passing the earlier pixel-like value 4.5 into
+    that world-space path overlapped the cloud into a grey veil.</li>
+    <li><b>Measured</b> — strict typecheck, production build and 7/7 canonical-text verification pass.
+    The complete shipped set is 5.784 MB brotli; phase A is 0.256 MB and poster → live estimates 1.69 s
+    at 10 Mbps. WebGPU perf harness samples in the embedded browser measured p50 8.3 ms with p95 ranging
+    8.9–16.7 ms (the latter correctly demoted T1→T2); the named physical-device runs remain the M7 gate.
+    WebGL2 R-1.00-T1 renders cleanly. R-flick peaks at 1.07e−3 beneath the 2.7e−3 clamp, settles with no
+    NaN, and a 15 s / 1,720-frame scrub storm reports zero NaN, out-of-range p or errors. Six key WebGPU
+    candidates at desktop and phone aspect reproduced across two cold loads and are recorded under
+    <code>v16_pending.finish_pass</code>; none is blessed.</li>
+  </ol>
+
+  <h3 style="margin-top:26px">v1.6.3 — 3D-transition smoothing candidate <span class="tag">2026-09-02 · user direction · pending sign-off</span></h3>
+  <p>“Is there a way to smooth the font when it turns 3D?” — “Okay, do it.” This pass targets the
+  moving relief transition itself. It does not alter the canonical text, the scroll axis, or any
+  milestone state.</p>
+  <ol>
+    <li><b>§15 / §19 motion-safe spatial supersampling</b> — relief visibility now drives the beauty
+    pass resolution through a smoothstep over p = 0.62–0.73. T1 ramps 1→1.5×, T2 ramps 1→1.25×,
+    and T3 stays 1×. When the existing idle controller arms, T1 continues to 2×; motion cancels the
+    idle contribution but keeps the relief contribution, so the text no longer drops to native
+    resolution precisely while its bevel is forming. Factors are quantized to eighth steps to avoid
+    reallocating render targets every frame. <code>?ss=N</code> still pins an explicit QA factor and
+    deterministic captures remain at 1× unless that switch is present.</li>
+    <li><b>§6 curved-outline refinement</b> — the pitch-8 T1/T2 face grid is unchanged, but its recursive
+    boundary chord target tightens 0.6→0.35 font units, with a 1.25 fu minimum segment and depth 5.
+    This spends geometry only on curves that would otherwise show a straight chord during the 3D
+    turn: 258,360 vertices / 401,150 triangles, still far below both T1 and T2 budgets. T3 keeps its
+    0.6 fu mobile tolerance and 165,911 / 257,438 mesh. Worst outer silhouette remains 0.005547 em
+    (0.375 px @1440) for T1/T2 and 0.006855 em (0.4634 px) for T3, both below the 0.008 em gate.</li>
+    <li><b>No temporal AA</b> — the pass deliberately uses current-frame spatial samples only. A history
+    buffer could look smoother in one direction but would smear Arabic hairlines when the reviewer
+    reverses the scroll; that trade is rejected for this deterministic piece.</li>
+    <li><b>Measured</b> — the rebuilt mesh pair is deterministic; the shipped set is 5.813 MB brotli
+    against the 8.5 MB target, phase A is 0.257 MB, and poster → live still estimates 1.69 s at
+    10 Mbps. The embedded-browser <code>?perf=10</code> diagnostic demoted T1→T2 correctly and settled
+    at p50 8.3 ms / p95 16.6 ms on T2; this is not physical-device evidence. Six key WebGPU candidates
+    at 1440×900 T1 and 390×844 T3 reproduced across two fresh navigations and are recorded under
+    <code>v16_pending.motion_smoothing_pass</code>; none is blessed. M7 still requires explicit visual
+    sign-off and the named M1 Air / iPhone 15 / iPhone 12 runs.</li>
+  </ol>
+
 
 </section>
 
+  <section><h3>Δ v1.6.4 — satin relief candidate · 2026-09-05</h3>
+  <p>User requested smoother 3D text, allowing a material or palette change. Inspection identified the flat ink coverage mask applied across the extruded mesh as a potential source of broken sidewall edges. Removed that mask and alpha testing from the relief; native geometry now supplies continuous coverage. Crown roughness increases to 0.48–0.54, metalness becomes 0.65 at sides / 0.72 on crowns, retaining hue and depth while broadening the reflection and increasing diffuse color support. Text and mesh assets are unchanged. Build passes; this is a new unblessed candidate requiring visual review and fresh regression/device evidence. v1.6.3 captures are historical and do not validate this revision.</p></section>
+  <p><b>v1.6.4 verification correction:</b> the animated-depth normal experiment was reverted after fresh loads rendered no relief. Stable baked profile normals remain. The active changes are opaque mesh edges, satin crown roughness 0.48–0.54, side/crown metalness 0.65/0.72 and sidewall scene-linear RGB (0.50, 0.32, 0.10). Full matrix and device evidence remain pending.</p>
+  <p><b>v1.6.4 QA clarification:</b> live final text is visible and build passes. Capture instability persisted after reverting the animated-normal experiment, so the cause remains unverified; no new hashes are accepted. Full capture/device evidence is pending.</p>
+  <section><h3>Δ v1.6.5 — curve and crown smoothing candidate · 2026-09-06</h3>
+  <p>User requested clearer, less pixelated 3D text after the satin pass. The T1/T2 grid is refined from 8 to 6.75 fu and curved boundary tolerance from 0.35 to 0.15 fu (minimum segment 1.25 to 0.75 fu; depth 5 to 6). The generated mesh contains 535,935 triangles, within the stricter T2 620k budget. The fragment normal uses the unnormalized interpolated boundary gradient, preserving cancellation at the crown instead of turning tiny residual directions into full-strength normal changes. Shape, canonical scripture, palette, depth profile and T3 geometry remain unchanged. Production build, text verification, silhouette audit and aggregate payload check pass. Live final text and a 1440×900 transition capture were visually inspected; this is not full regression or physical-device evidence. Capture lifecycle investigation remains open. Awaiting explicit visual sign-off before re-blessing; external artifact copy not republished.</p></section>
+  <section><h3>Δ v1.6.6 — clean satin shading · 2026-09-06</h3><p>User still saw grain in v1.6.5 and approved the next pass. Remove procedural burnish/wear and variable roughness, use isotropic satin gold (roughness 0.52, metalness 0.72), and soften gold bevel lighting with the quadratic law above. Preserve the ink handoff by blending with the existing gilding factor. No mesh or scripture changes. Production build passes; visual approval, capture stability, full matrix and physical-device evidence remain open. No gate or reference is blessed; external artifact copy is not republished.</p></section>
+  <p><b>v1.6.6 QA:</b> text verification and payload pass (6.866 MB brotli). Final capture and live portrait inspected. A short 10-second hold reports 71.52% brightness drift against 2%; startup contribution is unisolated. Stability is not verified and remains an open gate.</p>
+  <section><h3>Δ v1.6.6 QA correction · 2026-09-06</h3><p>The held-ending audit previously sampled staged loading and arrival from p=0, so its 71.52% result did not isolate steady-state drift. The audit now waits for assets ready, p within 0.00001 of 1, and eight seconds of unchanged tier, supersampling and canvas dimensions before sampling. Once sampling starts, no samples are discarded. This changes QA timing only, not the approved-direction visual candidate. Fresh results remain unblessed.</p></section>
+  <p><b>v1.6.6 QA follow-up (2026-09-06):</b> corrected 60-second hold measures 1.52% drift, below 2%. Two full fresh-page matrices per backend: WebGL2 37/37 repeat-identical; WebGPU 34/37 (mismatches T1 p=0.645, T2 p=0.760 and 0.930); no capture errors. These are unblessed local results, recorded in build/v166-qa-review.json. WebGPU repeatability and physical-device verification remain open; rendering behavior unchanged.</p>
+  <section><h3>Δ v1.6.6 diagnostic-only follow-up · 2026-09-06</h3><p>Added public/qa/repeat.html for fresh-page pixel comparisons, including a sequence mode and shadow-isolation switch. Live rendering and default capture behavior remain unchanged. Targeted cases repeated identically in 24 captures, while two longer sequences reproduced six varying cases (sparse one-level differences and larger differences). Warm-up trace stayed constant through frame 90; shadow-isolation stalled and is inconclusive. Root cause and fix remain unverified; Step 1 remains open. Details and raw diagnostic paths are in the ledger and pending manifest.</p></section>
+  <section><h3>Δ v1.6.6 · M7 measurement and demotion hardening · 2026-09-07</h3>
+  <p>The user asked to proceed to the next step and set a goal to finish the project. Step 1 remains open: extended WebGPU diagnostics still differ with shadows, environment, or scene MSAA individually disabled; direct GPU readback also differs. Source targets and, in a separate run, generated shaders and CPU uniform bytes matched. Explicit-fine-derivative and first-order-AA experiments did not establish a fix and were removed. Raw evidence is indexed by build/v166-step1-investigation.json. No visual cure or hash blessing is claimed.</p>
+  <p><b>§19 QA:</b> the performance audit previously dropped intervals ≥250 ms and reset its history and clock at demotion. It now records two complete N-second cycles for ?perf=N, retains every positive interval, preserves configuration changes and per-tier distributions, and emits one result. A hidden interval invalidates foreground evidence without deleting measurements. These are requestAnimationFrame intervals, not GPU execution timings, and cannot certify the 12/14/27 ms GPU workload budgets on their own. Seven regression tests cover stalls, demotion history, visibility, resize context and monotonic DPR.</p>
+  <p><b>§19 behavior correction:</b> a demotion clamps its new DPR cap to the previous cap. A measured local T1→T2 demotion increased the backing canvas from 2618×1636 to 2879×1799 because the destination 2.2 cap exceeded T1's 2.0; this contradicts the cost-reduction intent. Native T2 remains 2.2. State-boundary timing, geometry, scripture, material constants and capture rendering remain unchanged. M7/M8 and all sign-offs remain open; external artifact copies have not been republished.</p></section>
+  <p><b>2026-09-07 local verification:</b> production build, canonical text verification and seven regression tests pass. Payload is 6.867 MB brotli; the 1.69-second loading estimate is a model, not cold-load certification. A foreground 60-second M2 Pro production run recorded rAF p95 16.6 ms, max 25.7 ms and no intervals over 250 ms. It demoted T1→T2, with backing canvas fixed at 2618×1636 / DPR 2, so it is not a T1 pass or evidence for the named M1 Air/iPhone devices. Full limitations and raw evidence paths: build/v166-m7-readiness.json. Completion work is tracked in docs/release-checklist.md.</p>
+  <section><h3>Δ v1.6.6 · elapsed-time tier history · 2026-09-07</h3><p>The runtime monitor now retains samples by their actual timestamps within the trailing three seconds, rather than estimating history length from the most recent interval. Previously one 200 ms frame after three seconds at 120 Hz shrank history to 15 samples and incorrectly made that isolated frame the p95. Invalid/zero intervals are rejected to prevent clock corruption. Ten tests and typecheck pass, including an isolated slow frame and sustained overload. Existing thresholds, gap exclusion, hysteresis, boundary application and visual rendering are unchanged.</p><p>This does not resolve refresh-cadence bias: a synthetic perfect 60 Hz sequence still demotes T1 after 181 frames (3.0167 seconds), because 16.7 ms exceeds 1.25×12 ms. The 12/14/27 ms table specifies frame totals, not exclusively GPU duration; a future metric must account for CPU and GPU work without treating display wait as work. GPU timestamps alone would not prove frame-total compliance. No device or repeatability pass is claimed.</p></section>
+  <section><h3>Δ v1.6.6 · CPU timing diagnostic · 2026-09-08</h3><p>The ?perf=N audit now separately records CPU wall time from animation callback entry through scene update and render submission. CPU readings are attributed to the current frame; rAF intervals remain attributed to the preceding frame. Missing/non-finite/negative CPU readings are unavailable, not zero. GPU completion, presentation, audit and subsequent HUD work are excluded; this is not the §19 frame-total metric and does not change demotion thresholds. No normal-render or capture appearance change.</p><p>Twelve tests and typecheck pass. Fresh short dev-browser ?tier=1&amp;perf=5 smoke: 1143 intervals, rAF p95 9.4 ms, maximum 33.3 ms, CPU update/submit p95 1.10 ms, T1→T2. This only verifies instrumentation; it is not a production/device performance pass. GPU work, cadence bias and capture repeatability remain unresolved. No references blessed; external artifacts not republished.</p></section>
+  <section><h3>Δ v1.6.6 · refresh-safe runtime fallback · 2026-09-08</h3><p>Separate runtime display pacing from frame-work certification. A perfect 60 Hz sequence formerly exceeded 1.25×12 ms and demoted T1 after 181 frames. The fallback now compares rAF p95 with 1.25× the spec's 60/60/30 fps playback intervals, while preserving the independent 12/14/27 ms work budgets for release profiling. This is an explicit runtime policy correction, not a claim of GPU or device compliance. Three-second history, hysteresis, boundary-only transitions, monotonic DPR and one-shot thermal reduction remain. Fourteen tests cover steady 60 Hz T1/T2, steady 30 Hz T3, sustained overload and thermal fallback. Appearance, canonical scripture and deterministic capture rendering unchanged. User sign-off and all release gates remain open.</p></section>
+  <p><b>Refresh-safe local smoke:</b> fresh dev-browser 60-second audit stayed T1 (7201 intervals; rAF p95 9.1 ms, max 25.0 ms; CPU update/submit p95 1.00 ms). No named-device or frame-work pass is inferred. Evidence summary: build/v166-m7-readiness.json.</p>
+  <section><h3>Δ v1.6.6 · visual approval · 2026-09-09</h3><p>User explicitly stated “it's signed off continue.” The current clean satin gold/scroll presentation is visually approved. This records a decision only: no rendering or canonical text change. It does not establish capture reproducibility, device/work-budget compliance, scholarly review or M7/M8 closure; no reference hashes blessed. Ledger, pending manifest and release checklist reflect this scope. External artifact copies not republished.</p></section>
+  <section><h3>Δ v1.6.6 · renderer-failure folio · 2026-09-09</h3><p>Implement §15 without altering the visually approved renderer, geometry or scripture. A small boot entry catches startup rejection after Three's WebGPU→WebGL2 fallback attempt and opens an independent DOM folio. Seven real WebGL2 prerenders use p = 0 / .21 / .45 / .60 / .685 / .884 / 1, T1, 768×960, ss=2, JPEG quality .70. Each source raw-pixel hash reproduced across two cold pages; these are asset provenance, not blessed regression references. Total JPEG bytes: 252,382 (≤280,000). Images fit without cropping; native horizontal scroll-snap, Previous/Next, arrow/Home/End keys and announced position provide navigation. The opening poster backs unavailable/loading images. Fallback code/images load only on startup failure or explicit ?fallback QA; ?failRenderer exercises startup rejection. Capture/probe diagnostics report failure rather than substituting plates.</p><p>Local Chrome checks pass at 1440×900 and 390×844: seven images, canvas hidden, contained controls, navigation boundaries, no Three import for forced static mode, normal WebGPU capture and explicit capture failure without fallback resources. Fourteen existing tests and canonical verification against the pinned source pass; upstream source unreachable. Asset provenance: build/fallback-plates.json. Physical touch, other browsers, named-device performance, scholarly review and intermittent WebGPU repeatability remain open. No hashes blessed or gates closed; external artifacts not republished.</p></section>
+  <section><h3>Δ v1.6.6 · capture investigation resumed · 2026-09-11</h3><p>The September 9 extended sequence completed 72 cold captures: 34/36 poses repeat-identical, differences at T1 p=1 (29 pixels, max channel delta 23) and T3 p=.645 (6 pixels, delta 1). Results are indexed in build/v166-step1-investigation.json. The fallback-inclusive payload passes at 7.091 MB brotli; modeled loading remains 1.69 seconds, not device evidence. Added an opt-in ?noReliefDerivatives diagnostic that removes both authored relief profile-footprint filtering and normal-derivative roughness AA to isolate derivative dependence. Default shading remains unchanged; this switch is not a proposed visual fix. Capture stability, M7/M8 and reference blessing remain open; artifacts not republished.</p></section>
+  <section><h3>Δ v1.6.6 · fail-closed capture assets · 2026-09-11</h3><p>The relief-derivative isolation still produced differences in three of 36 poses across 72 cold loads; experiment removed. This is not a fix and does not rule out derivative behavior elsewhere. Separately corrected a QA integrity defect: required ink/glyph fetch failures used to be swallowed, allowing a hash of a partial manuscript. Deterministic capture now propagates required asset failures to the boot capture-error handler; no image/hash is certified and no static folio substitutes for it. Successful captures, live loading policy, approved gold and canonical scripture are unchanged. Four asset-loader tests cover success, ink failure, glyph failure and ink-only poses. M7/M8 remain open; no blessing.</p></section>
+  <p><b>2026-09-11 verification:</b> build and 18 tests pass. Restored-default WebGPU sequence: 72 fresh captures, no errors, 34/36 poses repeat-identical; T1 p=.86 differs at 4,817 pixels (max 100), p=.93 at 419 pixels (max 28). Evidence: build/v166-step1-investigation.json. No demonstrated cause/fix or blessing. Scripture verification passes against the pinned canonical source; upstream unreachable.</p>
+  <section><h3>Δ v1.6.6 · depth-bias isolation · 2026-09-11</h3><p>Added opt-in noReliefBias QA to test the §14 relief polygon offset independently of the material. Default offset remains −2 / −0.5; approved gold and scripture unchanged. The repeat runner now constructs one final iframe URL before navigation (including GPU tracing), and preserves explicit capture-error text in saved rows. Isolation results pending; this is not a fix, blessing or gate closure.</p></section>
+  <p><b>Depth-bias isolation result:</b> 72 cold captures, one differing pose (T1 p=.93: 804 pixels, max 30). Not a fix; experiment removed and authored offset restored. Added opt-in /qa/repeat.html?sequence=1&amp;saveDiff=1 to save real baseline/repeat PNGs plus an orange changed-pixel mask for each mismatch. Masks are explanatory diagnostics, never frame references; raw capture hash comparisons are unchanged.</p>
+  <p><b>Saved-image sequence verification:</b> 72 cold default-shading captures completed without errors; six poses differ (30/36 repeat-identical). Actual baseline/repeat PNGs and pixel masks are linked from qa/review/v166-targeted-sequence-normal-15-1789136074058.png. Independent RGBA decoding of all 12 saved captures reproduces the recorded raw SHA-256 hashes. Inspected maps show sparse lettering differences in relief poses, not a broad scene displacement; an early p=.34 frame also has a single one-level background-edge difference. Cause remains unverified. Production build and 18 tests pass; gold, scripture and blessed references unchanged.</p>
+  <section><h3>Δ v1.6.6 · centroid interpolation isolation · 2026-09-11</h3><p>Opt-in centroidRelief diagnostic sets the authored relief varyings to perspective/centroid interpolation, testing covered-sample shading at thin MSAA triangle edges. Geometry, material constants and default interpolation remain unchanged. This is a hypothesis under cold-sequence testing, not an accepted fix or visual revision; no reference blessing.</p></section>
+  <p><b>Centroid result:</b> an actual saved T1 p=.71 pair differs at 341 pixels (max 21), independently verified by RGBA decoding. The evidence sink stopped while saving the mask, so the sequence is incomplete and no full-matrix result is claimed. Explicit centroid interpolation did not eliminate this variation; experiment removed, approved interpolation restored. Step 1 remains open; no blessing.</p>
+  <section><h3>Δ v1.6.6 · CPU upload tracing and evidence-save resilience · 2026-09-11</h3><p>Step 1 diagnostics now hash CPU-uploaded vertex/index/storage buffers as well as uniforms and shader strings. Mapped uploads are copied before unmap detaches their memory; writeBuffer offsets retain their specified units. This does not observe GPU-written storage or prove complete GPU-state equality. The opt-in repeat runner now reports save failures with a ten-second timeout, retains completed observations in window.__repeatResult, and marks which evidence files were actually saved. Approved rendering, scripture and capture pixel comparisons are unchanged. Build and 22 tests pass; the new cold sequence is pending, not a demonstrated fix. No blessing or gate closure; external artifacts not republished.</p></section>
+  <p><b>Expanded trace result:</b> 72 cold captures completed without capture/save errors. T1 p=.76 differs at 198 pixels/max19; T3 p=.71 at 12/max8. All 36 pairs have equal traced shader and CPU-upload hashes. All four saved PNG raw hashes/difference counts independently verified. Report: qa/review/v166-targeted-sequence-normal-15-1789153171221.png. The trace excludes a difference in those CPU inputs for this run, not all GPU state or a driver fault. No demonstrated fix, blessing or gate closure.</p>
+  <p><b>Local verification after trace expansion:</b> build and 22 tests pass; refreshed payload 7.092 MB brotli passes the existing target. Modeled loading remains 1.69 seconds, not physical-device evidence. No visual or reference changes.</p>
+  <section><h3>Δ v1.6.6 · local release accessibility hardening · 2026-09-12</h3>
+  <p>User reaffirmed the current look and asked to finish as well as possible. Preserve the approved satin gold and scripture. Correct the §13 pager: enlarge invisible hit targets, add keyboard focus styling, keep focus and arrow selection together, use ordinary labelled buttons rather than incomplete tab/panel semantics, and add Home/End navigation with shortcut/editing guards. The per-frame HUD is now hidden from assistive announcements; a separate atomic polite region updates only on state/loading changes. Compact controls remain inside the viewport. No rendering or capture hash policy changes.</p>
+  <p>Production DOM/synthetic keyboard QA covers desktop, phone-sized and compact layouts, including all seven authored poses and announcement stability. The local tests do not replace axe, real screen-reader/touch, cross-browser or named-device review. The opt-in performance export now checks HTTP success, times out after ten seconds and displays save success/failure; a stopped sink had silently lost an otherwise completed smoke report. Measurements remain in window.__perf on save failure. Evidence and current verification are indexed in build/v166-release-local-2026-09-12.json. Correct stale current-version/approval summaries while preserving dated history. Capture repeatability remains unresolved; no hash blessing, M7/M8 closure or external artifact republication.</p></section>
 </main>
 </div>

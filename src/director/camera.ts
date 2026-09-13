@@ -21,6 +21,7 @@ const DOLLY_P_MAX = 0.5;
 const DOLLY_SAMPLES = 64;
 const BLEND_START = 0.38;
 const BLEND_END = 0.47;
+const READING_MARGIN = 0.04; // §12: keep the text inside 92% of a portrait viewport
 
 interface Anchor {
   p: number;
@@ -157,7 +158,11 @@ export class CameraRig {
       if (p <= FACE_START) {
         const mul = this.mobileDistMul(p);
         this.dir.copy(this.anchorPos).sub(this.lookNow).normalize();
-        const d = this.anchorPos.distanceTo(this.lookNow) * mul;
+        const dAnchor = this.anchorPos.distanceTo(this.lookNow) * mul;
+        // The parchment may overflow a portrait viewport, but the immutable Qur'anic text
+        // may not. Fit its actual deformed bounds independently throughout reading/rise.
+        const dText = this.fitReadingText(p, this.dir, this.lookNow);
+        const d = Math.max(dAnchor, dText);
         this.camera.position.copy(this.lookNow).addScaledVector(this.dir, d);
       } else {
       // S7 (M6): the gaze TRACKS the lifting assembly center (blended from the anchor look-at
@@ -214,6 +219,37 @@ export class CameraRig {
     const s3 = E1(clamp01((p - 0.3) / 0.06)) * (1 - E1(clamp01((p - 0.5) / 0.1)));
     const s67 = E1(clamp01((p - 0.7) / 0.06));
     return 1 - 0.06 * s3 + 0.12 * s67;
+  }
+
+  /** Portrait-only extent fit for the fixed seven-line text while it remains on the sheet. */
+  private fitReadingText(p: number, dir: Vector3, look: Vector3): number {
+    const d0 = evalDeform(p);
+    const tr = poseTransform(p, d0.zTopCurl);
+    const cosT = Math.cos(tr.rotX);
+    const sinT = Math.sin(tr.rotX);
+    const up = new Vector3(0, 1, 0);
+    const xAxis = new Vector3().crossVectors(up, dir).normalize();
+    const yAxis = new Vector3().crossVectors(dir, xAxis);
+    const Ty = 12 / focalAt(p);
+    const Tx = Ty * this.camera.aspect;
+    const kx = Tx * (1 - READING_MARGIN);
+    const ky = Ty * (1 - READING_MARGIN);
+    const rel = new Vector3();
+    let dFit = 0.2;
+    // Text bounds from the frozen composition (§3), sampled across the deformed sheet.
+    for (const x of [-0.285, 0, 0.285]) {
+      for (const v of [0.145, 0.32, 0.5, 0.68, 0.87]) {
+        const q = cpuPose(x / 0.78, v, d0);
+        const wy = q.y * cosT - q.z * sinT + tr.offY;
+        const wz = q.y * sinT + q.z * cosT + tr.offZ;
+        rel.set(q.x - look.x, wy - look.y, wz - look.z);
+        const rx = rel.dot(xAxis);
+        const ry = rel.dot(yAxis);
+        const rz = rel.dot(dir);
+        dFit = Math.max(dFit, rz + Math.abs(rx) / kx, rz + Math.abs(ry) / ky);
+      }
+    }
+    return dFit;
   }
 
   /** Smallest distance along `dir` from `look` such that the text block — pitched and lifted
@@ -303,7 +339,9 @@ function buildDollyCurve(
     // sides (intentional)" — so on aspect < 1 a side-overflow allowance phases in with the
     // unroll: the roll fits fully at p = 0, the opening sheet may crop up to 35%/side by
     // p ≈ 0.25. Vertical stays strict; desktop (aspect ≥ 1) is unaffected.
-    const sideAllow = aspect < 1 ? 0.35 * E1(clamp01((p - 0.1) / 0.15)) : 0;
+    // 12%/side lets the sheet breathe past the phone edge while its 70.5%-wide text
+    // column remains inside the viewport. The previous 35% allowance cropped the writing.
+    const sideAllow = aspect < 1 ? 0.12 * E1(clamp01((p - 0.1) / 0.15)) : 0;
     const kx = Tx * (1 - DOLLY_MARGIN + sideAllow);
     const ky = Ty * (1 - DOLLY_MARGIN);
 

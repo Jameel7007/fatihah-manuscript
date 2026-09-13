@@ -1,0 +1,17 @@
+{
+  "date": "2026-09-12T21:53:06.633Z",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+  "url": "http://localhost:4521/qa/accessibility.html?autorun=1&save=1",
+  "scope": "Local DOM/synthetic keyboard checks; not axe, screen-reader, physical-touch or named-device certification",
+  "checks": [
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "every state is keyboard reachable",
+      "pass": true
+    }
+  ],
+  "error": "Error: webgpu: 44px targets fit viewport {\"viewport\":[1440,900],\"bounds\":[{\"left\":1380.3692626953125,\"top\":296.0049743652344,\"right\":1424.3678398132324,\"bottom\":340.0035514831543,\"width\":43.99857711791992,\"height\":43.99857711791992},{\"left\":1380.3692626953125,\"top\":340.0035400390625,\"right\":1424.3678398132324,\"bottom\":384.0021171569824,\"width\":43.99857711791992,\"height\":43.99857711791992},{\"left\":1380.3692626953125,\"top\":384.0021057128906,\"right\":1424.3678398132324,\"bottom\":428.00068283081055,\"width\":43.99857711791992,\"height\":43.99857711791992},{\"left\":1380.3692626953125,\"top\":428.0007019042969,\"right\":1424.3678398132324,\"bottom\":471.9992790222168,\"width\":43.99857711791992,\"height\":43.99857711791992},{\"left\":1380.3692626953125,\"top\":471.999267578125,\"right\":1424.3678398132324,\"bottom\":515.9978446960449,\"width\":43.99857711791992,\"height\":43.99857711791992},{\"left\":1380.3692626953125,\"top\":515.9978637695312,\"right\":1424.3678398132324,\"bottom\":559.9964408874512,\"width\":43.99857711791992,\"height\":43.99857711791992},{\"left\":1380.3692626953125,\"top\":559.9963989257812,\"right\":1424.3678398132324,\"bottom\":603.9949760437012,\"width\":43.99857711791992,\"height\":43.99857711791992}]}",
+  "pass": false
+}

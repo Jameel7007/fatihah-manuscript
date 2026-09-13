@@ -1,0 +1,17 @@
+{
+  "date": "2026-09-12T21:50:13.618Z",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+  "url": "http://localhost:4521/qa/accessibility.html?autorun=1&save=1",
+  "scope": "Local DOM/synthetic keyboard checks; not axe, screen-reader, physical-touch or named-device certification",
+  "checks": [
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "every state is keyboard reachable",
+      "pass": true
+    }
+  ],
+  "error": "Error: webgpu: 44px targets fit viewport",
+  "pass": false
+}

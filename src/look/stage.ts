@@ -63,6 +63,7 @@ import { buildBurnishTexture, buildEnvironment, buildFiberTexture, buildUtilText
 import { BLOB_H, BLOB_W, ContactBlob } from '../relief/contact';
 import { Dust } from './dust';
 import { buildSky, type Sky } from './sky';
+import type { Tier } from '../core/tiers';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type N = any;
@@ -115,6 +116,10 @@ export interface Stage {
   sky: Sky;
   /** scene-linear sky floor (a physical far sphere — pass() drops scene.background) */
   setBackground(r: number, g: number, b: number): void;
+  /** Attach streamed phase-B ink without rebuilding the scene. */
+  attachInk(ink: InkPack): void;
+  /** Attach or replace the streamed phase-C relief with the active tier's mesh. */
+  attachRelief(bin: GlyphBin): void;
 }
 
 // key world position — shared by the light and the translucency term
@@ -125,20 +130,31 @@ const KEY_POS: [number, number, number] = [-0.55, 1.3, 0.85];
  *  lightSize·(zR − zB)/zB, clamped [1, 28] texels; 25-tap Vogel PCF at that radius. Depth
  *  ratios use the shadow map's nonlinear depth — the near/far span is tight (0.6–2.6), and
  *  the residual distortion folds into the tuned light-size constant. */
-const MAP_SIZE = 2048;
 const LIGHT_SIZE_UV = 0.05;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const pcssFilter: any = Fn(({ depthTexture, shadowCoord }: { depthTexture: never; shadowCoord: N }) => {
-  const texel = 1 / MAP_SIZE;
+function makeShadowFilter(mapSize: number, blockerTaps: number, filterTaps: number): any {
+  return Fn(({ depthTexture, shadowCoord }: { depthTexture: never; shadowCoord: N }) => {
+  const texel = 1 / mapSize;
   const zRec: N = shadowCoord.z;
   const phi: N = interleavedGradientNoise(screenCoordinate.xy).mul(Math.PI * 2);
+
+  // T3 uses a fixed-radius five-tap PCF: no blocker search and no divergent penumbra.
+  if (blockerTaps === 0) {
+    let fixed: N = float(0);
+    for (let i = 0; i < filterTaps; i++) {
+      fixed = fixed.add(
+        (texture as N)(depthTexture, shadowCoord.xy.add((vogelDiskSample as N)(i, filterTaps, phi).mul(2.5 * texel))).compare(zRec),
+      );
+    }
+    return fixed.mul(1 / filterTaps);
+  }
 
   // blocker search
   const searchR = LIGHT_SIZE_UV * 0.5;
   let blockerSum: N = float(0);
   let blockerCnt: N = float(0);
-  for (let i = 0; i < 16; i++) {
-    const d: N = (texture as N)(depthTexture, shadowCoord.xy.add((vogelDiskSample as N)(i, 16, phi).mul(searchR))).r;
+  for (let i = 0; i < blockerTaps; i++) {
+    const d: N = (texture as N)(depthTexture, shadowCoord.xy.add((vogelDiskSample as N)(i, blockerTaps, phi).mul(searchR))).r;
     const isB: N = d.lessThan(zRec).select(float(1), float(0));
     blockerSum = blockerSum.add(d.mul(isB));
     blockerCnt = blockerCnt.add(isB);
@@ -149,15 +165,16 @@ const pcssFilter: any = Fn(({ depthTexture, shadowCoord }: { depthTexture: never
 
   // 25-tap PCF at the penumbra radius
   let lit: N = float(0);
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < filterTaps; i++) {
     lit = lit.add(
-      (texture as N)(depthTexture, shadowCoord.xy.add((vogelDiskSample as N)(i, 25, phi).mul(radius))).compare(zRec),
+      (texture as N)(depthTexture, shadowCoord.xy.add((vogelDiskSample as N)(i, filterTaps, phi).mul(radius))).compare(zRec),
     );
   }
-  const pcf: N = lit.mul(1 / 25);
+  const pcf: N = lit.mul(1 / filterTaps);
   // no blockers found → fully lit
   return blockerCnt.lessThan(0.5).select(float(1), pcf);
-});
+  });
+}
 
 export function buildStage(
   renderer: import('three/webgpu').WebGPURenderer,
@@ -166,6 +183,7 @@ export function buildStage(
   debug: DebugMode,
   ink?: InkPack,
   glyphBin?: GlyphBin,
+  qualityTier: Tier = 1,
 ): Stage {
   const scene = new Scene();
 
@@ -183,7 +201,7 @@ export function buildStage(
   const maps = { fiber: buildFiberTexture(renderer), util: buildUtilTexture(renderer), burnish: buildBurnishTexture(renderer) };
 
   // M3 ink: evaluated in its own RT pass; the parchment material samples one texture.
-  const inkPass = ink ? new InkPass(ink, maps.fiber) : undefined;
+  let inkPass = ink ? new InkPass(ink, maps.fiber) : undefined;
   const uEmboss = uniform(0); // §14 emboss factor, driven per frame
   const uContact = uniform(0); // §8 contact-blob ramp, driven per frame
   const uGhost = uniform(1); // §14 flat-ink ghost factor, driven per frame
@@ -199,10 +217,11 @@ export function buildStage(
   let contact: ContactBlob | undefined;
   if (glyphBin && inkPass && (debug === 'none' || debug === 'blob')) {
     relief = buildGlyphRelief(glyphBin, field, maps.fiber, maps.burnish, inkPass.texture);
-    contact = new ContactBlob(relief.mesh, relief.heightMaterial);
+    contact = new ContactBlob(relief.mesh, relief.heightMaterial, qualityTier === 3 ? 256 : 512, qualityTier === 3 ? 5 : 13);
   }
 
-  sheetRoot.add(buildSheet(field, maps, debug, inkPass?.texture, uEmboss, contact?.texture, uContact, uGhost, uRecede, uKeyMask));
+  let sheet = buildSheet(field, maps, debug, inkPass?.texture, uEmboss, contact?.texture, uContact, uGhost, uRecede, uKeyMask);
+  sheetRoot.add(sheet);
   sheetRoot.add(buildRibbon(field, sil, maps, debug, uRecede));
   if (relief) sheetRoot.add(relief.mesh);
 
@@ -214,12 +233,17 @@ export function buildStage(
   key.position.set(...KEY_POS);
   key.target.position.set(0, 0.04, 0.2);
   key.castShadow = true;
-  key.shadow.mapSize.set(MAP_SIZE, MAP_SIZE);
+  const shadowSize = qualityTier === 1 ? 2048 : qualityTier === 2 ? 1024 : 512;
+  key.shadow.mapSize.set(shadowSize, shadowSize);
   key.shadow.camera.near = 0.6;
   key.shadow.camera.far = 2.6;
   key.shadow.bias = -0.00015;
   key.shadow.normalBias = 0.0005;
-  (key.shadow as unknown as { filterNode: unknown }).filterNode = pcssFilter;
+  (key.shadow as unknown as { filterNode: unknown }).filterNode = makeShadowFilter(
+    shadowSize,
+    qualityTier === 1 ? 16 : qualityTier === 2 ? 8 : 0,
+    qualityTier === 1 ? 25 : qualityTier === 2 ? 13 : 5,
+  );
   scene.add(key, key.target);
 
   const fill = new DirectionalLight(0xc7d8ee, 0.13 * 2.2); // ratio re-anchored against the env at grade time
@@ -233,7 +257,7 @@ export function buildStage(
   rim.target.position.set(0, 0, 0);
   scene.add(rim, rim.target);
 
-  return {
+  const stage: Stage = {
     scene,
     sheetRoot,
     key,
@@ -252,7 +276,33 @@ export function buildStage(
     setBackground: (r: number, g: number, b: number) => {
       sky.uFloor.value.set(r, g, b);
     },
+    attachInk: (pack: InkPack): void => {
+      if (stage.inkPass) return;
+      inkPass = new InkPass(pack, maps.fiber);
+      stage.inkPass = inkPass;
+      replaceSheet();
+    },
+    attachRelief: (bin: GlyphBin): void => {
+      if (!stage.inkPass || (debug !== 'none' && debug !== 'blob')) return;
+      if (stage.relief) sheetRoot.remove(stage.relief.mesh);
+      relief = buildGlyphRelief(bin, field, maps.fiber, maps.burnish, stage.inkPass.texture);
+      contact = new ContactBlob(relief.mesh, relief.heightMaterial, qualityTier === 3 ? 256 : 512, qualityTier === 3 ? 5 : 13);
+      stage.relief = relief;
+      stage.contact = contact;
+      sheetRoot.add(relief.mesh);
+      replaceSheet();
+    },
   };
+  function replaceSheet(): void {
+    const next = buildSheet(field, maps, debug, stage.inkPass?.texture, uEmboss, stage.contact?.texture, uContact, uGhost, uRecede, uKeyMask);
+    sheetRoot.remove(sheet);
+    sheet.geometry.dispose();
+    if (Array.isArray(sheet.material)) sheet.material.forEach((m) => m.dispose());
+    else sheet.material.dispose();
+    sheet = next;
+    sheetRoot.add(sheet);
+  }
+  return stage;
 }
 
 interface Maps {
@@ -485,6 +535,15 @@ function buildSheet(
   const count = GRID_W * GRID_H;
   const geo = new BufferGeometry();
   geo.setAttribute('position', new BufferAttribute(new Float32Array(count * 3), 3));
+  const uv = new Float32Array(count * 2);
+  for (let j = 0; j < GRID_H; j++) {
+    for (let i = 0; i < GRID_W; i++) {
+      const k = j * GRID_W + i;
+      uv[k * 2] = i / (GRID_W - 1);
+      uv[k * 2 + 1] = j / (GRID_H - 1);
+    }
+  }
+  geo.setAttribute('uv', new BufferAttribute(uv, 2));
   const idx: number[] = [];
   for (let j = 0; j < GRID_H - 1; j++) {
     for (let i = 0; i < GRID_W - 1; i++) {
@@ -522,6 +581,7 @@ function buildRibbon(field: Field, sil: SilhouetteData, maps: Maps, debug: Debug
   const tx = new Float32Array(n * 2);
   const ty = new Float32Array(n * 2);
   const side = new Float32Array(n * 2);
+  const uv = new Float32Array(n * 2 * 2);
   for (let k = 0; k < n; k++) {
     const r = ring[k];
     if (!r) continue;
@@ -531,10 +591,17 @@ function buildRibbon(field: Field, sil: SilhouetteData, maps: Maps, debug: Debug
     tx[k * 2 + 1] = r[0];
     ty[k * 2 + 1] = r[1];
     side[k * 2 + 1] = 1;
+    const u = r[0] / (GRID_W - 1);
+    const v = r[1] / (GRID_H - 1);
+    uv[k * 4] = u;
+    uv[k * 4 + 1] = v;
+    uv[k * 4 + 2] = u;
+    uv[k * 4 + 3] = v;
   }
   geo.setAttribute('texelX', new BufferAttribute(tx, 1));
   geo.setAttribute('texelY', new BufferAttribute(ty, 1));
   geo.setAttribute('side', new BufferAttribute(side, 1));
+  geo.setAttribute('uv', new BufferAttribute(uv, 2));
   const idx: number[] = [];
   for (let k = 0; k < n; k++) {
     const a = k * 2;

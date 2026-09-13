@@ -1,0 +1,16 @@
+body.fallback { overflow: hidden; background: #01030d; color: #f0e7d5; }
+body.fallback #gl, body.fallback #spacer, body.fallback #hud, body.fallback #bar, body.fallback #cap { display: none !important; }
+body.fallback #poster { opacity: 1 !important; }
+#folio { position: fixed; inset: 0; z-index: 5; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; background: #01030d; font: 14px/1.5 system-ui, sans-serif; }
+#folio > p { margin: 0; padding: 12px 16px; text-align: center; }
+.folio-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; min-height: 0; }
+.folio-track figure { position: relative; flex: 0 0 100%; margin: 0; min-width: 0; height: 100%; scroll-snap-align: start; background: url('/poster.jpg') center / contain no-repeat; }
+.folio-track figure.loaded { background: none; }
+.folio-track img { display: block; width: 100%; height: calc(100% - 32px); object-fit: contain; }
+.folio-track img[hidden] { visibility: hidden; display: block; }
+.folio-track figcaption { position: absolute; bottom: 0; width: 100%; text-align: center; background: #01030d; }
+#folio nav { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 10px; }
+#folio nav p { text-align: center; margin: 0; }
+#folio button { font: inherit; color: inherit; background: #171c2c; border: 1px solid #91836c; border-radius: 4px; min-height: 44px; padding: 8px 12px; cursor: pointer; }
+#folio button:disabled { opacity: .4; cursor: default; }
+#folio :focus-visible { outline: 2px solid #e4c06f; outline-offset: -2px; }

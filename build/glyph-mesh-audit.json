@@ -1,48 +1,54 @@
 {
- "built": "M4 §6/§18 bevel extruder",
+ "built": "M7 T1 §6/§18 bevel extruder",
  "counts": {
-  "verts": 256469,
-  "tris": 399384,
+  "verts": 332367,
+  "tris": 535935,
   "groups": 159,
-  "cells": 198795,
-  "tipSubdivisions": 6871,
+  "cells": 264561,
+  "tipSubdivisions": 6475,
   "vertsByKind": {
-   "base": 196388,
-   "mark": 50272,
-   "ring": 9809
+   "base": 259569,
+   "mark": 59825,
+   "ring": 12973
   }
  },
  "budget": {
-  "t1": 780000,
-  "used": 399384
+  "tier": 1,
+  "limit": 780000,
+  "used": 535935
  },
- "planAreaErr": 0.0001,
+ "planAreaErr": 0.00008,
  "silhouetteIdentity": {
-  "worstOuterEm": 0.005547,
-  "worstOuterPx1440": 0.375,
-  "samples": 106792,
+  "worstOuterEm": 0.00469,
+  "worstOuterPx1440": 0.317,
+  "samples": 125285,
   "tolEm": 0.008,
-  "tolNote": "grid tessellation + chord refinement bound; the 0.0008 em analytic flatten tolerance moves to the M5 curvature-adaptive rebuild (meshopt repack, §18)",
+  "tolNote": "grid tessellation + tiered curvature-adaptive chord refinement (0.15 fu sagitta target); 0.008 em is the rendered outer-silhouette gate",
   "creviceWalls": {
-   "worstEm": 0.004809,
-   "samples": 1207,
+   "worstEm": 0.004629,
+   "samples": 1453,
    "note": "narrow cracks between joined strokes; geometry paves below one raster texel — coverage difference, not silhouette"
   },
   "subResolutionTails": {
    "worstEm": 0,
-   "samples": 0,
+   "samples": 42,
    "gateEm": 0.004,
    "note": "pen-entry tapers under 3 fu ink width — below one atlas texel, invisible in the rendered flat ink"
   }
  },
  "guard": {
-  "minHalfWidthWorld": 0.000013,
-  "beadVerts": 104036,
-  "totalVerts": 256469
+  "minHalfWidthWorld": 0.000006,
+  "beadVerts": 129230,
+  "totalVerts": 332367
  },
  "bin": {
-  "bytes": 11976312,
-  "sha256": "ecfe41c2d3da13ee6edf01105af015fec580d4710181d3fce27cc5dbf189db4e"
+  "bytes": 15740324,
+  "sha256": "8cfd67ca70681497b3996441679d1075fec0c54ecba60f24786f80adaa6a386c"
  },
- "pitchFu": 8
+ "pitchFu": 6.75,
+ "curveRefinement": {
+  "chordToleranceFu": 0.15,
+  "minSegmentFu": 0.75,
+  "maxDepth": 6
+ }
 }

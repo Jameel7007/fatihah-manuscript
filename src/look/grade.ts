@@ -5,7 +5,7 @@
 // AgX is applied explicitly inside the chain (compensating AgX's mid desaturation with the
 // +0.05 saturation is the §1 commitment). There is NO bloom pass.
 
-import { AgXToneMapping, NoToneMapping, PostProcessing, WebGPURenderer } from 'three/webgpu';
+import { AgXToneMapping, NoToneMapping, RenderPipeline, RenderTarget, WebGPURenderer } from 'three/webgpu';
 import type { Camera, Scene } from 'three/webgpu';
 import {
   dot,
@@ -29,6 +29,7 @@ type N = any;
 
 export interface Grade {
   render(): void;
+  renderTo(target: RenderTarget): void;
   /** 8 Hz grain phase — call with floor(t·8) in live mode; stays 0 in capture. */
   setGrainSeed(seed: number): void;
   setAspect(aspect: number): void;
@@ -47,17 +48,18 @@ export function createGrade(renderer: WebGPURenderer, scene: Scene, camera: Came
   const uSeed: N = uniform(0);
   const uAspect: N = uniform(16 / 9);
 
-  const scenePass: N = pass(scene, camera);
-  // v1.6.1 supersampling knob (?ss=1.5): the beauty pass renders at ss× the canvas
-  // resolution and the chain samples it bilinearly at output resolution — shading (not just
-  // edges) is averaged over ss² samples per pixel. Costs ss² fill; T1-only by policy.
+  const scenePass: N = pass(scene, camera, new URLSearchParams(location.search).has('nomsaa') ? { samples: 0 } : undefined);
+  // Spatial supersampling: the beauty pass renders at ss× the canvas resolution and the
+  // chain samples it bilinearly at output resolution — shading (not just edges) is averaged
+  // over ss² samples per pixel. v1.6.3 drives this by relief visibility on T1/T2; ?ss=N pins
+  // the factor for deterministic A/B work.
   const SS = Number(new URLSearchParams(location.search).get('ss') ?? '1');
   let ssNow = 1;
   const setSupersample = (s: number): void => {
     const v = Math.max(1, Math.min(2, s));
-    if (v === ssNow || typeof scenePass.setResolution !== 'function') return;
+    if (v === ssNow || typeof scenePass.setResolutionScale !== 'function') return;
     ssNow = v;
-    scenePass.setResolution(v);
+    scenePass.setResolutionScale(v);
   };
   if (SS > 1) setSupersample(SS);
   let c: N = (toneMapping as N)(AgXToneMapping, 1, scenePass.rgb);
@@ -83,7 +85,7 @@ export function createGrade(renderer: WebGPURenderer, scene: Scene, camera: Came
   const g: N = interleavedGradientNoise(screenCoordinate.xy.add(uSeed.mul(vec2(37.0, 17.0)))).sub(0.5);
   c = c.add(g.mul(luma.mul(0.012).add(0.0006)));
 
-  const post = new PostProcessing(renderer);
+  const post = new RenderPipeline(renderer);
   // TEMP diagnostic (?gb=): 1 raw, 2 AgX, 4 AgX+sat, 5 AgX+lift, 6 AgX+vignette, 0/absent full
   const BYPASS = Number(new URLSearchParams(location.search).get('gb') ?? '0');
   const agx: N = (toneMapping as N)(AgXToneMapping, 1, scenePass.rgb).toVar();
@@ -101,6 +103,11 @@ export function createGrade(renderer: WebGPURenderer, scene: Scene, camera: Came
 
   return {
     render: () => post.render(),
+    renderTo: (target: RenderTarget) => {
+      const previous = renderer.getRenderTarget();
+      renderer.setRenderTarget(target);
+      try { post.render(); } finally { renderer.setRenderTarget(previous); }
+    },
     setGrainSeed: (s: number) => {
       uSeed.value = s;
     },

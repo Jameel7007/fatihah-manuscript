@@ -4,8 +4,8 @@
 // reduced motion. "Two dust motes per second crossing the key beam" — the population drifts
 // slowly through a volume above the sheet along the key's direction with a slight rise.
 
-import { BufferAttribute, BufferGeometry, Points, PointsNodeMaterial, AdditiveBlending } from 'three/webgpu';
-import { attribute, float, uniform, uv, vec3, vec4 } from 'three/tsl';
+import { AdditiveBlending, InstancedBufferAttribute, PointsNodeMaterial, Sprite } from 'three/webgpu';
+import { float, instancedBufferAttribute, uniform, uv, vec3, vec4 } from 'three/tsl';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type N = any;
@@ -14,12 +14,11 @@ const COUNT = 640;
 const VOL: [number, number, number] = [1.1, 0.7, 1.2]; // world extent of the mote volume (x, y, z)
 
 export class Dust {
-  readonly points: Points;
+  readonly points: Sprite;
   private uT: N = uniform(0);
   private uFade: N = uniform(0);
 
   constructor() {
-    const geo = new BufferGeometry();
     const pos = new Float32Array(COUNT * 3);
     const seed = new Float32Array(COUNT * 4); // phase, speed, size, opacity
     // deterministic pseudo-random (LCG) — same cloud on every load
@@ -37,11 +36,12 @@ export class Dust {
       seed[i * 4 + 2] = 0.55 + rnd() * 0.9;
       seed[i * 4 + 3] = 0.03 + rnd() * 0.015;
     }
-    geo.setAttribute('position', new BufferAttribute(pos, 3));
-    geo.setAttribute('aSeed', new BufferAttribute(seed, 4));
 
     const mat = new PointsNodeMaterial();
-    const sd: N = attribute('aSeed', 'vec4');
+    // WebGPU point primitives are always one pixel and have no gl_PointCoord. Three's
+    // supported larger-point path is a counted Sprite driven by instanced attributes.
+    const base: N = instancedBufferAttribute(new InstancedBufferAttribute(pos, 3));
+    const sd: N = instancedBufferAttribute(new InstancedBufferAttribute(seed, 4));
     const t: N = this.uT.mul(sd.y).add(sd.x);
     // slow drift along the key beam (−x, +z toward the viewer) with a gentle lift and sway
     const drift: N = vec3(
@@ -50,10 +50,11 @@ export class Dust {
       t.mul(0.013).add(t.mul(0.31).sin().mul(0.009)),
     );
     // wrap the drift inside the volume so the cloud never empties
-    const base: N = attribute('position', 'vec3');
     const wrapped: N = base.add(drift).add(vec3(VOL[0] / 2, 0, VOL[2] / 2)).mod(vec3(VOL[0], VOL[1], VOL[2])).sub(vec3(VOL[0] / 2, 0, VOL[2] / 2));
     mat.positionNode = wrapped;
-    mat.sizeNode = sd.z.mul(4.5); // px at DPR 1 (sizeAttenuation is on by default)
+    // With attenuation enabled this is a world-space diameter. Passing the old pixel-like
+    // value (4.5) made every quad hundreds of pixels wide and overlapped into a white veil.
+    mat.sizeNode = sd.z.mul(0.012);
     mat.sizeAttenuation = true;
     // soft disc
     const d: N = uv().sub(0.5).length().mul(2);
@@ -64,16 +65,18 @@ export class Dust {
     mat.blending = AdditiveBlending;
     mat.fog = false;
 
-    this.points = new Points(geo, mat);
+    this.points = new Sprite(mat);
+    this.points.count = COUNT;
     this.points.frustumCulled = false;
     this.points.renderOrder = 5;
     this.points.visible = false;
   }
 
   /** Advance the dust clock (seconds) and set visibility fade 0..1. */
-  update(dt: number, fade: number): void {
+  update(dt: number, fade: number, population = 1): void {
     this.uT.value += dt;
     this.uFade.value = fade;
-    this.points.visible = fade > 0.001;
+    this.points.count = Math.round(COUNT * population);
+    this.points.visible = fade > 0.001 && this.points.count > 0;
   }
 }

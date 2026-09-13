@@ -11,6 +11,25 @@ export interface CaptureFrame {
   imageData: ImageData;
 }
 
+/** Diagnostic GPU readback: bypass the browser canvas compositor without rounding. */
+export async function captureTarget(renderer: import('three/webgpu').WebGPURenderer, target: import('three/webgpu').RenderTarget): Promise<CaptureFrame> {
+  const raw = await renderer.readRenderTargetPixelsAsync(target, 0, 0, target.width, target.height);
+  const bytes = raw as Uint8Array;
+  const rowBytes = target.width * 4;
+  // r185 WebGPU exposes the 256-byte GPU copy stride, unlike WebGL's packed rows.
+  const stride = bytes.length === rowBytes * target.height ? rowBytes : Math.ceil(rowBytes / 256) * 256;
+  const packed = new Uint8ClampedArray(rowBytes * target.height);
+  for (let y = 0; y < target.height; y++) packed.set(bytes.subarray(y * stride, y * stride + rowBytes), y * rowBytes);
+  const imageData = new ImageData(packed, target.width, target.height);
+  const canvas = document.createElement('canvas');
+  canvas.width = target.width;
+  canvas.height = target.height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('2D encoding context unavailable');
+  ctx.putImageData(imageData, 0, 0);
+  return { hash: await sha256Hex(imageData.data), width: target.width, height: target.height, imageData, dataUrl: canvas.toDataURL('image/png') };
+}
+
 export function readCanvas(canvas: HTMLCanvasElement): { imageData: ImageData; dataUrl: string } {
   const c = document.createElement('canvas');
   c.width = canvas.width;

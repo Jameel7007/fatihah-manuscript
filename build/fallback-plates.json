@@ -1,0 +1,85 @@
+{
+  "version": "v1.6.6",
+  "status": "unblessed fallback assets; not regression references",
+  "generatedAt": "2026-09-09T19:30:26.967Z",
+  "source": "qa/review/fallback-plates-source.png",
+  "backend": "webgl2",
+  "width": 768,
+  "height": 960,
+  "ss": 2,
+  "jpegQuality": 0.7,
+  "totalBytes": 252382,
+  "budgetBytes": 280000,
+  "plates": [
+    {
+      "path": "public/fallback/plate-1.jpg",
+      "p": 0,
+      "sourceRawPixelHashes": [
+        "c9837e4eef98c85018be7570916405d5ca5c623c7d295084939456bd42458603",
+        "c9837e4eef98c85018be7570916405d5ca5c623c7d295084939456bd42458603"
+      ],
+      "jpegSha256": "5e61a1ec078a594f2afb342b4ba3668358b91ce6943ae1574e29554caf5b2610",
+      "bytes": 20040
+    },
+    {
+      "path": "public/fallback/plate-2.jpg",
+      "p": 0.21,
+      "sourceRawPixelHashes": [
+        "b6d39bb46e9dd760cda7f5cd516d6b5c7736d3544fe8ba97f4ec5dfce5e90415",
+        "b6d39bb46e9dd760cda7f5cd516d6b5c7736d3544fe8ba97f4ec5dfce5e90415"
+      ],
+      "jpegSha256": "5ab8aa60ad8e043ac5dc5b577f5064c27673706877db212a303ffb61e075d006",
+      "bytes": 19820
+    },
+    {
+      "path": "public/fallback/plate-3.jpg",
+      "p": 0.45,
+      "sourceRawPixelHashes": [
+        "5425fe259927b29021f4bfc18f086fcda86785be1a19cdf444106c843663879e",
+        "5425fe259927b29021f4bfc18f086fcda86785be1a19cdf444106c843663879e"
+      ],
+      "jpegSha256": "6c36c4a3146134353186560826e42819440917f064cf351bfaa0ddd5605b2099",
+      "bytes": 27214
+    },
+    {
+      "path": "public/fallback/plate-4.jpg",
+      "p": 0.6,
+      "sourceRawPixelHashes": [
+        "ec4d7ebac79cecccab0014af0bb69cf74eb41aa5b60b9a8d8bd8548d64357a19",
+        "ec4d7ebac79cecccab0014af0bb69cf74eb41aa5b60b9a8d8bd8548d64357a19"
+      ],
+      "jpegSha256": "80bcc6d4e5d1e431afd44d4c1a7c9f45b0202400921f60a139c455d5a14f7d67",
+      "bytes": 38129
+    },
+    {
+      "path": "public/fallback/plate-5.jpg",
+      "p": 0.685,
+      "sourceRawPixelHashes": [
+        "03e3a40f4c1c99d0348211d6fb0d166e7bc24c24ada79bff59d6e8fcdba8fb0a",
+        "03e3a40f4c1c99d0348211d6fb0d166e7bc24c24ada79bff59d6e8fcdba8fb0a"
+      ],
+      "jpegSha256": "d97e92a5ff6d49a23818cccfb57091110fe81f5c1fa3e1557f0f51f9dc744875",
+      "bytes": 42662
+    },
+    {
+      "path": "public/fallback/plate-6.jpg",
+      "p": 0.884,
+      "sourceRawPixelHashes": [
+        "cce3b2c282e4ed39c48033c0947faef6aa20d474e389de7c449d3d45de0ba86c",
+        "cce3b2c282e4ed39c48033c0947faef6aa20d474e389de7c449d3d45de0ba86c"
+      ],
+      "jpegSha256": "f1d7d8b6a32f6e4858990e3a35039ab4cb910916aacf4b70ba78ccc070fe5082",
+      "bytes": 51627
+    },
+    {
+      "path": "public/fallback/plate-7.jpg",
+      "p": 1,
+      "sourceRawPixelHashes": [
+        "10268b9225ace3a6a53909953c5e9cc400221517bd5e4196e5008d9584dfdb0d",
+        "10268b9225ace3a6a53909953c5e9cc400221517bd5e4196e5008d9584dfdb0d"
+      ],
+      "jpegSha256": "f46d47d6525c67b7f5c34a498a98d65487d34e63a6fc3b396124e493b58d8aff",
+      "bytes": 52890
+    }
+  ]
+}

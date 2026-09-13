@@ -1,0 +1,55 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Manuscript accessibility checks</title>
+<style>body{background:#111;color:#eee;font:14px monospace}pre{white-space:pre-wrap}iframe{border:1px solid #777}</style>
+<main><h1>Reduced-motion release checks</h1><button id="run">Run checks</button><pre id="result">Ready</pre><div id="view"></div></main>
+<script type="module">
+const q=new URLSearchParams(location.search), result=document.querySelector('#result'), run=document.querySelector('#run');
+const wait=async(predicate,label)=>{const start=performance.now();while(!predicate()){if(performance.now()-start>45000)throw Error(`Timed out: ${label}`);await new Promise(r=>setTimeout(r,100));}};
+run.onclick=async()=>{
+ run.disabled=true;const checks=[],layouts=[];let error=null;
+ try{
+  for(const [backend,width,height] of [['webgpu',1440,900],['webgl2',390,844],['webgl2',320,320]]){
+   const frame=document.createElement('iframe');frame.width=width;frame.height=height;
+   frame.src=`/?reduced=1&tier=3&ss=1&backend=${backend}`;document.querySelector('#view').replaceChildren(frame);
+   await wait(()=>frame.contentDocument?.querySelectorAll('.state-pager button').length===7&&!frame.contentDocument.querySelector('#hud').textContent.includes('loading text'),'reduced-mode assets');
+   const doc=frame.contentDocument,win=frame.contentWindow,buttons=[...doc.querySelectorAll('.state-pager button')];
+   const current=()=>buttons.findIndex(b=>b.getAttribute('aria-current')==='step');
+   const check=(ok,label)=>{if(!ok)throw Error(`${backend}: ${label}`);checks.push({backend,width,height,label,pass:true});result.textContent=checks.map(x=>`PASS ${x.backend} ${x.label}`).join('\n');};
+   const key=(name,extra={})=>{const e=new win.KeyboardEvent('keydown',{key:name,bubbles:true,cancelable:true,...extra});doc.activeElement.dispatchEvent(e);return e;};
+   check(buttons.every(b=>b.tabIndex===0),'every state is keyboard reachable');
+   const bounds=buttons.map(b=>{const r=b.getBoundingClientRect();return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height};});
+   layouts.push({backend,viewport:[win.innerWidth,win.innerHeight],bounds});
+   // Chromium page zoom can report 43.9986 for a computed 44px control. This tolerance
+   // covers CSS layout rounding only; it never applies to rendered pixel/hash comparisons.
+   const epsilon=.02;
+   check(bounds.every(r=>r.width>=44-epsilon&&r.height>=44-epsilon&&r.left>=-epsilon&&r.right<=width+epsilon&&r.top>=-epsilon&&r.bottom<=height+epsilon),'44px targets fit viewport (0.02px layout-rounding tolerance)');
+   check(buttons.every(b=>b.getAttribute('aria-label')),'every button has an accessible name');
+   check(!doc.querySelector('[role=tab],[role=tablist]'),'navigation does not claim unsupported tab/panel semantics');
+   const poses=[0,.21,.45,.6,.685,.884,1];
+   for(let i=0;i<7;i++){
+    buttons[i].click();await wait(()=>doc.querySelector('#hud').textContent.includes(`p ${poses[i].toFixed(3)}`),`state ${i+1}`);
+    check(current()===i&&buttons.filter(b=>b.hasAttribute('aria-current')).length===1,`state ${i+1} reachable at authored pose`);
+   }
+   buttons[0].click();buttons[0].focus();key('ArrowDown');
+   check(current()===1&&doc.activeElement===buttons[1],'arrow navigation moves selection and focus together');
+   key('End');check(current()===6&&doc.activeElement===buttons[6],'End reaches final state');
+   key('ArrowRight');check(current()===6,'final boundary clamped');
+   key('Home');check(current()===0&&doc.activeElement===buttons[0],'Home reaches first state');
+   key('ArrowLeft');check(current()===0,'first boundary clamped');
+   const modified=key('ArrowDown',{ctrlKey:true});check(current()===0&&!modified.defaultPrevented,'modified shortcuts left alone');
+   const input=doc.createElement('input');input.setAttribute('aria-label','QA editing check');doc.body.append(input);input.focus();
+   const edit=key('ArrowDown');check(current()===0&&!edit.defaultPrevented,'editing keys left alone');input.remove();
+   buttons[6].click();await wait(()=>doc.querySelector('#announce').textContent.includes('facing'),'final announcement');
+   await wait(()=>doc.querySelector('canvas[aria-hidden=true]').style.opacity==='0','dissolve completes');
+   check(doc.querySelector('#hud').getAttribute('aria-hidden')==='true','per-frame HUD excluded from announcements');
+   let mutations=0;const observer=new win.MutationObserver(records=>mutations+=records.length);observer.observe(doc.querySelector('#announce'),{childList:true,subtree:true,characterData:true});
+   await new Promise(r=>setTimeout(r,650));observer.disconnect();check(mutations===0,'held state does not repeatedly announce');
+   check(doc.querySelector('#announce').getAttribute('aria-atomic')==='true','state announcement is atomic');
+   check(doc.documentElement.scrollWidth<=win.innerWidth,'no horizontal document overflow');
+  }
+ }catch(e){error=String(e);result.textContent+='\nFAIL '+error;}
+ const report={date:new Date().toISOString(),userAgent:navigator.userAgent,url:location.href,scope:'Local DOM/synthetic keyboard checks; not axe, screen-reader, physical-touch or named-device certification',layouts,checks,error,pass:!error};window.__accessibility=report;
+ if(q.has('save')){try{const saved=await fetch(`/qa-save?name=v166-accessibility-${Date.now()}`,{method:'POST',body:JSON.stringify(report,null,2),signal:AbortSignal.timeout(10000)});if(!saved.ok)throw Error(`HTTP ${saved.status}`);result.textContent+='\nREPORT SAVED';}catch(e){result.textContent+='\nSAVE FAILED '+e;}}
+ result.textContent+=`\nCOMPLETE: ${checks.length} passed; ${error?'FAIL':'local checks pass'}`;run.disabled=false;
+};
+if(q.has('autorun'))run.click();
+</script></html>

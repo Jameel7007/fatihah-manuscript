@@ -35,17 +35,20 @@ const add = (path, phase, kind) => {
 const distAssets = join(root, 'dist/assets');
 if (!existsSync(distAssets)) throw new Error('run `npx vite build` first');
 for (const f of readdirSync(distAssets).sort()) {
-  if (f.endsWith('.js') || f.endsWith('.css')) add(`dist/assets/${f}`, 'A', 'app');
+  if (f.endsWith('.js') || f.endsWith('.css')) add(`dist/assets/${f}`, f.startsWith('fallback-') ? 'F' : 'A', 'app');
 }
 add('dist/index.html', 'A', 'html');
 // poster + LQIP (inline LQIP is inside index.html)
 add('public/poster.jpg', 'A', 'poster');
+// §15 seven-plate folio is requested only on renderer failure (or explicit QA).
+for (let i = 1; i <= 7; i++) add(`public/fallback/plate-${i}.jpg`, 'F', 'fallback-plate');
 // ink atlases + instances — the writing state needs them (phase B streams after first present)
 add('public/text/ink-mtsdf.png', 'B', 'atlas');
 add('public/text/ink-prog.png', 'B', 'atlas');
 add('public/text/ink-instances.json', 'B', 'instances');
 // glyph mesh — phase C
 add('public/text/glyphs.bin', 'C', 'mesh');
+add('public/text/glyphs-t3.bin', 'C', 'mesh-t3');
 // note: parchment / utility / environment / burnish maps are GPU-baked procedurally at boot —
 // zero transfer (the §18 KTX2 rows apply to authored maps this build does not ship)
 
@@ -75,7 +78,7 @@ const report = {
   items: items.map((it) => ({ ...it, raw_kb: +(it.raw / 1024).toFixed(1), gz_kb: +(it.gz / 1024).toFixed(1), br_kb: +(it.br / 1024).toFixed(1) })),
   notes: [
     'parchment fiber/utility/environment/burnish maps are procedural GPU bakes — zero transfer; the §18 KTX2 rows for authored maps do not apply to this build',
-    'glyphs.bin ships as the FGLY quantized planar buffers served brotli (meshopt/glb packaging would trade ~1.5 MB → ~1.2 MB at the cost of a wasm decoder; deferred)',
+    'glyphs.bin and glyphs-t3.bin ship as FGLY quantized planar buffers; each client requests only its selected tier (meshopt/glb remains optional while the aggregate payload is under budget)',
     'ink atlases stay PNG (UASTC would cost more transfer for a 2048×256 atlas pair)',
   ],
   pass,

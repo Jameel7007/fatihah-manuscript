@@ -1,0 +1,669 @@
+{
+  "date": "2026-09-13T00:54:50.132Z",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+  "url": "http://localhost:4521/qa/accessibility.html?autorun=1&save=1",
+  "scope": "Local DOM/synthetic keyboard checks; not axe, screen-reader, physical-touch or named-device certification",
+  "layouts": [
+    {
+      "backend": "webgpu",
+      "viewport": [
+        1440,
+        900
+      ],
+      "bounds": [
+        {
+          "left": 1394.005615234375,
+          "top": 296.0049743652344,
+          "right": 1438.004192352295,
+          "bottom": 340.0035514831543,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 1394.005615234375,
+          "top": 340.0035400390625,
+          "right": 1438.004192352295,
+          "bottom": 384.0021171569824,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 1394.005615234375,
+          "top": 384.0021057128906,
+          "right": 1438.004192352295,
+          "bottom": 428.00068283081055,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 1394.005615234375,
+          "top": 428.0007019042969,
+          "right": 1438.004192352295,
+          "bottom": 471.9992790222168,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 1394.005615234375,
+          "top": 471.999267578125,
+          "right": 1438.004192352295,
+          "bottom": 515.9978446960449,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 1394.005615234375,
+          "top": 515.9978637695312,
+          "right": 1438.004192352295,
+          "bottom": 559.9964408874512,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 1394.005615234375,
+          "top": 559.9963989257812,
+          "right": 1438.004192352295,
+          "bottom": 603.9949760437012,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        }
+      ]
+    },
+    {
+      "backend": "webgl2",
+      "viewport": [
+        390,
+        844
+      ],
+      "bounds": [
+        {
+          "left": 344.00567626953125,
+          "top": 268.0504150390625,
+          "right": 388.0042533874512,
+          "bottom": 312.0489921569824,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 344.00567626953125,
+          "top": 312.0489807128906,
+          "right": 388.0042533874512,
+          "bottom": 356.04755783081055,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 344.00567626953125,
+          "top": 356.0475769042969,
+          "right": 388.0042533874512,
+          "bottom": 400.0461540222168,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 344.00567626953125,
+          "top": 400.046142578125,
+          "right": 388.0042533874512,
+          "bottom": 444.0447196960449,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 344.00567626953125,
+          "top": 444.04473876953125,
+          "right": 388.0042533874512,
+          "bottom": 488.0433158874512,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 344.00567626953125,
+          "top": 488.0433044433594,
+          "right": 388.0042533874512,
+          "bottom": 532.0418815612793,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 344.00567626953125,
+          "top": 532.0418701171875,
+          "right": 388.0042533874512,
+          "bottom": 576.0404472351074,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        }
+      ]
+    },
+    {
+      "backend": "webgl2",
+      "viewport": [
+        320,
+        320
+      ],
+      "bounds": [
+        {
+          "left": 72.00283813476562,
+          "top": 184.00567626953125,
+          "right": 116.00141525268555,
+          "bottom": 228.00425338745117,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 116.00141906738281,
+          "top": 184.00567626953125,
+          "right": 159.99999618530273,
+          "bottom": 228.00425338745117,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 160,
+          "top": 184.00567626953125,
+          "right": 203.99857711791992,
+          "bottom": 228.00425338745117,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 203.99856567382812,
+          "top": 184.00567626953125,
+          "right": 247.99714279174805,
+          "bottom": 228.00425338745117,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 72.00283813476562,
+          "top": 228.00425720214844,
+          "right": 116.00141525268555,
+          "bottom": 272.00283432006836,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 116.00141906738281,
+          "top": 228.00425720214844,
+          "right": 159.99999618530273,
+          "bottom": 272.00283432006836,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        },
+        {
+          "left": 160,
+          "top": 228.00425720214844,
+          "right": 203.99857711791992,
+          "bottom": 272.00283432006836,
+          "width": 43.99857711791992,
+          "height": 43.99857711791992
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "every state is keyboard reachable",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "44px targets fit viewport (0.02px layout-rounding tolerance)",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "every button has an accessible name",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "navigation does not claim unsupported tab/panel semantics",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "state 1 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "state 2 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "state 3 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "state 4 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "state 5 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "state 6 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "state 7 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "arrow navigation moves selection and focus together",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "End reaches final state",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "final boundary clamped",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "Home reaches first state",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "first boundary clamped",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "modified shortcuts left alone",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "editing keys left alone",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "per-frame HUD excluded from announcements",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "held state does not repeatedly announce",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "state announcement is atomic",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "no horizontal document overflow",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "every state is keyboard reachable",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "44px targets fit viewport (0.02px layout-rounding tolerance)",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "every button has an accessible name",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "navigation does not claim unsupported tab/panel semantics",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "state 1 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "state 2 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "state 3 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "state 4 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "state 5 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "state 6 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "state 7 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "arrow navigation moves selection and focus together",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "End reaches final state",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "final boundary clamped",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "Home reaches first state",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "first boundary clamped",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "modified shortcuts left alone",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "editing keys left alone",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "per-frame HUD excluded from announcements",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "held state does not repeatedly announce",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "state announcement is atomic",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 390,
+      "height": 844,
+      "label": "no horizontal document overflow",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "every state is keyboard reachable",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "44px targets fit viewport (0.02px layout-rounding tolerance)",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "every button has an accessible name",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "navigation does not claim unsupported tab/panel semantics",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "state 1 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "state 2 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "state 3 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "state 4 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "state 5 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "state 6 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "state 7 reachable at authored pose",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "arrow navigation moves selection and focus together",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "End reaches final state",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "final boundary clamped",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "Home reaches first state",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "first boundary clamped",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "modified shortcuts left alone",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "editing keys left alone",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "per-frame HUD excluded from announcements",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "held state does not repeatedly announce",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "state announcement is atomic",
+      "pass": true
+    },
+    {
+      "backend": "webgl2",
+      "width": 320,
+      "height": 320,
+      "label": "no horizontal document overflow",
+      "pass": true
+    }
+  ],
+  "error": null,
+  "pass": true
+}

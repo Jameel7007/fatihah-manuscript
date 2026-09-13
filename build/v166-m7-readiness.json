@@ -1,0 +1,122 @@
+{
+  "date": "2026-09-07",
+  "version": "v1.6.6",
+  "current_local_release_2026_09_12": {
+    "report": "build/v166-release-local-2026-09-12.json",
+    "visual_approval": "Received September 9 and reaffirmed September 12; approved gold unchanged",
+    "verification": "Build, 22 tests, 66 local accessibility checks and 17 fallback checks pass; 7.092 MB Brotli payload passes",
+    "performance": "Saved 60.007-second production WebGPU smoke: T1 to T1, 7089 intervals, rAF p95 9.3ms / max 17.6ms, no >250ms stalls; 850x1454 DPR2 backing canvas, SS1 to 1.5. Full samples in qa/review/v166-perf-1789261176657.png (JSON). Local functional smoke only, not an isolated benchmark or named-device/work-budget certification.",
+    "scope": "Local readiness only; historical dated measurements below retained; M7/M8 and capture repeatability remain open"
+  },
+  "capture_followup_2026_09_11": {
+    "upload_trace": "72 cold captures completed, zero capture/save errors; T1 p=.76 differs at 198 pixels/max19, T3 p=.71 at 12/max8. Traced CPU uploads and shader hashes match in all 36 pairs; does not prove complete GPU-state equality. Four PNGs independently verified. Build and 22 tests pass. No rendering change or demonstrated fix; investigation report indexes evidence.",
+    "centroid_followup": "Candidate removed: T1 p=.71 saved pair differs at 341 pixels/max21. Sequence incomplete after sink stopped; no full pass claimed. Approved rendering preserved.",
+    "latest_image_evidence": "Depth-bias removal did not fix differences and was reverted. Default saveDiff sequence: 72 captures, six differing poses; 12 actual PNGs independently decoded and raw hashes verified. See investigation report. Build and 18 tests pass.",
+    "report": "build/v166-step1-investigation.json",
+    "status": "Still unresolved; derivative isolation did not fix differences and was removed",
+    "verification": "Build and 18 tests PASS; default WebGPU sequence 72 captures, no errors, two differing poses; pinned canonical text PASS (upstream unreachable)",
+    "integrity": "Required capture ink/glyph failures now reject rather than hashing a partial manuscript; four loader tests added",
+    "fallback_inclusive_payload_brotli_mb": 7.092,
+    "approval": "Approved gold and scripture preserved; no blessing or M7/M8 closure"
+  },
+  "renderer_failure_folio_2026_09_09": {
+    "status": "Implemented; local Chrome QA only; M7/M8 open",
+    "provenance": "build/fallback-plates.json",
+    "jpeg_bytes": 252382,
+    "jpeg_budget_bytes": 280000,
+    "source_repeat": "Seven WebGL2 poses, two cold pages each, raw hashes agree",
+    "qa": "17 desktop/phone-sized DOM/resource/capture checks pass; 14 existing unit tests pass",
+    "text": "PASS against pinned canonical source; upstream unreachable",
+    "remaining": "Physical touch, cross-browser, named-device performance, scholarly review and WebGPU capture stability; no blessing"
+  },
+  "refresh_safe_fallback_2026_09_08": {
+    "production_build": "PASS",
+    "refreshed_payload": "PASS: 6.867 MB brotli; 1.69-second modeled poster-to-live, not real cold-load proof",
+    "local_60s_smoke": {
+      "url": "http://localhost:4521/?tier=1&perf=30",
+      "evidence": "Fresh dev-browser load, completed visible HUD; no full raw export saved",
+      "tiers": "T1 to T1",
+      "raf_intervals": 7201,
+      "raf_p50_ms": 8.3,
+      "raf_p95_ms": 9.1,
+      "raf_p99_ms": 9.3,
+      "raf_max_ms": 25.0,
+      "stalls_over_250ms": 0,
+      "cpu_update_submit_p95_ms": 1.00,
+      "scope": "Local development instrumentation result, not named-device or GPU/frame-work certification"
+    },
+    "status": "candidate; synthetic tests pass; named-device/work-budget evidence still required",
+    "change": "rAF fallback compares p95 with 1.25 times playback interval: 60 fps T1/T2, 30 fps T3. Separate 12/14/27 ms work budgets unchanged.",
+    "tests": "14/14 PASS and typecheck PASS",
+    "supersedes": "Earlier perfect-60-Hz synthetic false-demotion finding; historical evidence below retained."
+  },
+  "cpu_diagnostic_2026_09_08": {
+    "tests": "12/12 PASS; typecheck PASS",
+    "production_build": "PASS; existing large-chunk warning",
+    "payload_scope": "September 7 aggregate payload report predates this CPU diagnostic addition; refresh before certification.",
+    "url": "http://localhost:4521/?tier=1&perf=5",
+    "evidence": "Fresh browser load; completed visible performance HUD read through accessibility tree",
+    "raf_intervals": 1143,
+    "raf_p50_ms": 8.3,
+    "raf_p95_ms": 9.4,
+    "raf_p99_ms": 16.8,
+    "raf_max_ms": 33.3,
+    "stalls_over_250ms": 0,
+    "cpu_update_submit_p95_ms": 1.10,
+    "tiers": "T1 to T2",
+    "scope": "Short dev-browser instrumentation smoke only. CPU wall time excludes GPU completion, browser presentation, audit and later HUD work. No full raw sample export saved for this smoke. No device certification."
+  },
+  "tier_history_followup": {
+    "change": "Actual trailing three-second timestamps replace sample-count estimate from latest interval; reject invalid durations.",
+    "tests": "10/10 PASS; typecheck PASS",
+    "regression_control": "Reinstating only the prior sample-count policy reproduces incorrect T1-to-T2 demotion after three seconds at 120 Hz followed by one 200 ms interval. Corrected monitor retains T1 for the identical sequence.",
+    "remaining_reproduction": "Perfect synthetic 60 Hz demotes T1 at frame 181, 3.0166666666666666 seconds.",
+    "performance_scope": "Local performance report below predates this history correction; no post-correction live performance certification.",
+    "metric_correction": "Spec table is frame total, not exclusively GPU duration. GPU timestamps alone cannot certify it."
+  },
+  "status": "local readiness evidence only; M7/M8 open; no references blessed",
+  "changes": [
+    "Performance audit retains long stalls and demotion history across two complete cycles; hidden intervals invalidate foreground evidence.",
+    "Demotion cannot increase DPR cap; native T2 still starts at cap 2.2.",
+    "Canonical scripture, cleaner gold material, geometry and default capture rendering unchanged."
+  ],
+  "verification": {
+    "production_build": "PASS",
+    "canonical_text": "PASS: all seven ayahs match three source variants",
+    "regression_tests": "PASS: 7/7 (qa/perf.test.mjs and qa/tiers.test.mjs)",
+    "payload_report": "build/payload-report.json",
+    "brotli_mb": 6.867,
+    "gzip_mb": 11.024,
+    "poster_to_live_model_seconds": 1.69,
+    "loading_caveat": "Model only, not measured 10 Mbps cold loading. Brotli must be served for the reported transfer budget."
+  },
+  "local_performance": {
+    "machine": "Mac14,9 / Apple M2 Pro",
+    "browser": "In-app Chromium 152, WebGPU, production preview",
+    "raw_report": "qa/review/v166-perf-1788821178611.png",
+    "raw_format": "JSON despite historical receiver .png extension",
+    "duration_seconds": 60.0039,
+    "intervals": 6719,
+    "p50_ms": 8.3,
+    "p95_ms": 16.6,
+    "p99_ms": 16.8,
+    "max_ms": 25.7,
+    "stalls_over_250ms": 0,
+    "foreground_throughout": true,
+    "tier_transition": "T1 to T2 at 8.1085 seconds",
+    "actual_backing_canvas": "2618x1636, DPR 2 before and after demotion",
+    "viewport_caveat": "Requested viewport was 1440x900; effective CSS size differed. Report actual backing dimensions, not a 1440x900 CSS certification.",
+    "conclusion": "Not a T1 pass. rAF pacing is not GPU execution time. Not evidence for M1 Air or either required iPhone.",
+    "pre_fix_diagnostic": "qa/review/v166-perf-1788821015726.png"
+  },
+  "remaining": [
+    "Intermittent WebGPU pixel differences: build/v166-step1-investigation.json; no demonstrated fix.",
+    "Runtime pacing false demotion corrected September 8; independent 12/14/27 ms frame-work certification still required.",
+    "Required M1 Air, iPhone 15 and iPhone 12 performance, thermal and 10 Mbps cold-load evidence.",
+    "Visual approval received; reproducible reference set and user-authorized blessing still required.",
+    "Fallback implemented and local accessibility checks pass; actual screen-reader/touch, cross-browser and scholarly review still required; final user sign-off.",
+    "Confirm production hosting target and measured compressed delivery before publishing.",
+    "External spec and ledger artifact copies not republished."
+  ],
+  "completion_checklist": "docs/release-checklist.md"
+}

@@ -21,6 +21,7 @@
     position: fixed; top: 0; right: calc(6px + env(safe-area-inset-right));
     width: 2px; height: 0; background: #C9A45B; opacity: .35;
   }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
   #cap {
     position: fixed; left: 16px; top: 14px; display: none;
     font: 11px/1.6 ui-monospace, Menlo, monospace; color: #C9A45B; white-space: pre;
@@ -39,10 +40,11 @@
 <div id="poster" aria-hidden="true" style="background-image:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAUACADASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAYBBAX/xAAjEAABBAEDBAMAAAAAAAAAAAABAAIDBBEFEiEGMUHRcXLB/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAEC/8QAGxEBAQABBQAAAAAAAAAAAAAAAQACAxEhMUH/2gAMAwEAAhEDEQA/AIONj5HbY2lzj4AyVro3tJDmOBHghdmk3IKNoTTRSPxwNkm3HtUsfUGmSjBsWofsN3tHJOioD7RiK5DqNvkXKUwPiWNpP4vN1ujWr0ZJW162Tw18biDn47IanOyVcKXWoi3YiZPZESX/2Q==)"><img src="/poster.jpg" alt="" decoding="async" fetchpriority="high"></div>
 <div id="spacer" aria-hidden="true"></div>
 <canvas id="gl" role="img" aria-label="An aged parchment bearing Sūrat al-Fātiḥah, unrolled, written in ink, and raised into gilded relief as you scroll"></canvas>
-<div id="hud" role="status" aria-live="polite"></div>
+<div id="hud" aria-hidden="true"></div>
+<div id="announce" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 <div id="bar" aria-hidden="true"></div>
 <div id="cap" role="status"></div>
 </main>
-<script type="module" src="/src/main.ts"></script>
+<script type="module" src="/src/boot.ts"></script>
 </body>
 </html>

@@ -1,0 +1,454 @@
+{
+  "date": "2026-09-07",
+  "version": "v1.6.6",
+  "status": "Step 1 open; no demonstrated fix; nothing blessed",
+  "notes": [
+    "September 11 follow-up: CPU vertex/index/storage uploads added to opt-in trace, including mapped-at-creation bytes. Does not observe GPU writes. Four trace tests added (22 total pass); build passes. Repeat runner now reports save failures and retains window.__repeatResult. The 72-page trace completed with two differing poses despite matching traced inputs; see first run. No fix established. September 12 local release hardening does not change rendering or waive this blocker.",
+    "Each sequence uses 36 poses twice; excludes noblob. JSON sink files have a historical .png extension.",
+    "Source-target hashes matched in one sequence; shader strings and CPU uniform bytes matched in another, despite final pixel differences. This does not prove that all GPU state is equal.",
+    "Isolated removal of environment, shadows and MSAA did not establish a fix. Direct GPU readback also varied.",
+    "Fine-derivative, first-order-AA, shader-dump and color-only experiments were removed. No material change was adopted.",
+    "The GPU-input tracing run spanned an equivalent QA-only edit from GPUBufferUsage.UNIFORM to numeric 0x40; diagnostic evidence, not final acceptance."
+  ],
+  "runs": [
+    {
+      "date": "2026-09-11",
+      "file": "qa/review/v166-targeted-sequence-normal-15-1789153171221.png",
+      "options": "?sequence=1&gpuTrace=1&saveDiff=1",
+      "captures": 72,
+      "errors": 0,
+      "saveErrors": 0,
+      "differences": [{ "key": "0.76-T1", "changedPixels": 198, "maxDelta": 19 }, { "key": "0.71-T3", "changedPixels": 12, "maxDelta": 8 }],
+      "verification": "All 36 pose pairs have equal traced shader strings and CPU-uploaded uniform/vertex/index/storage buffer hashes. All four saved PNGs independently decoded; raw RGBA hashes and difference counts/maxima reproduced. Both masks and final report saved successfully.",
+      "conclusion": "This run excludes a difference in the traced CPU uploads, not all GPU state. GPU-written contents, pipeline descriptors, draw/binding state and driver execution remain outside this trace. No demonstrated cause/fix; approved rendering unchanged."
+    },
+    {
+      "date": "2026-09-11",
+      "options": "?sequence=1&centroidRelief=1&saveDiff=1",
+      "status": "INCOMPLETE: evidence sink stopped while saving first mismatch mask; no completed matrix report",
+      "differences": [{ "key": "0.71-T1", "changedPixels": 341, "maxDelta": 21, "bounds": [481,148,948,798] }],
+      "evidence": ["qa/review/v166-diff-0.71-T1-1789152674863-baseline.png", "qa/review/v166-diff-0.71-T1-1789152674863-repeat.png"],
+      "verification": "Both actual PNGs independently decoded to RGBA; hashes differ and 341 differing pixels verified. No mask or final sequence report saved. Explicit centroid sampling did not eliminate variation in this pose; experiment removed, approved default restored."
+    },
+    {
+      "file": "qa/review/v166-targeted-sequence-normal-15-1789136074058.png",
+      "date": "2026-09-11",
+      "options": "?sequence=1&saveDiff=1",
+      "captures": 72,
+      "errors": 0,
+      "differences": [
+        { "key": "0.34-T1", "changedPixels": 1, "maxDelta": 1, "bounds": [132,804,132,804] },
+        { "key": "0.71-T1", "changedPixels": 178, "maxDelta": 10, "bounds": [479,152,945,800] },
+        { "key": "0.86-T2", "changedPixels": 911, "maxDelta": 56, "bounds": [5,341,386,686] },
+        { "key": "1-T2", "changedPixels": 4, "maxDelta": 2, "bounds": [71,261,230,560] },
+        { "key": "0.93-T3", "changedPixels": 93, "maxDelta": 12, "bounds": [50,196,334,626] },
+        { "key": "1-T3", "changedPixels": 90, "maxDelta": 189, "bounds": [48,207,335,624] }
+      ],
+      "evidence": "Each differing row in the raw report links actual baseline/repeat PNGs and an orange difference mask. Independently decoded all 12 PNGs to RGBA and reproduced their recorded SHA-256 values; masks are diagnostics, not references.",
+      "inspection": "Inspected T2 p=.86 pair and mask and T3 p=1 mask: sparse changes concentrate on lettering, without a broad background/parchment shift. Separate T1 p=.34 case changes one background-edge pixel by one green level. Largest T3 p=1 difference at (107,366): RGB (34,24,18) to (198,200,207). No demonstrated cause or fix."
+    },
+    {
+      "file": "qa/review/v166-targeted-sequence-normal-15-1789135934561.png",
+      "date": "2026-09-11",
+      "options": "?sequence=1&noReliefBias=1",
+      "captures": 72,
+      "errors": 0,
+      "differences": [{ "key": "0.93-T1", "changedPixels": 804, "maxDelta": 30, "bounds": [444,40,997,825] }],
+      "note": "Removing relief polygon offset did not fix capture differences. Experiment removed; approved offset restored."
+    },
+    {
+      "file": "qa/review/v166-targeted-sequence-normal-15-1789134463765.png",
+      "date": "2026-09-11",
+      "options": "?sequence=1",
+      "captures": 72,
+      "errors": 0,
+      "differences": [
+        { "key": "0.86-T1", "changedPixels": 4817, "maxDelta": 100, "bounds": [343,317,1093,899] },
+        { "key": "0.93-T1", "changedPixels": 419, "maxDelta": 28, "bounds": [444,40,996,824] }
+      ],
+      "note": "Approved default shader restored; capture required-asset fail-closed correction applied. 34/36 poses repeat-identical. No fix or blessing."
+    },
+    {
+      "file": "qa/review/v166-targeted-sequence-normal-15-1789134293535.png",
+      "date": "2026-09-11",
+      "options": "?sequence=1&noReliefDerivatives=1",
+      "captures": 72,
+      "differences": [
+        { "key": "0.86-T1", "changedPixels": 2812, "maxDelta": 128, "bounds": [348,317,1084,899] },
+        { "key": "1-T2", "changedPixels": 1, "maxDelta": 1, "bounds": [71,261,71,261] },
+        { "key": "0.76-T3", "changedPixels": 25, "maxDelta": 8, "bounds": [49,276,309,630] }
+      ],
+      "note": "In-app WebGPU, authored relief footprint and normal-derivative AA both disabled. Differences remain; this does not rule out every derivative elsewhere in the pipeline. Experiment removed, approved default shader preserved."
+    },
+    {
+      "file": "qa/review/v166-targeted-sequence-normal-15-1788982513719.png",
+      "date": "2026-09-09",
+      "options": "?sequence=1",
+      "captures": 72,
+      "errors": 0,
+      "differences": [
+        { "key": "1-T1", "changedPixels": 29, "maxDelta": 23, "bounds": [503, 229, 682, 816] },
+        { "key": "0.645-T3", "changedPixels": 6, "maxDelta": 1, "bounds": [90, 727, 374, 735] }
+      ],
+      "note": "Local Chrome after fallback implementation; no visual renderer changes. Two cases differ; not a fix or blessing."
+    },
+    {
+      "file": "qa/review/v166-targeted-gpu-sequence-normal-15-1788792219926.png",
+      "options": "?sequence=1&gpuReadback",
+      "captures": 72,
+      "differences": [
+        {
+          "key": "0.86-T2",
+          "changedPixels": 4559,
+          "maxDelta": 56,
+          "bounds": [
+            0,
+            340,
+            389,
+            686
+          ]
+        }
+      ],
+      "inputDifferences": []
+    },
+    {
+      "file": "qa/review/v166-targeted-sequence-normal-15-1788792343470.png",
+      "options": "?sequence=1&traceSources",
+      "captures": 72,
+      "differences": [
+        {
+          "key": "0.76-T1",
+          "changedPixels": 752,
+          "maxDelta": 25,
+          "bounds": [
+            427,
+            172,
+            1004,
+            898
+          ]
+        },
+        {
+          "key": "1-T1",
+          "changedPixels": 5042,
+          "maxDelta": 64,
+          "bounds": [
+            443,
+            57,
+            999,
+            849
+          ]
+        },
+        {
+          "key": "0.76-T2",
+          "changedPixels": 1,
+          "maxDelta": 1,
+          "bounds": [
+            145,
+            315,
+            145,
+            315
+          ]
+        }
+      ],
+      "inputDifferences": []
+    },
+    {
+      "file": "qa/review/v166-targeted-sequence-normal-15-1788792662382.png",
+      "options": "?sequence=1&noenv=1",
+      "captures": 72,
+      "differences": [
+        {
+          "key": "0.645-T1",
+          "changedPixels": 4,
+          "maxDelta": 1,
+          "bounds": [
+            566,
+            846,
+            1046,
+            859
+          ]
+        },
+        {
+          "key": "0.86-T1",
+          "changedPixels": 4088,
+          "maxDelta": 93,
+          "bounds": [
+            362,
+            319,
+            1075,
+            899
+          ]
+        },
+        {
+          "key": "1-T2",
+          "changedPixels": 7,
+          "maxDelta": 1,
+          "bounds": [
+            68,
+            238,
+            343,
+            467
+          ]
+        },
+        {
+          "key": "0.93-T3",
+          "changedPixels": 81,
+          "maxDelta": 29,
+          "bounds": [
+            50,
+            195,
+            335,
+            629
+          ]
+        }
+      ],
+      "inputDifferences": []
+    },
+    {
+      "file": "qa/review/v166-targeted-sequence-normal-15-1788792855896.png",
+      "options": "?sequence=1&nomsaa=1",
+      "captures": 72,
+      "differences": [
+        {
+          "key": "0.76-T1",
+          "changedPixels": 204,
+          "maxDelta": 10,
+          "bounds": [
+            204,
+            40,
+            1240,
+            897
+          ]
+        }
+      ],
+      "inputDifferences": []
+    },
+    {
+      "file": "qa/review/v166-targeted-sequence-normal-15-1788793059243.png",
+      "options": "?sequence=1&fineDerivatives=1",
+      "captures": 72,
+      "differences": [
+        {
+          "key": "0.45-T1",
+          "changedPixels": 1,
+          "maxDelta": 1,
+          "bounds": [
+            593,
+            816,
+            593,
+            816
+          ]
+        },
+        {
+          "key": "0.71-T1",
+          "changedPixels": 111,
+          "maxDelta": 9,
+          "bounds": [
+            501,
+            152,
+            933,
+            799
+          ]
+        },
+        {
+          "key": "1-T1",
+          "changedPixels": 967,
+          "maxDelta": 38,
+          "bounds": [
+            450,
+            62,
+            991,
+            847
+          ]
+        }
+      ],
+      "inputDifferences": []
+    },
+    {
+      "file": "qa/review/v166-targeted-sequence-normal-15-1788793222844.png",
+      "options": "?sequence=1&gpuTrace=1",
+      "captures": 72,
+      "differences": [
+        {
+          "key": "0.93-T1",
+          "changedPixels": 759,
+          "maxDelta": 23,
+          "bounds": [
+            444,
+            40,
+            994,
+            826
+          ]
+        },
+        {
+          "key": "1-T2",
+          "changedPixels": 35,
+          "maxDelta": 14,
+          "bounds": [
+            67,
+            213,
+            345,
+            490
+          ]
+        },
+        {
+          "key": "0.645-T3",
+          "changedPixels": 6,
+          "maxDelta": 1,
+          "bounds": [
+            90,
+            727,
+            374,
+            735
+          ]
+        }
+      ],
+      "inputDifferences": []
+    },
+    {
+      "file": "qa/review/v166-targeted-sequence-normal-15-1788793358312.png",
+      "options": "?sequence=1&firstOrderAA=1",
+      "captures": 72,
+      "differences": [
+        {
+          "key": "1-T2",
+          "changedPixels": 2,
+          "maxDelta": 1,
+          "bounds": [
+            75,
+            297,
+            81,
+            374
+          ]
+        },
+        {
+          "key": "0.71-T3",
+          "changedPixels": 24,
+          "maxDelta": 9,
+          "bounds": [
+            40,
+            232,
+            338,
+            641
+          ]
+        }
+      ],
+      "inputDifferences": []
+    },
+    {
+      "file": "qa/review/v166-targeted-sequence-normal-15-1788793491321.png",
+      "options": "?sequence=1&shadeDebug=color",
+      "captures": 72,
+      "differences": [
+        {
+          "key": "0.71-T2",
+          "changedPixels": 57,
+          "maxDelta": 1,
+          "bounds": [
+            43,
+            140,
+            342,
+            729
+          ]
+        },
+        {
+          "key": "1-T2",
+          "changedPixels": 6,
+          "maxDelta": 1,
+          "bounds": [
+            227,
+            214,
+            341,
+            627
+          ]
+        }
+      ],
+      "inputDifferences": []
+    },
+    {
+      "file": "qa/review/v166-targeted-sequence-noshadow-15-1788792445369.png",
+      "options": "?sequence=1&noshadow",
+      "captures": 72,
+      "differences": [
+        {
+          "key": "0.71-T1",
+          "changedPixels": 90,
+          "maxDelta": 11,
+          "bounds": [
+            491,
+            238,
+            931,
+            799
+          ]
+        },
+        {
+          "key": "0.86-T1",
+          "changedPixels": 21516,
+          "maxDelta": 102,
+          "bounds": [
+            342,
+            316,
+            1096,
+            899
+          ]
+        },
+        {
+          "key": "0.93-T2",
+          "changedPixels": 107,
+          "maxDelta": 41,
+          "bounds": [
+            50,
+            200,
+            345,
+            578
+          ]
+        },
+        {
+          "key": "0.71-T3",
+          "changedPixels": 26,
+          "maxDelta": 8,
+          "bounds": [
+            74,
+            232,
+            334,
+            632
+          ]
+        },
+        {
+          "key": "0.86-T3",
+          "changedPixels": 1243,
+          "maxDelta": 118,
+          "bounds": [
+            1,
+            340,
+            389,
+            685
+          ]
+        },
+        {
+          "key": "0.93-T3",
+          "changedPixels": 67,
+          "maxDelta": 12,
+          "bounds": [
+            50,
+            196,
+            334,
+            614
+          ]
+        },
+        {
+          "key": "1-T3",
+          "changedPixels": 78,
+          "maxDelta": 11,
+          "bounds": [
+            51,
+            207,
+            344,
+            626
+          ]
+        }
+      ],
+      "inputDifferences": []
+    }
+  ]
+}

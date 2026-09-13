@@ -28,6 +28,7 @@ import { cos, dot, float, fract, mix, sin, smoothstep, uv, vec2, vec3, vec4 } fr
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type N = any;
+export const diagnosticBakes: RenderTarget[] = [];
 
 /** Sinless 2D hash → [0,1). */
 function hash2(p: N): N {
@@ -91,6 +92,7 @@ function bake(
   renderer.setRenderTarget(rt);
   renderer.render(scene, cam);
   renderer.setRenderTarget(prev);
+  if (new URLSearchParams(location.search).has('traceSources')) diagnosticBakes.push(rt);
   return rt.texture;
 }
 

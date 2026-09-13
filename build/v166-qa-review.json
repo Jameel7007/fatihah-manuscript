@@ -1,0 +1,33 @@
+{
+  "version": "v1.6.6",
+  "date": "2026-09-06",
+  "blessed": false,
+  "hold": {
+    "url": "http://localhost:4521/?tier=1&hold=60&v=166qa",
+    "seconds": 60,
+    "meanLuma": 7.16,
+    "driftPercent": 1.52,
+    "limitPercent": 2,
+    "pass": true,
+    "scope": "Local in-app browser, requested tier 1, no demotion shown in final HUD. After assets, final pose and eight seconds of stable render configuration. Summary transcribed from rendered QA HUD, not physical-device certification."
+  },
+  "matrix": {
+    "webgpu": {
+      "runs": ["qa/review/v166-webgpu-run1.json", "qa/review/v166-webgpu-run2.json"],
+      "framesPerRun": 37,
+      "captureErrors": 0,
+      "matching": 34,
+      "mismatches": ["R-0.645-T1-webgpu", "R-0.760-T2-webgpu", "R-0.930-T2-webgpu"],
+      "repeatabilityPass": false
+    },
+    "webgl2": {
+      "runs": ["qa/review/v166-webgl2-run1.json", "qa/review/v166-webgl2-run2.json"],
+      "framesPerRun": 37,
+      "captureErrors": 0,
+      "matching": 37,
+      "mismatches": [],
+      "repeatabilityPass": true
+    }
+  },
+  "physicalDevices": "not verified"
+}

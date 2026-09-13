@@ -575,8 +575,91 @@
   }
  },
  "v16_pending": {
+  "clean_satin_pass": {
+   "release_hardening_2026_09_12": {
+    "report": "build/v166-release-local-2026-09-12.json",
+    "status": "local production checks only; no new reference hashes or M7/M8 closure",
+    "approval": "User reaffirmed the approved look and asked to finish; cleaner gold and canonical scripture preserved",
+    "change": "Reduced-motion 44px targets, visible focus, keyboard focus/selection agreement, Home/End and shortcut/editing guards; labelled ordinary buttons with aria-current; state-only atomic announcements replace per-frame live HUD chatter. Opt-in performance save checks HTTP success, times out at 10 seconds and displays success/failure rather than silently losing exports.",
+    "verification": "Production build and 22 tests pass; 66 local accessibility checks and 17 fallback checks pass; payload 7.092 MB Brotli. Full evidence and limitations in the report.",
+    "remaining": "Intermittent WebGPU capture differences, named-device/work-budget/loading evidence, cross-browser/accessibility/content review, hosting target and explicit release sign-off; artifacts not republished"
+   },
+   "capture_followup_2026_09_11": {
+    "upload_trace": "Expanded trace: 72 cold captures, no capture/save errors; T1 p=.76 differs at 198 pixels/max19, T3 p=.71 at 12/max8 despite equal traced CPU uploads and shaders in all 36 pairs. Four saved PNG raw hashes independently verified. See investigation report. Build and 22 tests pass; no cause/fix or blessing.",
+    "centroid_isolation": "Unsuccessful candidate: saved T1 p=.71 pair differs at 341 pixels, max 21 (independent RGBA verification). Evidence sink stopped before mask/final report; sequence incomplete. Experiment removed; approved interpolation restored. See investigation report; no blessing.",
+    "depth_bias_isolation": "72 cold captures: T1 p=.93 differs at 804 pixels (max 30). Not a fix; experiment removed, approved offset restored. Runner navigates once with all options, retains errors, and supports opt-in saveDiff for actual image pairs and explanatory masks.",
+    "saved_image_sequence": "qa/review/v166-targeted-sequence-normal-15-1789136074058.png: 72 captures, zero errors, six differing poses. All 12 actual PNGs independently decoded and matched recorded raw RGBA hashes. Diagnostic masks are not references. Build and 18 tests pass; no cause/fix established.",
+    "report": "build/v166-step1-investigation.json",
+    "september_9_sequence": "72 cold captures; 34/36 poses repeat-identical; differences T1 p=1 (29 pixels, max 23), T3 p=.645 (6 pixels, max 1); no errors",
+    "diagnostic": "noReliefDerivatives isolation: 72 cold pages, three differing poses; no fix. Experiment removed; approved default shader unchanged.",
+    "capture_integrity": "Required ink/glyph asset errors now reject capture rather than hashing missing text. Four loader tests added. Successful capture appearance unchanged.",
+    "latest_default_sequence": "72 fresh captures after integrity correction, zero errors; 34/36 poses repeat-identical. T1 p=.86: 4817 differing pixels, max 100; p=.93: 419 pixels, max 28. Report indexes raw evidence. Build and 18 tests pass; no demonstrated fix.",
+    "payload_brotli_mb": 7.092,
+    "status": "Capture blocker unresolved; no hashes blessed or gates closed"
+   },
+   "renderer_failure_folio_2026_09_09": {
+    "status": "implemented; local Chrome QA only; no blessing or gate closure",
+    "provenance": "build/fallback-plates.json",
+    "source": "qa/review/fallback-plates-source.png (JSON)",
+    "assets": "Seven real 768x960 T1 WebGL2 ss=2 captures, each repeated on two cold pages; JPEG .70; 252382 / 280000 bytes",
+    "qa": "17 local DOM/resource/capture checks pass at 1440x900 and 390x844; physical touch and cross-browser review outstanding",
+    "appearance": "Approved v1.6.6 gold, geometry and canonical scripture unchanged"
+   },
+   "m7_readiness_2026_09_07": {
+    "refresh_safe_local_smoke": "Fresh dev-browser 60-second run T1→T1, 7201 intervals, rAF p95 9.1 ms / max 25.0 ms, CPU update/submit p95 1.00 ms. Visible HUD summary in build/v166-m7-readiness.json. No physical-device or frame-work certification; no blessing.",
+    "refresh_safe_fallback_2026_09_08": "Runtime rAF fallback now uses 60/60/30 fps playback intervals with the existing 1.25 factor. Independent 12/14/27 ms work budgets remain unchanged and unverified. Fourteen tests and typecheck pass, including steady cadence and sustained thermal overload. Supersedes prior perfect-60-Hz false-demotion reproduction. No capture appearance change; no blessing or milestone closure.",
+    "cpu_diagnostic_2026_09_08": "Separate CPU update/submit timing added to perf reports; 12 tests and typecheck pass. Short fresh dev-browser smoke: 1143 rAF intervals, p95 9.4 ms, max 33.3 ms; CPU p95 1.10 ms. T1 demoted to T2. Not GPU timing, frame-total compliance or physical-device certification. Gold and capture appearance unchanged; nothing blessed.",
+    "tier_history_followup": "True trailing 3-second timestamp window replaces latest-frame-based sample count; invalid durations rejected. Ten tests and typecheck pass. Earlier perf run predates this change. Perfect synthetic 60 Hz still demotes T1 at 181 frames: cadence bias remains unresolved. No visual/capture change or blessing.",
+    "status": "local diagnostics only; no blessing or gate closure",
+    "report": "build/v166-m7-readiness.json",
+    "step1_latest": "build/v166-step1-investigation.json",
+    "note": "Supersedes the September 6 investigation status below: extended isolations completed but no fix established. M7 audit now retains stalls and demotion history; DPR cap cannot increase at demotion. Seven tests, build and canonical text pass. Payload 6.867 MB brotli. M2 Pro production 60-second rAF sample p95 16.6 ms, max 25.7 ms; demoted T1 to T2, so not a T1 or named-device pass. Material and default capture behavior unchanged."
+   },
+   "repeatability_investigation": "2026-09-06: two temporal traces of T1 p=.645 were constant at frames 15/30/60/90. Eight fresh loads each of the three original failing cases (24 captures) were pixel-identical. Two 36-frame sequences (72 captures, excluding noblob) reproduced differences at six cases, including other poses: some 1-level sparse differences and others up to 118 levels. Evidence: qa/review/v166-targeted-normal-15.png and v166-targeted-sequence-normal-15.png (JSON). Shadow-disabled sequence stalled and was stopped; inconclusive. Cause and fix remain unverified. Temporary main-loop instrumentation removed; diagnostic public/qa/repeat.html retained. Visual behavior and blessed hashes unchanged.",
+   "qa_results_2026_09_06": {
+    "report": "build/v166-qa-review.json",
+    "hold60DriftPercent": 1.52,
+    "holdLimitPercent": 2,
+    "webgpuRepeat": "34/37 identical across two fresh-page runs; mismatches T1 p=.645, T2 p=.760 and .930; no capture errors",
+    "webgl2Repeat": "37/37 identical across two fresh-page runs; no capture errors",
+    "status": "local QA only; WebGPU repeatability and physical-device certification remain open; nothing blessed"
+   },
+   "qa_correction": "Hold audit previously sampled loading/arrival; 71.52% is not isolated steady-state drift. Now wait for assets ready, p within 1e-5 of 1, and 8 seconds of unchanged tier/SS/canvas before sampling. No in-run samples discarded. Visual behavior unchanged; no gate sign-off inferred.",
+   "version": "v1.6.6",
+   "date": "2026-09-06",
+   "status": "visually approved 2026-09-09; unblessed; capture stability, full regression, physical-device and scholarly/content evidence pending",
+   "visual_approval": { "date": "2026-09-09", "user_statement": "it's signed off continue", "scope": "Current v1.6.6 gold and scroll presentation only; no technical gate closure or hash blessing inferred" },
+   "changes": "No gold burnish/wear sampling, marker/ring roughness bias or anisotropy. Constant gold base roughness 0.52 and metalness 0.72, retaining specular AA. Shading slope 1.2*(1-clamp(s,0,1))^2 with three footprint samples, scaled by depth/bevel and guard; blended from authored slope using cluster gilding factor. Geometry, scripture, palette and supersampling unchanged.",
+   "verification": "Production build, canonical-text verification and payload check pass (6.866 MB brotli). Fresh 1440x900 ss=2 final capture displayed text with no captured warnings/errors; live portrait final inspected. Single 10s hold audit reported 71.52% flux drift versus 2% limit; startup versus steady-state cause not isolated. Stability remains open. No new blessed frame hashes.",
+   "candidates": {}
+  },
+  "curve_smoothing_pass": {
+   "version": "v1.6.5",
+   "date": "2026-09-06",
+   "status": "unblessed candidate; visual sign-off, capture stability, full matrix and physical-device runs pending",
+   "changes": "T1/T2 grid 6.75 fu, chord tolerance 0.15 fu, minimum segment 0.75 fu, recursion depth 6. Crown normals preserve interpolated boundary-gradient magnitude. v1.6.4 materials and supersampling retained; canonical text and T3 geometry unchanged.",
+   "mesh": {
+    "vertices": 332367,
+    "triangles": 535935,
+    "worstOuterEm": 0.00469,
+    "worstOuterPx1440": 0.317,
+    "sha256": "8cfd67ca70681497b3996441679d1075fec0c54ecba60f24786f80adaa6a386c"
+   },
+   "payloadBrotliMB": 6.866,
+   "verification": "Production build, canonical-text verification, mesh audit and payload check pass. Live final text and 1440x900 transition capture visually inspected. Live final browser warning/error log empty; adaptive tier demoted to T2. No new frame hash accepted or blessed; capture stability and physical-device performance remain unverified.",
+   "candidates": {}
+  },
+  "satin_relief_pass": {
+   "version": "v1.6.4",
+   "normal_experiment": "Animated-depth normal varying reverted during capture investigation. Capture instability also occurred after reverting, so causation is unproven. Stable baked profile normals retained. Sidewall scene-linear RGB is (0.50, 0.32, 0.10).",
+   "date": "2026-09-05",
+   "status": "unblessed candidate; visual approval and fresh full regression/device evidence pending",
+   "changes": "Remove flat-ink opacity mask and alpha test from extruded relief. Opaque geometry/MSAA/spatial SS resolve edges. Satin crown roughness 0.48–0.54; side/crown metalness 0.65/0.72, crown wear reduction up to 0.48. Background, hue, text and mesh assets unchanged.",
+   "candidates": {},
+   "verification": "TypeScript and production build pass. Live p=1 visually checked with text visible and no captured browser warning/error logs. Supersampled capture tests were inconsistent (including blank displayed canvases); no new candidate hash accepted. Investigate capture lifecycle before full matrix. Previous revision hashes and performance/payload reports are historical."
+  },
   "note": "v1.6 universe ground (user direction 2026-09-01: deep-blue universe with tiny stars behind the gold). Changes the background floor (#0D0906 → #080D26 → #05081C → #040617 → #020411 → #01030D (\"darker\" four times, \"black/blue, a tad darker\"), re-solved through the AgX chain: linear 0.00021515/0.0023545/0.0078083), adds the sky lobe/nebula/stars, cools the env base and the rim (#FFBE83 → #D6E0FF), gold env ×1.6. EVERY blessed frame above is superseded once the look is signed off — re-bless the T1 set (two cold loads each), the mobile T2/T3 set and the noblob frame from the matrix runner; regenerate poster.jpg + LQIP (done as a candidate, 67,579 B). Second review pass: lobe held to ×1.55 (a ×2.8 lobe read as \"dark, then bright again\" — it is in view at p 0 and 1, not while reading), stars σ 0.65–1.25 px (was 0.9–1.8), halo ×3 at 1.2%. Poster 59,189 B. Third pass: floor #020411 (displays 1.6/4/17); the star law unit pinned to 0.0047 scene-linear (the #040617 floor luminance) so the stars did not dim with the ground. Poster 59,041 B. Fourth pass: floor #01030D (displays 1.1/2.9/13.6 — red on the +1-count lift); star clearance: the assembly footprint (center anchor→rest through the sheet pose, half-extents 0.26×0.37, camera tangent plane) fades the stars from 1.25× to 1.75× its ellipse. Poster 53,556 B. Fifth pass (live p=0 screenshot: \"dumb when the stars aren't even\"): clearance gated by faceFactor (only the standing block clears), margin tightened to 1.02-1.25x; stars sigma 0.55-1.05 px; sky cost cut (4-cell star search, 2-octave nebula) after the user's M1 Air showed DEMOTED T2. Poster 56,591 B.",
-  "status": "pending user sign-off of the look + text pass (review: text10-R100{,-zoom3,-zoom4,-basmalah-crop}.png)",
+  "status": "Historical v1.6 candidates superseded by v1.6.6, visually approved 2026-09-09 and reaffirmed 2026-09-12; current references remain unblessed pending reproducibility and release evidence",
   "candidates": {
    "R-0.00-T1": "eda2ed128101b764",
    "R-0.45-T1": "674287792b2facd2",
@@ -591,6 +674,65 @@
     "R-1.00-T1-2560": "c9ef2b80c902163c",
     "R-1.00-T1-2560-ss2": "57d4587e584a1f43"
    }
+  },
+  "finish_pass": {
+   "version": "v1.6.2",
+   "date": "2026-09-02",
+   "status": "pending explicit user visual sign-off; candidates only — do not bless",
+    "note": "User reported that the 3D text was choppy and not beautiful, then asked to finish the project. Candidate adds fragment-footprint filtering of the analytic bevel slope, analytic coverage alpha-to-coverage, stroke-tangent anisotropy 0.25, broad #E4C06F gold at roughness 0.30-0.42, portrait reading fit, staged loading, tiered shadows/contact, a dedicated 257,438-triangle T3 mesh, and correctly scaled instanced soft-disc dust valid on WebGPU (no grey overlap veil). Canonical text is unchanged and verify-text is green. Each key WebGPU hash below reproduced across two independent cold navigations on a settled server. The WebGL2 p=1 smoke candidate rendered cleanly once but is not a blessing. The prior 74-frame matrix is superseded for release; rerun/re-bless only after sign-off.",
+   "environment": "Chromium in-app browser; Three r185; WebGPU; DPR 1 deterministic capture",
+   "candidates": {
+    "R-0.000-T1-1440x900-webgpu": "f30432eaf5bb4e4bc2cbbd158a8d715a6f720c1745ea88d93e66a728bc1e8522",
+    "R-0.500-T1-1440x900-webgpu": "6e4655c455b7012319f0036096accbd8acc0c852d57dec515e38342fa6c5ff90",
+    "R-1.000-T1-1440x900-webgpu": "913b9151e3343798e8e7b7d6c6d684852135370494e77a160177bd8074a64ee4",
+    "R-0.000-T3-390x844-webgpu": "483d432c43e7e984a4a0de41557566e7fdad8118cf032e5a4b28e1b102300865",
+    "R-0.500-T3-390x844-webgpu": "9d15863beccb2e02351ab9f88338bea7cd7f30e1c0c2db6c483bb00c893e7433",
+    "R-1.000-T3-390x844-webgpu": "bcd2fe7c15112437d89bd55962f11e19924381abf52b4ee41439d26d1fde3cc1"
+   },
+   "smoke": {
+    "R-1.000-T1-1440x900-webgl2": "1001b700ae7c8234fa004643b185cc2fe86813ec7535a12816147563b023ecca"
+   },
+   "payload": {
+    "full_shipped_set_brotli_mb": 5.784,
+      "phase_a_brotli_mb": 0.256,
+    "poster_to_live_estimate_s_at_10mbps": 1.69
+   },
+   "live_harness": {
+    "r_flick": "PASS — peak 1.07e-3 < 2.7e-3 clamp; settled true; NaN false",
+    "storm_15s": "PASS — 1720 frames; NaN 0; pOut 0; errors 0"
+   }
+  },
+  "motion_smoothing_pass": {
+   "version": "v1.6.3",
+   "date": "2026-09-02",
+   "status": "pending explicit user visual sign-off and physical-device runs; candidates only — do not bless",
+   "note": "User asked to smooth the font specifically while it turns 3D, then authorized the change. The live beauty pass now ramps spatial resolution with relief visibility: T1 1.0→1.5x, T2 1.0→1.25x, T3 1.0x; T1 still eases to 2.0x after roughly four seconds at rest. Factors are quantized to eighth steps to avoid render-target churn. Capture mode remains pinned at ss=1 unless ?ss=N is explicit, preserving deterministic QA. T1/T2 curved boundary chords tighten from 0.6 fu to 0.35 fu (1.25 fu minimum segment, depth 5); the rest of the face grid is unchanged. No temporal accumulation is used, so scroll reversals cannot leave ghost trails. Each key WebGPU hash below reproduced across two fresh navigations on a settled server. Nothing is blessed; the prior 74-frame matrix remains superseded until user sign-off.",
+   "environment": "Chromium in-app browser; Three r185; WebGPU; DPR 1 deterministic capture",
+   "live_supersample": {
+    "activation": "smoothstep across p=0.62..0.73; eighth-step quantization",
+    "T1": "1.0x→1.5x during relief/rise; up to 2.0x after idle",
+    "T2": "1.0x→1.25x during relief/rise",
+    "T3": "1.0x"
+   },
+   "mesh": {
+    "T1_T2": "258,360 verts / 401,150 tris / 0.35 fu chord tolerance; glyphs.bin sha256 fdcc5a3cfdc481fa2c8016b108ef0db12a3ca0534f1af83dd19e8d2310c9cd50",
+    "T3": "165,911 verts / 257,438 tris / 0.6 fu chord tolerance; glyphs-t3.bin sha256 63e173eee0b49e530eaf145b8cfa1f276f790670d5fb501c7eb50dbf9921c5b9",
+    "silhouette": "worst outer 0.005547 em / 0.3750 px @1440 for T1/T2; 0.006855 em / 0.4634 px for T3; both pass the 0.008 em gate"
+   },
+   "candidates": {
+    "R-0.000-T1-1440x900-webgpu": "f30432eaf5bb4e4bc2cbbd158a8d715a6f720c1745ea88d93e66a728bc1e8522",
+    "R-0.500-T1-1440x900-webgpu": "6e4655c455b7012319f0036096accbd8acc0c852d57dec515e38342fa6c5ff90",
+    "R-1.000-T1-1440x900-webgpu": "ece26205bc957a22f9b2b84165a89996e81fa46362baf016dbd51ee5a813607e",
+    "R-0.000-T3-390x844-webgpu": "483d432c43e7e984a4a0de41557566e7fdad8118cf032e5a4b28e1b102300865",
+    "R-0.500-T3-390x844-webgpu": "9d15863beccb2e02351ab9f88338bea7cd7f30e1c0c2db6c483bb00c893e7433",
+    "R-1.000-T3-390x844-webgpu": "bcd2fe7c15112437d89bd55962f11e19924381abf52b4ee41439d26d1fde3cc1"
+   },
+   "payload": {
+    "full_shipped_set_brotli_mb": 5.813,
+    "phase_a_brotli_mb": 0.257,
+    "poster_to_live_estimate_s_at_10mbps": 1.69
+   },
+   "local_perf": "Embedded-browser ?perf=10 sample: T1 demoted to T2; settled T2 p50 8.3 ms / p95 16.6 ms. This is diagnostic only, not M1 Air or iPhone evidence."
   }
  }
 }

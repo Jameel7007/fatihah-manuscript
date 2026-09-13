@@ -1,5 +1,5 @@
 // Quality tiers — §19. Initial heuristic (WebGPU/pointer/deviceMemory/physical resolution),
-// then a RUNTIME monitor: demote when the p95 frame time exceeds 1.25× the tier's budget over
+// then a RUNTIME pacing monitor: demote when p95 rAF interval exceeds 1.25× the playback interval over
 // a 3 s window, 10 s hysteresis, applied only at state-boundary crossings so nothing pops
 // mid-composition; never auto-promote during a session. Thermal guard: two consecutive demote
 // triggers at T3 → halve the DPR once more and stop measuring. `?tier=` overrides for QA.
@@ -14,6 +14,9 @@ export type Tier = 1 | 2 | 3;
 export const DPR_CAP: Readonly<Record<Tier, number>> = { 1: 2.0, 2: 2.2, 3: 1.25 };
 /** §19 frame-total budgets (ms, p95) */
 export const FRAME_BUDGET_MS: Readonly<Record<Tier, number>> = { 1: 12, 2: 14, 3: 27 };
+/** §19 playback targets: display intervals include vsync wait, unlike frame-work budgets.
+ * These govern runtime fallback only and never certify FRAME_BUDGET_MS. */
+export const PACING_BUDGET_MS: Readonly<Record<Tier, number>> = { 1: 1000 / 60, 2: 1000 / 60, 3: 1000 / 30 };
 /** §19 dust population per tier (fraction of the authored 640) */
 export const DUST_SCALE: Readonly<Record<Tier, number>> = { 1: 1, 2: 0.55, 3: 0 };
 
@@ -40,13 +43,14 @@ export interface TierChange {
 export class TierMonitor {
   tier: Tier;
   dprCap: number;
-  private times: number[] = [];
+  private times: Array<{ at: number; ms: number }> = [];
   private windowS = 3;
   private lastDemoteAt = -1e9;
   private pending: TierChange | null = null;
   private demotesAtT3 = 0;
   private stopped = false;
   private clock = 0;
+  private windowElapsed = 0;
 
   constructor(initial: Tier) {
     this.tier = initial;
@@ -56,22 +60,24 @@ export class TierMonitor {
   /** p95 of the current window (ms), for the HUD / perf harness. */
   get p95(): number {
     if (this.times.length < 8) return 0;
-    const s = [...this.times].sort((a, b) => a - b);
+    const s = this.times.map(sample => sample.ms).sort((a, b) => a - b);
     return s[Math.min(s.length - 1, Math.floor(s.length * 0.95))] ?? 0;
   }
 
   update(dtSeconds: number, atBoundary: boolean): TierChange | null {
     if (this.stopped) return null;
+    if (!Number.isFinite(dtSeconds) || dtSeconds <= 0) return null;
     this.clock += dtSeconds;
+    this.windowElapsed = Math.min(this.windowS, this.windowElapsed + dtSeconds);
     const ms = dtSeconds * 1000;
-    if (ms > 0 && ms < 250) this.times.push(ms); // ignore tab-hidden gaps
-    // keep a 3 s window by frame count at the observed rate
-    const frameEstimate = Math.max(8, Math.round(this.windowS / Math.max(1e-3, dtSeconds)));
-    while (this.times.length > frameEstimate) this.times.shift();
-    if (!this.pending && this.times.length >= 8 && this.clock - this.lastDemoteAt > 10) {
-      const budget = FRAME_BUDGET_MS[this.tier];
+    if (ms < 250) this.times.push({ at: this.clock, ms }); // existing gap policy; visibility handling remains separate
+    // Use elapsed time, not the latest frame's rate. A single slow frame must not
+    // shrink three seconds of history to a handful of samples and inflate p95.
+    while (this.times.length && this.times[0]!.at <= this.clock - this.windowS) this.times.shift();
+    if (!this.pending && this.windowElapsed >= this.windowS && this.times.length >= 8 && this.clock - this.lastDemoteAt > 10) {
+      const budget = PACING_BUDGET_MS[this.tier];
       if (this.p95 > 1.25 * budget) {
-        if (this.tier < 3) this.pending = { tier: (this.tier + 1) as Tier, dprCap: DPR_CAP[(this.tier + 1) as Tier], reason: 'demote' };
+        if (this.tier < 3) this.pending = { tier: (this.tier + 1) as Tier, dprCap: Math.min(this.dprCap, DPR_CAP[(this.tier + 1) as Tier]), reason: 'demote' };
         else {
           this.demotesAtT3++;
           if (this.demotesAtT3 >= 2) {
@@ -87,6 +93,7 @@ export class TierMonitor {
       this.tier = c.tier;
       this.dprCap = c.dprCap;
       this.times.length = 0;
+      this.windowElapsed = 0;
       if (c.reason === 'thermal') this.stopped = true; // "halve DPR once more and stop measuring"
       return c;
     }

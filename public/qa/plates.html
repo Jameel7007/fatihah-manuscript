@@ -1,0 +1,40 @@
+<!doctype html><meta charset="utf-8"><title>Unblessed folio capture</title>
+<style>body{background:#111;color:white;font:14px monospace}iframe{width:768px;height:960px;border:0}pre{white-space:pre-wrap}</style>
+<button id="start">Capture seven plates (two cold loads each)</button><pre id="status">Ready. Keep this tab visible.</pre>
+<script type="module">
+const poses=[0,.21,.45,.60,.685,.884,1];
+const status=document.querySelector('#status');
+document.querySelector('#start').onclick=async function(){
+ this.disabled=true;
+ try {
+ const plates=[];
+ for(let i=0;i<poses.length;i++){
+  const captures=[];
+  for(let run=0;run<2;run++){
+   status.textContent=`Plate ${i+1}/7, cold load ${run+1}/2`;
+   const frame=document.createElement('iframe');
+   frame.src=`/?capture=${poses[i]}&tier=1&w=768&h=960&backend=webgl2&ss=2&cold=${Date.now()}`;
+   document.body.append(frame);
+   const capture=await new Promise((resolve,reject)=>{
+    const start=Date.now();
+    const timer=setInterval(()=>{
+     const win=frame.contentWindow;
+     if(win?.__captureError){clearInterval(timer);reject(Error(win.__captureError));}
+     else if(win?.__capture){clearInterval(timer);resolve(win.__capture);}
+     else if(Date.now()-start>120000){clearInterval(timer);reject(Error('Capture timed out'));}
+    },100);
+   });
+   captures.push(capture);frame.remove();
+  }
+  if(captures[0].hash!==captures[1].hash)throw Error(`Plate ${i+1}: cold hashes differ`);
+  const img=new Image();img.src=captures[0].dataUrl;await img.decode();
+  const canvas=document.createElement('canvas');canvas.width=768;canvas.height=960;
+  canvas.getContext('2d').drawImage(img,0,0,768,960);
+  plates.push({p:poses[i],hashes:captures.map(c=>c.hash),backend:captures[0].backend,jpeg:canvas.toDataURL('image/jpeg',.70)});
+ }
+ const response=await fetch('/qa-save?name=fallback-plates-source',{method:'POST',body:JSON.stringify({version:'v1.6.6',blessed:false,width:768,height:960,ss:2,plates})});
+ if(!response.ok)throw Error(`Save failed ${response.status}`);
+ status.textContent='Saved seven unblessed plate sources. No manifest blessing performed.';
+ }catch(error){status.textContent=String(error);}finally{this.disabled=false;}
+};
+</script>
