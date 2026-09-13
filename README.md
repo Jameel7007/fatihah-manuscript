@@ -57,6 +57,7 @@ is deterministic by design, and every reference frame is a SHA-256 of the raw pi
 
 | What | Where |
 |---|---|
+| **Next steps and ready-to-paste prompts** | [`docs/next-steps.md`](docs/next-steps.md) |
 | **Specification** (the contract; numeric; revision history Δ at the end) | [`docs/spec.html`](docs/spec.html) — published: <https://claude.ai/code/artifact/1fe75f9f-9779-4526-b424-bac53ba1143f> |
 | **Build ledger** (milestones, decision log, QA ledger, what awaits review) | [`docs/status.html`](docs/status.html) — published: <https://claude.ai/code/artifact/9af3f15c-105e-4238-94e4-2b40e1891354> |
 | Blessed regression frames (SHA-256, per milestone) + pending candidates | [`qa/references/manifest.json`](qa/references/manifest.json) |
