@@ -6,6 +6,12 @@ Local production accessibility checks pass in desktop, phone-sized and compact v
 Current release evidence: `build/v166-release-local-2026-09-12.json`; remaining gates:
 `docs/release-checklist.md`. M7/M8 stay open; no new reference hashes are blessed.
 
+September 12 evening review: the approved gold checked frame by frame on desktop and phone
+aspects and left unchanged; `index.html` gains the #01030D page ground (was the pre-v1.6 warm void),
+a release title, description, theme-color and favicon. Open decisions (portrait poster, HUD, /qa in
+the bundle) and the idle-2× hold measurement are in the ledger and checklist; evidence in
+`build/v166-review-2026-09-12-fable.json`.
+
 September 11 follow-up: expanded GPU-input trace completed 72 cold captures. Two poses differed
 despite matching traced shaders and CPU uploads; GPU-state/driver cause is not established.
 Build, 22 tests and 7.092 MB Brotli payload check pass. Step 1 remains open; approved gold unchanged.

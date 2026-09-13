@@ -3,14 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Al-Fātiḥah 3D Manuscript — dev</title>
+<title>Al-Fātiḥah 3D Manuscript</title>
+<meta name="description" content="Sūrat al-Fātiḥah on an aged parchment that unrolls, is written in ink, and rises into gilded relief as you scroll.">
+<meta name="theme-color" content="#01030D">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2301030D'/%3E%3Cg fill='%23C9A45B'%3E%3Crect x='18' y='18' width='28' height='28'/%3E%3Crect x='18' y='18' width='28' height='28' transform='rotate(45 32 32)'/%3E%3C/g%3E%3Ccircle cx='32' cy='32' r='5.5' fill='%2301030D'/%3E%3C/svg%3E">
 <style>
-  html { background: #0D0906; }
-  body { margin: 0; background: #0D0906; color: #A2957A; }
+  html { background: #01030D; } /* §1 v1.6 universe floor — overscroll and first paint match the sky */
+  body { margin: 0; background: #01030D; color: #A2957A; }
   #spacer { width: 1px; }
   canvas#gl { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; opacity: 0; }
   /* §15 designed first frame: inline LQIP blur-up under the 1600×1000 poster JPEG of R-p0.00 */
-  #poster { position: fixed; inset: 0; z-index: 2; background: #0D0906 center / cover no-repeat; pointer-events: none; }
+  #poster { position: fixed; inset: 0; z-index: 2; background: #01030D center / cover no-repeat; pointer-events: none; }
   #poster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   #hud {
     position: fixed; left: 16px; bottom: calc(14px + env(safe-area-inset-bottom));

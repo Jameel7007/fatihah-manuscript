@@ -51,7 +51,15 @@ an isolated benchmark, named-device pass or GPU/frame-work certification.
    modifier/editing guards, 44px targets and quiet announcements at 1440×900, 390×844 and 320×320.
    Its 66 passing local checks do not replace axe or a real screen-reader/touch audit.
 6. **Final user sign-off and release.** Do not call the project complete until required evidence
-   and approvals are present. Published spec/ledger copies still need republishing when a tool is available.
+   and approvals are present. Published spec/ledger artifact copies were republished from the repo files on 2026-09-12 (evening); keep them in sync with every further docs change.
+
+September 12 (evening) fresh-eyes review: the approved gold is confirmed unchanged across the
+transition on both aspects; only `index.html` changed (page ground #01030D, title without “— dev”,
+description, theme-color, favicon) — the canvas and every capture hash are untouched. Decisions
+pending from the reviewer: a portrait poster variant (the landscape poster centre-crops on phones and
+pops at the crossfade), HUD visibility by default, and whether the /qa pages ship in the bundle.
+Engineering: measure the p = 1 idle 2× hold on the M1 Air — boundary-only demotion cannot rescue it.
+Evidence: `qa/review/fable-review-2026-09-12-*.png`, `build/v166-review-2026-09-12-fable.json`.
 
 Useful local commands:
 
