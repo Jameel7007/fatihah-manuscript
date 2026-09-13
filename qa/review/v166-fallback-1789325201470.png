@@ -1,0 +1,61 @@
+{
+  "date": "2026-09-13T18:46:41.470Z",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Claude/1.52386.3 Chrome/152.0.7977.76 Safari/537.36",
+  "url": "http://localhost:4521/qa/fallback.html?autorun=1&save=1",
+  "scope": "Local DOM/resource/synthetic keyboard and capture success/failure checks; not physical touch, cross-browser or capture repeatability certification",
+  "layouts": [
+    {
+      "mode": "fallback",
+      "width": 1440,
+      "height": 900,
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900,
+        "top": 0,
+        "right": 1440,
+        "bottom": 900,
+        "left": 0
+      },
+      "innerHeight": 900
+    },
+    {
+      "mode": "failRenderer",
+      "width": 390,
+      "height": 844,
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844,
+        "top": 0,
+        "right": 390,
+        "bottom": 844,
+        "left": 0
+      },
+      "innerHeight": 844
+    }
+  ],
+  "results": [
+    "PASS 1440×900 fallback: broken canvas hidden",
+    "PASS 1440×900 fallback: no horizontal page overflow",
+    "PASS 1440×900 fallback: controls inside viewport (0.5px integer-viewport rounding tolerance)",
+    "PASS 1440×900 fallback: next button",
+    "PASS 1440×900 fallback: End key and final plate",
+    "PASS 1440×900 fallback: last boundary disabled",
+    "PASS 1440×900 fallback: Home key and first boundary disabled",
+    "PASS 1440×900 fallback: forced static mode never loads Three or main",
+    "PASS 390×844 failRenderer: broken canvas hidden",
+    "PASS 390×844 failRenderer: no horizontal page overflow",
+    "PASS 390×844 failRenderer: controls inside viewport (0.5px integer-viewport rounding tolerance)",
+    "PASS 390×844 failRenderer: next button",
+    "PASS 390×844 failRenderer: End key and final plate",
+    "PASS 390×844 failRenderer: last boundary disabled",
+    "PASS 390×844 failRenderer: Home key and first boundary disabled",
+    "PASS capture failure stays explicit; no fallback resources requested",
+    "PASS capture normal render succeeds; no fallback resources requested"
+  ],
+  "error": null,
+  "pass": true
+}

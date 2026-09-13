@@ -61,6 +61,12 @@ pops at the crossfade), HUD visibility by default, and whether the /qa pages shi
 Engineering: measure the p = 1 idle 2× hold on the M1 Air — boundary-only demotion cannot rescue it.
 Evidence: `qa/review/fable-review-2026-09-12-*.png`, `build/v166-review-2026-09-12-fable.json`.
 
+September 13: the reviewer's decisions applied (v1.6.7) — /qa pages out of the bundle (dev/preview
+only), HUD hidden by default (`?hud=1`), portrait poster via `<picture>`, and a supersample
+governor that sheds the idle 2× pass on overrun without a tier or state change (`?hold=N&save=1`
+reports pacing + cap history). Still yours: the M1 Air hold run, named devices, real screen reader,
+cross-browser, muṣḥaf review. Evidence: `build/v167-review-2026-09-13-fable.json`.
+
 Useful local commands:
 
 ```sh

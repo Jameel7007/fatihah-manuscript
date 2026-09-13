@@ -100,3 +100,54 @@ export class TierMonitor {
     return null;
   }
 }
+
+/** §15/§19 idle-supersample governor (v1.6.7). The idle 2× beauty pass engages at rest, outside
+ *  any state boundary, so the boundary-only demotion policy above can never rescue a held
+ *  ending that it makes too expensive. While the idle contribution is engaged this watches the
+ *  same trailing 3 s p95 window against 1.25× the pacing budget and, on overrun, steps the idle
+ *  cap down at once (2 → 1.5 → 1.25 → 1): the still frame simply averages fewer samples — no
+ *  tier, DPR or state change. The cap never rises again during the session (the tiers' own
+ *  "never promote" rule). Frames rendered while the idle pass is not engaged are ignored. */
+export const IDLE_SS_STEPS: readonly number[] = [2, 1.5, 1.25, 1];
+export class IdleSupersampleGovernor {
+  cap = IDLE_SS_STEPS[0]!;
+  readonly history: Array<{ at: number; cap: number; p95: number }> = [];
+  private times: Array<{ at: number; ms: number }> = [];
+  private clock = 0;
+  private engagedFor = 0;
+  private lastStepAt = -1e9;
+  private readonly windowS = 3;
+
+  get p95(): number {
+    if (this.times.length < 8) return 0;
+    const s = this.times.map((t) => t.ms).sort((a, b) => a - b);
+    return s[Math.min(s.length - 1, Math.floor(s.length * 0.95))] ?? 0;
+  }
+
+  /** Feed every live frame. `engaged`: the idle contribution is currently raising the pass. */
+  update(dtSeconds: number, engaged: boolean, pacingBudgetMs: number): number {
+    if (!Number.isFinite(dtSeconds) || dtSeconds <= 0) return this.cap;
+    this.clock += dtSeconds;
+    if (!engaged || this.cap <= 1) {
+      this.times.length = 0;
+      this.engagedFor = 0;
+      return this.cap;
+    }
+    this.engagedFor = Math.min(this.windowS, this.engagedFor + dtSeconds);
+    const ms = dtSeconds * 1000;
+    if (ms < 250) this.times.push({ at: this.clock, ms }); // same gap policy as the tier monitor
+    while (this.times.length && this.times[0]!.at <= this.clock - this.windowS) this.times.shift();
+    if (this.engagedFor >= this.windowS && this.times.length >= 8 && this.clock - this.lastStepAt > this.windowS) {
+      const p95 = this.p95;
+      if (p95 > 1.25 * pacingBudgetMs) {
+        const i = IDLE_SS_STEPS.indexOf(this.cap);
+        this.cap = IDLE_SS_STEPS[Math.min(IDLE_SS_STEPS.length - 1, i + 1)]!;
+        this.history.push({ at: +this.clock.toFixed(3), cap: this.cap, p95: +p95.toFixed(2) });
+        this.lastStepAt = this.clock;
+        this.times.length = 0;
+        this.engagedFor = 0;
+      }
+    }
+    return this.cap;
+  }
+}

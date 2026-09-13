@@ -6,6 +6,13 @@ Local production accessibility checks pass in desktop, phone-sized and compact v
 Current release evidence: `build/v166-release-local-2026-09-12.json`; remaining gates:
 `docs/release-checklist.md`. M7/M8 stay open; no new reference hashes are blessed.
 
+September 13 (v1.6.7): decisions applied — QA runner pages live in `qa/pages/` and are served at
+`/qa/*.html` by the dev and preview servers only (never in `dist/`); the developer HUD is hidden unless
+`?hud=1` (or a QA mode); a portrait poster (`public/poster-portrait.jpg`, `<picture>`) opens phones on the
+same composition as the first live frame; a supersample governor sheds the idle 2× pass automatically
+when frames overrun (`?hold=N&save=1` reports rAF pacing and the cap history). Run the hold on the M1 Air
+in a foreground window. Evidence: `build/v167-review-2026-09-13-fable.json`.
+
 September 12 evening review: the approved gold checked frame by frame on desktop and phone
 aspects and left unchanged; `index.html` gains the #01030D page ground (was the pre-v1.6 warm void),
 a release title, description, theme-color and favicon. Open decisions (portrait poster, HUD, /qa in
@@ -92,13 +99,16 @@ The QA save sink (review frames and matrix results post to it): `node qa/review/
 | `&noblob` `&noshadow` `&nogeo` `&noink` | isolate the contact blob, the key's shadow, the relief mesh, the ink |
 | `&gb=1…6` | grade-chain bypass diagnostics |
 | `?perf=N[&save=1]` | two N-second scrub cycles, then one full-history rAF-pacing report in `window.__perf`; retains stalls and demotions, flags hidden-tab samples; optional save to the local QA sink. Not GPU timing or device certification. |
-| `?hold=N` | pin p = 1 for N s and report luminance drift (`window.__hold`) |
+| `?hold=N[&save=1]` | pin p = 1 for N s: luminance drift, rAF pacing during the hold, live supersample factor, governor cap + step history, foreground validity (`window.__hold`; `&save=1` posts it) |
+| `?hud=1` | show the developer HUD (state · p · idle · demoted); hidden by default for visitors |
+| `&post=NAME` (with `?capture`) | save the captured PNG through the same-origin sink as `qa/review/NAME.png` — full-speed captures in any real browser |
+| `&repeat=N` (with `?capture`) | Step 1 diagnostic: N captures in one page load, `warm` frames apart; `window.__capture.hashes` |
 | `?reduced=1` | reduced-motion mode (held compositions, pager) |
 | `/qa/accessibility.html?autorun=1&save=1` | local DOM/keyboard checks at 1440×900, 390×844 and 320×320; saves evidence to the QA sink; not screen-reader/device certification |
 | `/qa/fallback.html?autorun=1&save=1` | static-folio/startup and capture-failure checks, with optional saved evidence |
 | `?calibrate=bg&target=RRGGBB` / `?calibrate=key` | solve the sky floor / key intensity through the live AgX chain |
 | `?scene=ramp` `?scene=proof&layout=7` `?scene=inkrt&p=P` `?scene=reveal` | instruments: AgX ramp, text proof, raw ink RT, stroke-order reveal |
-| `/qa/matrix.html?backend=webgpu[&only=T1]` | self-driving regression matrix; check with `node qa/matrix.mjs webgpu [T1]` |
+| `/qa/matrix.html?backend=webgpu[&only=T1]` | self-driving regression matrix; check with `node qa/matrix.mjs webgpu [T1]` (QA pages are served from `qa/pages/` by dev/preview only) |
 | `/qa/repeat.html?sequence=1` | two fresh-load 36-pose sequences; raw hash/pixel comparison, never blessing. Optional `&noenv`, `&nomsaa`, `&gpuReadback`, `&traceSources`, or `&gpuTrace` isolates inputs; these are QA diagnostics, not fixes. |
 
 ## Build pipeline (text → atlases → mesh)

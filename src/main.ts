@@ -1,6 +1,6 @@
 import { Color, PerspectiveCamera, REVISION, RenderTarget, UnsignedByteType } from 'three/webgpu';
 import { createRenderer } from './core/renderer';
-import { DPR_CAP, DUST_SCALE, FRAME_BUDGET_MS, detectTier, TierMonitor } from './core/tiers';
+import { DPR_CAP, DUST_SCALE, FRAME_BUDGET_MS, IdleSupersampleGovernor, PACING_BUDGET_MS, detectTier, TierMonitor } from './core/tiers';
 import { CameraRig } from './director/camera';
 import { blobTilt, contactRamp, embossFactor, envYawDeg, FACE_CENTER_ANCHOR, FACE_CENTER_REST, faceFactor, facePitch, fillFactor, geoDepth, inkGhost, keyConeDeg, keyFactor, parchmentKeyMask, poseTransform, recede, rimFactor, RISE_START, stateLabel } from './director/drivers';
 import { IdleController, type IdleState } from './director/idle';
@@ -29,6 +29,10 @@ interface CaptureResult {
   backend: string;
   dataUrl: string;
   sources?: Record<string, string>;
+  /** &post=NAME: the PNG was POSTed to the same-origin /qa-save sink under this name */
+  posted?: string;
+  /** &repeat=N (Step 1 diagnostic): hashes of N captures taken in ONE page load, `warm` frames apart */
+  hashes?: string[];
   ramp?: Array<{ input: number; out: [number, number, number, number] }>;
   rampOk?: boolean;
 }
@@ -802,16 +806,22 @@ async function runMain(): Promise<void> {
     try {
       // Render through the same loop machinery as live mode; the loop keeps running while
       // async readbacks are in flight — WebGL fence-based readbacks need a pumping queue.
+      // Step 1 diagnostic: &repeat=N captures the same pose N times within ONE page load, `warm`
+      // frames apart (first at frame `warm`). Equal hashes here with unequal hashes across loads
+      // localise a difference to per-load state rather than per-frame GPU work.
+      const captureRepeats = Math.max(1, Math.min(8, Number(q.get('repeat') ?? '1') || 1));
+      const captureHashes: string[] = [];
       await new Promise<void>((resolve, reject) => {
         let n = 0;
         let started = false;
         let finished = false;
+        let round = 0;
         renderer.setAnimationLoop(() => {
           applyFrame(p, 1 / 60, false);
           grade.render(); // grain seed stays 0 in capture — deterministic
           if (diagnosticTarget) grade.renderTo(diagnosticTarget);
           n++;
-          if (n >= captureWarm && !started) {
+          if (n >= captureWarm * (round + 1) && !started && !finished) {
             started = true;
             void (async () => {
               try {
@@ -826,8 +836,43 @@ async function runMain(): Promise<void> {
                   console.info('[probe]', report);
                 } else {
                   const frame = diagnosticTarget ? await captureTarget(renderer, diagnosticTarget) : await captureFrame(canvas as HTMLCanvasElement);
-                  window.__capture = { hash: frame.hash, p, tier, backend, dataUrl: frame.dataUrl };
+                  captureHashes.push(frame.hash);
+                  if (round > 0) {
+                    // later rounds only add to the hash list (and post under a -rN suffix)
+                    window.__capture!.hashes = [...captureHashes];
+                    const postName = q.get('post');
+                    if (postName) {
+                      const b64 = frame.dataUrl.slice(frame.dataUrl.indexOf(',') + 1);
+                      const bin = atob(b64);
+                      const bytes = new Uint8Array(bin.length);
+                      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+                      await fetch(`/qa-save?name=${encodeURIComponent(postName)}-r${round + 1}`, { method: 'POST', body: bytes, signal: AbortSignal.timeout(20000) }).catch(() => undefined);
+                    }
+                    capEl!.textContent = `R-p${p.toFixed(3)}-T${tier}-${backend} ×${captureHashes.length}\n${captureHashes.map((h) => h.slice(0, 16)).join(' · ')}\n${new Set(captureHashes).size === 1 ? 'identical within this load' : 'DIFFER within this load'}`;
+                    console.info(`[capture] repeat ${round + 1}/${captureRepeats} p=${p} sha256=${frame.hash}`);
+                    round++;
+                    started = false;
+                    if (round >= captureRepeats) finished = true;
+                    return;
+                  }
+                  window.__capture = { hash: frame.hash, p, tier, backend, dataUrl: frame.dataUrl, hashes: [...captureHashes] };
                   if (q.has('gpuTrace')) window.__capture.sources = await gpuTraceSnapshot();
+                  {
+                    // &post=NAME — save the captured PNG through the same-origin QA sink so full-speed
+                    // captures can run in any real browser window (the hash above is the evidence;
+                    // the file is review material, never a blessing).
+                    const postName = q.get('post');
+                    if (postName) {
+                      const b64 = frame.dataUrl.slice(frame.dataUrl.indexOf(',') + 1);
+                      const bin = atob(b64);
+                      const bytes = new Uint8Array(bin.length);
+                      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+                      const saved = await fetch(`/qa-save?name=${encodeURIComponent(postName)}`, { method: 'POST', body: bytes, signal: AbortSignal.timeout(20000) })
+                        .then((r) => (r.ok ? postName : `failed: HTTP ${r.status}`), (err: unknown) => `failed: ${String(err)}`);
+                      window.__capture.posted = saved;
+                      console.info(`[capture] post ${saved}`);
+                    }
+                  }
                   if (q.has('traceSources')) {
                     const sources: Record<string, string> = {};
                     const targets: Array<[string, RenderTarget]> = [['pos',field.posRT],['normal',field.nrmRT],['tangent',field.tanRT]];
@@ -851,6 +896,10 @@ async function runMain(): Promise<void> {
                   }
                   capEl!.textContent = `R-p${p.toFixed(3)}-T${tier}-${backend}\n${frame.hash}`;
                   console.info(`[capture] p=${p} T${tier} ${backend} sha256=${frame.hash}`);
+                  round++;
+                  started = false;
+                  if (round >= captureRepeats) finished = true;
+                  return;
                 }
                 finished = true;
               } catch (err) {
@@ -905,6 +954,18 @@ async function runMain(): Promise<void> {
   // luminance once per second for N s, report the flux drift (§20 M6: ≤ 2% over 60 s)
   const holdS = q.get('hold') !== null ? Number(q.get('hold') ?? '60') : 0;
   const holdSamples: number[] = [];
+  const holdIntervals: number[] = []; // rAF intervals while the luma sampler runs (pacing, not GPU time)
+  let holdHiddenEver = false; // a hidden tab stops rAF: the interval that spans it is not a frame
+  let holdSkipInterval = false;
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { holdHiddenEver = true; holdSkipInterval = true; } });
+  // The per-frame readout is a developer instrument: hidden for visitors, shown with ?hud=1
+  // or by the QA modes that report through it. The polite status region is separate.
+  const showHud = q.get('hud') !== null || q.get('showss') !== null || perfS > 0 || holdS > 0;
+  if (hud) hud.hidden = !showHud;
+  // v1.6.7 §15/§19 supersample governor — sheds the idle beauty pass at once when it costs the
+  // frame its pacing budget (the tier monitor only acts at state boundaries, and the held
+  // ending has none). The cap it settles on holds for the session.
+  const ssGov = new IdleSupersampleGovernor();
   let holdNext = 0;
   let holdReadySince = -1;
   let holdConfiguration = '';
@@ -960,7 +1021,11 @@ async function runMain(): Promise<void> {
     // (?ss=N pins the factor for captures and A/B.)
     if (q.get('ss') === null) {
       const idleRamp = reducedMotion && tierMon.tier === 1 ? 1 : idleState.ramp;
-      grade.setSupersample(liveSupersample(tierMon.tier, scroll.p, idleRamp));
+      const wanted = liveSupersample(tierMon.tier, scroll.p, idleRamp);
+      // engaged = the reader is at rest and the pass is above native; only those frames judge it
+      const engaged = idleRamp > 0 && wanted > 1 && tierMon.tier <= 2;
+      const cap = ssGov.update(dt, engaged, PACING_BUDGET_MS[tierMon.tier]);
+      grade.setSupersample(Math.min(cap, wanted));
     }
     (window as unknown as { __ss?: number }).__ss = grade.supersample;
     rig.drift = idleState.drift;
@@ -1021,6 +1086,10 @@ async function runMain(): Promise<void> {
       else if (holdReadySince < 0 || config !== holdConfiguration) holdReadySince = now;
       holdConfiguration = config;
     }
+    if (holdS > 0 && holdReadySince >= 0 && now - holdReadySince >= 8000 && holdNext !== Infinity && dt > 0) {
+      if (holdSkipInterval) holdSkipInterval = false; // the first interval after a hidden spell is the spell, not a frame
+      else holdIntervals.push(dt * 1000);
+    }
     if (holdS > 0 && holdReadySince >= 0 && now - holdReadySince >= 8000 && now >= holdNext) {
       holdNext = now + 1000;
       const ctx = holdCanvas.getContext('2d');
@@ -1034,9 +1103,28 @@ async function runMain(): Promise<void> {
       if (holdSamples.length >= holdS) {
         const mean = holdSamples.reduce((a, b) => a + b, 0) / holdSamples.length;
         const drift = (Math.max(...holdSamples) - Math.min(...holdSamples)) / (mean || 1);
-        (window as unknown as { __hold?: unknown }).__hold = { seconds: holdSamples.length, mean: +mean.toFixed(3), drift: +drift.toFixed(4), samples: holdSamples.map((v) => +v.toFixed(2)) };
+        const sorted = [...holdIntervals].sort((a, b) => a - b);
+        const pct = (f: number): number => +(sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * f))] ?? 0).toFixed(2);
+        const pacing = { metric: 'requestAnimationFrame intervals (ms) while the luma sampler ran; not GPU time', frames: sorted.length, p50: pct(0.5), p95: pct(0.95), p99: pct(0.99), max: +(sorted.at(-1) ?? 0).toFixed(2), stallsOver250ms: sorted.filter((x) => x > 250).length };
+        const hold = {
+          seconds: holdSamples.length, mean: +mean.toFixed(3), drift: +drift.toFixed(4), samples: holdSamples.map((v) => +v.toFixed(2)),
+          pacing, pacingBudgetMs: +PACING_BUDGET_MS[tierMon.tier].toFixed(2), foregroundThroughout: !holdHiddenEver,
+          supersample: grade.supersample, supersampleCap: ssGov.cap, supersampleCapHistory: ssGov.history,
+          requestedTier: tier, tier: tierMon.tier, dpr: renderer.getPixelRatio(), canvas: [canvas!.width, canvas!.height],
+          backend, userAgent: navigator.userAgent, url: location.href, date: new Date().toISOString(),
+        };
+        (window as unknown as { __hold?: unknown }).__hold = hold;
         capEl!.style.display = 'block';
-        capEl!.textContent = `HOLD p=1 · ${holdSamples.length}s · mean luma ${mean.toFixed(2)} · flux drift ${(drift * 100).toFixed(2)}% (limit 2%)`;
+        capEl!.textContent = `HOLD p=1 · ${holdSamples.length}s · mean luma ${mean.toFixed(2)} · flux drift ${(drift * 100).toFixed(2)}% (limit 2%)${holdHiddenEver ? ' · TAB WAS HIDDEN: pacing invalid' : ''}\nrAF p50 ${pacing.p50} · p95 ${pacing.p95} · max ${pacing.max} ms (budget ${hold.pacingBudgetMs} ×1.25) · ss ${grade.supersample}× cap ${ssGov.cap}${ssGov.history.length ? ` (stepped ${ssGov.history.length}×)` : ''} · T${tierMon.tier} ${canvas!.width}×${canvas!.height}`;
+        console.info('[hold]', hold);
+        if (q.has('save')) void (async () => {
+          const saved = await fetch('/qa-save?name=v167-hold-' + Date.now(), { method: 'POST', body: JSON.stringify(hold, null, 2), signal: AbortSignal.timeout(10000) });
+          if (!saved.ok) throw new Error(`HTTP ${saved.status}`);
+          capEl!.textContent += '\nREPORT SAVED';
+        })().catch((err) => {
+          capEl!.textContent += '\nREPORT SAVE FAILED — measurements remain in window.__hold';
+          console.warn('[hold] save failed', err);
+        });
         holdNext = Infinity;
       }
     }

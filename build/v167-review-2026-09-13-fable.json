@@ -1,0 +1,76 @@
+{
+ "date_local": "2026-09-13",
+ "version": "v1.6.7",
+ "reviewer": "Claude (Fable 5.1)",
+ "status": "reviewer decisions applied; local verification only; nothing blessed; M7/M8 open",
+ "decisions_applied": {
+  "qa_pages_out_of_bundle": "public/qa/*.html → qa/pages/*.html, served at /qa/<name>.html by a dev/preview-only Vite plugin (vite.config.ts); dist/ has no /qa (verified after build); /qa/matrix.html still served by the preview (verified)",
+  "hud_hidden_by_default": "index.html #hud gets the hidden attribute unless ?hud=1, &showss, ?perf or ?hold; verified display:none by default and block with ?hud=1; the accessibility runner (which reads the HUD text) still passes",
+  "portrait_poster": {
+   "file": "public/poster-portrait.jpg",
+   "size_bytes": 48951,
+   "source": "780×1688 T1 capture of p=0 at the 390×844 aspect, ss 1, Chrome 152 WebGPU, JPEG q0.80",
+   "provenance": {
+    "png_sha256_a": "f046e8061c8291f4ff7f30e236601c904c484689a0b329ab77c352cb7d519812",
+    "png_sha256_b": "f046e8061c8291f4ff7f30e236601c904c484689a0b329ab77c352cb7d519812",
+    "raw_rgba_sha256_prefix": "10d0de9c073c27fc",
+    "identical_cold_loads": 2
+   },
+   "selection": "<picture><source media=\"(orientation: portrait)\"> + portrait LQIP via an @media rule",
+   "verified": "pane 390×844: currentSrc /poster-portrait.jpg 780×1688, portrait LQIP applied; pane 1440×900: /poster.jpg 1600×1000 unchanged",
+   "evidence": "qa/review/fable-review-2026-09-13-portrait-poster-old-new-live-390x844.png"
+  },
+  "supersample_governor": {
+   "where": "src/core/tiers.ts IdleSupersampleGovernor, wired in src/main.ts live loop",
+   "rule": "while at rest with the pass above native, trailing 3 s p95 of rAF intervals > 1.25× pacing budget → cap steps 2 → 1.5 → 1.25 → 1 at once, never up again; frames while scrolling are not judged",
+   "tests": 4,
+   "hold_report": "?hold=N now reports pacing p50/p95/p99/max/stalls, budget, supersample, cap + history, foregroundThroughout, tier, dpr, canvas, UA; &save=1 posts it",
+   "measured_locally": "NOT measured: the Mac was at the lock screen (loginwindow frontmost); every browser is throttled there. Run ?hold=60&save=1&tier=1 in a foreground window on the M1 Air."
+  },
+  "capture_rig": "&post=NAME saves the PNG through /qa-save (verified: two portrait captures landed from real Chrome); &repeat=N captures N times in one load and reports agreement"
+ },
+ "verification": {
+  "typecheck_build": "PASS",
+  "tests": "26/26 PASS (node --test qa/*.test.mjs)",
+  "canonical_text": "PASS (pinned; upstream reached 2026-09-13)",
+  "payload": {
+   "brotli_mb": 7.127,
+   "phase_A_mb": 0.295,
+   "note": "phase A counts both posters conservatively; a device fetches one",
+   "poster_to_live_model_s": 1.72,
+   "limit_s": 2.2
+  },
+  "canvas_unchanged": "p=0 T1 1440×900 captured after all v1.6.7 changes: f30432eaf5bb4e4bc2cbbd158a8d715a6f720c1745ea88d93e66a728bc1e8522 (identical to 09-12 and to the v1.6.2 candidate)",
+  "within_load_repeat": "p=0.86 T1 1440×900, one page load, captures 15 frames apart: 0c4689d3c74e1a20… ×4 identical (Step 1: per-frame GPU work is stable within a load; the intermittent differences are per-load state)",
+  "axe_core_4_10_2": {
+   "main_page": "0 violations, 0 incomplete, 25 passes",
+   "reduced_motion_page": "0 violations, 0 incomplete, 25 passes, 7 pager buttons",
+   "fallback_folio": "0 violations after giving the plate strip role=\"region\" (was 1 incomplete aria-prohibited-attr), 28 passes",
+   "scope": "automated DOM audit in the pane; not a screen-reader session"
+  },
+  "fallback_runner": {
+   "file": "v166-fallback-1789325201470.png",
+   "result": {
+    "pass": 17,
+    "fail": 0,
+    "source": "runner page: 17 PASS, REPORT SAVED"
+   }
+  },
+  "accessibility_runner": {
+   "file": "v166-accessibility-1789325230496.png",
+   "result": {
+    "pass": 66,
+    "fail": 0,
+    "source": "runner page: \"COMPLETE: 66 passed; local checks pass\" (1440×900 WebGPU, 390×844 WebGL2, 320×320 WebGL2); saved report keeps the per-check list"
+   }
+  }
+ },
+ "remaining": [
+  "M1 Air hold run (procedure in the ledger)",
+  "WebGPU cold-capture repeatability (per-load; see within_load_repeat)",
+  "named-device performance/loading/thermal",
+  "real screen reader + physical touch + Safari/Firefox/Edge",
+  "muṣḥaf comparison by a reader",
+  "hosting target; final release sign-off"
+ ]
+}

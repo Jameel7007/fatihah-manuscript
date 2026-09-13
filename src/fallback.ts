@@ -14,6 +14,9 @@ export function showFallback(): void {
   const track = document.createElement('div');
   track.className = 'folio-track';
   track.tabIndex = 0;
+  // a focusable generic <div> may not carry aria-label (ARIA 1.2 prohibits it on generics —
+  // axe 4.10 'aria-prohibited-attr'); a named region is the honest role for the plate strip
+  track.setAttribute('role', 'region');
   track.setAttribute('aria-label', 'Manuscript plates. Swipe or use the arrow keys.');
   const status = document.createElement('p');
   status.setAttribute('role', 'status');

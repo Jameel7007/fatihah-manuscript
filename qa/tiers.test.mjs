@@ -64,3 +64,50 @@ test('sustained 20 fps at T3 still triggers the thermal reduction once', () => {
   assert.equal(changes.length,1);
   assert.deepEqual(changes[0],{tier:3,dprCap:.625,reason:'thermal'});
 });
+
+// ---- v1.6.7 idle-supersample governor -------------------------------------------------
+import { IdleSupersampleGovernor, PACING_BUDGET_MS } from '../src/core/tiers.ts';
+
+test('idle governor keeps the 2x cap at a steady 60 Hz', () => {
+  const g = new IdleSupersampleGovernor();
+  for (let i = 0; i < 600; i++) g.update(1 / 60, true, PACING_BUDGET_MS[1]);
+  assert.equal(g.cap, 2);
+  assert.equal(g.history.length, 0);
+});
+
+test('idle governor steps 2 -> 1.5 -> 1.25 -> 1 under sustained overrun, one step per window', () => {
+  const g = new IdleSupersampleGovernor();
+  const caps = [];
+  for (let i = 0; i < 40 * 20; i++) { // 20 s at 40 fps (25 ms > 1.25 x 16.7 ms)
+    const before = g.cap;
+    g.update(0.025, true, PACING_BUDGET_MS[1]);
+    if (g.cap !== before) caps.push([+(i * 0.025).toFixed(2), g.cap]);
+  }
+  assert.deepEqual(caps.map((c) => c[1]), [1.5, 1.25, 1]);
+  assert.ok(caps[0][0] >= 2.9, 'first step only after a full 3 s window');
+  assert.ok(caps[1][0] - caps[0][0] >= 2.9, 'later steps spaced by at least a window');
+  assert.equal(g.cap, 1);
+  assert.equal(g.history.length, 3);
+});
+
+test('idle governor ignores frames rendered while the idle pass is not engaged', () => {
+  const g = new IdleSupersampleGovernor();
+  for (let i = 0; i < 400; i++) g.update(0.04, false, PACING_BUDGET_MS[1]); // 25 fps scrolling
+  assert.equal(g.cap, 2);
+  for (let i = 0; i < 60; i++) g.update(1 / 60, true, PACING_BUDGET_MS[1]); // 1 s engaged, fine
+  assert.equal(g.cap, 2);
+});
+
+test('idle governor never raises the cap again and ignores an isolated stall', () => {
+  const g = new IdleSupersampleGovernor();
+  for (let i = 0; i < 300; i++) g.update(1 / 60, true, PACING_BUDGET_MS[1]);
+  g.update(0.4, true, PACING_BUDGET_MS[1]); // one 400 ms stall is a gap, not a sample
+  for (let i = 0; i < 300; i++) g.update(1 / 60, true, PACING_BUDGET_MS[1]);
+  assert.equal(g.cap, 2);
+  for (let i = 0; i < 100; i++) g.update(0.025, true, PACING_BUDGET_MS[1]); // 2.5 s overrun
+  assert.ok(g.cap < 2 && g.cap >= 1.25, 'stepped down under overrun');
+  for (let i = 0; i < 240; i++) g.update(1 / 60, true, PACING_BUDGET_MS[1]); // 4 s: the trailing window flushes
+  const settled = g.cap;
+  for (let i = 0; i < 1200; i++) g.update(1 / 60, true, PACING_BUDGET_MS[1]); // 20 s healthy
+  assert.equal(g.cap, settled, 'no promotion during the session');
+});

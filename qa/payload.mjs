@@ -40,6 +40,7 @@ for (const f of readdirSync(distAssets).sort()) {
 add('dist/index.html', 'A', 'html');
 // poster + LQIP (inline LQIP is inside index.html)
 add('public/poster.jpg', 'A', 'poster');
+add('public/poster-portrait.jpg', 'A', 'poster-portrait'); // v1.6.7: a portrait viewport fetches this one INSTEAD of poster.jpg (<picture>); phase A counts both, conservatively
 // §15 seven-plate folio is requested only on renderer failure (or explicit QA).
 for (let i = 1; i <= 7; i++) add(`public/fallback/plate-${i}.jpg`, 'F', 'fallback-plate');
 // ink atlases + instances — the writing state needs them (phase B streams after first present)
