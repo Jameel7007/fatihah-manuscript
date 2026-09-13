@@ -24,6 +24,13 @@ function qaPages(): Plugin {
   };
 }
 
+// Device runs (§20 M7): FATIHAH_LAN=1 serves the preview over HTTPS on every interface so phones
+// and other Macs on the LAN get a secure context (WebGPU needs one off localhost). The
+// self-signed cert lives outside the repo (FATIHAH_TLS_DIR, default ~/.fatihah-tls).
+const lan = process.env.FATIHAH_LAN === '1';
+const tlsDir = process.env.FATIHAH_TLS_DIR ?? resolve(process.env.HOME ?? '', '.fatihah-tls');
+const lanServer = lan ? { host: true, https: { key: readFileSync(resolve(tlsDir, 'key.pem')), cert: readFileSync(resolve(tlsDir, 'cert.pem')) } } : {};
+
 export default defineConfig({
   plugins: [qaPages()],
   build: { target: 'es2022' },
@@ -32,7 +39,9 @@ export default defineConfig({
   // graphs, stale HMR mixes). Serve three from source, deduped.
   resolve: { dedupe: ['three'] },
   optimizeDeps: { exclude: ['three'] },
+  preview: { ...lanServer },
   server: {
+    ...lanServer,
     // same-origin route to the qa/review capture sink (receiver.mjs), so capture pages
     // can save review PNGs without cross-origin fetches (preview inherits server.proxy)
     proxy: { '/qa-save': { target: 'http://localhost:4599', rewrite: (p) => p.replace(/^\/qa-save/, '/save') } },

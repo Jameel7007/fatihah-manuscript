@@ -957,7 +957,8 @@ async function runMain(): Promise<void> {
   const holdIntervals: number[] = []; // rAF intervals while the luma sampler runs (pacing, not GPU time)
   let holdHiddenEver = false; // a hidden tab stops rAF: the interval that spans it is not a frame
   let holdSkipInterval = false;
-  document.addEventListener('visibilitychange', () => { if (document.hidden) { holdHiddenEver = true; holdSkipInterval = true; } });
+  // only a hidden spell while the sampler is armed invalidates the pacing (a background-tab launch does not)
+  document.addEventListener('visibilitychange', () => { if (document.hidden && holdReadySince >= 0 && holdNext !== Infinity) { holdHiddenEver = true; holdSkipInterval = true; } });
   // The per-frame readout is a developer instrument: hidden for visitors, shown with ?hud=1
   // or by the QA modes that report through it. The polite status region is separate.
   const showHud = q.get('hud') !== null || q.get('showss') !== null || perfS > 0 || holdS > 0;

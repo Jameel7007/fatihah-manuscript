@@ -72,5 +72,69 @@
   "real screen reader + physical touch + Safari/Firefox/Edge",
   "muṣḥaf comparison by a reader",
   "hosting target; final release sign-off"
- ]
+ ],
+ "local_device_runs_m2_pro": {
+  "machine": "Mac14,9 Apple M2 Pro, macOS 26.6.2 — NOT the specified M1 Air; local evidence for the harness and the governor, not a named-device pass",
+  "chrome_152_webgpu_hold": {
+   "file": "qa/review/v167-hold-1789325599342.png (JSON)",
+   "url": "/?hold=60&save=1&tier=1",
+   "backing": "3024×1722 @ DPR 2",
+   "supersample": 2,
+   "cap": 2,
+   "cap_steps": 0,
+   "raf_ms": {
+    "p50": 8.4,
+    "p95": 17,
+    "p99": 50,
+    "max": 59.3,
+    "stallsOver250ms": 0,
+    "frames": 5358
+   },
+   "trip_point_ms": 20.83,
+   "flux_drift_pct": 1.59,
+   "foreground": true,
+   "verdict": "idle 2× held within the pacing budget; governor correctly idle"
+  },
+  "chrome_152_webgpu_perf": {
+   "file": "qa/review/v166-perf-1789325705451.png (JSON)",
+   "url": "/?perf=30&save=1&tier=1",
+   "backing": "3024×1722 @ DPR 2",
+   "tiers": "T1 → T1",
+   "raf_ms": {
+    "p50": 8.3,
+    "p95": 16.4,
+    "p99": 16.8,
+    "max": 58.2,
+    "stallsOver250ms": 0,
+    "frames": 6739
+   },
+   "cpu_update_submit_p95_ms": 1.1,
+   "foreground": true
+  },
+  "safari_26_6": {
+   "hold": {
+    "file": "qa/review/v167-hold-1789326239627.png",
+    "backing": "1974×1664 @ DPR 2",
+    "raf_ms": {
+     "p50": 17,
+     "p95": 18,
+     "p99": 19,
+     "max": 373
+    },
+    "flux_drift_pct": 1.95,
+    "supersample_cap_stepped_to": 1.5,
+    "foreground": false,
+    "verdict": "INVALID as evidence: the tab was hidden/occluded during the run (Safari stops rendering when another window covers it); the governor step happened inside that spell"
+   },
+   "perf": {
+    "file": "qa/review/v166-perf-1789326474774.png",
+    "foreground": false,
+    "usable": false,
+    "verdict": "INVALID: a 187 s hidden interval; discard"
+   },
+   "rerun": "a third fronted attempt could not complete because the Claude window kept taking the foreground; Safari must stay visible for the whole run",
+   "indicative_only": "in the visible portions Safari paced at its 60 Hz display (p50 17 ms, p95 18 ms) — under the 20.8 ms trip point, but not a valid measurement"
+  },
+  "lan_device_preview": "FATIHAH_LAN=1 npm run preview -- --port 4522 serves HTTPS on all interfaces (self-signed cert ~/.fatihah-tls, SAN 192.168.68.114) so the M1 Air and iPhones can run the same URLs; /qa-save proxy verified over HTTPS; procedure in README \"Device runs over the LAN\""
+ }
 }

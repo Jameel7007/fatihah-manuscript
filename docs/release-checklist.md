@@ -67,6 +67,10 @@ governor that sheds the idle 2× pass on overrun without a tier or state change 
 reports pacing + cap history). Still yours: the M1 Air hold run, named devices, real screen reader,
 cross-browser, muṣḥaf review. Evidence: `build/v167-review-2026-09-13-fable.json`.
 
+Device runs: start `FATIHAH_LAN=1 npm run preview -- --port 4522` (HTTPS, all interfaces) and the
+receiver, then on each device open `https://<LAN IP>:4522/?hold=60&save=1` and `?perf=30&save=1` in a
+foreground window; reports land in `qa/review/` (README, "Device runs over the LAN").
+
 Useful local commands:
 
 ```sh

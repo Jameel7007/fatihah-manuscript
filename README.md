@@ -88,6 +88,26 @@ Claude Code's preview pane.
 
 The QA save sink (review frames and matrix results post to it): `node qa/review/receiver.mjs`.
 
+### Device runs over the LAN (M7 named devices)
+
+```bash
+node qa/review/receiver.mjs                       # the sink: every saved report lands in qa/review/
+FATIHAH_LAN=1 npm run preview -- --port 4522 --strictPort   # HTTPS on every interface (self-signed cert in ~/.fatihah-tls)
+```
+
+On the device open `https://<this Mac's LAN IP>:4522/`, accept the certificate warning once (WebGPU needs a
+secure context off localhost), then:
+
+| Run | URL | Reads |
+|---|---|---|
+| idle hold, 60 s | `/?hold=60&save=1` (add `&tier=1` on the M1 Air) | flux drift, rAF pacing vs budget, supersample factor, governor cap + steps |
+| playback, 2 × 30 s scrub | `/?perf=30&save=1` | rAF p50/p95/p99/max per tier, demotions, CPU submit time |
+| cold load at 10 Mbps | `/` with the browser's network throttle set to 10 Mbps, cache disabled | the console line `[boot] poster → live in N s` (limit 2.2 s) |
+
+Keep the window in the foreground for the whole run — a hidden or occluded tab stops rendering and the
+report says so. Generate the cert once with
+`openssl req -x509 -newkey rsa:2048 -nodes -keyout ~/.fatihah-tls/key.pem -out ~/.fatihah-tls/cert.pem -days 30 -subj "/CN=fatihah-lan" -addext "subjectAltName=IP:<LAN IP>,DNS:localhost"`.
+
 ### URL switches (QA)
 
 | Switch | Effect |
