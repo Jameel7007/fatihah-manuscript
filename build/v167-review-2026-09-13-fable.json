@@ -133,7 +133,26 @@
     "verdict": "INVALID: a 187 s hidden interval; discard"
    },
    "rerun": "a third fronted attempt could not complete because the Claude window kept taking the foreground; Safari must stay visible for the whole run",
-   "indicative_only": "in the visible portions Safari paced at its 60 Hz display (p50 17 ms, p95 18 ms) — under the 20.8 ms trip point, but not a valid measurement"
+   "indicative_only": "in the visible portions Safari paced at its 60 Hz display (p50 17 ms, p95 18 ms) — under the 20.8 ms trip point, but not a valid measurement",
+   "hold_valid": {
+    "file": "qa/review/v167-hold-1789327853076.png",
+    "backing": "1974×1664 @ DPR 2",
+    "supersample": 2,
+    "cap": 2,
+    "cap_steps": 0,
+    "raf_ms": {
+     "p50": 17,
+     "p95": 18,
+     "p99": 20,
+     "max": 27,
+     "stallsOver250ms": 0,
+     "frames": 3555
+    },
+    "trip_point_ms": 20.83,
+    "flux_drift_pct": 1.66,
+    "foreground": true,
+    "verdict": "Safari WebGPU idle 2× held at its 60 Hz cadence within budget; governor idle; drift under 2%"
+   }
   },
   "lan_device_preview": "FATIHAH_LAN=1 npm run preview -- --port 4522 serves HTTPS on all interfaces (self-signed cert ~/.fatihah-tls, SAN 192.168.68.114) so the M1 Air and iPhones can run the same URLs; /qa-save proxy verified over HTTPS; procedure in README \"Device runs over the LAN\""
  }
