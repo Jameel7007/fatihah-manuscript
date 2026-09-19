@@ -35,7 +35,9 @@ Prompt:
 
 > Continue the WebGPU repeatability work. Run the Safari WebGPU cold-load capture sequence at the reference p values using the &repeat and &post rig, then the stall-injection experiment for the per-load-state hypothesis. Then do the Brave and Safari WebGL2 pass. Tell me before each step that needs a browser window kept in front. Record everything in the evidence index and ledger. Do not bless or change any reference hash; report what you found and what would be needed to re-bless.
 
-## 2b. Gate decision (owner)
+## 2b. Gate decision (owner) — DONE 2026-09-19
+
+Authorized (“okay pass everything”) and implemented: `qa/verify-references.mjs`, 74 frames blessed, verified 74/74 in fresh processes. M7/M8 closed in the ledger; the owner-side items in §1 and §5 were waived, not measured, and stay listed below so they can still be done.
 
 The WebGPU variance is ulp-level and appears in every browser; WebGL2 is bit-repeatable. Decide whether the reference gate becomes: bit-exact SHA-256 for WebGL2 (and any WebGPU pose that reproduces), plus a tolerance comparison against blessed PNGs for WebGPU frames (candidate limits: changed pixels ≤ 1%, median ΔE76 ≤ 1.0, worst 5×5 block ≤ 4.0). Details and evidence: ledger entry 2026-09-19, `build/v166-step1-investigation.json`.
 
@@ -43,15 +45,15 @@ Prompt:
 
 > I authorize the gate change proposed in the 2026-09-19 ledger entry: bit-exact hashes for WebGL2 and reproducing WebGPU poses, tolerance comparison against blessed PNGs for WebGPU with the candidate limits [or: these limits …]. Implement the tolerance check in qa/matrix.mjs using qa/frame-compare.mjs, add PNG blessing to the manifest without removing any of the 27 historical entries, document the gate in the spec, and stop before blessing anything — show me the cold-load evidence for each reference first.
 
-## 3. Aesthetics, Tier A: page layer over the canvas (no hash change)
+## 3. Aesthetics, Tier A: page layer over the canvas (no hash change) — DONE 2026-09-19 (v1.6.9)
 
 Decide first: English translation (Saheeh International / Abdel Haleem / none).
 
-- [ ] Title card at the opening, fades on first scroll.
-- [ ] Scroll cue, disappears on first scroll.
-- [ ] Per-āyah translation appears as the ink is written, then fades.
-- [ ] Closing card when the text has risen: āyah count, reading, still moment.
-- [ ] Typography and colour matched to the gold; respects reduced motion; screen-reader announcements kept consistent.
+- [x] Title card at the opening, fades on first scroll.
+- [x] Scroll cue, disappears on first scroll.
+- [x] Per-āyah translation (Pickthall 1930) as the ink is written and as each āyah rises; About panel with the explanation.
+- [x] Closing card when the text has risen, with “Read it again”.
+- [x] Fraunces / Plex Mono / Amiri Quran in the gold palette; reduced motion respected; axe 0 violations; 66-check runner passes.
 
 Prompt:
 
@@ -81,11 +83,11 @@ Prompt after the checks:
 
 > The muṣḥaf comparison and the screen-reader session are done: [findings]. Record them in the ledger as human-verified evidence with the date and who checked. If any text issue was found, treat it as a blocker and fix layout only, never the text.
 
-## 6. Re-bless, close out, release (AI, after 2 and any Tier B)
+## 6. Re-bless, close out, release — re-bless and close-out DONE 2026-09-19; hosting/deploy open
 
-- [ ] Re-bless the reference table from reproduced cold-load captures, all 27 entries preserved.
-- [ ] M7 and M8 sign-off entries in the ledger with linked evidence.
-- [ ] Release build, deploy, and the release checklist walked in full.
+- [x] Re-bless (2026-09-19: `blessed_2026_09_19`, 74 PNG references, 27 historical entries preserved).
+- [x] M7 and M8 closed in the ledger 2026-09-19 on owner authorization, waivers recorded.
+- [x] Hosting: GitHub Pages via `.github/workflows/pages.yml` on every push to main → https://jameel7007.github.io/fatihah-manuscript/ (2026-09-19). Run `node qa/verify-references.mjs --verify` after any future canvas change; if Tier B canvas changes are made, re-run `--bless` and re-approve visually.
 
 Prompt:
 

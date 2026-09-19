@@ -1,15 +1,17 @@
 # Al-Fātiḥah 3D Manuscript — working rules
 
-Read first, in this order: `docs/next-steps.md` (what is next, with prompts), `README.md`, `docs/status.html`
-(ledger), `docs/spec.html` (contract, Δ history at the end), `docs/release-checklist.md`.
+Read first, in this order: `docs/next-steps.md` (what is next, with prompts), `docs/engineering.md` (handbook),
+`docs/status.html` (ledger), `docs/spec.html` (contract, Δ history at the end), `docs/release-checklist.md`.
+`README.md` is the visitor-facing GitHub page — keep it plain-language.
 
 ## Non-negotiable
 - Scripture: ʿUthmānic text, Ḥafṣ ʿan ʿĀṣim, Basmalah = āyah 1. Change layout, never text.
-- Visual approval never waives technical gates. M0–M6 signed off; M7/M8 OPEN until repeatability and
-  device evidence exist. Do not close gates.
-- Reference hashes (`qa/references/manifest.json`): never invent, never round pixels, never accept multiple
-  variants, never bless without reproduced cold-load evidence AND explicit owner authorization. All 27
-  historical entries are preserved.
+- Visual approval never waives technical gates. M0–M8 closed (M7/M8 on 2026-09-19 owner authorization; unmeasured
+  items are recorded as waived in the ledger and listed in docs/next-steps.md — never describe them as measured).
+- Reference gate (owner-authorized 2026-09-19): `node qa/verify-references.mjs --verify` — PNG references in
+  `qa/references/frames/`, manifest `blessed_2026_09_19`; bit-exact passes, else tolerance (changed ≤ 1 %,
+  median ΔE76 ≤ 1.0, worst 5×5 block ≤ 4.0). Re-bless (`--bless`) only after a visually approved canvas change
+  and with the owner's say-so. Never invent a hash or hand-edit references; the 27 historical entries stay.
 - The approved v1.6.6 look (clean satin gold: roughness 0.52 / metalness 0.72, no burnish, anisotropy 0) is
   not changed without the owner asking. Explain and show before/after before any significant visual change.
 - Keep `docs/spec.html` Δ history, `docs/status.html`, README and the pending manifest in sync with behaviour
@@ -18,6 +20,7 @@ Read first, in this order: `docs/next-steps.md` (what is next, with prompts), `R
 
 ## How to run
 - `npm run dev` (4520) / `npx vite preview --port 4521`; QA pages at `/qa/*.html` (dev and preview only).
+- Deploy: push to main → `.github/workflows/pages.yml` → https://jameel7007.github.io/fatihah-manuscript/ (base path via `FATIHAH_BASE`; runtime URLs through `assetUrl()`). The page layer of words is `src/director/story.ts` (DOM only, hidden in capture).
 - QA sink: `node qa/review/receiver.mjs` on :4599, proxied at `/qa-save`; restart it if posts 502.
 - Device runs over the LAN: `FATIHAH_LAN=1 npx vite preview --port 4522` (HTTPS, cert in `~/.fatihah-tls`).
 - Rig: `?capture=P&tier=N&w=W&h=H[&post=NAME][&repeat=N]`, `?perf=30&save=1`, `?hold=60&save=1`, `?hud=1`.

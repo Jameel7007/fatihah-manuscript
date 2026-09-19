@@ -2,6 +2,7 @@
 // the GPU-side lookup structures: a sheet-uv spatial grid (8 instance slots per cell) and
 // a packed instance texture. Everything is checksum-gated against the frozen composition.
 
+import { assetUrl } from '../core/url';
 import { DataTexture, LinearFilter, NearestFilter, RGBAFormat, Texture, TextureLoader, NoColorSpace, UnsignedByteType, ClampToEdgeWrapping } from 'three/webgpu';
 import { uniform } from 'three/tsl';
 
@@ -55,7 +56,7 @@ const SHEET_W = 0.78;
 const toSuv = (x: number, y: number): [number, number] => [(x + SHEET_W / 2) / SHEET_W, y]; // +x (composition right) = suv.x 1 = screen right on the viewed recto
 
 export async function loadInk(): Promise<InkPack> {
-  const data = (await (await fetch('/text/ink-instances.json')).json()) as {
+  const data = (await (await fetch(assetUrl('text/ink-instances.json'))).json()) as {
     pxPerEm: number;
     rangePx: number;
     atlas: [number, number];
@@ -65,7 +66,7 @@ export async function loadInk(): Promise<InkPack> {
     rings: InkRing[];
   };
   const loader = new TextureLoader();
-  const [mtsdf, prog] = await Promise.all([loader.loadAsync('/text/ink-mtsdf.png'), loader.loadAsync('/text/ink-prog.png')]);
+  const [mtsdf, prog] = await Promise.all([loader.loadAsync(assetUrl('text/ink-mtsdf.png')), loader.loadAsync(assetUrl('text/ink-prog.png'))]);
   for (const t of [mtsdf, prog]) {
     t.colorSpace = NoColorSpace;
     t.flipY = false; // atlas row 0 = top; sampled with v measured top-down

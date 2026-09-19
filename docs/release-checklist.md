@@ -1,5 +1,7 @@
 # Completion path
 
+**2026-09-19 — closed on owner authorization (“okay pass everything”).** Reference gate: `node qa/verify-references.mjs --verify` (headless, both backends, tolerance; 74/74 pass). M7/M8 recorded closed in the ledger; the items below that were not measured are recorded there as waived by the owner and remain in `docs/next-steps.md`. Hosting target still to choose; `npm run build` produces the release in `dist/`.
+
 Goal set 2026-09-07: finish M7 and M8 without changing the canonical scripture or silently closing gates.
 Current visual direction: v1.6.6, explicitly visually approved 2026-09-09. M0–M6 stay signed off;
 M7 and M8 technical gates remain open.

@@ -32,6 +32,8 @@ const tlsDir = process.env.FATIHAH_TLS_DIR ?? resolve(process.env.HOME ?? '', '.
 const lanServer = lan ? { host: true, https: { key: readFileSync(resolve(tlsDir, 'key.pem')), cert: readFileSync(resolve(tlsDir, 'cert.pem')) } } : {};
 
 export default defineConfig({
+  // GitHub Pages serves the site from /fatihah-manuscript/; the deploy workflow sets FATIHAH_BASE.
+  base: process.env.FATIHAH_BASE ?? '/',
   plugins: [qaPages()],
   build: { target: 'es2022' },
   // three ships many subpath entries (three, three/webgpu, three/tsl); letting the dep

@@ -1,21 +1,21 @@
 {
- "built": "2026-09-13",
+ "built": "2026-09-19",
  "budget": {
   "target_mb": 8.5,
   "hard_cap_mb": 10,
   "transfer_metric": "brotli (gzip also listed)"
  },
  "totals": {
-  "raw_mb": 24.171,
-  "gz_mb": 11.288,
-  "br_mb": 7.127
+  "raw_mb": 24.186,
+  "gz_mb": 11.293,
+  "br_mb": 7.131
  },
  "phases": {
   "A": {
-   "files": 16,
-   "raw_mb": 1.014,
-   "gz_mb": 0.344,
-   "br_mb": 0.295,
+   "files": 17,
+   "raw_mb": 1.029,
+   "gz_mb": 0.35,
+   "br_mb": 0.299,
    "seconds_at_10mbps_br": 0.25
   },
   "F": {
@@ -60,12 +60,12 @@
    "br_kb": 0.1
   },
   {
-   "path": "dist/assets/fallback-D6fTd1Ep.js",
+   "path": "dist/assets/fallback-D7Mjon_Z.js",
    "phase": "F",
    "kind": "app",
-   "raw": 2108,
-   "gz": 988,
-   "br": 810,
+   "raw": 2180,
+   "gz": 1030,
+   "br": 839,
    "raw_kb": 2.1,
    "gz_kb": 1,
    "br_kb": 0.8
@@ -82,12 +82,12 @@
    "br_kb": 0.5
   },
   {
-   "path": "dist/assets/index-VbHEhP0g.js",
+   "path": "dist/assets/index-C2DzSbH-.js",
    "phase": "A",
    "kind": "app",
-   "raw": 1806,
-   "gz": 906,
-   "br": 791,
+   "raw": 1837,
+   "gz": 924,
+   "br": 809,
    "raw_kb": 1.8,
    "gz_kb": 0.9,
    "br_kb": 0.8
@@ -115,26 +115,26 @@
    "br_kb": 1.3
   },
   {
-   "path": "dist/assets/main-BmjXC4zF.js",
+   "path": "dist/assets/main-BKQM8x9H.css",
    "phase": "A",
    "kind": "app",
-   "raw": 82284,
-   "gz": 32123,
-   "br": 28374,
-   "raw_kb": 80.4,
-   "gz_kb": 31.4,
-   "br_kb": 27.7
+   "raw": 6780,
+   "gz": 2017,
+   "br": 1720,
+   "raw_kb": 6.6,
+   "gz_kb": 2,
+   "br_kb": 1.7
   },
   {
-   "path": "dist/assets/main-MFTCUyNQ.css",
+   "path": "dist/assets/main-NYdi2kGX.js",
    "phase": "A",
    "kind": "app",
-   "raw": 837,
-   "gz": 427,
-   "br": 333,
-   "raw_kb": 0.8,
-   "gz_kb": 0.4,
-   "br_kb": 0.3
+   "raw": 87204,
+   "gz": 33810,
+   "br": 29764,
+   "raw_kb": 85.2,
+   "gz_kb": 33,
+   "br_kb": 29.1
   },
   {
    "path": "dist/assets/preload-helper-Czpn1I53.js",
@@ -214,15 +214,26 @@
    "br_kb": 181.1
   },
   {
+   "path": "dist/assets/url-yLLZLKHv.js",
+   "phase": "A",
+   "kind": "app",
+   "raw": 80,
+   "gz": 92,
+   "br": 61,
+   "raw_kb": 0.1,
+   "gz_kb": 0.1,
+   "br_kb": 0.1
+  },
+  {
    "path": "dist/index.html",
    "phase": "A",
    "kind": "html",
-   "raw": 6275,
-   "gz": 3222,
-   "br": 2699,
-   "raw_kb": 6.1,
-   "gz_kb": 3.1,
-   "br_kb": 2.6
+   "raw": 10749,
+   "gz": 5133,
+   "br": 4221,
+   "raw_kb": 10.5,
+   "gz_kb": 5,
+   "br_kb": 4.1
   },
   {
    "path": "public/poster.jpg",

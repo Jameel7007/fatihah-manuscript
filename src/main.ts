@@ -5,6 +5,8 @@ import { CameraRig } from './director/camera';
 import { blobTilt, contactRamp, embossFactor, envYawDeg, FACE_CENTER_ANCHOR, FACE_CENTER_REST, faceFactor, facePitch, fillFactor, geoDepth, inkGhost, keyConeDeg, keyFactor, parchmentKeyMask, poseTransform, recede, rimFactor, RISE_START, stateLabel } from './director/drivers';
 import { IdleController, type IdleState } from './director/idle';
 import { ReducedMotion } from './director/reduced';
+import { Story, AYAT } from './director/story';
+import { assetUrl } from './core/url';
 import { Vector3 } from 'three/webgpu';
 import { ScrollDriver, SCROLL_DENSITY_TOTAL } from './director/scroll';
 import { evalDeform } from './field/deform';
@@ -389,7 +391,7 @@ async function runReveal(): Promise<void> {
     ext: { x: number; y: number; w: number; h: number };
     path: string;
   }
-  const comp = (await (await fetch('/text/composition.json')).json()) as {
+  const comp = (await (await fetch(assetUrl('text/composition.json'))).json()) as {
     checksums: { svg: string };
     em: number;
     lines: Array<{ baseline: number; glyphs: GlyphRec[]; markers: Array<{ x: number; y: number }> }>;
@@ -604,7 +606,7 @@ async function runMain(): Promise<void> {
   const field = new Field(sil);
   const wantsInk = q.get('noink') === null;
   const wantsRelief = wantsInk && q.get('nogeo') === null;
-  const glyphUrl = tier === 3 ? '/text/glyphs-t3.bin' : '/text/glyphs.bin';
+  const glyphUrl = assetUrl(tier === 3 ? 'text/glyphs-t3.bin' : 'text/glyphs.bin');
   // Capture stays all-at-once and deterministic. Live mode builds the rolled parchment
   // from phase A, then streams phase B/C only after the first canvas presentation.
   let initialInk: Awaited<ReturnType<typeof loadInk>> | undefined;
@@ -622,6 +624,14 @@ async function runMain(): Promise<void> {
   const keyBaseX = key.position.x;
   // §13 reduced motion (prefers-reduced-motion, or ?reduced=1 for QA): held compositions
   const reducedMotion = q.get('reduced') !== null || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // the page layer of words (title, captions, translation, closing, About) — DOM only, hidden in capture
+  let story: Story | null = null;
+  const storyRoot = document.querySelector<HTMLElement>('#story');
+  if (storyRoot && !isCapture) {
+    story = new Story(storyRoot);
+    const list = storyRoot.querySelector('#story-about-ayat');
+    if (list) for (const a of AYAT) { const li = document.createElement('li'); const n = document.createElement('span'); n.className = 'n'; n.lang = 'ar'; n.textContent = a.n; const t = document.createElement('span'); t.textContent = a.en; li.append(n, t); list.append(li); }
+  } else if (storyRoot) storyRoot.hidden = true;
   if (q.get('noshadow') !== null) key.castShadow = false; // QA: isolate the key's shadow
   const noBlob = q.get('noblob') !== null; // QA: R-1.00-noblob (§8 — PCSS carries S7 alone)
   const rig = new CameraRig();
@@ -1096,6 +1106,7 @@ async function runMain(): Promise<void> {
     const message = `${stateLabel(scroll.p)}${assetError ? ' · text unavailable' : !assetsReady ? ' · loading text' : ''}${reduced ? ' · reduced motion' : ''}`;
     if (announcement && announcement.textContent !== message) announcement.textContent = message;
     bar!.style.height = `${scroll.p * 100}%`;
+    story?.update(scroll.p);
 
     // The held-ending audit must not count staged loading, the p=0→1 arrival,
     // idle arming, or supersample/tier allocation as steady-state brightness drift.

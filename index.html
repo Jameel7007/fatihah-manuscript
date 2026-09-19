@@ -6,6 +6,9 @@
 <title>Al-Fātiḥah 3D Manuscript</title>
 <meta name="description" content="Sūrat al-Fātiḥah on an aged parchment that unrolls, is written in ink, and rises into gilded relief as you scroll.">
 <meta name="theme-color" content="#01030D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,420;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&family=Amiri+Quran&display=swap">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2301030D'/%3E%3Cg fill='%23C9A45B'%3E%3Crect x='18' y='18' width='28' height='28'/%3E%3Crect x='18' y='18' width='28' height='28' transform='rotate(45 32 32)'/%3E%3C/g%3E%3Ccircle cx='32' cy='32' r='5.5' fill='%2301030D'/%3E%3C/svg%3E">
 <style>
   html { background: #01030D; } /* §1 v1.6 universe floor — overscroll and first paint match the sky */
@@ -47,6 +50,48 @@
 <div id="poster" aria-hidden="true"><picture><source media="(orientation: portrait)" srcset="/poster-portrait.jpg"><img src="/poster.jpg" alt="" decoding="async" fetchpriority="high"></picture></div>
 <div id="spacer" aria-hidden="true"></div>
 <canvas id="gl" role="img" aria-label="An aged parchment bearing Sūrat al-Fātiḥah, unrolled, written in ink, and raised into gilded relief as you scroll"></canvas>
+<div id="story">
+  <div id="story-title">
+    <p class="eyebrow">Sūrat al-Fātiḥah · The Opening</p>
+    <p class="arabic" lang="ar">ٱلْفَاتِحَة</p>
+    <p class="name">Al-Fātiḥah — a manuscript in three dimensions</p>
+    <p class="dek">The seven verses that open the Qurʾān: a parchment unrolls, a scribe writes them in ink, and the words rise into gold as you scroll.</p>
+  </div>
+  <div id="story-cue"><span>Scroll</span><span class="line" aria-hidden="true"></span></div>
+  <p id="story-caption" aria-hidden="true"></p>
+  <div id="story-ayah" aria-hidden="true"><span id="story-ayah-num" lang="ar"></span><p id="story-ayah-text"></p></div>
+  <div id="story-closing" aria-hidden="true">
+    <p class="eyebrow">Al-Fātiḥah · seven āyāt</p>
+    <p>ʿUthmānic script, the reading of Ḥafṣ ʿan ʿĀṣim · translation after Pickthall, 1930</p>
+    <div class="actions"><button type="button" class="story-btn" id="story-again">Read it again</button></div>
+  </div>
+  <button type="button" class="story-btn" id="story-about-btn" aria-expanded="false" aria-controls="story-about">About</button>
+  <div id="story-about" role="dialog" aria-modal="true" aria-labelledby="story-about-h" hidden>
+    <div class="panel">
+      <button type="button" class="story-btn" id="story-about-close" aria-label="Close">Close</button>
+      <p class="eyebrow">About this piece</p>
+      <h2 id="story-about-h">Al-Fātiḥah <span class="arabic" lang="ar">ٱلْفَاتِحَة</span></h2>
+      <p><b>The Opening</b> is the first chapter of the Qurʾān: seven short verses recited in every unit of the daily prayers, a prayer for guidance that Muslims say many times a day. This page shows those seven verses as a manuscript being made — the way a calligrapher and a gilder would have made one — and lets you move through that making by scrolling.</p>
+      <h3>What happens as you scroll</h3>
+      <ol>
+        <li>A rolled parchment rests in the dark.</li>
+        <li>It unrolls, the middle opening first as real vellum does.</li>
+        <li>A scribe writes the seven āyāt in iron-gall ink, stroke by stroke, in the order a hand would write them; the ink is wet, then dries.</li>
+        <li>The page is presented flat, for reading.</li>
+        <li>The letters swell into low relief.</li>
+        <li>Āyah by āyah, the words stand up from the page and turn to gold.</li>
+        <li>The gilded text faces you and holds, with the page fading behind it.</li>
+      </ol>
+      <h3>The seven āyāt</h3>
+      <ul class="ayat" id="story-about-ayat"></ul>
+      <p class="credits">Translation after Marmaduke Pickthall, <i>The Meaning of the Glorious Koran</i> (1930). The Arabic is the ʿUthmānic text in the reading of Ḥafṣ ʿan ʿĀṣim, as printed in the Madinah muṣḥaf, taken from the Tanzil project and checked letter for letter on every build. The Basmalah is counted as the first āyah. The hand is Amiri Quran by Khaled Hosny (SIL Open Font License), set as a classical centred block of seven lines with rosette markers.</p>
+      <h3>How it is made</h3>
+      <p>Everything on screen is computed live in your browser with WebGPU (or WebGL2 where WebGPU is not available). The parchment is a real curved surface recalculated every frame; the ink is a signed-distance field revealed along each stroke; the gold letters are true geometry — about half a million triangles with a hand-drawn bevel profile — lit by a warm key light, a cool rim, and a reflected window, with contact shadows under the rising words. Nothing is a video: every state is a pure function of how far you have scrolled, so scrolling back replays it exactly.</p>
+      <p>If your browser cannot run it, a folio of seven still plates is shown instead. If you prefer reduced motion, the journey becomes seven held compositions with a pager. Keyboard: arrow keys and Home/End in reduced-motion mode; Escape closes this panel.</p>
+      <p class="credits">Made by Thomas Mooney (<a href="https://github.com/Jameel7007/fatihah-manuscript">source on GitHub</a>). Three.js r185 with TSL node materials.</p>
+    </div>
+  </div>
+</div>
 <div id="hud" aria-hidden="true"></div>
 <div id="announce" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 <div id="bar" aria-hidden="true"></div>

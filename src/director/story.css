@@ -1,0 +1,119 @@
+/* The page layer of words. Palette: the universe floor, the gilding, the parchment's ink. */
+#story {
+  --gold: #C9A45B; --gold-dim: #8F7440; --gold-faint: #4A3D26;
+  --text: #E7DDC6; --muted: #A2957A; --faint: #6E6350;
+  --serif: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --arabic: "Amiri Quran", "Amiri", "Scheherazade New", "Noto Naskh Arabic", "Geeza Pro", serif;
+  position: fixed; inset: 0; z-index: 3; pointer-events: none; color: var(--text);
+  font-family: var(--serif); -webkit-font-smoothing: antialiased;
+}
+#story > * { transition: opacity .45s ease; }
+#story .is-off { visibility: hidden; }
+@media (prefers-reduced-motion: reduce) { #story > * { transition: none; } }
+body.capture #story { display: none; }
+
+/* ---- opening: title + dek ---- */
+#story-title {
+  position: absolute; left: 50%; top: calc(7vh + env(safe-area-inset-top)); transform: translateX(-50%);
+  width: min(88vw, 640px); text-align: center; text-wrap: balance;
+}
+#story-title .eyebrow {
+  margin: 0 0 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: var(--gold-dim);
+}
+#story-title .arabic {
+  margin: 0; font-family: var(--arabic); font-size: clamp(44px, 7.5vw, 76px); line-height: 1.25; color: var(--gold);
+  direction: rtl; font-weight: 400; text-shadow: 0 0 40px rgba(201, 164, 91, .18);
+}
+#story-title .name { margin: 4px 0 0; font-size: clamp(17px, 2.2vw, 22px); font-weight: 420; letter-spacing: .01em; color: var(--text); }
+#story-title .dek { margin: 10px auto 0; max-width: 46ch; font-size: clamp(13.5px, 1.5vw, 15.5px); line-height: 1.55; color: var(--muted); font-style: italic; }
+
+/* ---- scroll cue ---- */
+#story-cue {
+  position: absolute; left: 50%; bottom: calc(26px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .26em; text-transform: uppercase; color: var(--muted);
+}
+#story-cue .line { width: 1px; height: 34px; background: linear-gradient(var(--gold), transparent); animation: story-cue 2.6s ease-in-out infinite; transform-origin: top; }
+@keyframes story-cue { 0%, 100% { transform: scaleY(.55); opacity: .4; } 50% { transform: scaleY(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { #story-cue .line { animation: none; } }
+
+/* ---- stage caption ---- */
+#story-caption {
+  position: absolute; left: calc(20px + env(safe-area-inset-left)); top: calc(26px + env(safe-area-inset-top)); max-width: 60vw;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-dim);
+}
+
+/* ---- the āyah being written ---- */
+#story-ayah {
+  position: absolute; left: 50%; bottom: calc(44px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+  width: min(86vw, 560px); text-align: center; text-wrap: balance;
+}
+#story-ayah-num {
+  display: inline-block; font-family: var(--arabic); font-size: 15px; line-height: 1; color: var(--gold);
+  border: 1px solid var(--gold-faint); border-radius: 50%; width: 26px; height: 26px; line-height: 26px; margin-bottom: 8px;
+}
+#story-ayah-text { margin: 0; font-size: clamp(16px, 2vw, 20px); line-height: 1.5; font-weight: 400; color: var(--text); }
+
+/* ---- closing card ---- */
+#story-closing {
+  position: absolute; left: 50%; bottom: calc(30px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+  width: min(88vw, 620px); text-align: center; pointer-events: none;
+}
+#story-closing .eyebrow { margin: 0 0 8px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: var(--gold-dim); }
+#story-closing p { margin: 0; font-size: clamp(13px, 1.5vw, 15px); line-height: 1.6; color: var(--muted); }
+#story-closing .actions { margin-top: 12px; display: flex; gap: 18px; justify-content: center; }
+#story-closing:not(.is-off) .actions { pointer-events: auto; }
+
+/* ---- buttons ---- */
+.story-btn {
+  pointer-events: auto; cursor: pointer; background: transparent; border: 1px solid var(--gold-faint); border-radius: 3px;
+  color: var(--gold); font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; padding: 9px 14px;
+  min-height: 44px; min-width: 44px;
+}
+.story-btn:hover { border-color: var(--gold-dim); }
+.story-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+#story-about-btn { position: absolute; right: calc(16px + env(safe-area-inset-right)); top: calc(14px + env(safe-area-inset-top)); }
+
+/* ---- about panel ---- */
+#story-about {
+  position: absolute; inset: 0; pointer-events: auto; background: rgba(1, 3, 13, .82); backdrop-filter: blur(6px);
+  overflow-y: auto; padding: 5vh 20px calc(40px + env(safe-area-inset-bottom));
+}
+#story-about[hidden] { display: none; }
+#story-about .panel {
+  position: relative; max-width: 620px; margin: 0 auto; padding: 32px 30px 28px; border: 1px solid var(--gold-faint); border-radius: 4px;
+  background: #0B0906; color: var(--text); font-size: 15px; line-height: 1.65;
+}
+#story-about h2 { margin: 0 0 6px; font-size: 26px; font-weight: 420; line-height: 1.2; text-wrap: balance; }
+#story-about h2 .arabic { font-family: var(--arabic); color: var(--gold); font-size: 30px; margin-left: 10px; }
+#story-about .eyebrow { margin: 0 0 14px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-dim); }
+#story-about h3 { margin: 22px 0 6px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-dim); font-weight: 500; }
+#story-about p { margin: 0 0 10px; max-width: 60ch; }
+#story-about ol { margin: 0 0 10px; padding-left: 20px; }
+#story-about li { margin-bottom: 4px; }
+#story-about li::marker { color: var(--gold-dim); }
+#story-about a { color: var(--gold); }
+#story-about .ayat { list-style: none; padding: 0; margin: 4px 0 8px; }
+#story-about .ayat li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: baseline; margin-bottom: 6px; }
+#story-about .ayat .n { font-family: var(--arabic); color: var(--gold); text-align: center; }
+#story-about .credits { font-size: 13px; color: var(--muted); }
+#story-about-close { position: absolute; right: 12px; top: 12px; }
+@media (max-width: 640px) {
+  #story-about .panel { padding: 26px 18px 22px; font-size: 14.5px; }
+  #story-title { top: calc(5vh + env(safe-area-inset-top)); }
+}
+
+/* ---- wide landscape: the words sit in the empty left margin, like marginalia beside the page ---- */
+@media (min-width: 900px) and (orientation: landscape) {
+  #story-ayah {
+    left: calc(5vw + env(safe-area-inset-left)); bottom: auto; top: 50%; transform: translateY(-50%);
+    width: min(24vw, 300px); text-align: left;
+  }
+  #story-ayah-text { font-size: clamp(17px, 1.6vw, 21px); }
+  #story-closing {
+    left: calc(5vw + env(safe-area-inset-left)); transform: none; bottom: calc(40px + env(safe-area-inset-bottom));
+    width: min(24vw, 300px); text-align: left;
+  }
+  #story-closing .actions { justify-content: flex-start; }
+}

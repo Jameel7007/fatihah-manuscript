@@ -7,6 +7,7 @@ dist/
 
 # build-time asset intermediates (regenerated from sources)
 build/cache/
+build/.headless-*/
 qa/output/
 
 # large authored sources tracked elsewhere until LFS is decided

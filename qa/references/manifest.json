@@ -1,738 +1,1796 @@
 {
- "note": "Blessed regression references. Hashes are environment-specific — re-bless when the capture environment changes. PNG blessing and SSIM/ΔE00 gates land with the CI harness. BLESSING POLICY (learned 2026-08-25): only hash from cold loads on a settled dev server — the first load after an HMR edit can serve a mixed module graph and taint the hash. WARM-UP (learned M6, 2026-09-01): captures render 15 frames before readback (&warm=N, default 15) — three frames raced the WebGPU async pipeline compiles (R-1.00 hashed three ways across cold loads); every mesh-visible frame is reproduced across >=2 cold loads before blessing.",
- "environment": {
-  "machine": "MacBook Pro (Apple Silicon)",
-  "browser": "Chromium (Claude Code browser pane)",
-  "three": "0.185.1",
-  "canvas": "1440x900 @ DPR 1"
- },
- "frames": [
-  {
-   "id": "R-0.00-T1",
-   "milestone": "M2 complete look (grade pass, specular AA, graded calibrations)",
-   "url": "/?capture=0.0&tier=1",
-   "sha256": {
-    "webgpu": "80a1f5e1ea991d3c0c9b6e08a1c14c88daf8799e42a35581e616152367305e65",
-    "webgl2": "pending CI re-bless — dev pane throttling stalls webgl2 captures; cross-backend field equivalence proven by probes"
-   },
-   "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
+  "note": "Blessed regression references. Hashes are environment-specific — re-bless when the capture environment changes. PNG blessing and SSIM/ΔE00 gates land with the CI harness. BLESSING POLICY (learned 2026-08-25): only hash from cold loads on a settled dev server — the first load after an HMR edit can serve a mixed module graph and taint the hash. WARM-UP (learned M6, 2026-09-01): captures render 15 frames before readback (&warm=N, default 15) — three frames raced the WebGPU async pipeline compiles (R-1.00 hashed three ways across cold loads); every mesh-visible frame is reproduced across >=2 cold loads before blessing. GATE CHANGE (owner-authorized 2026-09-19): the reference gate is blessed_2026_09_19 — PNG references compared by qa/verify-references.mjs: bit-exact when it reproduces, else tolerance (changed ≤ 1%, median ΔE76 ≤ 1.0, worst 5×5 block ΔE76 ≤ 4.0). frames[] stays as the historical record.",
+  "environment": {
+    "machine": "MacBook Pro (Apple Silicon)",
+    "browser": "Chromium (Claude Code browser pane)",
+    "three": "0.185.1",
+    "canvas": "1440x900 @ DPR 1"
   },
-  {
-   "id": "R-0.21-T1",
-   "milestone": "M2 complete look (grade pass, specular AA, graded calibrations)",
-   "url": "/?capture=0.21&tier=1",
-   "sha256": {
-    "webgpu": "0828669cdc20aa2d05aefab7ca4e04d6f483e363e5bff2c80eb950659d7c7cdd",
-    "webgl2": "pending CI re-bless (see R-0.00 note)"
-   },
-   "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
-  },
-  {
-   "id": "R-0.34-T1 (v1.4.3 text — SUPERSEDED by v1.5)",
-   "milestone": "M3 ink (basmalah 60% written + wet per SS10) + M4 light choreography (key S3 dim 0.88)",
-   "url": "/?capture=0.34&tier=1",
-   "sha256": {
-    "webgpu": "1f3f2b5826e1c2fd0b87ae249bf2314d3809be572c8b92761fd217ab06024fcc (stale — layout changed at the 2026-08-30 review)",
-    "webgl2": "pending CI re-bless (see R-0.00 note)"
-   },
-   "verified": "2026-08-27, re-blessed at M3 close (user sign-off on the write sequence): ink present per SS10, key dim driver active"
-  },
-  {
-   "id": "R-0.45-T1 (v1.4.3 text — SUPERSEDED by v1.5)",
-   "milestone": "M3 ink (SS20 DoD frame: ayah 4 finishing in its 0.424-0.451 window) + key dim 0.88",
-   "url": "/?capture=0.45&tier=1",
-   "sha256": {
-    "webgpu": "06cc7d5f711c29bfb69d5e614b0fc8b91c7a3d09e170676ba5d51552e7cc6216 (stale — layout changed at the 2026-08-30 review)",
-    "webgl2": "pending CI re-bless (see R-0.00 note)"
-   },
-   "verified": "2026-08-27, blessed at M3 close — reproduced across two loads on a settled server; wet-trail DoD PASS (see ink_pipeline)"
-  },
-  {
-   "id": "R-0.50-T1 (M0 gray-box, superseded by M1 field)",
-   "milestone": "M0",
-   "url": "/?capture=0.50&tier=1",
-   "sha256": {
-    "webgpu": "62a459cf14f174783d8bf652209806e52073b24886b618e2235986c3a8d795ee (stale — pre-field)",
-    "webgl2": "658bab87e5e10f769f6e6c5a1977c5ccce3a83d0a4bd6a642708e997b0572d50 (stale — pre-field)"
-   },
-   "verified": "2026-08-24 (M0); re-bless at M2 when materials land"
-  },
-  {
-   "id": "R-0.34-T1",
-   "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
-   "url": "/?capture=0.34&tier=1",
-   "sha256": {
-    "webgpu": "f3d119ee44ab1b7a9dc09c88f649b37d49fcd00c31e89816455df660ca4af082",
-    "webgl2": "pending CI re-bless (see R-0.00 note)"
-   },
-   "verified": "2026-08-30/09-01, cold loads on a settled server; reproduced across the mesh-refinement rebuilds where the mesh is invisible (p < 0.69); M4 close — v1.5 classical centered text; basmalah mid-write, key S3 dim"
-  },
-  {
-   "id": "R-0.45-T1",
-   "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
-   "url": "/?capture=0.45&tier=1",
-   "sha256": {
-    "webgpu": "3dd73e95aaa6ce16bb27f552dbc3a232e7f1bb4573aa19a1c3ce6d7a499f351b",
-    "webgl2": "pending CI re-bless (see R-0.00 note)"
-   },
-   "verified": "2026-08-30/09-01, cold loads on a settled server; reproduced across the mesh-refinement rebuilds where the mesh is invisible (p < 0.69); M4 close — SS20 ink frame on v1.5 (dagger alif of Maliki visible); T3 hashes IDENTICAL (tier differentiation beyond the DPR cap lands in M7)"
-  },
-  {
-   "id": "R-0.56-T1",
-   "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
-   "url": "/?capture=0.56&tier=1",
-   "sha256": {
-    "webgpu": "16df1d9527c615b26f95317ae1b6c04d77673f0ba32b3d12f4c85892311a6710",
-    "webgl2": "pending CI re-bless (see R-0.00 note)"
-   },
-   "verified": "2026-08-30/09-01, cold loads on a settled server; reproduced across the mesh-refinement rebuilds where the mesh is invisible (p < 0.69); M4 close — presenting climb, key 0.92, emboss factor 0"
-  },
-  {
-   "id": "R-0.645-T1",
-   "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
-   "url": "/?capture=0.645&tier=1",
-   "sha256": {
-    "webgpu": "e6f14cfc61dd63cfc9f6a8a097d29e667ecbfd09cbc0a7a47ee84b18e2c0132a",
-    "webgl2": "pending CI re-bless (see R-0.00 note)"
-   },
-   "verified": "2026-08-30/09-01, cold loads on a settled server; reproduced across the mesh-refinement rebuilds where the mesh is invisible (p < 0.69); M4 close — SS14 emboss forming (restored block, corrected v-shading)"
-  },
-  {
-   "id": "R-0.710-T1",
-   "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
-   "url": "/?capture=0.710&tier=1",
-   "sha256": {
-    "webgpu": "f69955738fd62098bb2da3d1e491e9de34ac2378b328d6e5707c786fe7436c09",
-    "webgl2": "pending CI re-bless (see R-0.00 note)"
-   },
-   "verified": "2026-09-01, TWO cold loads identical (cb1429c6...). Supersedes 55c83049... which was NOT reproducible: R-0.710 flipped between 55c83049... and 2ecd244a... across cold loads (also seen as the T3 \"difference\") — a two-state z-fight at the base seam (mesh base exactly on the parchment surface; whichever pipeline compiled first drew first). Fixed in src/relief/mesh.ts: renderOrder 1 (mesh after parchment) + 1e-5 world seam clearance. M4 close — SS14 handoff midpoint. · RE-BLESSED 2026-09-01 (M6): the M6 mesh shader adds the S7 pivot/carry ops (zero-valued at p 0.71 — identical in value, not bit-identical), and captures now warm 15 frames; supersedes cb1429c6...; two cold loads identical"
-  },
-  {
-   "id": "R-0.76-T1",
-   "milestone": "M5 CLOSED (user sign-off 2026-09-01) — the rise: stagger + transmutation + contact blob (SS20 DoD frame)",
-   "url": "/?capture=0.76&tier=1",
-   "sha256": {
-    "webgpu": "12e45a53d2402452a2397e196968533951156615f937ccd01752b835168a3b84",
-    "webgl2": "pending CI re-bless (see R-0.00 note)"
-   },
-   "verified": "2026-09-01 — BLESSED at M5 close on user sign-off; two cold loads identical, T2 identical (tier differentiation beyond the DPR cap is M7 scope) · RE-BLESSED 2026-09-01 (M6): same M6 shader-graph change (pivot ops at zero) — supersedes 21859a51...; two cold loads identical"
-  },
-  {
-   "id": "R-0.93-T1",
-   "milestone": "M6 CLOSED (user sign-off 2026-09-01) — facing (SS20 DoD frame): mid-pivot, gaze tracking the lifting assembly, extent-fit distance",
-   "url": "/?capture=0.93&tier=1",
-   "sha256": {
-    "webgpu": "f6dddb0ee425709c961185d796daab452fd689ff848b24c7ff3ad7827670c7b6",
-    "webgl2": "pending CI re-bless (see R-0.00 note)"
-   },
-   "verified": "2026-09-01 — two cold loads identical (warm 15); BLESSED at M6 close on user sign-off"
-  },
-  {
-   "id": "R-1.00-T1",
-   "milestone": "M6 CLOSED (user sign-off 2026-09-01) — the held ending (SS20 DoD frame): 12° off frontal, center y 0.40, parchment receded, key cone 22°",
-   "url": "/?capture=1.0&tier=1",
-   "sha256": {
-    "webgpu": "2acc551f54a3512f0f2de3bb732fe551fed339a33fd0822b5b5437350c8902d5",
-    "webgl2": "pending CI re-bless (see R-0.00 note)"
-   },
-   "verified": "2026-09-01 — two cold loads identical (warm 15); T2 + noblob variants recorded in m6_open; BLESSED at M6 close on user sign-off"
-  },
-  {
-   "id": "R-0.08-T1",
-   "milestone": "M7 — SS20 matrix member (unroll begins, 82% wrapped)",
-   "url": "/?capture=0.08&tier=1",
-   "sha256": {
-    "webgpu": "a6e5de9a969ff16e17c3d51eadadf407fab33f232ed27b81d0c2ddf540f2cd1d",
-    "webgl2": "pending (matrix runner, CI policy)"
-   },
-   "verified": "2026-09-02 — matrix runner pass + an independent cold load identical (warm 15)"
-  },
-  {
-   "id": "R-0.86-T1",
-   "milestone": "M7 — SS20 matrix member (rise complete, facing begins)",
-   "url": "/?capture=0.86&tier=1",
-   "sha256": {
-    "webgpu": "2c5327b20e84734906715d1ba37c411e8249067ea46eb18d44fe4b985992e3a6",
-    "webgl2": "pending (matrix runner, CI policy)"
-   },
-   "verified": "2026-09-02 — matrix runner pass + an independent cold load identical (warm 15)"
-  },
-  {
-   "id": "R-0.000-T2 (390x844)",
-   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
-   "url": "/?capture=0.0&tier=2&w=390&h=844",
-   "sha256": {
-    "webgpu": "6dda8b5e85777e9dedf87b7beaf52d6feb12f334c10bffacbc36ea0eb477f9d0",
-    "webgl2": "pending (matrix runner, CI policy)"
-   },
-   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
-  },
-  {
-   "id": "R-0.080-T2 (390x844)",
-   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
-   "url": "/?capture=0.08&tier=2&w=390&h=844",
-   "sha256": {
-    "webgpu": "8f576d795ab15b16c2b4e11ef64a57f9dc5c00d76eade07288c74406fceec805",
-    "webgl2": "pending (matrix runner, CI policy)"
-   },
-   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
-  },
-  {
-   "id": "R-0.210-T2 (390x844)",
-   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
-   "url": "/?capture=0.21&tier=2&w=390&h=844",
-   "sha256": {
-    "webgpu": "f7705d6c1324d9ca15e9b393a4c1488481c24611b4ffa6f481346e5443a3b22d",
-    "webgl2": "pending (matrix runner, CI policy)"
-   },
-   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
-  },
-  {
-   "id": "R-0.340-T2 (390x844)",
-   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
-   "url": "/?capture=0.34&tier=2&w=390&h=844",
-   "sha256": {
-    "webgpu": "7c05ce5189a82ac3de670c6d1ad0765a1aa846523d8cfc7119ef7e3ba5d62ee5",
-    "webgl2": "pending (matrix runner, CI policy)"
-   },
-   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
-  },
-  {
-   "id": "R-0.450-T2 (390x844)",
-   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
-   "url": "/?capture=0.45&tier=2&w=390&h=844",
-   "sha256": {
-    "webgpu": "908a985c730e975f6ab9bbae931b21f889adf8669532478aee41257e389de967",
-    "webgl2": "pending (matrix runner, CI policy)"
-   },
-   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
-  },
-  {
-   "id": "R-0.560-T2 (390x844)",
-   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
-   "url": "/?capture=0.56&tier=2&w=390&h=844",
-   "sha256": {
-    "webgpu": "8415bd7245fe7473edbb0a5a47afda445388ebbf5a7c66423251ee9679d77a82",
-    "webgl2": "pending (matrix runner, CI policy)"
-   },
-   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
-  },
-  {
-   "id": "R-0.645-T2 (390x844)",
-   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
-   "url": "/?capture=0.645&tier=2&w=390&h=844",
-   "sha256": {
-    "webgpu": "4e8253dbbd309c1db73bfb7ab4c1d1fd621346e555b93eb8aeadc86d837187d9",
-    "webgl2": "pending (matrix runner, CI policy)"
-   },
-   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
-  },
-  {
-   "id": "R-0.710-T2 (390x844)",
-   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
-   "url": "/?capture=0.71&tier=2&w=390&h=844",
-   "sha256": {
-    "webgpu": "90aff2fd8f681615001de4fba09d17f45e7937f741d401c5d9ef62c77d7654d0",
-    "webgl2": "pending (matrix runner, CI policy)"
-   },
-   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
-  },
-  {
-   "id": "R-0.760-T2 (390x844)",
-   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
-   "url": "/?capture=0.76&tier=2&w=390&h=844",
-   "sha256": {
-    "webgpu": "4500b042cdf72a40ab7feb5d19cd84a11e0da8641d7b50968f27226947dd8295",
-    "webgl2": "pending (matrix runner, CI policy)"
-   },
-   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
-  },
-  {
-   "id": "R-0.860-T2 (390x844)",
-   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
-   "url": "/?capture=0.86&tier=2&w=390&h=844",
-   "sha256": {
-    "webgpu": "bdcc6288c4436084f8e925faf4e6b9d990dfe9bdb8846d78694471cd6bd6f4f0",
-    "webgl2": "pending (matrix runner, CI policy)"
-   },
-   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
-  },
-  {
-   "id": "R-0.930-T2 (390x844)",
-   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
-   "url": "/?capture=0.93&tier=2&w=390&h=844",
-   "sha256": {
-    "webgpu": "c726b61ee7374ff3f89395138a156f44acab7052af0117af70b8f5c145e73a9b",
-    "webgl2": "pending (matrix runner, CI policy)"
-   },
-   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
-  },
-  {
-   "id": "R-1.000-T2 (390x844)",
-   "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
-   "url": "/?capture=1.0&tier=2&w=390&h=844",
-   "sha256": {
-    "webgpu": "202959d0b2f2dada2bb12ad53c694c32c4d7bef64909e729869147f30c85ec40",
-    "webgl2": "pending (matrix runner, CI policy)"
-   },
-   "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
-  }
- ],
- "probes": {
-  "url": "/?probe=1&p={0.0|0.21|0.34}&tier=1[&backend=webgl2]",
-  "tolerance": {
-   "position": 0.0015,
-   "normalDeg": 2.0
-  },
-  "results": {
-   "webgpu": {
-    "p0.00": {
-     "maxPos": "1.1e-7",
-     "maxNormDeg": 1.08
+  "frames": [
+    {
+      "id": "R-0.00-T1",
+      "milestone": "M2 complete look (grade pass, specular AA, graded calibrations)",
+      "url": "/?capture=0.0&tier=1",
+      "sha256": {
+        "webgpu": "80a1f5e1ea991d3c0c9b6e08a1c14c88daf8799e42a35581e616152367305e65",
+        "webgl2": "pending CI re-bless — dev pane throttling stalls webgl2 captures; cross-backend field equivalence proven by probes"
+      },
+      "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
     },
-    "p0.21": {
-     "maxPos": "7.7e-8",
-     "maxNormDeg": 1.14
+    {
+      "id": "R-0.21-T1",
+      "milestone": "M2 complete look (grade pass, specular AA, graded calibrations)",
+      "url": "/?capture=0.21&tier=1",
+      "sha256": {
+        "webgpu": "0828669cdc20aa2d05aefab7ca4e04d6f483e363e5bff2c80eb950659d7c7cdd",
+        "webgl2": "pending CI re-bless (see R-0.00 note)"
+      },
+      "verified": "2026-08-25, cold loads; R-0.00 hash-identical across two loads; webgl2 chain smoke-tested"
     },
-    "p0.34": {
-     "maxPos": "1.5e-7",
-     "maxNormDeg": 1.1
+    {
+      "id": "R-0.34-T1 (v1.4.3 text — SUPERSEDED by v1.5)",
+      "milestone": "M3 ink (basmalah 60% written + wet per SS10) + M4 light choreography (key S3 dim 0.88)",
+      "url": "/?capture=0.34&tier=1",
+      "sha256": {
+        "webgpu": "1f3f2b5826e1c2fd0b87ae249bf2314d3809be572c8b92761fd217ab06024fcc (stale — layout changed at the 2026-08-30 review)",
+        "webgl2": "pending CI re-bless (see R-0.00 note)"
+      },
+      "verified": "2026-08-27, re-blessed at M3 close (user sign-off on the write sequence): ink present per SS10, key dim driver active"
     },
-    "p0.38": {
-     "contract": "0.0153 / 0.0136"
+    {
+      "id": "R-0.45-T1 (v1.4.3 text — SUPERSEDED by v1.5)",
+      "milestone": "M3 ink (SS20 DoD frame: ayah 4 finishing in its 0.424-0.451 window) + key dim 0.88",
+      "url": "/?capture=0.45&tier=1",
+      "sha256": {
+        "webgpu": "06cc7d5f711c29bfb69d5e614b0fc8b91c7a3d09e170676ba5d51552e7cc6216 (stale — layout changed at the 2026-08-30 review)",
+        "webgl2": "pending CI re-bless (see R-0.00 note)"
+      },
+      "verified": "2026-08-27, blessed at M3 close — reproduced across two loads on a settled server; wet-trail DoD PASS (see ink_pipeline)"
+    },
+    {
+      "id": "R-0.50-T1 (M0 gray-box, superseded by M1 field)",
+      "milestone": "M0",
+      "url": "/?capture=0.50&tier=1",
+      "sha256": {
+        "webgpu": "62a459cf14f174783d8bf652209806e52073b24886b618e2235986c3a8d795ee (stale — pre-field)",
+        "webgl2": "658bab87e5e10f769f6e6c5a1977c5ccce3a83d0a4bd6a642708e997b0572d50 (stale — pre-field)"
+      },
+      "verified": "2026-08-24 (M0); re-bless at M2 when materials land"
+    },
+    {
+      "id": "R-0.34-T1",
+      "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
+      "url": "/?capture=0.34&tier=1",
+      "sha256": {
+        "webgpu": "f3d119ee44ab1b7a9dc09c88f649b37d49fcd00c31e89816455df660ca4af082",
+        "webgl2": "pending CI re-bless (see R-0.00 note)"
+      },
+      "verified": "2026-08-30/09-01, cold loads on a settled server; reproduced across the mesh-refinement rebuilds where the mesh is invisible (p < 0.69); M4 close — v1.5 classical centered text; basmalah mid-write, key S3 dim"
+    },
+    {
+      "id": "R-0.45-T1",
+      "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
+      "url": "/?capture=0.45&tier=1",
+      "sha256": {
+        "webgpu": "3dd73e95aaa6ce16bb27f552dbc3a232e7f1bb4573aa19a1c3ce6d7a499f351b",
+        "webgl2": "pending CI re-bless (see R-0.00 note)"
+      },
+      "verified": "2026-08-30/09-01, cold loads on a settled server; reproduced across the mesh-refinement rebuilds where the mesh is invisible (p < 0.69); M4 close — SS20 ink frame on v1.5 (dagger alif of Maliki visible); T3 hashes IDENTICAL (tier differentiation beyond the DPR cap lands in M7)"
+    },
+    {
+      "id": "R-0.56-T1",
+      "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
+      "url": "/?capture=0.56&tier=1",
+      "sha256": {
+        "webgpu": "16df1d9527c615b26f95317ae1b6c04d77673f0ba32b3d12f4c85892311a6710",
+        "webgl2": "pending CI re-bless (see R-0.00 note)"
+      },
+      "verified": "2026-08-30/09-01, cold loads on a settled server; reproduced across the mesh-refinement rebuilds where the mesh is invisible (p < 0.69); M4 close — presenting climb, key 0.92, emboss factor 0"
+    },
+    {
+      "id": "R-0.645-T1",
+      "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
+      "url": "/?capture=0.645&tier=1",
+      "sha256": {
+        "webgpu": "e6f14cfc61dd63cfc9f6a8a097d29e667ecbfd09cbc0a7a47ee84b18e2c0132a",
+        "webgl2": "pending CI re-bless (see R-0.00 note)"
+      },
+      "verified": "2026-08-30/09-01, cold loads on a settled server; reproduced across the mesh-refinement rebuilds where the mesh is invisible (p < 0.69); M4 close — SS14 emboss forming (restored block, corrected v-shading)"
+    },
+    {
+      "id": "R-0.710-T1",
+      "milestone": "M4 closed (user sign-off 2026-09-01) — v1.5 text, emboss, geometry handoff",
+      "url": "/?capture=0.710&tier=1",
+      "sha256": {
+        "webgpu": "f69955738fd62098bb2da3d1e491e9de34ac2378b328d6e5707c786fe7436c09",
+        "webgl2": "pending CI re-bless (see R-0.00 note)"
+      },
+      "verified": "2026-09-01, TWO cold loads identical (cb1429c6...). Supersedes 55c83049... which was NOT reproducible: R-0.710 flipped between 55c83049... and 2ecd244a... across cold loads (also seen as the T3 \"difference\") — a two-state z-fight at the base seam (mesh base exactly on the parchment surface; whichever pipeline compiled first drew first). Fixed in src/relief/mesh.ts: renderOrder 1 (mesh after parchment) + 1e-5 world seam clearance. M4 close — SS14 handoff midpoint. · RE-BLESSED 2026-09-01 (M6): the M6 mesh shader adds the S7 pivot/carry ops (zero-valued at p 0.71 — identical in value, not bit-identical), and captures now warm 15 frames; supersedes cb1429c6...; two cold loads identical"
+    },
+    {
+      "id": "R-0.76-T1",
+      "milestone": "M5 CLOSED (user sign-off 2026-09-01) — the rise: stagger + transmutation + contact blob (SS20 DoD frame)",
+      "url": "/?capture=0.76&tier=1",
+      "sha256": {
+        "webgpu": "12e45a53d2402452a2397e196968533951156615f937ccd01752b835168a3b84",
+        "webgl2": "pending CI re-bless (see R-0.00 note)"
+      },
+      "verified": "2026-09-01 — BLESSED at M5 close on user sign-off; two cold loads identical, T2 identical (tier differentiation beyond the DPR cap is M7 scope) · RE-BLESSED 2026-09-01 (M6): same M6 shader-graph change (pivot ops at zero) — supersedes 21859a51...; two cold loads identical"
+    },
+    {
+      "id": "R-0.93-T1",
+      "milestone": "M6 CLOSED (user sign-off 2026-09-01) — facing (SS20 DoD frame): mid-pivot, gaze tracking the lifting assembly, extent-fit distance",
+      "url": "/?capture=0.93&tier=1",
+      "sha256": {
+        "webgpu": "f6dddb0ee425709c961185d796daab452fd689ff848b24c7ff3ad7827670c7b6",
+        "webgl2": "pending CI re-bless (see R-0.00 note)"
+      },
+      "verified": "2026-09-01 — two cold loads identical (warm 15); BLESSED at M6 close on user sign-off"
+    },
+    {
+      "id": "R-1.00-T1",
+      "milestone": "M6 CLOSED (user sign-off 2026-09-01) — the held ending (SS20 DoD frame): 12° off frontal, center y 0.40, parchment receded, key cone 22°",
+      "url": "/?capture=1.0&tier=1",
+      "sha256": {
+        "webgpu": "2acc551f54a3512f0f2de3bb732fe551fed339a33fd0822b5b5437350c8902d5",
+        "webgl2": "pending CI re-bless (see R-0.00 note)"
+      },
+      "verified": "2026-09-01 — two cold loads identical (warm 15); T2 + noblob variants recorded in m6_open; BLESSED at M6 close on user sign-off"
+    },
+    {
+      "id": "R-0.08-T1",
+      "milestone": "M7 — SS20 matrix member (unroll begins, 82% wrapped)",
+      "url": "/?capture=0.08&tier=1",
+      "sha256": {
+        "webgpu": "a6e5de9a969ff16e17c3d51eadadf407fab33f232ed27b81d0c2ddf540f2cd1d",
+        "webgl2": "pending (matrix runner, CI policy)"
+      },
+      "verified": "2026-09-02 — matrix runner pass + an independent cold load identical (warm 15)"
+    },
+    {
+      "id": "R-0.86-T1",
+      "milestone": "M7 — SS20 matrix member (rise complete, facing begins)",
+      "url": "/?capture=0.86&tier=1",
+      "sha256": {
+        "webgpu": "2c5327b20e84734906715d1ba37c411e8249067ea46eb18d44fe4b985992e3a6",
+        "webgl2": "pending (matrix runner, CI policy)"
+      },
+      "verified": "2026-09-02 — matrix runner pass + an independent cold load identical (warm 15)"
+    },
+    {
+      "id": "R-0.000-T2 (390x844)",
+      "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+      "url": "/?capture=0.0&tier=2&w=390&h=844",
+      "sha256": {
+        "webgpu": "6dda8b5e85777e9dedf87b7beaf52d6feb12f334c10bffacbc36ea0eb477f9d0",
+        "webgl2": "pending (matrix runner, CI policy)"
+      },
+      "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+    },
+    {
+      "id": "R-0.080-T2 (390x844)",
+      "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+      "url": "/?capture=0.08&tier=2&w=390&h=844",
+      "sha256": {
+        "webgpu": "8f576d795ab15b16c2b4e11ef64a57f9dc5c00d76eade07288c74406fceec805",
+        "webgl2": "pending (matrix runner, CI policy)"
+      },
+      "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+    },
+    {
+      "id": "R-0.210-T2 (390x844)",
+      "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+      "url": "/?capture=0.21&tier=2&w=390&h=844",
+      "sha256": {
+        "webgpu": "f7705d6c1324d9ca15e9b393a4c1488481c24611b4ffa6f481346e5443a3b22d",
+        "webgl2": "pending (matrix runner, CI policy)"
+      },
+      "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+    },
+    {
+      "id": "R-0.340-T2 (390x844)",
+      "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+      "url": "/?capture=0.34&tier=2&w=390&h=844",
+      "sha256": {
+        "webgpu": "7c05ce5189a82ac3de670c6d1ad0765a1aa846523d8cfc7119ef7e3ba5d62ee5",
+        "webgl2": "pending (matrix runner, CI policy)"
+      },
+      "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+    },
+    {
+      "id": "R-0.450-T2 (390x844)",
+      "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+      "url": "/?capture=0.45&tier=2&w=390&h=844",
+      "sha256": {
+        "webgpu": "908a985c730e975f6ab9bbae931b21f889adf8669532478aee41257e389de967",
+        "webgl2": "pending (matrix runner, CI policy)"
+      },
+      "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+    },
+    {
+      "id": "R-0.560-T2 (390x844)",
+      "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+      "url": "/?capture=0.56&tier=2&w=390&h=844",
+      "sha256": {
+        "webgpu": "8415bd7245fe7473edbb0a5a47afda445388ebbf5a7c66423251ee9679d77a82",
+        "webgl2": "pending (matrix runner, CI policy)"
+      },
+      "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+    },
+    {
+      "id": "R-0.645-T2 (390x844)",
+      "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+      "url": "/?capture=0.645&tier=2&w=390&h=844",
+      "sha256": {
+        "webgpu": "4e8253dbbd309c1db73bfb7ab4c1d1fd621346e555b93eb8aeadc86d837187d9",
+        "webgl2": "pending (matrix runner, CI policy)"
+      },
+      "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+    },
+    {
+      "id": "R-0.710-T2 (390x844)",
+      "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+      "url": "/?capture=0.71&tier=2&w=390&h=844",
+      "sha256": {
+        "webgpu": "90aff2fd8f681615001de4fba09d17f45e7937f741d401c5d9ef62c77d7654d0",
+        "webgl2": "pending (matrix runner, CI policy)"
+      },
+      "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+    },
+    {
+      "id": "R-0.760-T2 (390x844)",
+      "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+      "url": "/?capture=0.76&tier=2&w=390&h=844",
+      "sha256": {
+        "webgpu": "4500b042cdf72a40ab7feb5d19cd84a11e0da8641d7b50968f27226947dd8295",
+        "webgl2": "pending (matrix runner, CI policy)"
+      },
+      "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+    },
+    {
+      "id": "R-0.860-T2 (390x844)",
+      "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+      "url": "/?capture=0.86&tier=2&w=390&h=844",
+      "sha256": {
+        "webgpu": "bdcc6288c4436084f8e925faf4e6b9d990dfe9bdb8846d78694471cd6bd6f4f0",
+        "webgl2": "pending (matrix runner, CI policy)"
+      },
+      "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+    },
+    {
+      "id": "R-0.930-T2 (390x844)",
+      "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+      "url": "/?capture=0.93&tier=2&w=390&h=844",
+      "sha256": {
+        "webgpu": "c726b61ee7374ff3f89395138a156f44acab7052af0117af70b8f5c145e73a9b",
+        "webgl2": "pending (matrix runner, CI policy)"
+      },
+      "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
+    },
+    {
+      "id": "R-1.000-T2 (390x844)",
+      "milestone": "M7 — SS20 matrix, mobile portrait reference (T2/T3 identical until tier differentiation)",
+      "url": "/?capture=1.0&tier=2&w=390&h=844",
+      "sha256": {
+        "webgpu": "202959d0b2f2dada2bb12ad53c694c32c4d7bef64909e729869147f30c85ec40",
+        "webgl2": "pending (matrix runner, CI policy)"
+      },
+      "verified": "2026-09-02 — two independent runner passes (T2 and T3 at 390x844) identical; blessing formal at M7 close with the device review"
     }
-   },
-   "webgl2": {
-    "p0.00 (v1.3 pose)": {
-     "maxPos": "2.3e-7",
-     "maxNormDeg": 1.18
-    }
-   }
-  },
-  "derived_model_values": {
-   "p0.00": {
-    "turns": 4.2,
-    "topRollOuterR": 0.0468,
-    "botTipLift": 0.0182
-   },
-   "p0.21": {
-    "turns": 2.02
-   },
-   "p0.34": {
-    "turns": 0.276,
-    "botTipLift": 0.0156
-   },
-   "p0.38": {
-    "turns": 0.121,
-    "topTipLift": 0.0153,
-    "botTipLift": 0.0136
-   }
-  },
-  "verified": "2026-08-25 (v1.3.1 tightened) — GPU field == CPU oracle to float precision; terminal residual-curl contract exact (bottom 0.0136)"
- },
- "agx_ramp": {
-  "url": "/?scene=ramp",
-  "verified": "2026-08-24 (M0)",
-  "result": "neutral (R=G=B all 13 stops), monotonic, linear 0.18 → 128/255, 12.0 linear → 251/255 (shoulder, no clip), floor 2.8e-3 → 2/255"
- },
- "manual_qa": {
-  "storm": "?storm=15 — harness implemented; the dev-pane throttles rAF for hidden tabs (3 frames/15 s), so a meaningful run needs a foregrounded browser. Monitor: NaN / p-range / errors.",
-  "flick": "key Q or ?flick=1 — §17 R-flick profile with residual-energy sparkline; visual sign-off is the reviewer's (M1 DoD item, pending user review)"
- },
- "calibrations": {
-  "bg": "graded-chain floor displays (13.6, 9.8, 6.6) at zero background — #0D0906 within a count; BG_LINEAR ~0; +0.5-count warm floor residue tracked",
-  "key": "KEY_INTENSITY 9.87 — 18% card R=128 through the full chain"
- },
- "ink_pipeline": {
-  "milestone": "M3 CLOSED (user sign-off 2026-08-28 on the write sequence; writing dwell added per review) — R-0.34/R-0.45 blessed above",
-  "atlas": {
-   "mtsdf": "public/text/ink-mtsdf.png — RGB = msdf (analytic edge-colored pseudo-distances, JS msdfgen-equivalent in build/build-ink-atlas.mjs), A=255; 64px/em, range +-6px, 2048x256",
-   "prog": "public/text/ink-prog.png — R = stroke-order w (Zhang-Suen skeleton + geodesic BFS, SS17 priors), G = true SDF, B = SS14 puff (interior distance, 1.5-texel blur), A=255",
-   "mtsdf_sha256": "e4be90688627d8dcf7b20f09c40e53063b8040a9663a6e8e9e7a34779dceb4b8",
-   "prog_sha256": "b95f0884886c35a45f1593bd3782c7185004f0faab70957c7bc186e29775dfbb",
-   "gates": "reconstruction IoU mean 0.9903 / worst 0.9641 (gid 68, small mark); RTL writing-order audit 10 clusters PASS (build/ink-audit.json)"
-  },
-  "windows": "SS10 per-ayah write windows mapped from the SS17 schedule (units->dp proportional); a 0.002 pen-lift at EVERY internal line break (ayah 7 spans three lines in the 7-line block -> its SS10 span [0.526,0.580] splits into three segments); ayah rings are analytic circle instances drawn by the same pen clock (angular w from the top, leftward first); wet trail dp 0.045 closed-form; E5 = spatial smoothstep dw 0.012 with overscanned t so stroke starts hide at t=0 and ends land at t=1",
-  "architecture": "ink evaluates in a sheet-space RT pass (src/ink/inkPass.ts, 1597x2048 RGBA8, re-rendered when p changes); the parchment material samples ONE texture and composites with EXPLICIT mul/add lerps",
-  "three_r185_gotchas": [
-   "TSL mix() with a texture-derived factor inside MeshPhysicalNodeMaterial colorNode/roughnessNode silently kills the light integration (value-independent, even factor 0) — write lerps as mul/add",
-   "float32 DataTextures (textureLoad) in the physical material silently break the pipeline (env lost or mesh vanishes, no console error) — all lookup data ships as fixed-point RGBA8 byte pairs",
-   "browsers premultiply PNG RGB by alpha on decode/upload — atlas alphas must be 255, no data channel in A",
-   "an RT written by a fullscreen quad reads back v-FLIPPED vs the quad's uv on WebGPU — the ink pass evaluates at 1-uv.y (probed empirically)"
   ],
-  "frames": "R-0.21 re-verified BIT-IDENTICAL to the M2 blessing after full M3 integration (manual-lerp identity at zero coverage); R-0.34 now legitimately differs (basmalah 60% written per SS10) — re-bless with R-0.45 at sign-off; review PNGs qa/review/m3-R{034,045,056,062}.png",
-  "dod_status": "RTL audit PASS (automated). WET TRAIL VERIFIED EMPIRICALLY 2026-08-27: ?scene=inkrt flat instrument, tone mapping OFF at the renderer — line-1 tail wet at dp=0.041 after its last texel (485 px, gMax 93), EXACTLY ZERO wet pixels at dp=0.047 -> trail length in [0.041, 0.047] = 0.045 +-10% PASS. No-shimmer-at-4x-scrub review + blessing pending the user's live pass (pane rAF throttling defeats live scrubs).",
-  "candidates": {
-   "note": "v1.5 candidates (classical centered + rosettes + final refined mesh), captured 2026-08-30 - full-hash blessing at M4 close with the user sign-off; ALL pre-v1.5 ink-era frames (R-0.34 1f3f2b58..., R-0.45 06cc7d5f..., R-0.56 361b9d10..., R-0.645 18a09c8c...) are SUPERSEDED by the text revision (layout changed every ink frame)",
-   "R-0.34-T1-webgpu": "f3d119ee44ab1b7a9dc09c88f649b37d49fcd00c31e89816455df660ca4af082 (basmalah mid-write, v1.5)",
-   "R-0.45-T1-webgpu": "3dd73e95aaa6ce16bb27f552dbc3a232e7f1bb4573aa19a1c3ce6d7a499f351b (writing, dagger alif of Maliki visible; reproduced bit-identical across the mesh-refinement rebuilds - mesh invisible below 0.69)",
-   "R-0.56-T1-webgpu": "16df1d9527c615b26f95317ae1b6c04d77673f0ba32b3d12f4c85892311a6710 (presenting climb)",
-   "R-0.645-T1-webgpu": "e6f14cfc61dd63cfc9f6a8a097d29e667ecbfd09cbc0a7a47ee84b18e2c0132a (emboss forming, corrected v-sign)",
-   "R-0.710-T1-webgpu": "55c8304907ea8a824c33a1f1723060c191cbc72f743292023c0ed7c229baa7c1 (handoff midpoint, mesh + emboss cross-fade)",
-   "R-0.45-T3-webgpu": "3dd73e95aaa6ce16bb27f552dbc3a232e7f1bb4573aa19a1c3ce6d7a499f351b (IDENTICAL to T1 — tier differentiation is M7 scope)",
-   "R-0.45-T1-webgl2": "7b1e67c2f2c57b377dcf5dd2be1136dd8c76024fc3ebb4e3c4573f2a9ee2db3d (v1.5 full pipeline on the WebGL2 fallback — smoke PASS; full blessing per the CI policy)",
-   "R-0.710-T3-webgpu": "2ecd244a... was one of the two nondeterministic states (see R-0.710-T1) — re-capture after the seam fix at M5 close"
-  },
-  "qa_instrument": "?scene=inkrt&p=P [&w=&h=] — the ink RT rendered flat 1:1 in sheet uv (R=cov, G=wet), renderer tone mapping disabled. GOTCHA that cost a debugging session: the boot renderer carries AgX (the ?scene=ramp contract) and material.toneMapped=false is IGNORED on the direct-render path in three r185 — AgX's inset matrix bleeds R into G, which reads as phantom permanent wetness in any channel-encoded readback. Disable tone mapping on the RENDERER for QA scenes, and calibrate readback with an in-shader ramp (G := suv.x) before trusting decoded values.",
-  "optimizations": "InkPass.run clamps p to [0.30, 0.64] (ink constant outside) and skips re-render on unchanged clamped p",
-  "atlases_v15": "rebuilt from the v1.5 composition 2026-08-30: ink-mtsdf.png 2f9917c3e662..., ink-prog.png 870572c6ed87..., 279 instances (272 glyphs incl. 10 basmalah kashida + 7 rosette markers as ordinary cells, gid 100000) + 0 analytic rings (ring branch in ink.ts now dormant); marker instances take the old ring timing slot (1.5 units at each ayah close). RTL audit PASS; IoU gate green. The M3 wet-trail DoD (closed-form dry, dp 0.045) is mechanism-level and text-independent - measured PASS on v1.4.3, carries by construction."
- },
- "text_pipeline": {
-  "layout": "v1.5 CLASSICAL CENTERED (user review 2026-08-30): the active 7-line block drops the justified rectangle — lines sit at natural width, broken for balance (min-unevenness DP, no-orphan close kept), centered on the sheet axis with a natural taper (widths 0.497/0.489/0.481/0.419/0.494/0.454/0.322). NO justification kashida anywhere; the single calligraphic elongation is the basmalah sin at a FIXED 2.0 em (was uncapped 3.12 em under v1.4.1). Ayah markers are DRAWN 8-petal shamsah rosettes (pointed petals, pierced hub, center boss; outer R 0.17 em) emitted as outline contours in composition.marker — they flow through the SAME pipeline as glyphs (MTSDF cell, stroke-order skeleton, bevel mesh, gold). The 8-line rectangle variant stays frozen on disk as the v1.4.3 reference.",
-  "leading_rule": "v1.4.2: min per-x ink-over-ink clearance (shaped glyph boxes) >= 0.35 em between adjacent lines, x1.10 for relief shadows; pitch = smallest satisfying value, CLAMPED to the text band [0.150, 0.865]; ink block centered in the band. STATUS: the rule pitch (2.33 em) does not fit the band at ANY legal em for either variant - feasibility windows are empty in both directions (8line: caps-justifiable only at em >= 0.051, rule would fit only at em ~0.039; 7line: caps >= 0.046, rule ~0.043). Both variants are frozen at band-floor em 0.052 with the maximum in-band pitch: RULED by review 2026-08-25: band-max leading — sheet, margins, and em band hold; these frozen variants stand.",
-  "variants": {
-   "8line": {
-    "em": 0.052,
-    "pitch": "0.088534 (1.703 em, band-clamped; rule wants 2.329 em)",
-    "ink_daylight_em": -0.064,
-    "svg_sha256": "f966bd03b10383fca5e6c5b7d3c1fb769fb19bbef2d0b9e8e08553477106f9ae",
-    "glyphs": 311,
-    "close": "justified, 4 words + marker (0.84 em kashida)"
-   },
-   "7line": {
-    "em": 0.052,
-    "pitch": "0.103289 (1.986 em, band-clamped; rule wants 2.329 em)",
-    "ink_daylight_em": 0.219,
-    "svg_sha256": "1b0232dc0a5078b1e0434805bd0e63a65df9005766b0f09debbab2a9b7d82757",
-    "glyphs": 292,
-    "close": "justified, 4 words + marker (0.84 em kashida)"
-   },
-   "active": "7line — LAYOUT CHOSEN at review 2026-08-25 (composition.json = the 7-line block; 8line stays frozen as reference)"
-  },
-  "font_sha256": "e2a47644762d16bdfb6d33e0d8db8c6ff30beae84150ef5a705316bbd829455c",
-  "canonical_source": "Tanzil Uthmani (via api.alquran.cloud, edition quran-uthmani)",
-  "canonical_url": "https://api.alquran.cloud/v1/surah/1/quran-uthmani",
-  "canonical_fetched": "2026-08-25",
-  "canonical_sha256": "557e8ef1fe49090221c1dc09304dff792d378ba1b551250fb4fd9a21034a8be4",
-  "verification": "ALL VARIANTS: SEVEN AYAT IDENTICAL (build/verify-text.mjs, 2026-08-25): for composition.json, composition-8line.json, composition-7line.json the verifier reads the post-justification presentation strings, strips U+0640, reassembles the flow, and matches the pinned canonical byte-for-byte. Canonical pin unchanged (U+FEFF feed artifact stripped at pinning).",
-  "proofs": "qa/proofs/fatihah-proof-{8line,7line}-4000.png (plain) + fatihah-proof-{8line,7line}-parchment-4000.png (2D port of the SS7/SS15 parchment recipe: fbm grain 340x280 + undulation + macro/blotch + stains + aged edges); live at ?scene=proof&layout=8|7[&bg=parchment]",
-  "reveal_pacing": "director/writing.ts WRITING constants (glyphUnit 1.0, kashidaUnit 0.35 - elongations sweep, not step, markUnit 0.65, markLag 1.2, wordGap 2.2, unitsPerSecond 3.45); M3 maps units to dp",
-  "orthography": "RULED 2026-08-30: Uthmanic Hafs (Tanzil quran-uthmani, sha 557e8ef1..., canonical-fatihah.json) stands - ayah 4 is Maliki with the DAGGER ALIF (U+0645 U+064E U+0670 U+0644 U+0650 U+0643 U+0650), the mushaf rasm; dagger alifs also in al-Rahman/al-'alamin/al-sirat, wasla + madda throughout. verify-text green: all seven ayat codepoint-identical across variants. Visual mark placement is Amiri Quran's; human review against a printed mushaf remains the M8 sign-off gate (4000px annotatable parchment proof provided)."
- },
- "m4_open": {
-  "scope": "presenting + relief + geometry handoff: SS13 writing dwell, SS10 light choreography, SS14 emboss stage (restored + v-sign fixed), SS6/SS18 bevel-extruded glyph mesh, SS14 handoff wiring, silhouette DoD instrument, SS9 camera verification",
-  "writing_dwell": "scroll->p density remap x1.35 over p [0.30, 0.62] (feather 0.03), spacer scaled by the 1.112 total; capture pins p directly",
-  "light_drivers": "keyFactor: 1.00 -> 0.88 (S3 dim, [0.30,0.34] E1) -> 0.95 ([0.52,0.60] E1); rimFactor: 0.30 -> 0.42 ([0.64,0.68] E2) -> 0.52 ([0.72,0.76] E2)",
-  "emboss": "ink RT B = SS14 puff; material bump from the puff uv-gradient (eps 1.5/2048, world slopes along field T/B, u-slope /0.78, apparent height 0.0009 x embossFactor) + 8% border cavity darkening. HISTORY: the emboss block was accidentally DEAD in the b4bb4f2 commit (a botched edit left embossGU/GV shadowed at zero - restored 2026-08-30); the first restoration subtracted the v-slope along Bv = N x T (up-page) which INVERTED vertical shading - corrected to +Bv (the height-slope perturbation must follow dP/dv = cross(T, N)). Verified: R-0.56 bit-identical to the pre-restoration candidate (embossFactor 0 there), R-0.645 re-captured.",
-  "glyph_mesh": "build/build-glyph-mesh.mjs: SS6 9-point profile applied as a HEIGHT GRAPH over the interior-distance field (identical surface to the offset sweep where defined, self-intersection-free by construction); thin-stroke guard baked per vertex (wScale/hScale from a medial-march half-width; hairlines become beads); bases+kashidas of a word UNIONED (nonzero winding) so joints carry no grooves; marks/markers separate solids at 0.8/0.6 depth ratios. Tessellation: MS-clipped grid (pitch 10 fu) with Newton-snapped boundary, sub-texel-sliver corner override, hidden-component perimeter check, crevice/tip subdivision to depth 3, sharp-corner insertion (>25 deg), and recursive chord refinement (sagitta < 0.6 fu) for Amiri 5-8 fu serif-corner arcs. 166,003 verts / 257,507 tris (T1 budget 780k); plan-area err 0.02%; silhouette identity worst OUTER 0.00685 em = 0.46 px @1440p (gate 0.008 em; the 0.0008 em analytic flatten tol belongs to the M5 curvature-adaptive rebuild with meshopt/glb packaging, SS18); crevices worst 0.0059 em reported (sub-texel cracks paved - coverage, not silhouette). glyphs.bin FGLY v1 (quantized planar attrs: unorm16x4 anchor su/sv/hn/kind, snorm8x4 plan normal, unorm8x4 ayah/AO/rFloor, unorm16x2 atlas uv; u32 index) sha256 75d720ebebca03d1..., deterministic across rebuilds.",
-  "handoff": "src/relief/mesh.ts: vertex stage fetches posTex/nrmTex/tanTex (manual bilinear, 4 textureLoads - float32-linear is a WebGPU feature gamble) at the sheet anchor; position = surf + N x (hn x max(uGeoDepth, kind x uRise)); normal = plan relief normal through the T / cross(T,N) / N frame; color = the SAME flat-ink composite (ink RT sample, explicit lerps, fiber cavity) x baked root AO; polygonOffset -0.5/-2 (SS14 z-guard; shadow/contact stay unbiased - castShadow off until the M5 rise). drivers.geoDepth: 0.00045 + 0.00075 x E2(span(p, 0.69, 0.73)); mesh visible p >= 0.69; &nogeo = emboss-only QA switch. First-load pitfall fixed: FGLY meta offsets must be computed in BYTES not chars (em-dashes in meta strings).",
-  "silhouette_dod": "qa/silhouette-diff.mjs + qa/png-io.mjs: 5 capture pairs (geo/&nogeo) at 2560x1440 across the window; sub-pixel RAMP-MIDPOINT edge comparison along shared gradient lines (binary masks bottom out at sqrt(2); fixed-threshold iso reads a constant crisp-vs-soft dilation ~0.5 px). RESULT: contour median 0.26-0.32 px PASS (limit 0.8), p95 0.87-0.95 px FLAGGED for M4-close sign-off, p99 <= 1.19; uncorresponded (AA-faded tips) <= 0.55%; XOR components all attached, worst 81 px2; no detached artifacts. Attribution measured by the sweep structure: at 0.690 (emboss full, parallax ~0.15 px) the tail is shading x soft-ramp midpoint interplay; at 0.730 (emboss zero, geoDepth 0.0012, elev ~66 deg) it is projection parallax ~1 px - the SS14 parallax claim (<=0.35 px) holds at the 83 deg camera through 0.710; SS9 starts the retreat at 0.70, so the window tail exceeds it (physical, occluded under the caps; spec note added).",
-  "camera_ss9": "VERIFIED 2026-08-30: realized poses at every pure-anchor knot (0.47, 0.6, 0.7, 0.8, 0.9, 1.0) match the rebaked table EXACTLY (delta 0.000 <= 0.01) incl. focal->vfov law; dolly-rule distances at the 1440x900 reference: p0 0.982, p0.21 1.454, p0.34 2.303 (blend to anchors [0.38, 0.47] -> pure by 0.47). SS9 spec table synced to the M1-rebaked anchors.",
-  "review_frames": "qa/review/m4-R0645-v15.png, m4-R0710-v15.png (v1.5); older m3-R*.png kept as the M3 sign-off record (v1.4.3 text)",
-  "closed": "M4 CLOSED 2026-09-01 on user sign-off (\"signed off — bless the frames and continue to M5\"). RULING RECORDED: the silhouette DoD p95 flag (0.87-0.95 px, attributed to shading x soft-ramp midpoint interplay + SS9-retreat parallax) is ACCEPTED as measured — the contour median (0.26-0.32 px) is the silhouette metric; the analytic 0.0008 em flatten tolerance moves to the M5 mesh polish only if the rise closeups call for it.",
-  "candidates_promoted": "R-0.34/0.45/0.56/0.645/0.710-T1 blessed in frames[]; R-0.45-T3 == R-0.45-T1 hash (3dd73e95...)",
-  "determinism_note": "LEARNED 2026-09-01: every mesh-visible frame must be reproduced across >=2 cold loads before blessing — coincident surfaces resolve by pipeline-compile order on WebGPU unless renderOrder pins the draw order."
- },
- "m5_open": {
-  "scope": "the rise (SS5/SS10/SS14): per-ayah staggered extrusion 0.0012 -> 0.0115 in reading order, ink -> gold transmutation, SS8 contact-shadow blob + PCSS on risen letters, flat-ink ghost",
-  "drivers": "riseStart = 0.722 + 0.0115 x (ayah-1) + 0.0012 x cluster (reading-order index within the ayah, baked in aux.w); duration 0.093, E4 (= E2), stagger gated at start; depth = max(geoDepth, kindScale x stagger); gold lags the rise by 0.25 of the window (E2); inkGhost 1 -> 0.08 over [0.78, 0.84] (E1); contactRamp E2 over [0.72, 0.80]; castShadow from 0.722",
-  "shader": "E2 cubic-bezier evaluated in TSL (5 Newton steps on x(t), monotone curve); SS7 gold set with EXPLICIT lerps: face #C29B52 metal 1.0 rough 0.21-0.47 by procedural burnish R, wear -> bole #7A4630 (rough 0.62, metal 0.12) thresholded ~8% crown-biased, sidewall #8F6B2E rough 0.52 metal 0.85 x0.72 toward the root, markers +0.05 rough, curvature roughness floor 0.28 (baked), baked root AO, SS15 specular AA on top. Anisotropy (0.25 along stroke) DEFERRED to the M6 polish (needs a tangent frame on the mesh).",
-  "contact_blob": "src/relief/contact.ts: ortho height pass over the glyph mesh only (frustum 0.9 x 1.15, 512^2 RGBA8: R coverage, G height/0.2), two separable 13-tap blurs with radius_texels = 2 + 640h, composited x(1 - 0.75 C exp(-h/0.12) ramp). ORIENTATION LEARNED THE HARD WAY: camera-rendered RTs read back v-flipped on three r185 WebGPU (blob uv = +z/1.15 + 0.5, not -z); the near mirror-symmetric text block made the wrong orientation look like an OFFSET ECHO of every line rather than a mirror. &noblob = QA switch (R-1.00-noblob at M6). ?debug=blob = mapping inspection.",
-  "determinism": "R-0.710 two-state z-fight fixed (renderOrder 1 + 1e-5 seam clearance); R-0.76 reproduced x2 cold loads + T2 identical",
-  "dod_status": {
-   "one_draw_call": "PASS — the glyph assembly is one merged Mesh (single geometry + material = one draw); frame total at p 0.80: 8 draw calls, 357,428 triangles (T1 budget <=14 calls, <=1.05M tris)",
-   "alignment_0_5px": "PASS — build audit: worst OUTER outline->boundary 0.0069 em = 0.46 px @1440p (glyph-mesh-audit.json)",
-   "contact_legible_390px": "captured qa/review/m5-R080-390px.png (T3, 390x844) — see review note",
-   "thin_stroke_guard": "PASS by construction — the profile is a height graph over the interior-distance field (no self-intersection possible); guard baked per vertex (38% bead verts)"
-  },
-  "review_frames": "qa/review/m5-R076.png, m5-R080.png, m5-R084.png, m5-R080-390px.png",
-  "candidates": {
-   "R-0.80-T1": "7f9318944263d18e50837e0f8ebd1a1717e772a3fea773ec3eccc94d83a1dcb1 (reproduced across two captures)",
-   "R-0.84-T1": "5439580559112d29dbdb369c1cc93feaf71dbc5747fa15e2f58fc3f781a834cc",
-   "R-0.80-T3-390x844": "1bbcc08a4e6b... (mobile legibility capture)"
-  },
-  "closed": "M5 CLOSED 2026-09-01 on user sign-off (\"signed off — bless R-0.76 and continue to M6\"); the 390 px contact-shadow legibility judged by the user with the sign-off. Anisotropy (SS7 0.25 along the stroke) carried into M6 polish."
- },
- "m6_open": {
-  "scope": "facing + finish (SS5/SS10 S7, SS15, SS13): pivot to 12 deg off frontal, parchment recede, key mask/fill/cone/env drivers, idle micro-motion, pointer parallax, dust, reduced-motion mode, p=1 hold audit",
-  "facing": "RIGID pivot of the glyph assembly about the text-block center (x axis through (0,0,0.0075)) by 78 deg x E6 over [0.84,1.0] + carry of the center to the rest pose; parchment + ribbon recede (0,-0.02,-0.10) x E6 applied after the blob uv; key mask 1->0.55 (albedo approximation), fill 0.13->0.20, key cone 26->22 deg, env yaw ->-38, blob x cos^2(pitch). RE-AUTHORED vs spec: rest center y 0.40 (spec 0.185 assumed a much smaller assembly — the 0.72-tall v1.5 block pitched about its center dips below the page at 0.185); the SS9 gaze TRACKS the assembly center across S7 and the distance comes from an assembly-extent fit (like the S1-2 sheet fit): d 2.06 at p 1 (anchor 1.41), realized text width ~0.45 frame (spec 0.66 was for the smaller assembly); key/rim targets track the standing block; cone trim stops at 22 deg (18 deg left the basmalah outside the cone).",
-  "idle": "IdleController: arms after 4 s still (scroll vLpf < 2e-3 and no pointer motion 300 ms), 2 s smoothstep ramp; breath 2.5e-4 @0.10 Hz into the field (uBreath, spatial bump), key +-1.5% /9 s, env yaw +-2 deg /14 s, camera drift 0.002 (sum of incommensurate sines); zeroed in reduced motion + capture",
-  "parallax_dust": "pointer gimbal +-0.35 deg, spring w 12.6 zeta 0.9 (camera.ts), key sway +-0.004 world; Dust: 640 motes PointsNodeMaterial soft discs #E8DCC2 alpha 0.03-0.045, drifting through the key beam, fades in with the facing factor, hidden in capture + reduced motion",
-  "reduced_motion": "director/reduced.ts: seven held centers [0, 0.21, 0.45, 0.60, 0.685, 0.884, 1.0] (ink pre-dried: ink pass evaluated 0.05 ahead; rise at completed pose), scroll->nearest band, arrow keys/pager dots (in a <nav>) move the SCROLL (single source of truth), 300 ms DOM-overlay dissolve, camera cuts; sim/idle/parallax/dust/env drift off; ?reduced=1 QA override",
-  "dod_status": {
-   "axe": "PASS — axe-core 4.10.2 (wcag2a, wcag2aa, best-practice) on the reduced-motion page: 0 violations, 28 passes (after adding landmarks: <main>, role=img canvas, status hud, <nav> pager)",
-   "idle_amplitudes": "PASS by construction — amplitudes are the SS15 constants (breath 2.5e-4, key 1.5%, yaw 2 deg, drift 0.002)",
-   "p1_drift": "PASS — ?hold=60 (p pinned at 1, idle armed, dust + parallax live): 60 samples, mean luma 22.30, total flux drift 1.31% (limit 2%); 20 s pilot 1.12%. Run 2026-09-01 in the dev pane (rAF-throttled — samples are 1 s apart in frame time, so the wall-clock run is longer; the drift statistic is unaffected).",
-   "noblob": "R-1.00-noblob captured: PCSS carries S7 (the long soft cast shadow on the page is the key shadow; the blob contributes <= cos^2(78 deg) = 4% at rest)"
-  },
-  "candidates": {
-   "R-0.80-T1": "9dac53395b39fd6e688640b0845d4d47450e789823bda49abfc5f22276ce5d28 (M6 shader graph; x2 cold loads)",
-   "R-0.84-T1": "re-capture at M6 close"
-  },
-  "review_frames": "qa/review/m6-R093.png, m6-R100.png, m6-R100-noblob.png",
-  "variants": {
-   "R-1.00-T2": "2acc551f54a3512f0f2de3bb732fe551fed339a33fd0822b5b5437350c8902d5 (IDENTICAL to T1 — tiers differ only by the DPR cap until M7)",
-   "R-1.00-noblob": "6cb86572de79964fff51230a415249283e3d91c2e91db323e9309383b9184813 (uContactBlob = 0; the long soft cast shadow on the page is PCSS — SS8 \"PCSS carries S7 alone\")"
-  },
-  "closed": "M6 CLOSED 2026-09-01 on user sign-off (\"signed off — bless R-0.93 and R-1.00 and continue to M7\"): the S7 re-authoring (center y 0.40, extent-fit distance, cone 22 deg) accepted with the sign-off; manual reduced-motion audit by the user."
- },
- "m7_open": {
-  "scope": "performance & payload (SS18/SS19/SS15/SS12/SS20): payload report, poster/LQIP/pre-compile/crossfade, runtime tier monitor + thermal guard, ?perf harness, mobile distance overrides, 74-frame matrix runner + checker",
-  "payload": {
-   "report": "build/payload-report.json (qa/payload.mjs after vite build)",
-   "totals_mb": {
-    "raw_mb": 7.571,
-    "gz_mb": 3.241,
-    "br_mb": 2.147
-   },
-   "phases": {
-    "A": {
-     "files": 11,
-     "raw_mb": 0.936,
-     "gz_mb": 0.291,
-     "br_mb": 0.243,
-     "seconds_at_10mbps_br": 0.2
+  "probes": {
+    "url": "/?probe=1&p={0.0|0.21|0.34}&tier=1[&backend=webgl2]",
+    "tolerance": {
+      "position": 0.0015,
+      "normalDeg": 2
     },
-    "B": {
-     "files": 3,
-     "raw_mb": 0.52,
-     "gz_mb": 0.442,
-     "br_mb": 0.438,
-     "seconds_at_10mbps_br": 0.37
+    "results": {
+      "webgpu": {
+        "p0.00": {
+          "maxPos": "1.1e-7",
+          "maxNormDeg": 1.08
+        },
+        "p0.21": {
+          "maxPos": "7.7e-8",
+          "maxNormDeg": 1.14
+        },
+        "p0.34": {
+          "maxPos": "1.5e-7",
+          "maxNormDeg": 1.1
+        },
+        "p0.38": {
+          "contract": "0.0153 / 0.0136"
+        }
+      },
+      "webgl2": {
+        "p0.00 (v1.3 pose)": {
+          "maxPos": "2.3e-7",
+          "maxNormDeg": 1.18
+        }
+      }
     },
-    "C": {
-     "files": 1,
-     "raw_mb": 6.115,
-     "gz_mb": 2.508,
-     "br_mb": 1.466,
-     "seconds_at_10mbps_br": 1.23
+    "derived_model_values": {
+      "p0.00": {
+        "turns": 4.2,
+        "topRollOuterR": 0.0468,
+        "botTipLift": 0.0182
+      },
+      "p0.21": {
+        "turns": 2.02
+      },
+      "p0.34": {
+        "turns": 0.276,
+        "botTipLift": 0.0156
+      },
+      "p0.38": {
+        "turns": 0.121,
+        "topTipLift": 0.0153,
+        "botTipLift": 0.0136
+      }
+    },
+    "verified": "2026-08-25 (v1.3.1 tightened) — GPU field == CPU oracle to float precision; terminal residual-curl contract exact (bottom 0.0136)"
+  },
+  "agx_ramp": {
+    "url": "/?scene=ramp",
+    "verified": "2026-08-24 (M0)",
+    "result": "neutral (R=G=B all 13 stops), monotonic, linear 0.18 → 128/255, 12.0 linear → 251/255 (shoulder, no clip), floor 2.8e-3 → 2/255"
+  },
+  "manual_qa": {
+    "storm": "?storm=15 — harness implemented; the dev-pane throttles rAF for hidden tabs (3 frames/15 s), so a meaningful run needs a foregrounded browser. Monitor: NaN / p-range / errors.",
+    "flick": "key Q or ?flick=1 — §17 R-flick profile with residual-energy sparkline; visual sign-off is the reviewer's (M1 DoD item, pending user review)"
+  },
+  "calibrations": {
+    "bg": "graded-chain floor displays (13.6, 9.8, 6.6) at zero background — #0D0906 within a count; BG_LINEAR ~0; +0.5-count warm floor residue tracked",
+    "key": "KEY_INTENSITY 9.87 — 18% card R=128 through the full chain"
+  },
+  "ink_pipeline": {
+    "milestone": "M3 CLOSED (user sign-off 2026-08-28 on the write sequence; writing dwell added per review) — R-0.34/R-0.45 blessed above",
+    "atlas": {
+      "mtsdf": "public/text/ink-mtsdf.png — RGB = msdf (analytic edge-colored pseudo-distances, JS msdfgen-equivalent in build/build-ink-atlas.mjs), A=255; 64px/em, range +-6px, 2048x256",
+      "prog": "public/text/ink-prog.png — R = stroke-order w (Zhang-Suen skeleton + geodesic BFS, SS17 priors), G = true SDF, B = SS14 puff (interior distance, 1.5-texel blur), A=255",
+      "mtsdf_sha256": "e4be90688627d8dcf7b20f09c40e53063b8040a9663a6e8e9e7a34779dceb4b8",
+      "prog_sha256": "b95f0884886c35a45f1593bd3782c7185004f0faab70957c7bc186e29775dfbb",
+      "gates": "reconstruction IoU mean 0.9903 / worst 0.9641 (gid 68, small mark); RTL writing-order audit 10 clusters PASS (build/ink-audit.json)"
+    },
+    "windows": "SS10 per-ayah write windows mapped from the SS17 schedule (units->dp proportional); a 0.002 pen-lift at EVERY internal line break (ayah 7 spans three lines in the 7-line block -> its SS10 span [0.526,0.580] splits into three segments); ayah rings are analytic circle instances drawn by the same pen clock (angular w from the top, leftward first); wet trail dp 0.045 closed-form; E5 = spatial smoothstep dw 0.012 with overscanned t so stroke starts hide at t=0 and ends land at t=1",
+    "architecture": "ink evaluates in a sheet-space RT pass (src/ink/inkPass.ts, 1597x2048 RGBA8, re-rendered when p changes); the parchment material samples ONE texture and composites with EXPLICIT mul/add lerps",
+    "three_r185_gotchas": [
+      "TSL mix() with a texture-derived factor inside MeshPhysicalNodeMaterial colorNode/roughnessNode silently kills the light integration (value-independent, even factor 0) — write lerps as mul/add",
+      "float32 DataTextures (textureLoad) in the physical material silently break the pipeline (env lost or mesh vanishes, no console error) — all lookup data ships as fixed-point RGBA8 byte pairs",
+      "browsers premultiply PNG RGB by alpha on decode/upload — atlas alphas must be 255, no data channel in A",
+      "an RT written by a fullscreen quad reads back v-FLIPPED vs the quad's uv on WebGPU — the ink pass evaluates at 1-uv.y (probed empirically)"
+    ],
+    "frames": "R-0.21 re-verified BIT-IDENTICAL to the M2 blessing after full M3 integration (manual-lerp identity at zero coverage); R-0.34 now legitimately differs (basmalah 60% written per SS10) — re-bless with R-0.45 at sign-off; review PNGs qa/review/m3-R{034,045,056,062}.png",
+    "dod_status": "RTL audit PASS (automated). WET TRAIL VERIFIED EMPIRICALLY 2026-08-27: ?scene=inkrt flat instrument, tone mapping OFF at the renderer — line-1 tail wet at dp=0.041 after its last texel (485 px, gMax 93), EXACTLY ZERO wet pixels at dp=0.047 -> trail length in [0.041, 0.047] = 0.045 +-10% PASS. No-shimmer-at-4x-scrub review + blessing pending the user's live pass (pane rAF throttling defeats live scrubs).",
+    "candidates": {
+      "note": "v1.5 candidates (classical centered + rosettes + final refined mesh), captured 2026-08-30 - full-hash blessing at M4 close with the user sign-off; ALL pre-v1.5 ink-era frames (R-0.34 1f3f2b58..., R-0.45 06cc7d5f..., R-0.56 361b9d10..., R-0.645 18a09c8c...) are SUPERSEDED by the text revision (layout changed every ink frame)",
+      "R-0.34-T1-webgpu": "f3d119ee44ab1b7a9dc09c88f649b37d49fcd00c31e89816455df660ca4af082 (basmalah mid-write, v1.5)",
+      "R-0.45-T1-webgpu": "3dd73e95aaa6ce16bb27f552dbc3a232e7f1bb4573aa19a1c3ce6d7a499f351b (writing, dagger alif of Maliki visible; reproduced bit-identical across the mesh-refinement rebuilds - mesh invisible below 0.69)",
+      "R-0.56-T1-webgpu": "16df1d9527c615b26f95317ae1b6c04d77673f0ba32b3d12f4c85892311a6710 (presenting climb)",
+      "R-0.645-T1-webgpu": "e6f14cfc61dd63cfc9f6a8a097d29e667ecbfd09cbc0a7a47ee84b18e2c0132a (emboss forming, corrected v-sign)",
+      "R-0.710-T1-webgpu": "55c8304907ea8a824c33a1f1723060c191cbc72f743292023c0ed7c229baa7c1 (handoff midpoint, mesh + emboss cross-fade)",
+      "R-0.45-T3-webgpu": "3dd73e95aaa6ce16bb27f552dbc3a232e7f1bb4573aa19a1c3ce6d7a499f351b (IDENTICAL to T1 — tier differentiation is M7 scope)",
+      "R-0.45-T1-webgl2": "7b1e67c2f2c57b377dcf5dd2be1136dd8c76024fc3ebb4e3c4573f2a9ee2db3d (v1.5 full pipeline on the WebGL2 fallback — smoke PASS; full blessing per the CI policy)",
+      "R-0.710-T3-webgpu": "2ecd244a... was one of the two nondeterministic states (see R-0.710-T1) — re-capture after the seam fix at M5 close"
+    },
+    "qa_instrument": "?scene=inkrt&p=P [&w=&h=] — the ink RT rendered flat 1:1 in sheet uv (R=cov, G=wet), renderer tone mapping disabled. GOTCHA that cost a debugging session: the boot renderer carries AgX (the ?scene=ramp contract) and material.toneMapped=false is IGNORED on the direct-render path in three r185 — AgX's inset matrix bleeds R into G, which reads as phantom permanent wetness in any channel-encoded readback. Disable tone mapping on the RENDERER for QA scenes, and calibrate readback with an in-shader ramp (G := suv.x) before trusting decoded values.",
+    "optimizations": "InkPass.run clamps p to [0.30, 0.64] (ink constant outside) and skips re-render on unchanged clamped p",
+    "atlases_v15": "rebuilt from the v1.5 composition 2026-08-30: ink-mtsdf.png 2f9917c3e662..., ink-prog.png 870572c6ed87..., 279 instances (272 glyphs incl. 10 basmalah kashida + 7 rosette markers as ordinary cells, gid 100000) + 0 analytic rings (ring branch in ink.ts now dormant); marker instances take the old ring timing slot (1.5 units at each ayah close). RTL audit PASS; IoU gate green. The M3 wet-trail DoD (closed-form dry, dp 0.045) is mechanism-level and text-independent - measured PASS on v1.4.3, carries by construction."
+  },
+  "text_pipeline": {
+    "layout": "v1.5 CLASSICAL CENTERED (user review 2026-08-30): the active 7-line block drops the justified rectangle — lines sit at natural width, broken for balance (min-unevenness DP, no-orphan close kept), centered on the sheet axis with a natural taper (widths 0.497/0.489/0.481/0.419/0.494/0.454/0.322). NO justification kashida anywhere; the single calligraphic elongation is the basmalah sin at a FIXED 2.0 em (was uncapped 3.12 em under v1.4.1). Ayah markers are DRAWN 8-petal shamsah rosettes (pointed petals, pierced hub, center boss; outer R 0.17 em) emitted as outline contours in composition.marker — they flow through the SAME pipeline as glyphs (MTSDF cell, stroke-order skeleton, bevel mesh, gold). The 8-line rectangle variant stays frozen on disk as the v1.4.3 reference.",
+    "leading_rule": "v1.4.2: min per-x ink-over-ink clearance (shaped glyph boxes) >= 0.35 em between adjacent lines, x1.10 for relief shadows; pitch = smallest satisfying value, CLAMPED to the text band [0.150, 0.865]; ink block centered in the band. STATUS: the rule pitch (2.33 em) does not fit the band at ANY legal em for either variant - feasibility windows are empty in both directions (8line: caps-justifiable only at em >= 0.051, rule would fit only at em ~0.039; 7line: caps >= 0.046, rule ~0.043). Both variants are frozen at band-floor em 0.052 with the maximum in-band pitch: RULED by review 2026-08-25: band-max leading — sheet, margins, and em band hold; these frozen variants stand.",
+    "variants": {
+      "8line": {
+        "em": 0.052,
+        "pitch": "0.088534 (1.703 em, band-clamped; rule wants 2.329 em)",
+        "ink_daylight_em": -0.064,
+        "svg_sha256": "f966bd03b10383fca5e6c5b7d3c1fb769fb19bbef2d0b9e8e08553477106f9ae",
+        "glyphs": 311,
+        "close": "justified, 4 words + marker (0.84 em kashida)"
+      },
+      "7line": {
+        "em": 0.052,
+        "pitch": "0.103289 (1.986 em, band-clamped; rule wants 2.329 em)",
+        "ink_daylight_em": 0.219,
+        "svg_sha256": "1b0232dc0a5078b1e0434805bd0e63a65df9005766b0f09debbab2a9b7d82757",
+        "glyphs": 292,
+        "close": "justified, 4 words + marker (0.84 em kashida)"
+      },
+      "active": "7line — LAYOUT CHOSEN at review 2026-08-25 (composition.json = the 7-line block; 8line stays frozen as reference)"
+    },
+    "font_sha256": "e2a47644762d16bdfb6d33e0d8db8c6ff30beae84150ef5a705316bbd829455c",
+    "canonical_source": "Tanzil Uthmani (via api.alquran.cloud, edition quran-uthmani)",
+    "canonical_url": "https://api.alquran.cloud/v1/surah/1/quran-uthmani",
+    "canonical_fetched": "2026-08-25",
+    "canonical_sha256": "557e8ef1fe49090221c1dc09304dff792d378ba1b551250fb4fd9a21034a8be4",
+    "verification": "ALL VARIANTS: SEVEN AYAT IDENTICAL (build/verify-text.mjs, 2026-08-25): for composition.json, composition-8line.json, composition-7line.json the verifier reads the post-justification presentation strings, strips U+0640, reassembles the flow, and matches the pinned canonical byte-for-byte. Canonical pin unchanged (U+FEFF feed artifact stripped at pinning).",
+    "proofs": "qa/proofs/fatihah-proof-{8line,7line}-4000.png (plain) + fatihah-proof-{8line,7line}-parchment-4000.png (2D port of the SS7/SS15 parchment recipe: fbm grain 340x280 + undulation + macro/blotch + stains + aged edges); live at ?scene=proof&layout=8|7[&bg=parchment]",
+    "reveal_pacing": "director/writing.ts WRITING constants (glyphUnit 1.0, kashidaUnit 0.35 - elongations sweep, not step, markUnit 0.65, markLag 1.2, wordGap 2.2, unitsPerSecond 3.45); M3 maps units to dp",
+    "orthography": "RULED 2026-08-30: Uthmanic Hafs (Tanzil quran-uthmani, sha 557e8ef1..., canonical-fatihah.json) stands - ayah 4 is Maliki with the DAGGER ALIF (U+0645 U+064E U+0670 U+0644 U+0650 U+0643 U+0650), the mushaf rasm; dagger alifs also in al-Rahman/al-'alamin/al-sirat, wasla + madda throughout. verify-text green: all seven ayat codepoint-identical across variants. Visual mark placement is Amiri Quran's; human review against a printed mushaf remains the M8 sign-off gate (4000px annotatable parchment proof provided)."
+  },
+  "m4_open": {
+    "scope": "presenting + relief + geometry handoff: SS13 writing dwell, SS10 light choreography, SS14 emboss stage (restored + v-sign fixed), SS6/SS18 bevel-extruded glyph mesh, SS14 handoff wiring, silhouette DoD instrument, SS9 camera verification",
+    "writing_dwell": "scroll->p density remap x1.35 over p [0.30, 0.62] (feather 0.03), spacer scaled by the 1.112 total; capture pins p directly",
+    "light_drivers": "keyFactor: 1.00 -> 0.88 (S3 dim, [0.30,0.34] E1) -> 0.95 ([0.52,0.60] E1); rimFactor: 0.30 -> 0.42 ([0.64,0.68] E2) -> 0.52 ([0.72,0.76] E2)",
+    "emboss": "ink RT B = SS14 puff; material bump from the puff uv-gradient (eps 1.5/2048, world slopes along field T/B, u-slope /0.78, apparent height 0.0009 x embossFactor) + 8% border cavity darkening. HISTORY: the emboss block was accidentally DEAD in the b4bb4f2 commit (a botched edit left embossGU/GV shadowed at zero - restored 2026-08-30); the first restoration subtracted the v-slope along Bv = N x T (up-page) which INVERTED vertical shading - corrected to +Bv (the height-slope perturbation must follow dP/dv = cross(T, N)). Verified: R-0.56 bit-identical to the pre-restoration candidate (embossFactor 0 there), R-0.645 re-captured.",
+    "glyph_mesh": "build/build-glyph-mesh.mjs: SS6 9-point profile applied as a HEIGHT GRAPH over the interior-distance field (identical surface to the offset sweep where defined, self-intersection-free by construction); thin-stroke guard baked per vertex (wScale/hScale from a medial-march half-width; hairlines become beads); bases+kashidas of a word UNIONED (nonzero winding) so joints carry no grooves; marks/markers separate solids at 0.8/0.6 depth ratios. Tessellation: MS-clipped grid (pitch 10 fu) with Newton-snapped boundary, sub-texel-sliver corner override, hidden-component perimeter check, crevice/tip subdivision to depth 3, sharp-corner insertion (>25 deg), and recursive chord refinement (sagitta < 0.6 fu) for Amiri 5-8 fu serif-corner arcs. 166,003 verts / 257,507 tris (T1 budget 780k); plan-area err 0.02%; silhouette identity worst OUTER 0.00685 em = 0.46 px @1440p (gate 0.008 em; the 0.0008 em analytic flatten tol belongs to the M5 curvature-adaptive rebuild with meshopt/glb packaging, SS18); crevices worst 0.0059 em reported (sub-texel cracks paved - coverage, not silhouette). glyphs.bin FGLY v1 (quantized planar attrs: unorm16x4 anchor su/sv/hn/kind, snorm8x4 plan normal, unorm8x4 ayah/AO/rFloor, unorm16x2 atlas uv; u32 index) sha256 75d720ebebca03d1..., deterministic across rebuilds.",
+    "handoff": "src/relief/mesh.ts: vertex stage fetches posTex/nrmTex/tanTex (manual bilinear, 4 textureLoads - float32-linear is a WebGPU feature gamble) at the sheet anchor; position = surf + N x (hn x max(uGeoDepth, kind x uRise)); normal = plan relief normal through the T / cross(T,N) / N frame; color = the SAME flat-ink composite (ink RT sample, explicit lerps, fiber cavity) x baked root AO; polygonOffset -0.5/-2 (SS14 z-guard; shadow/contact stay unbiased - castShadow off until the M5 rise). drivers.geoDepth: 0.00045 + 0.00075 x E2(span(p, 0.69, 0.73)); mesh visible p >= 0.69; &nogeo = emboss-only QA switch. First-load pitfall fixed: FGLY meta offsets must be computed in BYTES not chars (em-dashes in meta strings).",
+    "silhouette_dod": "qa/silhouette-diff.mjs + qa/png-io.mjs: 5 capture pairs (geo/&nogeo) at 2560x1440 across the window; sub-pixel RAMP-MIDPOINT edge comparison along shared gradient lines (binary masks bottom out at sqrt(2); fixed-threshold iso reads a constant crisp-vs-soft dilation ~0.5 px). RESULT: contour median 0.26-0.32 px PASS (limit 0.8), p95 0.87-0.95 px FLAGGED for M4-close sign-off, p99 <= 1.19; uncorresponded (AA-faded tips) <= 0.55%; XOR components all attached, worst 81 px2; no detached artifacts. Attribution measured by the sweep structure: at 0.690 (emboss full, parallax ~0.15 px) the tail is shading x soft-ramp midpoint interplay; at 0.730 (emboss zero, geoDepth 0.0012, elev ~66 deg) it is projection parallax ~1 px - the SS14 parallax claim (<=0.35 px) holds at the 83 deg camera through 0.710; SS9 starts the retreat at 0.70, so the window tail exceeds it (physical, occluded under the caps; spec note added).",
+    "camera_ss9": "VERIFIED 2026-08-30: realized poses at every pure-anchor knot (0.47, 0.6, 0.7, 0.8, 0.9, 1.0) match the rebaked table EXACTLY (delta 0.000 <= 0.01) incl. focal->vfov law; dolly-rule distances at the 1440x900 reference: p0 0.982, p0.21 1.454, p0.34 2.303 (blend to anchors [0.38, 0.47] -> pure by 0.47). SS9 spec table synced to the M1-rebaked anchors.",
+    "review_frames": "qa/review/m4-R0645-v15.png, m4-R0710-v15.png (v1.5); older m3-R*.png kept as the M3 sign-off record (v1.4.3 text)",
+    "closed": "M4 CLOSED 2026-09-01 on user sign-off (\"signed off — bless the frames and continue to M5\"). RULING RECORDED: the silhouette DoD p95 flag (0.87-0.95 px, attributed to shading x soft-ramp midpoint interplay + SS9-retreat parallax) is ACCEPTED as measured — the contour median (0.26-0.32 px) is the silhouette metric; the analytic 0.0008 em flatten tolerance moves to the M5 mesh polish only if the rise closeups call for it.",
+    "candidates_promoted": "R-0.34/0.45/0.56/0.645/0.710-T1 blessed in frames[]; R-0.45-T3 == R-0.45-T1 hash (3dd73e95...)",
+    "determinism_note": "LEARNED 2026-09-01: every mesh-visible frame must be reproduced across >=2 cold loads before blessing — coincident surfaces resolve by pipeline-compile order on WebGPU unless renderOrder pins the draw order."
+  },
+  "m5_open": {
+    "scope": "the rise (SS5/SS10/SS14): per-ayah staggered extrusion 0.0012 -> 0.0115 in reading order, ink -> gold transmutation, SS8 contact-shadow blob + PCSS on risen letters, flat-ink ghost",
+    "drivers": "riseStart = 0.722 + 0.0115 x (ayah-1) + 0.0012 x cluster (reading-order index within the ayah, baked in aux.w); duration 0.093, E4 (= E2), stagger gated at start; depth = max(geoDepth, kindScale x stagger); gold lags the rise by 0.25 of the window (E2); inkGhost 1 -> 0.08 over [0.78, 0.84] (E1); contactRamp E2 over [0.72, 0.80]; castShadow from 0.722",
+    "shader": "E2 cubic-bezier evaluated in TSL (5 Newton steps on x(t), monotone curve); SS7 gold set with EXPLICIT lerps: face #C29B52 metal 1.0 rough 0.21-0.47 by procedural burnish R, wear -> bole #7A4630 (rough 0.62, metal 0.12) thresholded ~8% crown-biased, sidewall #8F6B2E rough 0.52 metal 0.85 x0.72 toward the root, markers +0.05 rough, curvature roughness floor 0.28 (baked), baked root AO, SS15 specular AA on top. Anisotropy (0.25 along stroke) DEFERRED to the M6 polish (needs a tangent frame on the mesh).",
+    "contact_blob": "src/relief/contact.ts: ortho height pass over the glyph mesh only (frustum 0.9 x 1.15, 512^2 RGBA8: R coverage, G height/0.2), two separable 13-tap blurs with radius_texels = 2 + 640h, composited x(1 - 0.75 C exp(-h/0.12) ramp). ORIENTATION LEARNED THE HARD WAY: camera-rendered RTs read back v-flipped on three r185 WebGPU (blob uv = +z/1.15 + 0.5, not -z); the near mirror-symmetric text block made the wrong orientation look like an OFFSET ECHO of every line rather than a mirror. &noblob = QA switch (R-1.00-noblob at M6). ?debug=blob = mapping inspection.",
+    "determinism": "R-0.710 two-state z-fight fixed (renderOrder 1 + 1e-5 seam clearance); R-0.76 reproduced x2 cold loads + T2 identical",
+    "dod_status": {
+      "one_draw_call": "PASS — the glyph assembly is one merged Mesh (single geometry + material = one draw); frame total at p 0.80: 8 draw calls, 357,428 triangles (T1 budget <=14 calls, <=1.05M tris)",
+      "alignment_0_5px": "PASS — build audit: worst OUTER outline->boundary 0.0069 em = 0.46 px @1440p (glyph-mesh-audit.json)",
+      "contact_legible_390px": "captured qa/review/m5-R080-390px.png (T3, 390x844) — see review note",
+      "thin_stroke_guard": "PASS by construction — the profile is a height graph over the interior-distance field (no self-intersection possible); guard baked per vertex (38% bead verts)"
+    },
+    "review_frames": "qa/review/m5-R076.png, m5-R080.png, m5-R084.png, m5-R080-390px.png",
+    "candidates": {
+      "R-0.80-T1": "7f9318944263d18e50837e0f8ebd1a1717e772a3fea773ec3eccc94d83a1dcb1 (reproduced across two captures)",
+      "R-0.84-T1": "5439580559112d29dbdb369c1cc93feaf71dbc5747fa15e2f58fc3f781a834cc",
+      "R-0.80-T3-390x844": "1bbcc08a4e6b... (mobile legibility capture)"
+    },
+    "closed": "M5 CLOSED 2026-09-01 on user sign-off (\"signed off — bless R-0.76 and continue to M6\"); the 390 px contact-shadow legibility judged by the user with the sign-off. Anisotropy (SS7 0.25 along the stroke) carried into M6 polish."
+  },
+  "m6_open": {
+    "scope": "facing + finish (SS5/SS10 S7, SS15, SS13): pivot to 12 deg off frontal, parchment recede, key mask/fill/cone/env drivers, idle micro-motion, pointer parallax, dust, reduced-motion mode, p=1 hold audit",
+    "facing": "RIGID pivot of the glyph assembly about the text-block center (x axis through (0,0,0.0075)) by 78 deg x E6 over [0.84,1.0] + carry of the center to the rest pose; parchment + ribbon recede (0,-0.02,-0.10) x E6 applied after the blob uv; key mask 1->0.55 (albedo approximation), fill 0.13->0.20, key cone 26->22 deg, env yaw ->-38, blob x cos^2(pitch). RE-AUTHORED vs spec: rest center y 0.40 (spec 0.185 assumed a much smaller assembly — the 0.72-tall v1.5 block pitched about its center dips below the page at 0.185); the SS9 gaze TRACKS the assembly center across S7 and the distance comes from an assembly-extent fit (like the S1-2 sheet fit): d 2.06 at p 1 (anchor 1.41), realized text width ~0.45 frame (spec 0.66 was for the smaller assembly); key/rim targets track the standing block; cone trim stops at 22 deg (18 deg left the basmalah outside the cone).",
+    "idle": "IdleController: arms after 4 s still (scroll vLpf < 2e-3 and no pointer motion 300 ms), 2 s smoothstep ramp; breath 2.5e-4 @0.10 Hz into the field (uBreath, spatial bump), key +-1.5% /9 s, env yaw +-2 deg /14 s, camera drift 0.002 (sum of incommensurate sines); zeroed in reduced motion + capture",
+    "parallax_dust": "pointer gimbal +-0.35 deg, spring w 12.6 zeta 0.9 (camera.ts), key sway +-0.004 world; Dust: 640 motes PointsNodeMaterial soft discs #E8DCC2 alpha 0.03-0.045, drifting through the key beam, fades in with the facing factor, hidden in capture + reduced motion",
+    "reduced_motion": "director/reduced.ts: seven held centers [0, 0.21, 0.45, 0.60, 0.685, 0.884, 1.0] (ink pre-dried: ink pass evaluated 0.05 ahead; rise at completed pose), scroll->nearest band, arrow keys/pager dots (in a <nav>) move the SCROLL (single source of truth), 300 ms DOM-overlay dissolve, camera cuts; sim/idle/parallax/dust/env drift off; ?reduced=1 QA override",
+    "dod_status": {
+      "axe": "PASS — axe-core 4.10.2 (wcag2a, wcag2aa, best-practice) on the reduced-motion page: 0 violations, 28 passes (after adding landmarks: <main>, role=img canvas, status hud, <nav> pager)",
+      "idle_amplitudes": "PASS by construction — amplitudes are the SS15 constants (breath 2.5e-4, key 1.5%, yaw 2 deg, drift 0.002)",
+      "p1_drift": "PASS — ?hold=60 (p pinned at 1, idle armed, dust + parallax live): 60 samples, mean luma 22.30, total flux drift 1.31% (limit 2%); 20 s pilot 1.12%. Run 2026-09-01 in the dev pane (rAF-throttled — samples are 1 s apart in frame time, so the wall-clock run is longer; the drift statistic is unaffected).",
+      "noblob": "R-1.00-noblob captured: PCSS carries S7 (the long soft cast shadow on the page is the key shadow; the blob contributes <= cos^2(78 deg) = 4% at rest)"
+    },
+    "candidates": {
+      "R-0.80-T1": "9dac53395b39fd6e688640b0845d4d47450e789823bda49abfc5f22276ce5d28 (M6 shader graph; x2 cold loads)",
+      "R-0.84-T1": "re-capture at M6 close"
+    },
+    "review_frames": "qa/review/m6-R093.png, m6-R100.png, m6-R100-noblob.png",
+    "variants": {
+      "R-1.00-T2": "2acc551f54a3512f0f2de3bb732fe551fed339a33fd0822b5b5437350c8902d5 (IDENTICAL to T1 — tiers differ only by the DPR cap until M7)",
+      "R-1.00-noblob": "6cb86572de79964fff51230a415249283e3d91c2e91db323e9309383b9184813 (uContactBlob = 0; the long soft cast shadow on the page is PCSS — SS8 \"PCSS carries S7 alone\")"
+    },
+    "closed": "M6 CLOSED 2026-09-01 on user sign-off (\"signed off — bless R-0.93 and R-1.00 and continue to M7\"): the S7 re-authoring (center y 0.40, extent-fit distance, cone 22 deg) accepted with the sign-off; manual reduced-motion audit by the user."
+  },
+  "m7_open": {
+    "scope": "performance & payload (SS18/SS19/SS15/SS12/SS20): payload report, poster/LQIP/pre-compile/crossfade, runtime tier monitor + thermal guard, ?perf harness, mobile distance overrides, 74-frame matrix runner + checker",
+    "payload": {
+      "report": "build/payload-report.json (qa/payload.mjs after vite build)",
+      "totals_mb": {
+        "raw_mb": 7.571,
+        "gz_mb": 3.241,
+        "br_mb": 2.147
+      },
+      "phases": {
+        "A": {
+          "files": 11,
+          "raw_mb": 0.936,
+          "gz_mb": 0.291,
+          "br_mb": 0.243,
+          "seconds_at_10mbps_br": 0.2
+        },
+        "B": {
+          "files": 3,
+          "raw_mb": 0.52,
+          "gz_mb": 0.442,
+          "br_mb": 0.438,
+          "seconds_at_10mbps_br": 0.37
+        },
+        "C": {
+          "files": 1,
+          "raw_mb": 6.115,
+          "gz_mb": 2.508,
+          "br_mb": 1.466,
+          "seconds_at_10mbps_br": 1.23
+        }
+      },
+      "posterToLive": {
+        "transfer_s": 0.2,
+        "compile_allowance_s": 1,
+        "crossfade_s": 0.42,
+        "estimate_s": 1.67,
+        "limit_s": 2.2
+      },
+      "verdict": "PASS — 2.15 MB brotli vs the 8.5 MB target (10 MB cap); textures are procedural GPU bakes (KTX2 rows moot); glyphs.bin ships as FGLY buffers brotli 1.47 MB (meshopt optional, ~-0.3 MB for a wasm decoder)"
+    },
+    "poster": "public/poster.jpg 44,452 B (1600x1000, JPEG q0.80, from R-0.00 captured at 1600x1000) + inline 32x20 LQIP 1.2 KB in index.html; renderer.compileAsync before the first frame; canvas crossfades 420 ms after 3 presented frames; window.__boot.posterToLive_s per load (dev pane, hidden, cold: 6.09 s — throttled rAF + first shader compiles; the 10 Mbps DoD run is the reviewer's foregrounded cold load). Capture mode bypasses the poster (blessed hashes unaffected — verified by the matrix below).",
+    "tier_monitor": "core/tiers.ts TierMonitor: 3 s frame-time window, demote when p95 > 1.25 x budget (12/14/27 ms), 10 s hysteresis, applied at state-boundary crossings (DPR cap 1.75/2.2/1.25, dust 640/350/0), never promotes, thermal guard halves DPR after two T3 triggers and stops measuring. ?perf=N scrubs p 0->1->0 over N s and publishes window.__perf. Instrument validated in the dev pane: 201 frames, p50 8.3 / p95 9.4 / p99 32.4 ms — WITH a concurrent matrix run in another tab the monitor demoted to T3 within the 16 s scrub (expected under that contention; not a device verdict). Device runs (M1 Air / iPhone 15 / iPhone 12) are the reviewer's.",
+    "mobile": "camera.mobileDistMul: portrait aspects x0.94 (S3) -> x1.00 (S4-5) -> x1.12 (S6-7), E1 blends; the S7 assembly fit already handles portrait framing; x-height record at em 0.052: 0.0209 world = ~15-16 CSS px in the 390-pt reading frame (~34 device px at DPR 2.2), ~16 px at 1440x900",
+    "matrix": {
+      "runner": "public/qa/matrix.html?backend=webgpu|webgl2[&only=T1|T2|T3] — hidden-iframe self-driving replay of the SS20 matrix (12 p x {T1 1440x900, T2/T3 390x844} + R-1.00-noblob), posts matrix-<backend>[-only].png (JSON) to the capture sink; qa/matrix.mjs <backend> [only] checks it against frames[]",
+      "webgpu_T1": {
+        "seconds": 108.9,
+        "frames": 13,
+        "match": 10,
+        "mismatch": 0,
+        "unblessed": 3,
+        "errors": 0,
+        "verdict": "PASS — every blessed T1 frame reproduced by the runner; unblessed = R-0.08, R-0.86 (new matrix members) + R-1.00-noblob"
+      },
+      "webgpu_T2": {
+        "seconds": 13,
+        "frames": 12,
+        "hashes": {
+          "R-0.000-T2-webgpu": "6dda8b5e85777e9dedf87b7beaf52d6feb12f334c10bffacbc36ea0eb477f9d0",
+          "R-0.080-T2-webgpu": "8f576d795ab15b16c2b4e11ef64a57f9dc5c00d76eade07288c74406fceec805",
+          "R-0.210-T2-webgpu": "f7705d6c1324d9ca15e9b393a4c1488481c24611b4ffa6f481346e5443a3b22d",
+          "R-0.340-T2-webgpu": "7c05ce5189a82ac3de670c6d1ad0765a1aa846523d8cfc7119ef7e3ba5d62ee5",
+          "R-0.450-T2-webgpu": "908a985c730e975f6ab9bbae931b21f889adf8669532478aee41257e389de967",
+          "R-0.560-T2-webgpu": "8415bd7245fe7473edbb0a5a47afda445388ebbf5a7c66423251ee9679d77a82",
+          "R-0.645-T2-webgpu": "4e8253dbbd309c1db73bfb7ab4c1d1fd621346e555b93eb8aeadc86d837187d9",
+          "R-0.710-T2-webgpu": "90aff2fd8f681615001de4fba09d17f45e7937f741d401c5d9ef62c77d7654d0",
+          "R-0.760-T2-webgpu": "4500b042cdf72a40ab7feb5d19cd84a11e0da8641d7b50968f27226947dd8295",
+          "R-0.860-T2-webgpu": "bdcc6288c4436084f8e925faf4e6b9d990dfe9bdb8846d78694471cd6bd6f4f0",
+          "R-0.930-T2-webgpu": "c726b61ee7374ff3f89395138a156f44acab7052af0117af70b8f5c145e73a9b",
+          "R-1.000-T2-webgpu": "202959d0b2f2dada2bb12ad53c694c32c4d7bef64909e729869147f30c85ec40"
+        },
+        "note": "first mobile (390x844, tier 2) reference set — blessed after a second runner pass reproduces every hash"
+      },
+      "webgpu_T3": {
+        "seconds": 345,
+        "frames": 12,
+        "errors": 0,
+        "note": "tier 3 at 390x844 — hash-identical to the T2 pass frame for frame (tiers differ only by the DPR cap, forced 1 in capture) — which is also the mobile set's second independent reproduction"
+      },
+      "mobile_reproduction": "12/12 mobile frames identical across the T2 and T3 passes (two independent cold loads each) — mobile references blessed below",
+      "webgl2_T1": {
+        "seconds": 69.7,
+        "frames": 13,
+        "match": 0,
+        "mismatch": 0,
+        "unblessed": 13,
+        "errors": 0,
+        "note": "WebGL2 fallback pass over the 12 T1 frames + R-1.00 noblob in the dev pane (Chrome on the M1 Air). Hashes recorded here as the first WebGL2 candidate set; they are blessed only under the CI policy (matrix runner on the reference machine at M8), never from a single pane pass.",
+        "sha256": {
+          "R-0.000-T1-webgl2": "251091e225b582db20034456a505b40a15d0c3c8316892b04148b15e7ecf5772",
+          "R-0.080-T1-webgl2": "22cabed05d713fd3478d8865d5546d63365039a23aa6d647fa2572c41bfa1211",
+          "R-0.210-T1-webgl2": "55741d0eccc605546b5431a448d5f96a249c90bf5fdb8e313aaa07d16c894c37",
+          "R-0.340-T1-webgl2": "fc9e5e571518860534eb8642e933481b1d07fa766d958ba5778e59ec0f39d6f1",
+          "R-0.450-T1-webgl2": "7b1e67c2f2c57b377dcf5dd2be1136dd8c76024fc3ebb4e3c4573f2a9ee2db3d",
+          "R-0.560-T1-webgl2": "a4c0ce4a880b26f0d98182892e79906d868f9ee144927bc2cb80b88c39810e3f",
+          "R-0.645-T1-webgl2": "afa5d7b3b616e8c8e025a6c57550b4c8488f6bda9670cb81c50325bc9a321809",
+          "R-0.710-T1-webgl2": "7d792e483c7bf100b58e35ae5ecb58c7242cc2ae115580a3dac8d582b938492e",
+          "R-0.760-T1-webgl2": "5714679d0311fff6b435e7dd432b2f4936ed94f74f25ac028ab0649300f257bb",
+          "R-0.860-T1-webgl2": "f9307da00e06e490934075f06d94149510047cf224c232d98d6b595f8cb313fa",
+          "R-0.930-T1-webgl2": "a24e08d5023e91464feaff6ec541777298e5f40a1bc6a36a1a73bb16558f99d5",
+          "R-1.000-T1-webgl2": "395cf9a2b4368a9139b72458e6a09ea89f82d88e9d7feb6440e3dd8bb5c2ceed",
+          "R-1.000-T1-noblob-webgl2": "5e18ff8ad96d6c8f048539b1ab69ccb5c85121fe8b62f18a5c37610e8bf4a3fc"
+        }
+      },
+      "runner_note": "The runner iframe must be viewport-sized (public/qa/matrix.html): an offscreen 1x1 iframe has its rAF throttled by Chrome even in the fronted tab (the T3 pass crawled to 345 s; the same 13-frame T1 set takes ~70 s once the iframe fills the viewport)."
     }
-   },
-   "posterToLive": {
-    "transfer_s": 0.2,
-    "compile_allowance_s": 1,
-    "crossfade_s": 0.42,
-    "estimate_s": 1.67,
-    "limit_s": 2.2
-   },
-   "verdict": "PASS — 2.15 MB brotli vs the 8.5 MB target (10 MB cap); textures are procedural GPU bakes (KTX2 rows moot); glyphs.bin ships as FGLY buffers brotli 1.47 MB (meshopt optional, ~-0.3 MB for a wasm decoder)"
   },
-  "poster": "public/poster.jpg 44,452 B (1600x1000, JPEG q0.80, from R-0.00 captured at 1600x1000) + inline 32x20 LQIP 1.2 KB in index.html; renderer.compileAsync before the first frame; canvas crossfades 420 ms after 3 presented frames; window.__boot.posterToLive_s per load (dev pane, hidden, cold: 6.09 s — throttled rAF + first shader compiles; the 10 Mbps DoD run is the reviewer's foregrounded cold load). Capture mode bypasses the poster (blessed hashes unaffected — verified by the matrix below).",
-  "tier_monitor": "core/tiers.ts TierMonitor: 3 s frame-time window, demote when p95 > 1.25 x budget (12/14/27 ms), 10 s hysteresis, applied at state-boundary crossings (DPR cap 1.75/2.2/1.25, dust 640/350/0), never promotes, thermal guard halves DPR after two T3 triggers and stops measuring. ?perf=N scrubs p 0->1->0 over N s and publishes window.__perf. Instrument validated in the dev pane: 201 frames, p50 8.3 / p95 9.4 / p99 32.4 ms — WITH a concurrent matrix run in another tab the monitor demoted to T3 within the 16 s scrub (expected under that contention; not a device verdict). Device runs (M1 Air / iPhone 15 / iPhone 12) are the reviewer's.",
-  "mobile": "camera.mobileDistMul: portrait aspects x0.94 (S3) -> x1.00 (S4-5) -> x1.12 (S6-7), E1 blends; the S7 assembly fit already handles portrait framing; x-height record at em 0.052: 0.0209 world = ~15-16 CSS px in the 390-pt reading frame (~34 device px at DPR 2.2), ~16 px at 1440x900",
-  "matrix": {
-   "runner": "public/qa/matrix.html?backend=webgpu|webgl2[&only=T1|T2|T3] — hidden-iframe self-driving replay of the SS20 matrix (12 p x {T1 1440x900, T2/T3 390x844} + R-1.00-noblob), posts matrix-<backend>[-only].png (JSON) to the capture sink; qa/matrix.mjs <backend> [only] checks it against frames[]",
-   "webgpu_T1": {
-    "seconds": 108.9,
-    "frames": 13,
-    "match": 10,
-    "mismatch": 0,
-    "unblessed": 3,
-    "errors": 0,
-    "verdict": "PASS — every blessed T1 frame reproduced by the runner; unblessed = R-0.08, R-0.86 (new matrix members) + R-1.00-noblob"
-   },
-   "webgpu_T2": {
-    "seconds": 13,
-    "frames": 12,
-    "hashes": {
-     "R-0.000-T2-webgpu": "6dda8b5e85777e9dedf87b7beaf52d6feb12f334c10bffacbc36ea0eb477f9d0",
-     "R-0.080-T2-webgpu": "8f576d795ab15b16c2b4e11ef64a57f9dc5c00d76eade07288c74406fceec805",
-     "R-0.210-T2-webgpu": "f7705d6c1324d9ca15e9b393a4c1488481c24611b4ffa6f481346e5443a3b22d",
-     "R-0.340-T2-webgpu": "7c05ce5189a82ac3de670c6d1ad0765a1aa846523d8cfc7119ef7e3ba5d62ee5",
-     "R-0.450-T2-webgpu": "908a985c730e975f6ab9bbae931b21f889adf8669532478aee41257e389de967",
-     "R-0.560-T2-webgpu": "8415bd7245fe7473edbb0a5a47afda445388ebbf5a7c66423251ee9679d77a82",
-     "R-0.645-T2-webgpu": "4e8253dbbd309c1db73bfb7ab4c1d1fd621346e555b93eb8aeadc86d837187d9",
-     "R-0.710-T2-webgpu": "90aff2fd8f681615001de4fba09d17f45e7937f741d401c5d9ef62c77d7654d0",
-     "R-0.760-T2-webgpu": "4500b042cdf72a40ab7feb5d19cd84a11e0da8641d7b50968f27226947dd8295",
-     "R-0.860-T2-webgpu": "bdcc6288c4436084f8e925faf4e6b9d990dfe9bdb8846d78694471cd6bd6f4f0",
-     "R-0.930-T2-webgpu": "c726b61ee7374ff3f89395138a156f44acab7052af0117af70b8f5c145e73a9b",
-     "R-1.000-T2-webgpu": "202959d0b2f2dada2bb12ad53c694c32c4d7bef64909e729869147f30c85ec40"
+  "v16_pending": {
+    "clean_satin_pass": {
+      "release_hardening_2026_09_12": {
+        "report": "build/v166-release-local-2026-09-12.json",
+        "status": "local production checks only; no new reference hashes or M7/M8 closure",
+        "approval": "User reaffirmed the approved look and asked to finish; cleaner gold and canonical scripture preserved",
+        "change": "Reduced-motion 44px targets, visible focus, keyboard focus/selection agreement, Home/End and shortcut/editing guards; labelled ordinary buttons with aria-current; state-only atomic announcements replace per-frame live HUD chatter. Opt-in performance save checks HTTP success, times out at 10 seconds and displays success/failure rather than silently losing exports.",
+        "verification": "Production build and 22 tests pass; 66 local accessibility checks and 17 fallback checks pass; payload 7.092 MB Brotli. Full evidence and limitations in the report.",
+        "remaining": "Intermittent WebGPU capture differences, named-device/work-budget/loading evidence, cross-browser/accessibility/content review, hosting target and explicit release sign-off; artifacts not republished"
+      },
+      "capture_followup_2026_09_11": {
+        "upload_trace": "Expanded trace: 72 cold captures, no capture/save errors; T1 p=.76 differs at 198 pixels/max19, T3 p=.71 at 12/max8 despite equal traced CPU uploads and shaders in all 36 pairs. Four saved PNG raw hashes independently verified. See investigation report. Build and 22 tests pass; no cause/fix or blessing.",
+        "centroid_isolation": "Unsuccessful candidate: saved T1 p=.71 pair differs at 341 pixels, max 21 (independent RGBA verification). Evidence sink stopped before mask/final report; sequence incomplete. Experiment removed; approved interpolation restored. See investigation report; no blessing.",
+        "depth_bias_isolation": "72 cold captures: T1 p=.93 differs at 804 pixels (max 30). Not a fix; experiment removed, approved offset restored. Runner navigates once with all options, retains errors, and supports opt-in saveDiff for actual image pairs and explanatory masks.",
+        "saved_image_sequence": "qa/review/v166-targeted-sequence-normal-15-1789136074058.png: 72 captures, zero errors, six differing poses. All 12 actual PNGs independently decoded and matched recorded raw RGBA hashes. Diagnostic masks are not references. Build and 18 tests pass; no cause/fix established.",
+        "report": "build/v166-step1-investigation.json",
+        "september_9_sequence": "72 cold captures; 34/36 poses repeat-identical; differences T1 p=1 (29 pixels, max 23), T3 p=.645 (6 pixels, max 1); no errors",
+        "diagnostic": "noReliefDerivatives isolation: 72 cold pages, three differing poses; no fix. Experiment removed; approved default shader unchanged.",
+        "capture_integrity": "Required ink/glyph asset errors now reject capture rather than hashing missing text. Four loader tests added. Successful capture appearance unchanged.",
+        "latest_default_sequence": "72 fresh captures after integrity correction, zero errors; 34/36 poses repeat-identical. T1 p=.86: 4817 differing pixels, max 100; p=.93: 419 pixels, max 28. Report indexes raw evidence. Build and 18 tests pass; no demonstrated fix.",
+        "payload_brotli_mb": 7.092,
+        "status": "Capture blocker unresolved; no hashes blessed or gates closed"
+      },
+      "renderer_failure_folio_2026_09_09": {
+        "status": "implemented; local Chrome QA only; no blessing or gate closure",
+        "provenance": "build/fallback-plates.json",
+        "source": "qa/review/fallback-plates-source.png (JSON)",
+        "assets": "Seven real 768x960 T1 WebGL2 ss=2 captures, each repeated on two cold pages; JPEG .70; 252382 / 280000 bytes",
+        "qa": "17 local DOM/resource/capture checks pass at 1440x900 and 390x844; physical touch and cross-browser review outstanding",
+        "appearance": "Approved v1.6.6 gold, geometry and canonical scripture unchanged"
+      },
+      "m7_readiness_2026_09_07": {
+        "refresh_safe_local_smoke": "Fresh dev-browser 60-second run T1→T1, 7201 intervals, rAF p95 9.1 ms / max 25.0 ms, CPU update/submit p95 1.00 ms. Visible HUD summary in build/v166-m7-readiness.json. No physical-device or frame-work certification; no blessing.",
+        "refresh_safe_fallback_2026_09_08": "Runtime rAF fallback now uses 60/60/30 fps playback intervals with the existing 1.25 factor. Independent 12/14/27 ms work budgets remain unchanged and unverified. Fourteen tests and typecheck pass, including steady cadence and sustained thermal overload. Supersedes prior perfect-60-Hz false-demotion reproduction. No capture appearance change; no blessing or milestone closure.",
+        "cpu_diagnostic_2026_09_08": "Separate CPU update/submit timing added to perf reports; 12 tests and typecheck pass. Short fresh dev-browser smoke: 1143 rAF intervals, p95 9.4 ms, max 33.3 ms; CPU p95 1.10 ms. T1 demoted to T2. Not GPU timing, frame-total compliance or physical-device certification. Gold and capture appearance unchanged; nothing blessed.",
+        "tier_history_followup": "True trailing 3-second timestamp window replaces latest-frame-based sample count; invalid durations rejected. Ten tests and typecheck pass. Earlier perf run predates this change. Perfect synthetic 60 Hz still demotes T1 at 181 frames: cadence bias remains unresolved. No visual/capture change or blessing.",
+        "status": "local diagnostics only; no blessing or gate closure",
+        "report": "build/v166-m7-readiness.json",
+        "step1_latest": "build/v166-step1-investigation.json",
+        "note": "Supersedes the September 6 investigation status below: extended isolations completed but no fix established. M7 audit now retains stalls and demotion history; DPR cap cannot increase at demotion. Seven tests, build and canonical text pass. Payload 6.867 MB brotli. M2 Pro production 60-second rAF sample p95 16.6 ms, max 25.7 ms; demoted T1 to T2, so not a T1 or named-device pass. Material and default capture behavior unchanged."
+      },
+      "repeatability_investigation": "2026-09-06: two temporal traces of T1 p=.645 were constant at frames 15/30/60/90. Eight fresh loads each of the three original failing cases (24 captures) were pixel-identical. Two 36-frame sequences (72 captures, excluding noblob) reproduced differences at six cases, including other poses: some 1-level sparse differences and others up to 118 levels. Evidence: qa/review/v166-targeted-normal-15.png and v166-targeted-sequence-normal-15.png (JSON). Shadow-disabled sequence stalled and was stopped; inconclusive. Cause and fix remain unverified. Temporary main-loop instrumentation removed; diagnostic public/qa/repeat.html retained. Visual behavior and blessed hashes unchanged.",
+      "qa_results_2026_09_06": {
+        "report": "build/v166-qa-review.json",
+        "hold60DriftPercent": 1.52,
+        "holdLimitPercent": 2,
+        "webgpuRepeat": "34/37 identical across two fresh-page runs; mismatches T1 p=.645, T2 p=.760 and .930; no capture errors",
+        "webgl2Repeat": "37/37 identical across two fresh-page runs; no capture errors",
+        "status": "local QA only; WebGPU repeatability and physical-device certification remain open; nothing blessed"
+      },
+      "qa_correction": "Hold audit previously sampled loading/arrival; 71.52% is not isolated steady-state drift. Now wait for assets ready, p within 1e-5 of 1, and 8 seconds of unchanged tier/SS/canvas before sampling. No in-run samples discarded. Visual behavior unchanged; no gate sign-off inferred.",
+      "version": "v1.6.6",
+      "date": "2026-09-06",
+      "status": "visually approved 2026-09-09; unblessed; capture stability, full regression, physical-device and scholarly/content evidence pending",
+      "visual_approval": {
+        "date": "2026-09-09",
+        "user_statement": "it's signed off continue",
+        "scope": "Current v1.6.6 gold and scroll presentation only; no technical gate closure or hash blessing inferred"
+      },
+      "changes": "No gold burnish/wear sampling, marker/ring roughness bias or anisotropy. Constant gold base roughness 0.52 and metalness 0.72, retaining specular AA. Shading slope 1.2*(1-clamp(s,0,1))^2 with three footprint samples, scaled by depth/bevel and guard; blended from authored slope using cluster gilding factor. Geometry, scripture, palette and supersampling unchanged.",
+      "verification": "Production build, canonical-text verification and payload check pass (6.866 MB brotli). Fresh 1440x900 ss=2 final capture displayed text with no captured warnings/errors; live portrait final inspected. Single 10s hold audit reported 71.52% flux drift versus 2% limit; startup versus steady-state cause not isolated. Stability remains open. No new blessed frame hashes.",
+      "candidates": {}
     },
-    "note": "first mobile (390x844, tier 2) reference set — blessed after a second runner pass reproduces every hash"
-   },
-   "webgpu_T3": {
-    "seconds": 345,
-    "frames": 12,
-    "errors": 0,
-    "note": "tier 3 at 390x844 — hash-identical to the T2 pass frame for frame (tiers differ only by the DPR cap, forced 1 in capture) — which is also the mobile set's second independent reproduction"
-   },
-   "mobile_reproduction": "12/12 mobile frames identical across the T2 and T3 passes (two independent cold loads each) — mobile references blessed below",
-   "webgl2_T1": {
-    "seconds": 69.7,
-    "frames": 13,
-    "match": 0,
-    "mismatch": 0,
-    "unblessed": 13,
-    "errors": 0,
-    "note": "WebGL2 fallback pass over the 12 T1 frames + R-1.00 noblob in the dev pane (Chrome on the M1 Air). Hashes recorded here as the first WebGL2 candidate set; they are blessed only under the CI policy (matrix runner on the reference machine at M8), never from a single pane pass.",
-    "sha256": {
-     "R-0.000-T1-webgl2": "251091e225b582db20034456a505b40a15d0c3c8316892b04148b15e7ecf5772",
-     "R-0.080-T1-webgl2": "22cabed05d713fd3478d8865d5546d63365039a23aa6d647fa2572c41bfa1211",
-     "R-0.210-T1-webgl2": "55741d0eccc605546b5431a448d5f96a249c90bf5fdb8e313aaa07d16c894c37",
-     "R-0.340-T1-webgl2": "fc9e5e571518860534eb8642e933481b1d07fa766d958ba5778e59ec0f39d6f1",
-     "R-0.450-T1-webgl2": "7b1e67c2f2c57b377dcf5dd2be1136dd8c76024fc3ebb4e3c4573f2a9ee2db3d",
-     "R-0.560-T1-webgl2": "a4c0ce4a880b26f0d98182892e79906d868f9ee144927bc2cb80b88c39810e3f",
-     "R-0.645-T1-webgl2": "afa5d7b3b616e8c8e025a6c57550b4c8488f6bda9670cb81c50325bc9a321809",
-     "R-0.710-T1-webgl2": "7d792e483c7bf100b58e35ae5ecb58c7242cc2ae115580a3dac8d582b938492e",
-     "R-0.760-T1-webgl2": "5714679d0311fff6b435e7dd432b2f4936ed94f74f25ac028ab0649300f257bb",
-     "R-0.860-T1-webgl2": "f9307da00e06e490934075f06d94149510047cf224c232d98d6b595f8cb313fa",
-     "R-0.930-T1-webgl2": "a24e08d5023e91464feaff6ec541777298e5f40a1bc6a36a1a73bb16558f99d5",
-     "R-1.000-T1-webgl2": "395cf9a2b4368a9139b72458e6a09ea89f82d88e9d7feb6440e3dd8bb5c2ceed",
-     "R-1.000-T1-noblob-webgl2": "5e18ff8ad96d6c8f048539b1ab69ccb5c85121fe8b62f18a5c37610e8bf4a3fc"
+    "curve_smoothing_pass": {
+      "version": "v1.6.5",
+      "date": "2026-09-06",
+      "status": "unblessed candidate; visual sign-off, capture stability, full matrix and physical-device runs pending",
+      "changes": "T1/T2 grid 6.75 fu, chord tolerance 0.15 fu, minimum segment 0.75 fu, recursion depth 6. Crown normals preserve interpolated boundary-gradient magnitude. v1.6.4 materials and supersampling retained; canonical text and T3 geometry unchanged.",
+      "mesh": {
+        "vertices": 332367,
+        "triangles": 535935,
+        "worstOuterEm": 0.00469,
+        "worstOuterPx1440": 0.317,
+        "sha256": "8cfd67ca70681497b3996441679d1075fec0c54ecba60f24786f80adaa6a386c"
+      },
+      "payloadBrotliMB": 6.866,
+      "verification": "Production build, canonical-text verification, mesh audit and payload check pass. Live final text and 1440x900 transition capture visually inspected. Live final browser warning/error log empty; adaptive tier demoted to T2. No new frame hash accepted or blessed; capture stability and physical-device performance remain unverified.",
+      "candidates": {}
+    },
+    "satin_relief_pass": {
+      "version": "v1.6.4",
+      "normal_experiment": "Animated-depth normal varying reverted during capture investigation. Capture instability also occurred after reverting, so causation is unproven. Stable baked profile normals retained. Sidewall scene-linear RGB is (0.50, 0.32, 0.10).",
+      "date": "2026-09-05",
+      "status": "unblessed candidate; visual approval and fresh full regression/device evidence pending",
+      "changes": "Remove flat-ink opacity mask and alpha test from extruded relief. Opaque geometry/MSAA/spatial SS resolve edges. Satin crown roughness 0.48–0.54; side/crown metalness 0.65/0.72, crown wear reduction up to 0.48. Background, hue, text and mesh assets unchanged.",
+      "candidates": {},
+      "verification": "TypeScript and production build pass. Live p=1 visually checked with text visible and no captured browser warning/error logs. Supersampled capture tests were inconsistent (including blank displayed canvases); no new candidate hash accepted. Investigate capture lifecycle before full matrix. Previous revision hashes and performance/payload reports are historical."
+    },
+    "note": "v1.6 universe ground (user direction 2026-09-01: deep-blue universe with tiny stars behind the gold). Changes the background floor (#0D0906 → #080D26 → #05081C → #040617 → #020411 → #01030D (\"darker\" four times, \"black/blue, a tad darker\"), re-solved through the AgX chain: linear 0.00021515/0.0023545/0.0078083), adds the sky lobe/nebula/stars, cools the env base and the rim (#FFBE83 → #D6E0FF), gold env ×1.6. EVERY blessed frame above is superseded once the look is signed off — re-bless the T1 set (two cold loads each), the mobile T2/T3 set and the noblob frame from the matrix runner; regenerate poster.jpg + LQIP (done as a candidate, 67,579 B). Second review pass: lobe held to ×1.55 (a ×2.8 lobe read as \"dark, then bright again\" — it is in view at p 0 and 1, not while reading), stars σ 0.65–1.25 px (was 0.9–1.8), halo ×3 at 1.2%. Poster 59,189 B. Third pass: floor #020411 (displays 1.6/4/17); the star law unit pinned to 0.0047 scene-linear (the #040617 floor luminance) so the stars did not dim with the ground. Poster 59,041 B. Fourth pass: floor #01030D (displays 1.1/2.9/13.6 — red on the +1-count lift); star clearance: the assembly footprint (center anchor→rest through the sheet pose, half-extents 0.26×0.37, camera tangent plane) fades the stars from 1.25× to 1.75× its ellipse. Poster 53,556 B. Fifth pass (live p=0 screenshot: \"dumb when the stars aren't even\"): clearance gated by faceFactor (only the standing block clears), margin tightened to 1.02-1.25x; stars sigma 0.55-1.05 px; sky cost cut (4-cell star search, 2-octave nebula) after the user's M1 Air showed DEMOTED T2. Poster 56,591 B.",
+    "status": "Historical v1.6 candidates superseded by v1.6.6, visually approved 2026-09-09 and reaffirmed 2026-09-12; current references remain unblessed pending reproducibility and release evidence",
+    "candidates": {
+      "R-0.00-T1": "eda2ed128101b764",
+      "R-0.45-T1": "674287792b2facd2",
+      "R-0.93-T1": "8c009c27e20519b4",
+      "R-1.00-T1": "caac501506d19ad1"
+    },
+    "text_pass": {
+      "date": "2026-09-01",
+      "note": "v1.6.1 text pass (user: \"smooth, especially the first letter they stretched; at the bottom it is still covering the paper\"): (1) a run of tatweel glyphs is emitted by shape-text as ONE stretched outline (gid 200000+, kashidaCount N) — the basmalah sīn was ten tatweels whose flare joints the §6 bevel rendered as ten ridges; atlas + mesh rebuilt (IoU 0.9900/0.9641, RTL PASS, 165,911 verts / 257,438 tris, silhouette 0.00685 em, verify-text green x3, svg b5b3cd2c); (2) the page leaves the frame at p=1 — user ruling \"keep the text big, let the page leave the frame\": RECEDE_REST y -0.02 -> -0.26, the S7 fit is the block's alone (d 2.057 at 16:10 and at the 0.8 portrait aspect; 3.48 on the 390x844 phone where the width-bound fit leaves a strip of page visible beneath the block). Every frame from p >= 0.32 changes (ink atlas cell for the merged kashida) and every S7 frame reframes; p = 0 poster unchanged. (3) \"smoothed and a little brighter\": burnish sampled at sheet scale (was x7/x9 — speckle finer than a stroke), broad octave leads 0.4/0.6, face roughness 0.18-0.34, wear ~3%, GOLD_FACE #DDB768, warm dome in the env (0.42/0.34/0.21 upper hemisphere), gold envMapIntensity 2.2; RECEDE_REST y -0.48 so the page leaves the frame on phones too. (4) \"the letters are a little choppy\": halfWidth() now measures the medial radius at the nearest boundary FOOT (1-fu ray march) instead of a <=8-step coarse march from the vertex that stopped early near the outline (inconsistent profile scale per vertex); §6 wall softened (max slope ~4.5); grid pitch 10 -> 8 fu; mesh 256,469 verts / 399,384 tris, silhouette 0.00555 em, glyphs.bin 9.5 MB raw / 2.66 MB brotli (sha 52b246c8…). (5) \"still some roughness\": per-pixel profile normals — FGLY v2 aProf (sN, k/4, gx, gy), PCHIP profile (coefficients in meta.profileSpline) evaluated in the fragment shader; W averaged over ±5 fu along the outline; loader fetch cache no-cache. glyphs.bin 11.4 MB raw / 3.57 MB brotli (sha ecfe41c2…). (6) \"not perfect\": burnish/wear packs 2 low octaves (finest ≥ 0.35 em), crown roughness 0.22-0.36, wear ~1.5%, env pins x0.64, T1 DPR cap 1.75 -> 2.0. (7) \"100% smooth\": A/B at p=1 — &noshadow hash-identical (the relief receives no shadow), &gb=6 no visible change on the gold; the remainder is the raster. Supersampling verified two ways (3840 box-filtered to 2560; in-engine ?ss=1.5/2 via PassNode.setResolution, hashes d24fb640 / 57d4587e). Shipped as IDLE supersampling: T1 + idle armed (4 s) or reduced motion -> pass at 2x (grade.setSupersample), back to 1x on scroll; ?ss=N pins. References stay at ss 1 unless the user rules otherwise.",
+      "candidates": {
+        "R-1.00-T1": "ffc74bd81d275117",
+        "R-1.00-T1-2560": "c9ef2b80c902163c",
+        "R-1.00-T1-2560-ss2": "57d4587e584a1f43"
+      }
+    },
+    "finish_pass": {
+      "version": "v1.6.2",
+      "date": "2026-09-02",
+      "status": "pending explicit user visual sign-off; candidates only — do not bless",
+      "note": "User reported that the 3D text was choppy and not beautiful, then asked to finish the project. Candidate adds fragment-footprint filtering of the analytic bevel slope, analytic coverage alpha-to-coverage, stroke-tangent anisotropy 0.25, broad #E4C06F gold at roughness 0.30-0.42, portrait reading fit, staged loading, tiered shadows/contact, a dedicated 257,438-triangle T3 mesh, and correctly scaled instanced soft-disc dust valid on WebGPU (no grey overlap veil). Canonical text is unchanged and verify-text is green. Each key WebGPU hash below reproduced across two independent cold navigations on a settled server. The WebGL2 p=1 smoke candidate rendered cleanly once but is not a blessing. The prior 74-frame matrix is superseded for release; rerun/re-bless only after sign-off.",
+      "environment": "Chromium in-app browser; Three r185; WebGPU; DPR 1 deterministic capture",
+      "candidates": {
+        "R-0.000-T1-1440x900-webgpu": "f30432eaf5bb4e4bc2cbbd158a8d715a6f720c1745ea88d93e66a728bc1e8522",
+        "R-0.500-T1-1440x900-webgpu": "6e4655c455b7012319f0036096accbd8acc0c852d57dec515e38342fa6c5ff90",
+        "R-1.000-T1-1440x900-webgpu": "913b9151e3343798e8e7b7d6c6d684852135370494e77a160177bd8074a64ee4",
+        "R-0.000-T3-390x844-webgpu": "483d432c43e7e984a4a0de41557566e7fdad8118cf032e5a4b28e1b102300865",
+        "R-0.500-T3-390x844-webgpu": "9d15863beccb2e02351ab9f88338bea7cd7f30e1c0c2db6c483bb00c893e7433",
+        "R-1.000-T3-390x844-webgpu": "bcd2fe7c15112437d89bd55962f11e19924381abf52b4ee41439d26d1fde3cc1"
+      },
+      "smoke": {
+        "R-1.000-T1-1440x900-webgl2": "1001b700ae7c8234fa004643b185cc2fe86813ec7535a12816147563b023ecca"
+      },
+      "payload": {
+        "full_shipped_set_brotli_mb": 5.784,
+        "phase_a_brotli_mb": 0.256,
+        "poster_to_live_estimate_s_at_10mbps": 1.69
+      },
+      "live_harness": {
+        "r_flick": "PASS — peak 1.07e-3 < 2.7e-3 clamp; settled true; NaN false",
+        "storm_15s": "PASS — 1720 frames; NaN 0; pOut 0; errors 0"
+      }
+    },
+    "motion_smoothing_pass": {
+      "version": "v1.6.3",
+      "date": "2026-09-02",
+      "status": "pending explicit user visual sign-off and physical-device runs; candidates only — do not bless",
+      "note": "User asked to smooth the font specifically while it turns 3D, then authorized the change. The live beauty pass now ramps spatial resolution with relief visibility: T1 1.0→1.5x, T2 1.0→1.25x, T3 1.0x; T1 still eases to 2.0x after roughly four seconds at rest. Factors are quantized to eighth steps to avoid render-target churn. Capture mode remains pinned at ss=1 unless ?ss=N is explicit, preserving deterministic QA. T1/T2 curved boundary chords tighten from 0.6 fu to 0.35 fu (1.25 fu minimum segment, depth 5); the rest of the face grid is unchanged. No temporal accumulation is used, so scroll reversals cannot leave ghost trails. Each key WebGPU hash below reproduced across two fresh navigations on a settled server. Nothing is blessed; the prior 74-frame matrix remains superseded until user sign-off.",
+      "environment": "Chromium in-app browser; Three r185; WebGPU; DPR 1 deterministic capture",
+      "live_supersample": {
+        "activation": "smoothstep across p=0.62..0.73; eighth-step quantization",
+        "T1": "1.0x→1.5x during relief/rise; up to 2.0x after idle",
+        "T2": "1.0x→1.25x during relief/rise",
+        "T3": "1.0x"
+      },
+      "mesh": {
+        "T1_T2": "258,360 verts / 401,150 tris / 0.35 fu chord tolerance; glyphs.bin sha256 fdcc5a3cfdc481fa2c8016b108ef0db12a3ca0534f1af83dd19e8d2310c9cd50",
+        "T3": "165,911 verts / 257,438 tris / 0.6 fu chord tolerance; glyphs-t3.bin sha256 63e173eee0b49e530eaf145b8cfa1f276f790670d5fb501c7eb50dbf9921c5b9",
+        "silhouette": "worst outer 0.005547 em / 0.3750 px @1440 for T1/T2; 0.006855 em / 0.4634 px for T3; both pass the 0.008 em gate"
+      },
+      "candidates": {
+        "R-0.000-T1-1440x900-webgpu": "f30432eaf5bb4e4bc2cbbd158a8d715a6f720c1745ea88d93e66a728bc1e8522",
+        "R-0.500-T1-1440x900-webgpu": "6e4655c455b7012319f0036096accbd8acc0c852d57dec515e38342fa6c5ff90",
+        "R-1.000-T1-1440x900-webgpu": "ece26205bc957a22f9b2b84165a89996e81fa46362baf016dbd51ee5a813607e",
+        "R-0.000-T3-390x844-webgpu": "483d432c43e7e984a4a0de41557566e7fdad8118cf032e5a4b28e1b102300865",
+        "R-0.500-T3-390x844-webgpu": "9d15863beccb2e02351ab9f88338bea7cd7f30e1c0c2db6c483bb00c893e7433",
+        "R-1.000-T3-390x844-webgpu": "bcd2fe7c15112437d89bd55962f11e19924381abf52b4ee41439d26d1fde3cc1"
+      },
+      "payload": {
+        "full_shipped_set_brotli_mb": 5.813,
+        "phase_a_brotli_mb": 0.257,
+        "poster_to_live_estimate_s_at_10mbps": 1.69
+      },
+      "local_perf": "Embedded-browser ?perf=10 sample: T1 demoted to T2; settled T2 p50 8.3 ms / p95 16.6 ms. This is diagnostic only, not M1 Air or iPhone evidence."
     }
-   },
-   "runner_note": "The runner iframe must be viewport-sized (public/qa/matrix.html): an offscreen 1x1 iframe has its rAF throttled by Chrome even in the fronted tab (the T3 pass crawled to 345 s; the same 13-frame T1 set takes ~70 s once the iframe fills the viewport)."
+  },
+  "blessed_2026_09_19": {
+    "authorization": "owner, 2026-09-19: \"okay pass everything\" (chat), after the ledger entry proposing this gate",
+    "environment": {
+      "machine": "MacBook Pro Mac14,9 (Apple M2 Pro), macOS 26.6",
+      "browser": "Brave 153 --headless=new (Chromium 153, ANGLE Metal), --enable-unsafe-webgpu",
+      "three": "0.185.1",
+      "capture": "rig, DPR 1, 15 warm-up frames; hash = SHA-256 of raw RGBA"
+    },
+    "gate": {
+      "both": "bit-exact SHA-256 of the decoded PNG RGBA when it reproduces; else tolerance vs the blessed PNG",
+      "measured": "bit-identical within one browser process on both backends; ulp-level scatter between processes (2026-09-19)",
+      "tolerance": {
+        "changedPctMax": 1,
+        "dE76p50Max": 1,
+        "worstBlock5x5DE76Max": 4
+      },
+      "note": "Historical frames[] entries (27) are preserved untouched and are not consulted by this gate."
+    },
+    "frames": [
+      {
+        "id": "R-0.000-T1",
+        "backend": "webgl2",
+        "url": "/?capture=0&tier=1&w=1440&h=900&backend=webgl2",
+        "mode": "bit",
+        "sha256": "a3fad89b62e9bbfebbd55e6d2e83187f3dcaadd209dcd0920b13bdffee06c1e0",
+        "pageHash": "6f1729cd4ce6d4b954162ae22f0369d4f389e3d894a057d04965c8b8ed59964e",
+        "secondLoad": "a3fad89b62e9bbfebbd55e6d2e83187f3dcaadd209dcd0920b13bdffee06c1e0",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.000-T1.png",
+        "verified": "2026-09-19T18:33:30.293Z"
+      },
+      {
+        "id": "R-0.000-T2",
+        "backend": "webgl2",
+        "url": "/?capture=0&tier=2&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "8d84a7d292adbcd94b146f9fbf6d47f5520e05d2c898d4a481c12b79501bcba9",
+        "pageHash": "3c864ea6bc7ce5563fa97c3b5080094dc56f3801231c20ad77ad5dbe3989975b",
+        "secondLoad": "8d84a7d292adbcd94b146f9fbf6d47f5520e05d2c898d4a481c12b79501bcba9",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.000-T2.png",
+        "verified": "2026-09-19T18:33:32.063Z"
+      },
+      {
+        "id": "R-0.000-T3",
+        "backend": "webgl2",
+        "url": "/?capture=0&tier=3&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "8d84a7d292adbcd94b146f9fbf6d47f5520e05d2c898d4a481c12b79501bcba9",
+        "pageHash": "3c864ea6bc7ce5563fa97c3b5080094dc56f3801231c20ad77ad5dbe3989975b",
+        "secondLoad": "8d84a7d292adbcd94b146f9fbf6d47f5520e05d2c898d4a481c12b79501bcba9",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.000-T3.png",
+        "verified": "2026-09-19T18:33:33.780Z"
+      },
+      {
+        "id": "R-0.080-T1",
+        "backend": "webgl2",
+        "url": "/?capture=0.08&tier=1&w=1440&h=900&backend=webgl2",
+        "mode": "bit",
+        "sha256": "ee613df05117396ae62ca9a034f43a125fb5a1939abd4b2acb3f8a8a0b336c83",
+        "pageHash": "6a8832e06cef035e7cb119c6377e465ec50e572fe90e40ef72a4c847e2ad41ae",
+        "secondLoad": "ee613df05117396ae62ca9a034f43a125fb5a1939abd4b2acb3f8a8a0b336c83",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.080-T1.png",
+        "verified": "2026-09-19T18:33:35.773Z"
+      },
+      {
+        "id": "R-0.080-T2",
+        "backend": "webgl2",
+        "url": "/?capture=0.08&tier=2&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "d8c247ddc64bf1c2c34034d9ae3b9a1fac716e5a1707ff1580ebbb4c0d71db27",
+        "pageHash": "509294a07282b2f560f0be911476ca44dd9468a85c11061c05c2d40c661470da",
+        "secondLoad": "d8c247ddc64bf1c2c34034d9ae3b9a1fac716e5a1707ff1580ebbb4c0d71db27",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.080-T2.png",
+        "verified": "2026-09-19T18:33:37.511Z"
+      },
+      {
+        "id": "R-0.080-T3",
+        "backend": "webgl2",
+        "url": "/?capture=0.08&tier=3&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "d8c247ddc64bf1c2c34034d9ae3b9a1fac716e5a1707ff1580ebbb4c0d71db27",
+        "pageHash": "509294a07282b2f560f0be911476ca44dd9468a85c11061c05c2d40c661470da",
+        "secondLoad": "d8c247ddc64bf1c2c34034d9ae3b9a1fac716e5a1707ff1580ebbb4c0d71db27",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.080-T3.png",
+        "verified": "2026-09-19T18:33:39.226Z"
+      },
+      {
+        "id": "R-0.210-T1",
+        "backend": "webgl2",
+        "url": "/?capture=0.21&tier=1&w=1440&h=900&backend=webgl2",
+        "mode": "bit",
+        "sha256": "731110f6df36c03ad41bb643ee69b89740b4beadd1ea66b3ae4c089d3ef6cb23",
+        "pageHash": "4c1c3cec1b3cc238648e9f08393a723963697d6c43568aeb81b2ce711e49a9b7",
+        "secondLoad": "731110f6df36c03ad41bb643ee69b89740b4beadd1ea66b3ae4c089d3ef6cb23",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.210-T1.png",
+        "verified": "2026-09-19T18:33:41.233Z"
+      },
+      {
+        "id": "R-0.210-T2",
+        "backend": "webgl2",
+        "url": "/?capture=0.21&tier=2&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "d260a5107695b85ede6200bdbdaa3f140491ab627da227a26e6be261b4d02ed3",
+        "pageHash": "0a9af04ee79d3fbc6237b5b7dd159f1349fcdb67c569394c39b83076adea4795",
+        "secondLoad": "d260a5107695b85ede6200bdbdaa3f140491ab627da227a26e6be261b4d02ed3",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.210-T2.png",
+        "verified": "2026-09-19T18:33:43.045Z"
+      },
+      {
+        "id": "R-0.210-T3",
+        "backend": "webgl2",
+        "url": "/?capture=0.21&tier=3&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "d260a5107695b85ede6200bdbdaa3f140491ab627da227a26e6be261b4d02ed3",
+        "pageHash": "0a9af04ee79d3fbc6237b5b7dd159f1349fcdb67c569394c39b83076adea4795",
+        "secondLoad": "d260a5107695b85ede6200bdbdaa3f140491ab627da227a26e6be261b4d02ed3",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.210-T3.png",
+        "verified": "2026-09-19T18:33:44.843Z"
+      },
+      {
+        "id": "R-0.340-T1",
+        "backend": "webgl2",
+        "url": "/?capture=0.34&tier=1&w=1440&h=900&backend=webgl2",
+        "mode": "bit",
+        "sha256": "f359ac77592d1439f1701604689b079cdc7cf31b2f45a2dacdcf8b485feffbb9",
+        "pageHash": "b1cfe4d9c2222a8b5c6699317acdf957ed23ba58b723a36c6a289b5c2ee67c83",
+        "secondLoad": "f359ac77592d1439f1701604689b079cdc7cf31b2f45a2dacdcf8b485feffbb9",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.340-T1.png",
+        "verified": "2026-09-19T18:33:46.844Z"
+      },
+      {
+        "id": "R-0.340-T2",
+        "backend": "webgl2",
+        "url": "/?capture=0.34&tier=2&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "80309983c1d9767124555b1478ebaa777a67cf4a65dd412487ba3b4a1fd388ab",
+        "pageHash": "66ebf4a86096203426b6b247bd42751f248a17a87bb22f9fca99d58cc1f4bdc5",
+        "secondLoad": "80309983c1d9767124555b1478ebaa777a67cf4a65dd412487ba3b4a1fd388ab",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.340-T2.png",
+        "verified": "2026-09-19T18:33:48.581Z"
+      },
+      {
+        "id": "R-0.340-T3",
+        "backend": "webgl2",
+        "url": "/?capture=0.34&tier=3&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "80309983c1d9767124555b1478ebaa777a67cf4a65dd412487ba3b4a1fd388ab",
+        "pageHash": "66ebf4a86096203426b6b247bd42751f248a17a87bb22f9fca99d58cc1f4bdc5",
+        "secondLoad": "80309983c1d9767124555b1478ebaa777a67cf4a65dd412487ba3b4a1fd388ab",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.340-T3.png",
+        "verified": "2026-09-19T18:33:50.302Z"
+      },
+      {
+        "id": "R-0.450-T1",
+        "backend": "webgl2",
+        "url": "/?capture=0.45&tier=1&w=1440&h=900&backend=webgl2",
+        "mode": "bit",
+        "sha256": "652ee61399d80c25a7e5adfe1a5456c5f4b7e747e96d710899ccfbfd576007f4",
+        "pageHash": "c1a1f75e58710375f18c803617100363e13891b80d5ab78ff0ada2efed7d71fa",
+        "secondLoad": "652ee61399d80c25a7e5adfe1a5456c5f4b7e747e96d710899ccfbfd576007f4",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.450-T1.png",
+        "verified": "2026-09-19T18:33:52.231Z"
+      },
+      {
+        "id": "R-0.450-T2",
+        "backend": "webgl2",
+        "url": "/?capture=0.45&tier=2&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "ad0e8fecacdef5b4d83d27fa7f7640c0642ee88965dff7f849e6cbe44d98fd17",
+        "pageHash": "65b58b1cce7d0b4180e270c0e82368572f8aeec57b4a86fcd668b958e4438da6",
+        "secondLoad": "ad0e8fecacdef5b4d83d27fa7f7640c0642ee88965dff7f849e6cbe44d98fd17",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.450-T2.png",
+        "verified": "2026-09-19T18:33:54.007Z"
+      },
+      {
+        "id": "R-0.450-T3",
+        "backend": "webgl2",
+        "url": "/?capture=0.45&tier=3&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "ad0e8fecacdef5b4d83d27fa7f7640c0642ee88965dff7f849e6cbe44d98fd17",
+        "pageHash": "65b58b1cce7d0b4180e270c0e82368572f8aeec57b4a86fcd668b958e4438da6",
+        "secondLoad": "ad0e8fecacdef5b4d83d27fa7f7640c0642ee88965dff7f849e6cbe44d98fd17",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.450-T3.png",
+        "verified": "2026-09-19T18:33:56.014Z"
+      },
+      {
+        "id": "R-0.560-T1",
+        "backend": "webgl2",
+        "url": "/?capture=0.56&tier=1&w=1440&h=900&backend=webgl2",
+        "mode": "bit",
+        "sha256": "8b89361e318dc4295d83bde1d0a216a659d4a94f3cb82493c8128e50882a294a",
+        "pageHash": "3385fa0a9e107a60d6d98054ea1212c378f832175ff3391853703322bd199cfa",
+        "secondLoad": "8b89361e318dc4295d83bde1d0a216a659d4a94f3cb82493c8128e50882a294a",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.560-T1.png",
+        "verified": "2026-09-19T18:33:58.601Z"
+      },
+      {
+        "id": "R-0.560-T2",
+        "backend": "webgl2",
+        "url": "/?capture=0.56&tier=2&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "a6b1acda14faf4851339ab3da157b8cdc49c410a5775a687fa653021800524e7",
+        "pageHash": "84b69b9d99b40c352d61e2e2b480e8bdd0283bd6b5c464f9539d7760e0e9a7b2",
+        "secondLoad": "a6b1acda14faf4851339ab3da157b8cdc49c410a5775a687fa653021800524e7",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.560-T2.png",
+        "verified": "2026-09-19T18:34:00.506Z"
+      },
+      {
+        "id": "R-0.560-T3",
+        "backend": "webgl2",
+        "url": "/?capture=0.56&tier=3&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "a6b1acda14faf4851339ab3da157b8cdc49c410a5775a687fa653021800524e7",
+        "pageHash": "84b69b9d99b40c352d61e2e2b480e8bdd0283bd6b5c464f9539d7760e0e9a7b2",
+        "secondLoad": "a6b1acda14faf4851339ab3da157b8cdc49c410a5775a687fa653021800524e7",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.560-T3.png",
+        "verified": "2026-09-19T18:34:02.496Z"
+      },
+      {
+        "id": "R-0.645-T1",
+        "backend": "webgl2",
+        "url": "/?capture=0.645&tier=1&w=1440&h=900&backend=webgl2",
+        "mode": "bit",
+        "sha256": "c49a92dad7516287b049b578e2e71227075f0daf3078eae4dfad2564e025a15f",
+        "pageHash": "a41e472ffdbfdd40cc68eab48c8a816b9b80419f530cf319a5def607383e950c",
+        "secondLoad": "c49a92dad7516287b049b578e2e71227075f0daf3078eae4dfad2564e025a15f",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.645-T1.png",
+        "verified": "2026-09-19T18:34:04.545Z"
+      },
+      {
+        "id": "R-0.645-T2",
+        "backend": "webgl2",
+        "url": "/?capture=0.645&tier=2&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "2ba18b6c73e281bb213a2699eae0d6ebc368a1717cb0d7a8159138372656a246",
+        "pageHash": "94ee513e80c0d34cae0ff1fb9ba8acbae98fd9e91d4c6c52987c03719bd8d095",
+        "secondLoad": "2ba18b6c73e281bb213a2699eae0d6ebc368a1717cb0d7a8159138372656a246",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.645-T2.png",
+        "verified": "2026-09-19T18:34:06.335Z"
+      },
+      {
+        "id": "R-0.645-T3",
+        "backend": "webgl2",
+        "url": "/?capture=0.645&tier=3&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "2ba18b6c73e281bb213a2699eae0d6ebc368a1717cb0d7a8159138372656a246",
+        "pageHash": "94ee513e80c0d34cae0ff1fb9ba8acbae98fd9e91d4c6c52987c03719bd8d095",
+        "secondLoad": "2ba18b6c73e281bb213a2699eae0d6ebc368a1717cb0d7a8159138372656a246",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.645-T3.png",
+        "verified": "2026-09-19T18:34:08.067Z"
+      },
+      {
+        "id": "R-0.710-T1",
+        "backend": "webgl2",
+        "url": "/?capture=0.71&tier=1&w=1440&h=900&backend=webgl2",
+        "mode": "bit",
+        "sha256": "5281db1934ff34e9698aa4b346f00c44e2f1f09e44a0d9ab6d750bd2361e77a7",
+        "pageHash": "9659a54af08fe4bbb965cee7c5a9670c45292ea041a5f0a0879b8dfabbf3b97c",
+        "secondLoad": "5281db1934ff34e9698aa4b346f00c44e2f1f09e44a0d9ab6d750bd2361e77a7",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.710-T1.png",
+        "verified": "2026-09-19T18:34:10.201Z"
+      },
+      {
+        "id": "R-0.710-T2",
+        "backend": "webgl2",
+        "url": "/?capture=0.71&tier=2&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "444fe78b9bbb30a540fbb4a411afc126a2e9d9e2b93ef0552c5353b7a6166e82",
+        "pageHash": "6bac717afaa3e35bf0464c99c7011df1412816a38c1c4d55855f4ce4ed18efc9",
+        "secondLoad": "444fe78b9bbb30a540fbb4a411afc126a2e9d9e2b93ef0552c5353b7a6166e82",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.710-T2.png",
+        "verified": "2026-09-19T18:34:12.135Z"
+      },
+      {
+        "id": "R-0.710-T3",
+        "backend": "webgl2",
+        "url": "/?capture=0.71&tier=3&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "aabcecf8c6bc5f995a509a4a9b5bc8c1e4e0c1554ce815774812188a75e4aaeb",
+        "pageHash": "f8fb90dfe5d188f2224990a9fa4396d81886aa8fcbc9bf1241d5f72afe379fec",
+        "secondLoad": "aabcecf8c6bc5f995a509a4a9b5bc8c1e4e0c1554ce815774812188a75e4aaeb",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.710-T3.png",
+        "verified": "2026-09-19T18:34:14.203Z"
+      },
+      {
+        "id": "R-0.760-T1",
+        "backend": "webgl2",
+        "url": "/?capture=0.76&tier=1&w=1440&h=900&backend=webgl2",
+        "mode": "bit",
+        "sha256": "e0b4da1804b314a6211a3b2871fbf25e065afb223166f8545d12a3c57d896771",
+        "pageHash": "aafab2163608bb8fc8224e5081477a8c5cfbc6bb3af91d504c3ffce747d7deee",
+        "secondLoad": "e0b4da1804b314a6211a3b2871fbf25e065afb223166f8545d12a3c57d896771",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.760-T1.png",
+        "verified": "2026-09-19T18:34:16.356Z"
+      },
+      {
+        "id": "R-0.760-T2",
+        "backend": "webgl2",
+        "url": "/?capture=0.76&tier=2&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "49fd19f6456d6b2485946b571f6b18607654d587bb520ef399c483539fb43dc8",
+        "pageHash": "5293f9e2a1b20da293b95991149434cde75d57cb611f13dbd531814e1930128f",
+        "secondLoad": "49fd19f6456d6b2485946b571f6b18607654d587bb520ef399c483539fb43dc8",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.760-T2.png",
+        "verified": "2026-09-19T18:34:18.258Z"
+      },
+      {
+        "id": "R-0.760-T3",
+        "backend": "webgl2",
+        "url": "/?capture=0.76&tier=3&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "a3e5cb172610c95b62734e9d1fe85077449c92a3926b19992cb5ee9c1e52cf38",
+        "pageHash": "ce058f05c5764bdbada0daeb4b22411bf2481f1cdec1d06bb52fef57cc8a0268",
+        "secondLoad": "a3e5cb172610c95b62734e9d1fe85077449c92a3926b19992cb5ee9c1e52cf38",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.760-T3.png",
+        "verified": "2026-09-19T18:34:20.126Z"
+      },
+      {
+        "id": "R-0.860-T1",
+        "backend": "webgl2",
+        "url": "/?capture=0.86&tier=1&w=1440&h=900&backend=webgl2",
+        "mode": "bit",
+        "sha256": "0af118e4cfb5081065eef9826168e0d509a27dbb96b41e2c1e0b63d77b2fe170",
+        "pageHash": "cf64f6dd95c929f2aa497cbfbd9cabf750028396411cc749418ff361cdf9e5bf",
+        "secondLoad": "0af118e4cfb5081065eef9826168e0d509a27dbb96b41e2c1e0b63d77b2fe170",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.860-T1.png",
+        "verified": "2026-09-19T18:34:22.268Z"
+      },
+      {
+        "id": "R-0.860-T2",
+        "backend": "webgl2",
+        "url": "/?capture=0.86&tier=2&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "cdb47b8ad4b35c8230c87e310b6da0cc32819e19520ae64dcdcc7f77c64bf092",
+        "pageHash": "ccff168e90fce37b9741d87cccd1ca534e06575c798d57ad9b41904b72a5d931",
+        "secondLoad": "cdb47b8ad4b35c8230c87e310b6da0cc32819e19520ae64dcdcc7f77c64bf092",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.860-T2.png",
+        "verified": "2026-09-19T18:34:24.180Z"
+      },
+      {
+        "id": "R-0.860-T3",
+        "backend": "webgl2",
+        "url": "/?capture=0.86&tier=3&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "ab31db79a658dff86cecad4c9b795adb305f9299081246f1bba22f0201634aae",
+        "pageHash": "ddc1cc1daa7358d509322e3266497f24ed003b7a230faa9c04365f152c22ebf2",
+        "secondLoad": "ab31db79a658dff86cecad4c9b795adb305f9299081246f1bba22f0201634aae",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.860-T3.png",
+        "verified": "2026-09-19T18:34:26.093Z"
+      },
+      {
+        "id": "R-0.930-T1",
+        "backend": "webgl2",
+        "url": "/?capture=0.93&tier=1&w=1440&h=900&backend=webgl2",
+        "mode": "bit",
+        "sha256": "ca7a4225e87923aa2a57c599a02378b78deede7c34157833a969426cd9a98bb8",
+        "pageHash": "d90d68a9d2195787726acaffe2bbec32160dca602f4f7700edae0086d2ce3dd5",
+        "secondLoad": "ca7a4225e87923aa2a57c599a02378b78deede7c34157833a969426cd9a98bb8",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.930-T1.png",
+        "verified": "2026-09-19T18:34:28.199Z"
+      },
+      {
+        "id": "R-0.930-T2",
+        "backend": "webgl2",
+        "url": "/?capture=0.93&tier=2&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "395e1447c89bdec1bd6994c5a4d70df56d57d70d62473af68b13962bdf533270",
+        "pageHash": "eb6f882ad53f91f96fc39a16bfe4a830b4b1d821fae1c56b82d2a37cfca78dc9",
+        "secondLoad": "395e1447c89bdec1bd6994c5a4d70df56d57d70d62473af68b13962bdf533270",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.930-T2.png",
+        "verified": "2026-09-19T18:34:30.087Z"
+      },
+      {
+        "id": "R-0.930-T3",
+        "backend": "webgl2",
+        "url": "/?capture=0.93&tier=3&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "1f8f187814cf0d3059db5ce85b772d47ae815da0bd4e02c7a69c7128e84fcc3a",
+        "pageHash": "d481a4e271684b9b9a0214d55926d941149a21cb1561121e658bd4c50cdc4428",
+        "secondLoad": "1f8f187814cf0d3059db5ce85b772d47ae815da0bd4e02c7a69c7128e84fcc3a",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-0.930-T3.png",
+        "verified": "2026-09-19T18:34:31.884Z"
+      },
+      {
+        "id": "R-1.000-T1",
+        "backend": "webgl2",
+        "url": "/?capture=1&tier=1&w=1440&h=900&backend=webgl2",
+        "mode": "bit",
+        "sha256": "4cb3fedcb170d8b0d2e64ffd177f1c2b00e766c62bfe74cce105d508bc279dd2",
+        "pageHash": "8cc31436c57c87e8214862a3da49eabdd3e0248c1227fbfbfd14a75491a11a8a",
+        "secondLoad": "4cb3fedcb170d8b0d2e64ffd177f1c2b00e766c62bfe74cce105d508bc279dd2",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-1.000-T1.png",
+        "verified": "2026-09-19T18:34:33.913Z"
+      },
+      {
+        "id": "R-1.000-T2",
+        "backend": "webgl2",
+        "url": "/?capture=1&tier=2&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "0fcb6ef2c727083c7a9c228491704a16a62691d14a3ea9f432f5b2e23f20a61c",
+        "pageHash": "d51593e89ffa2da3362c43570c3692d3f10e46842e8d6888bc51f282179d24f7",
+        "secondLoad": "0fcb6ef2c727083c7a9c228491704a16a62691d14a3ea9f432f5b2e23f20a61c",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-1.000-T2.png",
+        "verified": "2026-09-19T18:34:35.781Z"
+      },
+      {
+        "id": "R-1.000-T3",
+        "backend": "webgl2",
+        "url": "/?capture=1&tier=3&w=390&h=844&backend=webgl2",
+        "mode": "bit",
+        "sha256": "2b16c074d051271ada76e9e00f5cb13696984ec27dcc28be2a94120e23c9e106",
+        "pageHash": "c80d17676acb57b3390a875bfbf25da314513242d126e2fb0273f1dd88fda597",
+        "secondLoad": "2b16c074d051271ada76e9e00f5cb13696984ec27dcc28be2a94120e23c9e106",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-1.000-T3.png",
+        "verified": "2026-09-19T18:34:37.644Z"
+      },
+      {
+        "id": "R-1.000-T1-noblob",
+        "backend": "webgl2",
+        "url": "/?capture=1.0&tier=1&w=1440&h=900&backend=webgl2&noblob",
+        "mode": "bit",
+        "sha256": "4cb3fedcb170d8b0d2e64ffd177f1c2b00e766c62bfe74cce105d508bc279dd2",
+        "pageHash": "8cc31436c57c87e8214862a3da49eabdd3e0248c1227fbfbfd14a75491a11a8a",
+        "secondLoad": "4cb3fedcb170d8b0d2e64ffd177f1c2b00e766c62bfe74cce105d508bc279dd2",
+        "loads": 2,
+        "png": "qa/references/frames/webgl2/R-1.000-T1-noblob.png",
+        "verified": "2026-09-19T18:34:39.694Z"
+      },
+      {
+        "id": "R-0.000-T1",
+        "backend": "webgpu",
+        "url": "/?capture=0&tier=1&w=1440&h=900&backend=webgpu",
+        "mode": "bit",
+        "sha256": "6b53a3f0ab2327e34a74005f238f1cc69072a65e081309c160f02176605d32b7",
+        "pageHash": "61f986309aebab9e714780bc153fc433c207147146512d80d49e4fc26d434da8",
+        "secondLoad": "6b53a3f0ab2327e34a74005f238f1cc69072a65e081309c160f02176605d32b7",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.000-T1.png",
+        "verified": "2026-09-19T18:34:59.850Z"
+      },
+      {
+        "id": "R-0.000-T2",
+        "backend": "webgpu",
+        "url": "/?capture=0&tier=2&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "24c1ade510a5a0956f31cc90e590c57e872fd69665486d3c8d0c1b8e2a346efb",
+        "pageHash": "53efac2ff6f4635ec3279dbe2291065aac02880503a7afbdcbf423d054c2735f",
+        "secondLoad": "24c1ade510a5a0956f31cc90e590c57e872fd69665486d3c8d0c1b8e2a346efb",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.000-T2.png",
+        "verified": "2026-09-19T18:35:01.183Z"
+      },
+      {
+        "id": "R-0.000-T3",
+        "backend": "webgpu",
+        "url": "/?capture=0&tier=3&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "24c1ade510a5a0956f31cc90e590c57e872fd69665486d3c8d0c1b8e2a346efb",
+        "pageHash": "53efac2ff6f4635ec3279dbe2291065aac02880503a7afbdcbf423d054c2735f",
+        "secondLoad": "24c1ade510a5a0956f31cc90e590c57e872fd69665486d3c8d0c1b8e2a346efb",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.000-T3.png",
+        "verified": "2026-09-19T18:35:02.534Z"
+      },
+      {
+        "id": "R-0.080-T1",
+        "backend": "webgpu",
+        "url": "/?capture=0.08&tier=1&w=1440&h=900&backend=webgpu",
+        "mode": "bit",
+        "sha256": "370350934922fa3b5a59ead75e40d2139fbfe54d9f7c2dbb0c18adf3b6674508",
+        "pageHash": "114311a736c7bde24d1256c0155c09c9b0e48777610cedc12ed11058419f4131",
+        "secondLoad": "370350934922fa3b5a59ead75e40d2139fbfe54d9f7c2dbb0c18adf3b6674508",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.080-T1.png",
+        "verified": "2026-09-19T18:35:04.116Z"
+      },
+      {
+        "id": "R-0.080-T2",
+        "backend": "webgpu",
+        "url": "/?capture=0.08&tier=2&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "6bfa0ed752421d921d09e61b8207b40faeb48bc617a972fe65c2022cd99e7bc3",
+        "pageHash": "08a0620d581c97f73547c467599f3ab271609c64dcba1fc31614081968d85e96",
+        "secondLoad": "6bfa0ed752421d921d09e61b8207b40faeb48bc617a972fe65c2022cd99e7bc3",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.080-T2.png",
+        "verified": "2026-09-19T18:35:05.459Z"
+      },
+      {
+        "id": "R-0.080-T3",
+        "backend": "webgpu",
+        "url": "/?capture=0.08&tier=3&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "6bfa0ed752421d921d09e61b8207b40faeb48bc617a972fe65c2022cd99e7bc3",
+        "pageHash": "08a0620d581c97f73547c467599f3ab271609c64dcba1fc31614081968d85e96",
+        "secondLoad": "6bfa0ed752421d921d09e61b8207b40faeb48bc617a972fe65c2022cd99e7bc3",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.080-T3.png",
+        "verified": "2026-09-19T18:35:06.808Z"
+      },
+      {
+        "id": "R-0.210-T1",
+        "backend": "webgpu",
+        "url": "/?capture=0.21&tier=1&w=1440&h=900&backend=webgpu",
+        "mode": "bit",
+        "sha256": "ae75bda740935750059d40761aa1dde90284cef7eccc206100e2d5278c61ede6",
+        "pageHash": "f687d0515348a319afb35646ef922e8e9d1c1d70e381c8a95fe4f723af8044f3",
+        "secondLoad": "ae75bda740935750059d40761aa1dde90284cef7eccc206100e2d5278c61ede6",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.210-T1.png",
+        "verified": "2026-09-19T18:35:08.383Z"
+      },
+      {
+        "id": "R-0.210-T2",
+        "backend": "webgpu",
+        "url": "/?capture=0.21&tier=2&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "a0d7803a2b324a62d124bc3956080bfc469a6b72da141f6b911098d8ce7bf7ba",
+        "pageHash": "9362ecb91cb79c4f1d52ebbf95411f7ead5c92715761f10302dd0f747dfebbfb",
+        "secondLoad": "a0d7803a2b324a62d124bc3956080bfc469a6b72da141f6b911098d8ce7bf7ba",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.210-T2.png",
+        "verified": "2026-09-19T18:35:09.710Z"
+      },
+      {
+        "id": "R-0.210-T3",
+        "backend": "webgpu",
+        "url": "/?capture=0.21&tier=3&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "a0d7803a2b324a62d124bc3956080bfc469a6b72da141f6b911098d8ce7bf7ba",
+        "pageHash": "9362ecb91cb79c4f1d52ebbf95411f7ead5c92715761f10302dd0f747dfebbfb",
+        "secondLoad": "a0d7803a2b324a62d124bc3956080bfc469a6b72da141f6b911098d8ce7bf7ba",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.210-T3.png",
+        "verified": "2026-09-19T18:35:11.047Z"
+      },
+      {
+        "id": "R-0.340-T1",
+        "backend": "webgpu",
+        "url": "/?capture=0.34&tier=1&w=1440&h=900&backend=webgpu",
+        "mode": "bit",
+        "sha256": "01e2b07ea1e832e82188ad246bc8a660c054d7fe7ba9be9e3a35580e00800517",
+        "pageHash": "a4767086998bb83aff90052d7181ed73c5e6c08e447ce5cd225dd3e519d3b6db",
+        "secondLoad": "01e2b07ea1e832e82188ad246bc8a660c054d7fe7ba9be9e3a35580e00800517",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.340-T1.png",
+        "verified": "2026-09-19T18:35:12.576Z"
+      },
+      {
+        "id": "R-0.340-T2",
+        "backend": "webgpu",
+        "url": "/?capture=0.34&tier=2&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "d160c23f7755c185c2feb126a7f6d80f9359a69488580464608ae66761e14235",
+        "pageHash": "8b3c8ef738558c2bb5b4b555e250db001a762171d38613d0869f6e89c53a3cf2",
+        "secondLoad": "d160c23f7755c185c2feb126a7f6d80f9359a69488580464608ae66761e14235",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.340-T2.png",
+        "verified": "2026-09-19T18:35:13.898Z"
+      },
+      {
+        "id": "R-0.340-T3",
+        "backend": "webgpu",
+        "url": "/?capture=0.34&tier=3&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "d160c23f7755c185c2feb126a7f6d80f9359a69488580464608ae66761e14235",
+        "pageHash": "8b3c8ef738558c2bb5b4b555e250db001a762171d38613d0869f6e89c53a3cf2",
+        "secondLoad": "d160c23f7755c185c2feb126a7f6d80f9359a69488580464608ae66761e14235",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.340-T3.png",
+        "verified": "2026-09-19T18:35:15.245Z"
+      },
+      {
+        "id": "R-0.450-T1",
+        "backend": "webgpu",
+        "url": "/?capture=0.45&tier=1&w=1440&h=900&backend=webgpu",
+        "mode": "bit",
+        "sha256": "6aa3ff0e271cdc75988953f2e5c3dfaf3e0f47e35dc38ecd42a3a8005dc93f42",
+        "pageHash": "1e70ae927f281fa0900564b64da99d0d33982661579c05c8b4a0728c589b775c",
+        "secondLoad": "6aa3ff0e271cdc75988953f2e5c3dfaf3e0f47e35dc38ecd42a3a8005dc93f42",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.450-T1.png",
+        "verified": "2026-09-19T18:35:16.778Z"
+      },
+      {
+        "id": "R-0.450-T2",
+        "backend": "webgpu",
+        "url": "/?capture=0.45&tier=2&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "2fb6a758933e65c582ade4d1a0ccd6828a3ceb0ab164e8cddab2adf19eab2a02",
+        "pageHash": "96f0d647ee906f4a6f51d0d30da34bcb2d2b6b4473decea444f46b593a5070c5",
+        "secondLoad": "2fb6a758933e65c582ade4d1a0ccd6828a3ceb0ab164e8cddab2adf19eab2a02",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.450-T2.png",
+        "verified": "2026-09-19T18:35:18.125Z"
+      },
+      {
+        "id": "R-0.450-T3",
+        "backend": "webgpu",
+        "url": "/?capture=0.45&tier=3&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "2fb6a758933e65c582ade4d1a0ccd6828a3ceb0ab164e8cddab2adf19eab2a02",
+        "pageHash": "96f0d647ee906f4a6f51d0d30da34bcb2d2b6b4473decea444f46b593a5070c5",
+        "secondLoad": "2fb6a758933e65c582ade4d1a0ccd6828a3ceb0ab164e8cddab2adf19eab2a02",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.450-T3.png",
+        "verified": "2026-09-19T18:35:19.469Z"
+      },
+      {
+        "id": "R-0.560-T1",
+        "backend": "webgpu",
+        "url": "/?capture=0.56&tier=1&w=1440&h=900&backend=webgpu",
+        "mode": "bit",
+        "sha256": "258aeb0b3890e7380279c6e5cefb06c78a54178fbc712f27db2066ebed06b21b",
+        "pageHash": "6b91b2476b4c34b8c5c3eb85225910a7c0d2feafee294bea56590f12ee49adb9",
+        "secondLoad": "258aeb0b3890e7380279c6e5cefb06c78a54178fbc712f27db2066ebed06b21b",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.560-T1.png",
+        "verified": "2026-09-19T18:35:21.002Z"
+      },
+      {
+        "id": "R-0.560-T2",
+        "backend": "webgpu",
+        "url": "/?capture=0.56&tier=2&w=390&h=844&backend=webgpu",
+        "pairMetrics": {
+          "width": 390,
+          "height": 844,
+          "pixels": 329160,
+          "changed": 519,
+          "changedPct": 0.1577,
+          "maxDelta": 1,
+          "maxDE76": 0.83,
+          "dE76p50": 0.53,
+          "dE76p999": 0.83,
+          "worstBlockDE76": 0.21,
+          "worstBlock5x5DE76": 0.08
+        },
+        "mode": "tolerance",
+        "sha256": "fd435ba67ef7fe0efcae12435949bc00f64e2276e815978f329580ba1a0a964f",
+        "pageHash": "745c4b5e12451ee544a71c19864f2a4e91f02126a24bb189e2cab51f2b3994ac",
+        "secondLoad": "54fcb9b78402d3332a836be86e3324bc047394dfede18c325438232fe7fb88e9",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.560-T2.png",
+        "verified": "2026-09-19T18:35:22.410Z"
+      },
+      {
+        "id": "R-0.560-T3",
+        "backend": "webgpu",
+        "url": "/?capture=0.56&tier=3&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "fd435ba67ef7fe0efcae12435949bc00f64e2276e815978f329580ba1a0a964f",
+        "pageHash": "745c4b5e12451ee544a71c19864f2a4e91f02126a24bb189e2cab51f2b3994ac",
+        "secondLoad": "fd435ba67ef7fe0efcae12435949bc00f64e2276e815978f329580ba1a0a964f",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.560-T3.png",
+        "verified": "2026-09-19T18:35:23.753Z"
+      },
+      {
+        "id": "R-0.645-T1",
+        "backend": "webgpu",
+        "url": "/?capture=0.645&tier=1&w=1440&h=900&backend=webgpu",
+        "mode": "bit",
+        "sha256": "8715485f1bfc2d93113c52ab328707fb90b9a7bc3aa1482f8e767503dc93ad71",
+        "pageHash": "5eb7ba4bb06b85d3062f560a926b4486ec95c6a2e26310c550eb7ae144a55ada",
+        "secondLoad": "8715485f1bfc2d93113c52ab328707fb90b9a7bc3aa1482f8e767503dc93ad71",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.645-T1.png",
+        "verified": "2026-09-19T18:35:25.288Z"
+      },
+      {
+        "id": "R-0.645-T2",
+        "backend": "webgpu",
+        "url": "/?capture=0.645&tier=2&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "9f5d8560b905bcc1572efe4c4a44fa53572c00d17129d878281021082c5d2a41",
+        "pageHash": "4686a03d6e50602daec7adeec4652f42bad375a19515291d953f1e766961b43c",
+        "secondLoad": "9f5d8560b905bcc1572efe4c4a44fa53572c00d17129d878281021082c5d2a41",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.645-T2.png",
+        "verified": "2026-09-19T18:35:26.622Z"
+      },
+      {
+        "id": "R-0.645-T3",
+        "backend": "webgpu",
+        "url": "/?capture=0.645&tier=3&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "9f5d8560b905bcc1572efe4c4a44fa53572c00d17129d878281021082c5d2a41",
+        "pageHash": "4686a03d6e50602daec7adeec4652f42bad375a19515291d953f1e766961b43c",
+        "secondLoad": "9f5d8560b905bcc1572efe4c4a44fa53572c00d17129d878281021082c5d2a41",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.645-T3.png",
+        "verified": "2026-09-19T18:35:27.969Z"
+      },
+      {
+        "id": "R-0.710-T1",
+        "backend": "webgpu",
+        "url": "/?capture=0.71&tier=1&w=1440&h=900&backend=webgpu",
+        "pairMetrics": {
+          "width": 1440,
+          "height": 900,
+          "pixels": 1296000,
+          "changed": 653,
+          "changedPct": 0.0504,
+          "maxDelta": 12,
+          "maxDE76": 4.37,
+          "dE76p50": 0.53,
+          "dE76p999": 4.37,
+          "worstBlockDE76": 0.5,
+          "worstBlock5x5DE76": 0.2
+        },
+        "mode": "tolerance",
+        "sha256": "67ac382bdc6f2d54a1507423f234468f2962e1b3c4ee617d240a4a43f646c628",
+        "pageHash": "5114e1386fe42e2c10dbb1481915e1af632bcf0b2bb348d866b91cdcc8f677e7",
+        "secondLoad": "65727c2dce2ed7ad23c66d4d1e9fbf3638a35ebbf8c47aa295b31e80f413cea7",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.710-T1.png",
+        "verified": "2026-09-19T18:35:29.773Z"
+      },
+      {
+        "id": "R-0.710-T2",
+        "backend": "webgpu",
+        "url": "/?capture=0.71&tier=2&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "51ee203c765375166cbcd47a8e11f62616893caf11c2b36518eb7412bd91466b",
+        "pageHash": "1450d64eca01148c6562c87092c290b46ab55b26c31dd6a323b0eb79d0a7cbba",
+        "secondLoad": "51ee203c765375166cbcd47a8e11f62616893caf11c2b36518eb7412bd91466b",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.710-T2.png",
+        "verified": "2026-09-19T18:35:31.158Z"
+      },
+      {
+        "id": "R-0.710-T3",
+        "backend": "webgpu",
+        "url": "/?capture=0.71&tier=3&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "0ec53499454bfb50111536b6984d61075d600c938fecd1ba24e465a58778f39d",
+        "pageHash": "6fcbac022fa4112eab6e59d97ae407d7384fd3a9eec38b1fe346f6dca34968ec",
+        "secondLoad": "0ec53499454bfb50111536b6984d61075d600c938fecd1ba24e465a58778f39d",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.710-T3.png",
+        "verified": "2026-09-19T18:35:32.530Z"
+      },
+      {
+        "id": "R-0.760-T1",
+        "backend": "webgpu",
+        "url": "/?capture=0.76&tier=1&w=1440&h=900&backend=webgpu",
+        "pairMetrics": {
+          "width": 1440,
+          "height": 900,
+          "pixels": 1296000,
+          "changed": 1278,
+          "changedPct": 0.0986,
+          "maxDelta": 39,
+          "maxDE76": 15.45,
+          "dE76p50": 0.61,
+          "dE76p999": 11.96,
+          "worstBlockDE76": 2.56,
+          "worstBlock5x5DE76": 0.96
+        },
+        "mode": "tolerance",
+        "sha256": "e682d23147594bcecf3a93f2eb9e15d25ef13a90b1968b88349f868ad99f535b",
+        "pageHash": "8a8f90c91b5d97cbfc81a17c408d8a44b8373e943b0b0c8ddbc26433d7bcd3fe",
+        "secondLoad": "921d1f59927a55e1cdff4d406412b32b952e8b6d945629c28e712ff923824579",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.760-T1.png",
+        "verified": "2026-09-19T18:35:34.374Z"
+      },
+      {
+        "id": "R-0.760-T2",
+        "backend": "webgpu",
+        "url": "/?capture=0.76&tier=2&w=390&h=844&backend=webgpu",
+        "pairMetrics": {
+          "width": 390,
+          "height": 844,
+          "pixels": 329160,
+          "changed": 519,
+          "changedPct": 0.1577,
+          "maxDelta": 3,
+          "maxDE76": 1.15,
+          "dE76p50": 0.53,
+          "dE76p999": 1.15,
+          "worstBlockDE76": 0.13,
+          "worstBlock5x5DE76": 0.05
+        },
+        "mode": "tolerance",
+        "sha256": "16dc990feb88c3d5d80e2bbd66fe5f68e98dd43746010c62fbd0429bad5b935e",
+        "pageHash": "92c228ba036e1dda7db51072ff1890e69ecd0247d8ac7f7bf3a292dccd626986",
+        "secondLoad": "f142efa91bfc1d72161e57cf91844ebd45364d6c078b4fd1200c48312aaee34a",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.760-T2.png",
+        "verified": "2026-09-19T18:35:35.804Z"
+      },
+      {
+        "id": "R-0.760-T3",
+        "backend": "webgpu",
+        "url": "/?capture=0.76&tier=3&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "8d2f5c8badca2ded5ad42e7b9b1c5c4cdd0218e75565f97e61b525ac7cbb565b",
+        "pageHash": "e053df764f23fdeb6c2ec05accf3716add859756f64e6557416b9c93e6361411",
+        "secondLoad": "8d2f5c8badca2ded5ad42e7b9b1c5c4cdd0218e75565f97e61b525ac7cbb565b",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.760-T3.png",
+        "verified": "2026-09-19T18:35:37.172Z"
+      },
+      {
+        "id": "R-0.860-T1",
+        "backend": "webgpu",
+        "url": "/?capture=0.86&tier=1&w=1440&h=900&backend=webgpu",
+        "pairMetrics": {
+          "width": 1440,
+          "height": 900,
+          "pixels": 1296000,
+          "changed": 3679,
+          "changedPct": 0.2839,
+          "maxDelta": 67,
+          "maxDE76": 24.07,
+          "dE76p50": 0.62,
+          "dE76p999": 18.51,
+          "worstBlockDE76": 3.64,
+          "worstBlock5x5DE76": 1.46
+        },
+        "mode": "tolerance",
+        "sha256": "98d6fc0e41a263e341a5a582c6dd43cd874391b877bef004212f572edda1a394",
+        "pageHash": "feaf35cd154c308847368b8320656626ced70cd40381da56d6d796851fdda7a0",
+        "secondLoad": "3323c6579136ea00fece442cea974056e77a67e27da0423be8ead000ccf51d4d",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.860-T1.png",
+        "verified": "2026-09-19T18:35:38.953Z"
+      },
+      {
+        "id": "R-0.860-T2",
+        "backend": "webgpu",
+        "url": "/?capture=0.86&tier=2&w=390&h=844&backend=webgpu",
+        "pairMetrics": {
+          "width": 390,
+          "height": 844,
+          "pixels": 329160,
+          "changed": 1210,
+          "changedPct": 0.3676,
+          "maxDelta": 33,
+          "maxDE76": 12.35,
+          "dE76p50": 0.56,
+          "dE76p999": 7.64,
+          "worstBlockDE76": 1.5,
+          "worstBlock5x5DE76": 0.57
+        },
+        "mode": "tolerance",
+        "sha256": "7f611a400ec1a27f2f748c83fc2e7b6226355c9d1f1100ce4eaa72ba6997fc15",
+        "pageHash": "7a8e5f8b07edd99466e99944e3e291a20c7b3891d12a439855369beae771905c",
+        "secondLoad": "324c9181f379e96766249044523cf9ce54d4dc61db2ddf67a58927591a88a061",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.860-T2.png",
+        "verified": "2026-09-19T18:35:40.379Z"
+      },
+      {
+        "id": "R-0.860-T3",
+        "backend": "webgpu",
+        "url": "/?capture=0.86&tier=3&w=390&h=844&backend=webgpu",
+        "pairMetrics": {
+          "width": 390,
+          "height": 844,
+          "pixels": 329160,
+          "changed": 860,
+          "changedPct": 0.2613,
+          "maxDelta": 74,
+          "maxDE76": 26.81,
+          "dE76p50": 0.54,
+          "dE76p999": 26.81,
+          "worstBlockDE76": 3.39,
+          "worstBlock5x5DE76": 1.25
+        },
+        "mode": "tolerance",
+        "sha256": "fde1c84fad768e390ad32dd69469a80ea5ebaccc9c154c4786186ee55e6f2bba",
+        "pageHash": "7dcad95307acf315c310bf07ae7f687f4f95e8bd9090631a2169aceacb56f02c",
+        "secondLoad": "b4509756e1172d29b6054ecf45c2255eb765c43abdf7aaa3d3f67326ff901302",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.860-T3.png",
+        "verified": "2026-09-19T18:35:41.811Z"
+      },
+      {
+        "id": "R-0.930-T1",
+        "backend": "webgpu",
+        "url": "/?capture=0.93&tier=1&w=1440&h=900&backend=webgpu",
+        "pairMetrics": {
+          "width": 1440,
+          "height": 900,
+          "pixels": 1296000,
+          "changed": 1323,
+          "changedPct": 0.1021,
+          "maxDelta": 26,
+          "maxDE76": 9.61,
+          "dE76p50": 0.57,
+          "dE76p999": 7.29,
+          "worstBlockDE76": 1.19,
+          "worstBlock5x5DE76": 0.54
+        },
+        "mode": "tolerance",
+        "sha256": "5fe782ab81aa50cc0c8531dcaed5737cbb66b636ffb9e0f3e07e9092f79d238c",
+        "pageHash": "ff8da59071f517d0bb5a9ac6bd4307034209f13a922ab3a9a117f6685963d138",
+        "secondLoad": "9f1584000bcb63737d318030a78d634e1c00956f016b0fecac371c5fd6290800",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.930-T1.png",
+        "verified": "2026-09-19T18:35:43.603Z"
+      },
+      {
+        "id": "R-0.930-T2",
+        "backend": "webgpu",
+        "url": "/?capture=0.93&tier=2&w=390&h=844&backend=webgpu",
+        "pairMetrics": {
+          "width": 390,
+          "height": 844,
+          "pixels": 329160,
+          "changed": 505,
+          "changedPct": 0.1534,
+          "maxDelta": 6,
+          "maxDE76": 2.02,
+          "dE76p50": 0.53,
+          "dE76p999": 2.02,
+          "worstBlockDE76": 0.22,
+          "worstBlock5x5DE76": 0.08
+        },
+        "mode": "tolerance",
+        "sha256": "28c598fbde12e74690a5550d4c3878f7a754654ede76eb4e9799f911aa93893b",
+        "pageHash": "2e2197a6068276765f154261bfc73c49f09918b4cf0a694e1cb44db9054bc290",
+        "secondLoad": "4fba560358d86eb212af157fe0afd6990553f2afb0b022ecec1383e33c9dae9e",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.930-T2.png",
+        "verified": "2026-09-19T18:35:45.032Z"
+      },
+      {
+        "id": "R-0.930-T3",
+        "backend": "webgpu",
+        "url": "/?capture=0.93&tier=3&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "568b5a6644900fe9b0c84d8f8f68d8cf225f1ffc4347653c567bc104e0ea5082",
+        "pageHash": "7ab8bebc9e7b755b23aaa9229446b98d42512b30fa00c22ab2b0410727453df8",
+        "secondLoad": "568b5a6644900fe9b0c84d8f8f68d8cf225f1ffc4347653c567bc104e0ea5082",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-0.930-T3.png",
+        "verified": "2026-09-19T18:35:46.396Z"
+      },
+      {
+        "id": "R-1.000-T1",
+        "backend": "webgpu",
+        "url": "/?capture=1&tier=1&w=1440&h=900&backend=webgpu",
+        "pairMetrics": {
+          "width": 1440,
+          "height": 900,
+          "pixels": 1296000,
+          "changed": 825,
+          "changedPct": 0.0637,
+          "maxDelta": 23,
+          "maxDE76": 8.69,
+          "dE76p50": 0.53,
+          "dE76p999": 8.69,
+          "worstBlockDE76": 1.41,
+          "worstBlock5x5DE76": 0.54
+        },
+        "mode": "tolerance",
+        "sha256": "afd161d0af44988ec6f401f98c8e3948bf149247c2a9fda759d394a5ca0c71a1",
+        "pageHash": "baab1bd9c90b6e9fa78d7351ede2d6994fa1aefc97c25d939d20e679034c5862",
+        "secondLoad": "f386497bbfd0e82c8831b947bdd6fb2a0a1355f393043b2bc2945b34e48584be",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-1.000-T1.png",
+        "verified": "2026-09-19T18:35:48.152Z"
+      },
+      {
+        "id": "R-1.000-T2",
+        "backend": "webgpu",
+        "url": "/?capture=1&tier=2&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "f1adc75aa193f72d59980138ea57f6c5fb9c685f66c520e20217e49aa7dd4004",
+        "pageHash": "81cf68fb709ca42ab11b07298f40fc2d275b3518ef6b8fee7f91f326ba6f072e",
+        "secondLoad": "f1adc75aa193f72d59980138ea57f6c5fb9c685f66c520e20217e49aa7dd4004",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-1.000-T2.png",
+        "verified": "2026-09-19T18:35:49.520Z"
+      },
+      {
+        "id": "R-1.000-T3",
+        "backend": "webgpu",
+        "url": "/?capture=1&tier=3&w=390&h=844&backend=webgpu",
+        "mode": "bit",
+        "sha256": "e3a758836480152d81efd0cd4d04e37a6fa62340f0b4823a8baa1252b9e69b60",
+        "pageHash": "85bbd4badeba2061c4d02f475be43b3fe6a3218990ac354153b6a034b0809b6d",
+        "secondLoad": "e3a758836480152d81efd0cd4d04e37a6fa62340f0b4823a8baa1252b9e69b60",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-1.000-T3.png",
+        "verified": "2026-09-19T18:35:50.877Z"
+      },
+      {
+        "id": "R-1.000-T1-noblob",
+        "backend": "webgpu",
+        "url": "/?capture=1.0&tier=1&w=1440&h=900&backend=webgpu&noblob",
+        "mode": "bit",
+        "sha256": "afd161d0af44988ec6f401f98c8e3948bf149247c2a9fda759d394a5ca0c71a1",
+        "pageHash": "baab1bd9c90b6e9fa78d7351ede2d6994fa1aefc97c25d939d20e679034c5862",
+        "secondLoad": "afd161d0af44988ec6f401f98c8e3948bf149247c2a9fda759d394a5ca0c71a1",
+        "loads": 2,
+        "png": "qa/references/frames/webgpu/R-1.000-T1-noblob.png",
+        "verified": "2026-09-19T18:35:52.448Z"
+      }
+    ],
+    "lastBlessed": "2026-09-19T18:35:52.449Z",
+    "note": "Owner-authorized gate (2026-09-19). PNGs under qa/references/frames/<backend>/ are the reference artefacts; sha256 = SHA-256 of the decoded PNG RGBA (pageHash = the page's own readback hash). Blessed from two cold loads in one headless Brave 153 process per backend (webgl2: 37/37 bit-identical; webgpu: 27 bit-identical, 10 within tolerance). Cross-process verification in fresh processes: 74/74 within tolerance, 0 bit matches (every frame carries ~500 one-level scatter pixels between processes), worst 5×5 block ΔE76 1.25, worst changed 0.37%. Reports: build/verify-report-2026-09-19-*.json. Observations: R-1.000-T1 and R-1.000-T1-noblob hash identically on both backends (the contact blob contributes nothing at p = 1); T2 and T3 hash identically at p ≤ 0.645 (tiers differ only above capture DPR 1 until the relief). Historical frames[] (27) untouched.",
+    "verification": {
+      "date": "2026-09-19",
+      "reports": [
+        "verify-report-2026-09-19-18-36-24.json",
+        "verify-report-2026-09-19-18-36-36.json"
+      ],
+      "frames": 74,
+      "bitMatch": 0,
+      "withinTolerance": 74,
+      "fail": 0,
+      "worstBlock5x5DE76": 1.25,
+      "worstChangedPct": 0.3667
+    }
   }
- },
- "v16_pending": {
-  "clean_satin_pass": {
-   "release_hardening_2026_09_12": {
-    "report": "build/v166-release-local-2026-09-12.json",
-    "status": "local production checks only; no new reference hashes or M7/M8 closure",
-    "approval": "User reaffirmed the approved look and asked to finish; cleaner gold and canonical scripture preserved",
-    "change": "Reduced-motion 44px targets, visible focus, keyboard focus/selection agreement, Home/End and shortcut/editing guards; labelled ordinary buttons with aria-current; state-only atomic announcements replace per-frame live HUD chatter. Opt-in performance save checks HTTP success, times out at 10 seconds and displays success/failure rather than silently losing exports.",
-    "verification": "Production build and 22 tests pass; 66 local accessibility checks and 17 fallback checks pass; payload 7.092 MB Brotli. Full evidence and limitations in the report.",
-    "remaining": "Intermittent WebGPU capture differences, named-device/work-budget/loading evidence, cross-browser/accessibility/content review, hosting target and explicit release sign-off; artifacts not republished"
-   },
-   "capture_followup_2026_09_11": {
-    "upload_trace": "Expanded trace: 72 cold captures, no capture/save errors; T1 p=.76 differs at 198 pixels/max19, T3 p=.71 at 12/max8 despite equal traced CPU uploads and shaders in all 36 pairs. Four saved PNG raw hashes independently verified. See investigation report. Build and 22 tests pass; no cause/fix or blessing.",
-    "centroid_isolation": "Unsuccessful candidate: saved T1 p=.71 pair differs at 341 pixels, max 21 (independent RGBA verification). Evidence sink stopped before mask/final report; sequence incomplete. Experiment removed; approved interpolation restored. See investigation report; no blessing.",
-    "depth_bias_isolation": "72 cold captures: T1 p=.93 differs at 804 pixels (max 30). Not a fix; experiment removed, approved offset restored. Runner navigates once with all options, retains errors, and supports opt-in saveDiff for actual image pairs and explanatory masks.",
-    "saved_image_sequence": "qa/review/v166-targeted-sequence-normal-15-1789136074058.png: 72 captures, zero errors, six differing poses. All 12 actual PNGs independently decoded and matched recorded raw RGBA hashes. Diagnostic masks are not references. Build and 18 tests pass; no cause/fix established.",
-    "report": "build/v166-step1-investigation.json",
-    "september_9_sequence": "72 cold captures; 34/36 poses repeat-identical; differences T1 p=1 (29 pixels, max 23), T3 p=.645 (6 pixels, max 1); no errors",
-    "diagnostic": "noReliefDerivatives isolation: 72 cold pages, three differing poses; no fix. Experiment removed; approved default shader unchanged.",
-    "capture_integrity": "Required ink/glyph asset errors now reject capture rather than hashing missing text. Four loader tests added. Successful capture appearance unchanged.",
-    "latest_default_sequence": "72 fresh captures after integrity correction, zero errors; 34/36 poses repeat-identical. T1 p=.86: 4817 differing pixels, max 100; p=.93: 419 pixels, max 28. Report indexes raw evidence. Build and 18 tests pass; no demonstrated fix.",
-    "payload_brotli_mb": 7.092,
-    "status": "Capture blocker unresolved; no hashes blessed or gates closed"
-   },
-   "renderer_failure_folio_2026_09_09": {
-    "status": "implemented; local Chrome QA only; no blessing or gate closure",
-    "provenance": "build/fallback-plates.json",
-    "source": "qa/review/fallback-plates-source.png (JSON)",
-    "assets": "Seven real 768x960 T1 WebGL2 ss=2 captures, each repeated on two cold pages; JPEG .70; 252382 / 280000 bytes",
-    "qa": "17 local DOM/resource/capture checks pass at 1440x900 and 390x844; physical touch and cross-browser review outstanding",
-    "appearance": "Approved v1.6.6 gold, geometry and canonical scripture unchanged"
-   },
-   "m7_readiness_2026_09_07": {
-    "refresh_safe_local_smoke": "Fresh dev-browser 60-second run T1→T1, 7201 intervals, rAF p95 9.1 ms / max 25.0 ms, CPU update/submit p95 1.00 ms. Visible HUD summary in build/v166-m7-readiness.json. No physical-device or frame-work certification; no blessing.",
-    "refresh_safe_fallback_2026_09_08": "Runtime rAF fallback now uses 60/60/30 fps playback intervals with the existing 1.25 factor. Independent 12/14/27 ms work budgets remain unchanged and unverified. Fourteen tests and typecheck pass, including steady cadence and sustained thermal overload. Supersedes prior perfect-60-Hz false-demotion reproduction. No capture appearance change; no blessing or milestone closure.",
-    "cpu_diagnostic_2026_09_08": "Separate CPU update/submit timing added to perf reports; 12 tests and typecheck pass. Short fresh dev-browser smoke: 1143 rAF intervals, p95 9.4 ms, max 33.3 ms; CPU p95 1.10 ms. T1 demoted to T2. Not GPU timing, frame-total compliance or physical-device certification. Gold and capture appearance unchanged; nothing blessed.",
-    "tier_history_followup": "True trailing 3-second timestamp window replaces latest-frame-based sample count; invalid durations rejected. Ten tests and typecheck pass. Earlier perf run predates this change. Perfect synthetic 60 Hz still demotes T1 at 181 frames: cadence bias remains unresolved. No visual/capture change or blessing.",
-    "status": "local diagnostics only; no blessing or gate closure",
-    "report": "build/v166-m7-readiness.json",
-    "step1_latest": "build/v166-step1-investigation.json",
-    "note": "Supersedes the September 6 investigation status below: extended isolations completed but no fix established. M7 audit now retains stalls and demotion history; DPR cap cannot increase at demotion. Seven tests, build and canonical text pass. Payload 6.867 MB brotli. M2 Pro production 60-second rAF sample p95 16.6 ms, max 25.7 ms; demoted T1 to T2, so not a T1 or named-device pass. Material and default capture behavior unchanged."
-   },
-   "repeatability_investigation": "2026-09-06: two temporal traces of T1 p=.645 were constant at frames 15/30/60/90. Eight fresh loads each of the three original failing cases (24 captures) were pixel-identical. Two 36-frame sequences (72 captures, excluding noblob) reproduced differences at six cases, including other poses: some 1-level sparse differences and others up to 118 levels. Evidence: qa/review/v166-targeted-normal-15.png and v166-targeted-sequence-normal-15.png (JSON). Shadow-disabled sequence stalled and was stopped; inconclusive. Cause and fix remain unverified. Temporary main-loop instrumentation removed; diagnostic public/qa/repeat.html retained. Visual behavior and blessed hashes unchanged.",
-   "qa_results_2026_09_06": {
-    "report": "build/v166-qa-review.json",
-    "hold60DriftPercent": 1.52,
-    "holdLimitPercent": 2,
-    "webgpuRepeat": "34/37 identical across two fresh-page runs; mismatches T1 p=.645, T2 p=.760 and .930; no capture errors",
-    "webgl2Repeat": "37/37 identical across two fresh-page runs; no capture errors",
-    "status": "local QA only; WebGPU repeatability and physical-device certification remain open; nothing blessed"
-   },
-   "qa_correction": "Hold audit previously sampled loading/arrival; 71.52% is not isolated steady-state drift. Now wait for assets ready, p within 1e-5 of 1, and 8 seconds of unchanged tier/SS/canvas before sampling. No in-run samples discarded. Visual behavior unchanged; no gate sign-off inferred.",
-   "version": "v1.6.6",
-   "date": "2026-09-06",
-   "status": "visually approved 2026-09-09; unblessed; capture stability, full regression, physical-device and scholarly/content evidence pending",
-   "visual_approval": { "date": "2026-09-09", "user_statement": "it's signed off continue", "scope": "Current v1.6.6 gold and scroll presentation only; no technical gate closure or hash blessing inferred" },
-   "changes": "No gold burnish/wear sampling, marker/ring roughness bias or anisotropy. Constant gold base roughness 0.52 and metalness 0.72, retaining specular AA. Shading slope 1.2*(1-clamp(s,0,1))^2 with three footprint samples, scaled by depth/bevel and guard; blended from authored slope using cluster gilding factor. Geometry, scripture, palette and supersampling unchanged.",
-   "verification": "Production build, canonical-text verification and payload check pass (6.866 MB brotli). Fresh 1440x900 ss=2 final capture displayed text with no captured warnings/errors; live portrait final inspected. Single 10s hold audit reported 71.52% flux drift versus 2% limit; startup versus steady-state cause not isolated. Stability remains open. No new blessed frame hashes.",
-   "candidates": {}
-  },
-  "curve_smoothing_pass": {
-   "version": "v1.6.5",
-   "date": "2026-09-06",
-   "status": "unblessed candidate; visual sign-off, capture stability, full matrix and physical-device runs pending",
-   "changes": "T1/T2 grid 6.75 fu, chord tolerance 0.15 fu, minimum segment 0.75 fu, recursion depth 6. Crown normals preserve interpolated boundary-gradient magnitude. v1.6.4 materials and supersampling retained; canonical text and T3 geometry unchanged.",
-   "mesh": {
-    "vertices": 332367,
-    "triangles": 535935,
-    "worstOuterEm": 0.00469,
-    "worstOuterPx1440": 0.317,
-    "sha256": "8cfd67ca70681497b3996441679d1075fec0c54ecba60f24786f80adaa6a386c"
-   },
-   "payloadBrotliMB": 6.866,
-   "verification": "Production build, canonical-text verification, mesh audit and payload check pass. Live final text and 1440x900 transition capture visually inspected. Live final browser warning/error log empty; adaptive tier demoted to T2. No new frame hash accepted or blessed; capture stability and physical-device performance remain unverified.",
-   "candidates": {}
-  },
-  "satin_relief_pass": {
-   "version": "v1.6.4",
-   "normal_experiment": "Animated-depth normal varying reverted during capture investigation. Capture instability also occurred after reverting, so causation is unproven. Stable baked profile normals retained. Sidewall scene-linear RGB is (0.50, 0.32, 0.10).",
-   "date": "2026-09-05",
-   "status": "unblessed candidate; visual approval and fresh full regression/device evidence pending",
-   "changes": "Remove flat-ink opacity mask and alpha test from extruded relief. Opaque geometry/MSAA/spatial SS resolve edges. Satin crown roughness 0.48–0.54; side/crown metalness 0.65/0.72, crown wear reduction up to 0.48. Background, hue, text and mesh assets unchanged.",
-   "candidates": {},
-   "verification": "TypeScript and production build pass. Live p=1 visually checked with text visible and no captured browser warning/error logs. Supersampled capture tests were inconsistent (including blank displayed canvases); no new candidate hash accepted. Investigate capture lifecycle before full matrix. Previous revision hashes and performance/payload reports are historical."
-  },
-  "note": "v1.6 universe ground (user direction 2026-09-01: deep-blue universe with tiny stars behind the gold). Changes the background floor (#0D0906 → #080D26 → #05081C → #040617 → #020411 → #01030D (\"darker\" four times, \"black/blue, a tad darker\"), re-solved through the AgX chain: linear 0.00021515/0.0023545/0.0078083), adds the sky lobe/nebula/stars, cools the env base and the rim (#FFBE83 → #D6E0FF), gold env ×1.6. EVERY blessed frame above is superseded once the look is signed off — re-bless the T1 set (two cold loads each), the mobile T2/T3 set and the noblob frame from the matrix runner; regenerate poster.jpg + LQIP (done as a candidate, 67,579 B). Second review pass: lobe held to ×1.55 (a ×2.8 lobe read as \"dark, then bright again\" — it is in view at p 0 and 1, not while reading), stars σ 0.65–1.25 px (was 0.9–1.8), halo ×3 at 1.2%. Poster 59,189 B. Third pass: floor #020411 (displays 1.6/4/17); the star law unit pinned to 0.0047 scene-linear (the #040617 floor luminance) so the stars did not dim with the ground. Poster 59,041 B. Fourth pass: floor #01030D (displays 1.1/2.9/13.6 — red on the +1-count lift); star clearance: the assembly footprint (center anchor→rest through the sheet pose, half-extents 0.26×0.37, camera tangent plane) fades the stars from 1.25× to 1.75× its ellipse. Poster 53,556 B. Fifth pass (live p=0 screenshot: \"dumb when the stars aren't even\"): clearance gated by faceFactor (only the standing block clears), margin tightened to 1.02-1.25x; stars sigma 0.55-1.05 px; sky cost cut (4-cell star search, 2-octave nebula) after the user's M1 Air showed DEMOTED T2. Poster 56,591 B.",
-  "status": "Historical v1.6 candidates superseded by v1.6.6, visually approved 2026-09-09 and reaffirmed 2026-09-12; current references remain unblessed pending reproducibility and release evidence",
-  "candidates": {
-   "R-0.00-T1": "eda2ed128101b764",
-   "R-0.45-T1": "674287792b2facd2",
-   "R-0.93-T1": "8c009c27e20519b4",
-   "R-1.00-T1": "caac501506d19ad1"
-  },
-  "text_pass": {
-   "date": "2026-09-01",
-   "note": "v1.6.1 text pass (user: \"smooth, especially the first letter they stretched; at the bottom it is still covering the paper\"): (1) a run of tatweel glyphs is emitted by shape-text as ONE stretched outline (gid 200000+, kashidaCount N) — the basmalah sīn was ten tatweels whose flare joints the §6 bevel rendered as ten ridges; atlas + mesh rebuilt (IoU 0.9900/0.9641, RTL PASS, 165,911 verts / 257,438 tris, silhouette 0.00685 em, verify-text green x3, svg b5b3cd2c); (2) the page leaves the frame at p=1 — user ruling \"keep the text big, let the page leave the frame\": RECEDE_REST y -0.02 -> -0.26, the S7 fit is the block's alone (d 2.057 at 16:10 and at the 0.8 portrait aspect; 3.48 on the 390x844 phone where the width-bound fit leaves a strip of page visible beneath the block). Every frame from p >= 0.32 changes (ink atlas cell for the merged kashida) and every S7 frame reframes; p = 0 poster unchanged. (3) \"smoothed and a little brighter\": burnish sampled at sheet scale (was x7/x9 — speckle finer than a stroke), broad octave leads 0.4/0.6, face roughness 0.18-0.34, wear ~3%, GOLD_FACE #DDB768, warm dome in the env (0.42/0.34/0.21 upper hemisphere), gold envMapIntensity 2.2; RECEDE_REST y -0.48 so the page leaves the frame on phones too. (4) \"the letters are a little choppy\": halfWidth() now measures the medial radius at the nearest boundary FOOT (1-fu ray march) instead of a <=8-step coarse march from the vertex that stopped early near the outline (inconsistent profile scale per vertex); §6 wall softened (max slope ~4.5); grid pitch 10 -> 8 fu; mesh 256,469 verts / 399,384 tris, silhouette 0.00555 em, glyphs.bin 9.5 MB raw / 2.66 MB brotli (sha 52b246c8…). (5) \"still some roughness\": per-pixel profile normals — FGLY v2 aProf (sN, k/4, gx, gy), PCHIP profile (coefficients in meta.profileSpline) evaluated in the fragment shader; W averaged over ±5 fu along the outline; loader fetch cache no-cache. glyphs.bin 11.4 MB raw / 3.57 MB brotli (sha ecfe41c2…). (6) \"not perfect\": burnish/wear packs 2 low octaves (finest ≥ 0.35 em), crown roughness 0.22-0.36, wear ~1.5%, env pins x0.64, T1 DPR cap 1.75 -> 2.0. (7) \"100% smooth\": A/B at p=1 — &noshadow hash-identical (the relief receives no shadow), &gb=6 no visible change on the gold; the remainder is the raster. Supersampling verified two ways (3840 box-filtered to 2560; in-engine ?ss=1.5/2 via PassNode.setResolution, hashes d24fb640 / 57d4587e). Shipped as IDLE supersampling: T1 + idle armed (4 s) or reduced motion -> pass at 2x (grade.setSupersample), back to 1x on scroll; ?ss=N pins. References stay at ss 1 unless the user rules otherwise.",
-   "candidates": {
-    "R-1.00-T1": "ffc74bd81d275117",
-    "R-1.00-T1-2560": "c9ef2b80c902163c",
-    "R-1.00-T1-2560-ss2": "57d4587e584a1f43"
-   }
-  },
-  "finish_pass": {
-   "version": "v1.6.2",
-   "date": "2026-09-02",
-   "status": "pending explicit user visual sign-off; candidates only — do not bless",
-    "note": "User reported that the 3D text was choppy and not beautiful, then asked to finish the project. Candidate adds fragment-footprint filtering of the analytic bevel slope, analytic coverage alpha-to-coverage, stroke-tangent anisotropy 0.25, broad #E4C06F gold at roughness 0.30-0.42, portrait reading fit, staged loading, tiered shadows/contact, a dedicated 257,438-triangle T3 mesh, and correctly scaled instanced soft-disc dust valid on WebGPU (no grey overlap veil). Canonical text is unchanged and verify-text is green. Each key WebGPU hash below reproduced across two independent cold navigations on a settled server. The WebGL2 p=1 smoke candidate rendered cleanly once but is not a blessing. The prior 74-frame matrix is superseded for release; rerun/re-bless only after sign-off.",
-   "environment": "Chromium in-app browser; Three r185; WebGPU; DPR 1 deterministic capture",
-   "candidates": {
-    "R-0.000-T1-1440x900-webgpu": "f30432eaf5bb4e4bc2cbbd158a8d715a6f720c1745ea88d93e66a728bc1e8522",
-    "R-0.500-T1-1440x900-webgpu": "6e4655c455b7012319f0036096accbd8acc0c852d57dec515e38342fa6c5ff90",
-    "R-1.000-T1-1440x900-webgpu": "913b9151e3343798e8e7b7d6c6d684852135370494e77a160177bd8074a64ee4",
-    "R-0.000-T3-390x844-webgpu": "483d432c43e7e984a4a0de41557566e7fdad8118cf032e5a4b28e1b102300865",
-    "R-0.500-T3-390x844-webgpu": "9d15863beccb2e02351ab9f88338bea7cd7f30e1c0c2db6c483bb00c893e7433",
-    "R-1.000-T3-390x844-webgpu": "bcd2fe7c15112437d89bd55962f11e19924381abf52b4ee41439d26d1fde3cc1"
-   },
-   "smoke": {
-    "R-1.000-T1-1440x900-webgl2": "1001b700ae7c8234fa004643b185cc2fe86813ec7535a12816147563b023ecca"
-   },
-   "payload": {
-    "full_shipped_set_brotli_mb": 5.784,
-      "phase_a_brotli_mb": 0.256,
-    "poster_to_live_estimate_s_at_10mbps": 1.69
-   },
-   "live_harness": {
-    "r_flick": "PASS — peak 1.07e-3 < 2.7e-3 clamp; settled true; NaN false",
-    "storm_15s": "PASS — 1720 frames; NaN 0; pOut 0; errors 0"
-   }
-  },
-  "motion_smoothing_pass": {
-   "version": "v1.6.3",
-   "date": "2026-09-02",
-   "status": "pending explicit user visual sign-off and physical-device runs; candidates only — do not bless",
-   "note": "User asked to smooth the font specifically while it turns 3D, then authorized the change. The live beauty pass now ramps spatial resolution with relief visibility: T1 1.0→1.5x, T2 1.0→1.25x, T3 1.0x; T1 still eases to 2.0x after roughly four seconds at rest. Factors are quantized to eighth steps to avoid render-target churn. Capture mode remains pinned at ss=1 unless ?ss=N is explicit, preserving deterministic QA. T1/T2 curved boundary chords tighten from 0.6 fu to 0.35 fu (1.25 fu minimum segment, depth 5); the rest of the face grid is unchanged. No temporal accumulation is used, so scroll reversals cannot leave ghost trails. Each key WebGPU hash below reproduced across two fresh navigations on a settled server. Nothing is blessed; the prior 74-frame matrix remains superseded until user sign-off.",
-   "environment": "Chromium in-app browser; Three r185; WebGPU; DPR 1 deterministic capture",
-   "live_supersample": {
-    "activation": "smoothstep across p=0.62..0.73; eighth-step quantization",
-    "T1": "1.0x→1.5x during relief/rise; up to 2.0x after idle",
-    "T2": "1.0x→1.25x during relief/rise",
-    "T3": "1.0x"
-   },
-   "mesh": {
-    "T1_T2": "258,360 verts / 401,150 tris / 0.35 fu chord tolerance; glyphs.bin sha256 fdcc5a3cfdc481fa2c8016b108ef0db12a3ca0534f1af83dd19e8d2310c9cd50",
-    "T3": "165,911 verts / 257,438 tris / 0.6 fu chord tolerance; glyphs-t3.bin sha256 63e173eee0b49e530eaf145b8cfa1f276f790670d5fb501c7eb50dbf9921c5b9",
-    "silhouette": "worst outer 0.005547 em / 0.3750 px @1440 for T1/T2; 0.006855 em / 0.4634 px for T3; both pass the 0.008 em gate"
-   },
-   "candidates": {
-    "R-0.000-T1-1440x900-webgpu": "f30432eaf5bb4e4bc2cbbd158a8d715a6f720c1745ea88d93e66a728bc1e8522",
-    "R-0.500-T1-1440x900-webgpu": "6e4655c455b7012319f0036096accbd8acc0c852d57dec515e38342fa6c5ff90",
-    "R-1.000-T1-1440x900-webgpu": "ece26205bc957a22f9b2b84165a89996e81fa46362baf016dbd51ee5a813607e",
-    "R-0.000-T3-390x844-webgpu": "483d432c43e7e984a4a0de41557566e7fdad8118cf032e5a4b28e1b102300865",
-    "R-0.500-T3-390x844-webgpu": "9d15863beccb2e02351ab9f88338bea7cd7f30e1c0c2db6c483bb00c893e7433",
-    "R-1.000-T3-390x844-webgpu": "bcd2fe7c15112437d89bd55962f11e19924381abf52b4ee41439d26d1fde3cc1"
-   },
-   "payload": {
-    "full_shipped_set_brotli_mb": 5.813,
-    "phase_a_brotli_mb": 0.257,
-    "poster_to_live_estimate_s_at_10mbps": 1.69
-   },
-   "local_perf": "Embedded-browser ?perf=10 sample: T1 demoted to T2; settled T2 p50 8.3 ms / p95 16.6 ms. This is diagnostic only, not M1 Air or iPhone evidence."
-  }
- }
 }

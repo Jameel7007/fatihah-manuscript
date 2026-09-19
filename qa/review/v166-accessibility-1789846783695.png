@@ -1,0 +1,105 @@
+{
+  "date": "2026-09-19T19:39:43.695Z",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+  "url": "http://localhost:4521/qa/accessibility.html?autorun=1&save=1",
+  "scope": "Local DOM/synthetic keyboard checks; not axe, screen-reader, physical-touch or named-device certification",
+  "layouts": [
+    {
+      "backend": "webgpu",
+      "viewport": [
+        1440,
+        900
+      ],
+      "bounds": [
+        {
+          "left": 1379,
+          "top": 296,
+          "right": 1423,
+          "bottom": 340,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "left": 1379,
+          "top": 340,
+          "right": 1423,
+          "bottom": 384,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "left": 1379,
+          "top": 384,
+          "right": 1423,
+          "bottom": 428,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "left": 1379,
+          "top": 428,
+          "right": 1423,
+          "bottom": 472,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "left": 1379,
+          "top": 472,
+          "right": 1423,
+          "bottom": 516,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "left": 1379,
+          "top": 516,
+          "right": 1423,
+          "bottom": 560,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "left": 1379,
+          "top": 560,
+          "right": 1423,
+          "bottom": 604,
+          "width": 44,
+          "height": 44
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "every state is keyboard reachable",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "44px targets fit viewport (0.02px layout-rounding tolerance)",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "every button has an accessible name",
+      "pass": true
+    },
+    {
+      "backend": "webgpu",
+      "width": 1440,
+      "height": 900,
+      "label": "navigation does not claim unsupported tab/panel semantics",
+      "pass": true
+    }
+  ],
+  "error": "Error: Timed out: state 1",
+  "pass": false
+}

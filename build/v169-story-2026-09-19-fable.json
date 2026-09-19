@@ -1,0 +1,31 @@
+{
+ "date_local": "2026-09-19",
+ "version": "v1.6.9",
+ "reviewer": "Claude Fable 5.1",
+ "request": "owner: \"i need words and explanation and better design on site publish on pages and also make sure the github info is good the github readme\"",
+ "delivered": {
+  "page_layer": "src/director/story.ts + story.css, markup in index.html: title card (Arabic + name + dek), scroll cue, stage captions, per-ayah translation (Pickthall 1930) during the writing and again as each ayah rises, closing card with \"Read it again\", About panel (what al-Fatihah is, the seven stages, the seven ayat, the text/typeface/translation credits, how it is made, accessibility notes). DOM only; capture mode hides it; pointer-events pass through except buttons.",
+  "layout": "caption top-left; on wide landscape the translation and closing card sit in the empty left margin (marginalia); on phones bottom-centre.",
+  "base_path": "src/core/url.ts assetUrl(); all runtime fetches (composition, ink atlases, glyph meshes, fallback plates) go through import.meta.env.BASE_URL; vite base from FATIHAH_BASE.",
+  "deploy": ".github/workflows/pages.yml builds with FATIHAH_BASE=/fatihah-manuscript/ and deploys dist/ to GitHub Pages on push to main; Pages enabled (build_type=workflow); repo description, homepage and topics set.",
+  "readme": "README.md rewritten for GitHub (what it is, plain-language how it works, the text, stack, run, quality, map, credits); previous engineering README moved to docs/engineering.md."
+ },
+ "verification": {
+  "canvas_unchanged": "reference gate re-run with the story layer in place: 74/74 within tolerance, 0 fail (verify-report-2026-09-19-19-37-29.json, verify-report-2026-09-19-19-37-36.json)",
+  "subpath_build": "FATIHAH_BASE=/fatihah-manuscript/ build served at /fatihah-manuscript/: index and glyphs.bin 200, headless capture at p=0 completed (assets resolved through the base).",
+  "axe_core_4_10_2_main_page": "0 violations, 28 passes; 1 incomplete (color-contrast on the title/cue text over the canvas, which axe cannot evaluate; gold-dim #8F7440 on #01030D is 4.6:1, muted #A2957A is 6.8:1)",
+  "accessibility_runner": "66/66 pass (v166-accessibility-1789846880920.png); note: in a 900-px-tall headless window the runner's 1440x900 iframe sits off-screen and its animation frames throttle (Timed out: state 1) - run it in a tall window (1500x2400) or a visible pane.",
+  "screenshots": [
+   "story-2026-09-19-desktop-about-1440x900.png",
+   "story-2026-09-19-desktop-ending-1440x900.png",
+   "story-2026-09-19-desktop-ink-1440x900.png",
+   "story-2026-09-19-desktop-opening-1440x900.png",
+   "story-2026-09-19-desktop-rise-1440x900.png",
+   "story-2026-09-19-phone-ending-390x844.png",
+   "story-2026-09-19-phone-ink-390x844.png",
+   "story-2026-09-19-phone-opening-390x844.png"
+  ],
+  "story_layer_checks": "headless DOM probe: captions and ayah lines follow p (ink windows and rise windows), About opens with focus on Close, Escape closes and returns focus to the About button."
+ },
+ "not_done": "Tier B canvas changes (parchment, sky, light) not made — the approved v1.6.6 canvas is unchanged."
+}

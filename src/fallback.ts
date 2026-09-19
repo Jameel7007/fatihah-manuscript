@@ -1,3 +1,4 @@
+import { assetUrl } from './core/url';
 import './fallback.css';
 
 const labels = ['Rolled parchment', 'Unrolling', 'Ink being written', 'Presenting the page',
@@ -40,7 +41,7 @@ export function showFallback(): void {
     const img = document.createElement('img');
     img.alt = `Al-Fātiḥah manuscript: ${label.toLowerCase()}`;
     img.decoding = 'async';
-    img.src = `/fallback/plate-${index + 1}.jpg`;
+    img.src = assetUrl(`fallback/plate-${index + 1}.jpg`);
     const caption = document.createElement('figcaption');
     caption.textContent = `${index + 1} / 7 — ${label}`;
     img.addEventListener('load', () => figure.classList.add('loaded'));
