@@ -1,6 +1,6 @@
 // The page layer of words — DOM over the canvas, never in it. A title and scroll cue at the
 // opening, a quiet stage caption as each state begins, the translation of each āyah as the
-// scribe writes it, and a closing card at the held ending. Everything is a pure function of the
+// scribe writes it (once — not again at the rise), and a closing card at the held ending. Everything is a pure function of the
 // same p the canvas uses; nothing here touches the render, so reference frames are unaffected
 // (capture mode hides the whole layer). Translation: Marmaduke Pickthall, 1930 (public domain).
 
@@ -111,21 +111,14 @@ export class Story {
     for (const [start] of CAPTIONS) if (p >= start) capStart = start;
     this.show(this.caption, cap ? smooth(capStart, capStart + 0.012, p) : 0);
 
-    // translation of the āyah being written (window start → next start), then again as each rises
+    // translation of the āyah being written (window start → next start) — once; the rise repeats
+    // the same order a few seconds later and a second pass read as a repeat (owner, 2026-09-19)
     let idx = -1;
     let a = 0;
     for (let i = 0; i < WRITE.length; i++) {
       const [s] = WRITE[i]!;
       const next = i + 1 < WRITE.length ? WRITE[i + 1]![0] : 0.6;
       if (p >= s - 0.006 && p < next) { idx = i; a = smooth(s - 0.006, s + 0.008, p) * (1 - smooth(next - 0.01, next, p)); }
-    }
-    if (idx < 0 && p >= 0.722 && p < 0.9) {
-      // the rise: 0.722 + 0.0115·i, each 0.093 long — name the āyah as it lifts
-      for (let i = 0; i < 7; i++) {
-        const s = 0.722 + 0.0115 * i;
-        const next = i < 6 ? s + 0.0115 : 0.884;
-        if (p >= s && p < next) { idx = i; a = smooth(s, s + 0.004, p) * (1 - smooth(next - 0.003, next, p)); }
-      }
     }
     if (idx !== this.lastAyah && idx >= 0) {
       const ay = AYAT[idx]!;
