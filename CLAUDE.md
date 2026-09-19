@@ -22,5 +22,6 @@ Read first, in this order: `docs/next-steps.md` (what is next, with prompts), `R
 - Device runs over the LAN: `FATIHAH_LAN=1 npx vite preview --port 4522` (HTTPS, cert in `~/.fatihah-tls`).
 - Rig: `?capture=P&tier=N&w=W&h=H[&post=NAME][&repeat=N]`, `?perf=30&save=1`, `?hold=60&save=1`, `?hud=1`.
 - Tests: `node --test qa/perf.test.mjs qa/tiers.test.mjs`.
+- Repeatability/perf sequences: run headless (`Brave --headless=new --enable-unsafe-webgpu --use-angle=metal --remote-debugging-port=N`, driven over DevTools `Runtime.evaluate`; see README) — visible windows on the working Mac get occluded or closed. Safari only runs visibly.
 - Hidden browser panes throttle rAF to ~1 fps and freeze after 5 min; captures and perf/hold runs need a
   fresh, visible, fronted window.

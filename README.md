@@ -62,6 +62,8 @@ is deterministic by design, and every reference frame is a SHA-256 of the raw pi
 | **Build ledger** (milestones, decision log, QA ledger, what awaits review) | [`docs/status.html`](docs/status.html) — published: <https://claude.ai/code/artifact/9af3f15c-105e-4238-94e4-2b40e1891354> |
 | Blessed regression frames (SHA-256, per milestone) + pending candidates | [`qa/references/manifest.json`](qa/references/manifest.json) |
 | Review frames sent during sign-off rounds | `qa/review/` |
+| Frame difference metrics (changed pixels, ΔE76 percentiles, worst 3×3/5×5 block) | [`qa/frame-compare.mjs`](qa/frame-compare.mjs) — `node qa/frame-compare.mjs A.png B.png` or `--pairs` over `qa/review/v166-diff-*` |
+| Step 1 (capture repeatability) investigation record | [`build/v166-step1-investigation.json`](build/v166-step1-investigation.json), pair metrics `build/step1-pair-metrics-2026-09-19.jsonl` |
 | Text proofs (4000 px, both layout variants) | `qa/proofs/` |
 | Canonical text (Tanzil Uthmani, Ḥafṣ ʿan ʿĀṣim) and its verification | `build/canonical-fatihah.json`, `build/text-verification.json` |
 | Frozen composition (7-line, the piece) + the 8-line reference | `public/text/composition*.json/.svg` |
@@ -109,6 +111,20 @@ Keep the window in the foreground for the whole run — a hidden or occluded tab
 report says so. Generate the cert once with
 `openssl req -x509 -newkey rsa:2048 -nodes -keyout ~/.fatihah-tls/key.pem -out ~/.fatihah-tls/cert.pem -days 30 -subj "/CN=fatihah-lan" -addext "subjectAltName=IP:<LAN IP>,DNS:localhost"`.
 
+### Headless repeatability runs (no visible window needed)
+
+Visible browser windows throttle or freeze when occluded and get closed while the Mac is in use. Brave/Chrome
+`--headless=new` renders WebGPU over ANGLE Metal at full speed and is driven over the DevTools protocol:
+
+```bash
+"/Applications/Brave Browser.app/Contents/MacOS/Brave Browser" --headless=new --no-first-run --enable-unsafe-webgpu --enable-features=WebGPU --use-angle=metal --ignore-gpu-blocklist --window-size=1512,900 --user-data-dir=/tmp/fatihah-hl --remote-debugging-port=9333 "http://localhost:4521/qa/repeat.html?sequence=1&saveDiff=1"
+```
+
+Poll `http://localhost:9333/json` for the tab and evaluate `window.__repeatResult` (or `window.__capture`) over the
+tab's `webSocketDebuggerUrl` with `Runtime.evaluate`. Reports land in `qa/review/` through the sink as usual.
+Headless hashes are their own environment (they do not match the pane's or Safari's) — compare within one environment.
+Safari has no headless mode; its runs still need a visible, fronted window.
+
 ### URL switches (QA)
 
 | Switch | Effect |
@@ -124,6 +140,9 @@ report says so. Generate the cert once with
 | `?hud=1` | show the developer HUD (state · p · idle · demoted); hidden by default for visitors |
 | `&post=NAME` (with `?capture`) | save the captured PNG through the same-origin sink as `qa/review/NAME.png` — full-speed captures in any real browser |
 | `&repeat=N` (with `?capture`) | Step 1 diagnostic: N captures in one page load, `warm` frames apart; `window.__capture.hashes` |
+| `&stall=MS[&stallFrames=K]` (with `?capture`) | Step 1 diagnostic: busy-wait MS ms before each of the first K frames (default 3) to perturb load-time ordering |
+| `/qa/repeat.html?sequence=1[&backend=webgl2][&stall=MS][&noblob][&warm=N][&saveDiff=1]` | 36 poses × 2 cold iframe loads; saves a JSON report (and baseline/repeat/mask PNGs for differing poses) through the sink |
+| `?scene=inkrt&p=P&capture=1[&rgb=1][&post=NAME]` | ink render-target view; `&rgb=1` shows the raw RGB (B = puff), `&post` saves it through the sink |
 | `?reduced=1` | reduced-motion mode (held compositions, pager) |
 | `/qa/accessibility.html?autorun=1&save=1` | local DOM/keyboard checks at 1440×900, 390×844 and 320×320; saves evidence to the QA sink; not screen-reader/device certification |
 | `/qa/fallback.html?autorun=1&save=1` | static-folio/startup and capture-failure checks, with optional saved evidence |

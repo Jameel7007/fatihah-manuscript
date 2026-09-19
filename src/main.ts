@@ -138,7 +138,8 @@ async function runInkRT(): Promise<void> {
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const suv: any = vec2((uv() as any).x, float(1).sub((uv() as any).y));
   const t: any = texture(pass.texture, suv);
-  mat.colorNode = vec4(t.r, t.g, float(0.06), 1);
+  // &rgb=1 shows the raw RGB (B = SS14 puff, the relief bump source) instead of the R/G view.
+  mat.colorNode = q.has('rgb') ? vec4(t.r, t.g, t.b, 1) : vec4(t.r, t.g, float(0.06), 1);
   const quad = new Mesh(new PlaneGeometry(2, 2), mat);
   quad.frustumCulled = false;
   scene.add(quad);
@@ -160,6 +161,16 @@ async function runInkRT(): Promise<void> {
     const frame = await captureFrame(canvas as HTMLCanvasElement);
     window.__capture = { hash: frame.hash, p, tier, backend, dataUrl: frame.dataUrl };
     capEl!.textContent = `inkrt p=${p} ${frame.hash.slice(0, 16)}`;
+    // &post=NAME — Step 1 diagnostic: save the ink RT view through the QA sink so cold loads
+    // in any real browser window can be compared (file name carries the hash prefix).
+    const postName = q.get('post');
+    if (postName) {
+      const b64 = frame.dataUrl.slice(frame.dataUrl.indexOf(',') + 1);
+      const bin = atob(b64);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      await fetch(`/qa-save?name=${encodeURIComponent(postName)}-${frame.hash.slice(0, 12)}`, { method: 'POST', body: bytes, signal: AbortSignal.timeout(20000) }).catch(() => undefined);
+    }
   }
   hud!.textContent = `ink RT · p ${p.toFixed(3)} · R=cov G=wet`;
 }
@@ -811,12 +822,21 @@ async function runMain(): Promise<void> {
       // localise a difference to per-load state rather than per-frame GPU work.
       const captureRepeats = Math.max(1, Math.min(8, Number(q.get('repeat') ?? '1') || 1));
       const captureHashes: string[] = [];
+      // Step 1 diagnostic: &stall=MS[&stallFrames=K] busy-waits the main thread for MS ms before
+      // each of the first K frames (default 3), perturbing load-time ordering (async pipeline
+      // compiles, texture uploads) without touching the rendered state. QA only.
+      const stallMs = Math.max(0, Number(q.get('stall') ?? '0') || 0);
+      const stallFrames = Math.max(1, Number(q.get('stallFrames') ?? '3') || 3);
       await new Promise<void>((resolve, reject) => {
         let n = 0;
         let started = false;
         let finished = false;
         let round = 0;
         renderer.setAnimationLoop(() => {
+          if (stallMs > 0 && n < stallFrames) {
+            const t0 = performance.now();
+            while (performance.now() - t0 < stallMs) { /* deliberate stall */ }
+          }
           applyFrame(p, 1 / 60, false);
           grade.render(); // grain seed stays 0 in capture — deterministic
           if (diagnosticTarget) grade.renderTo(diagnosticTarget);

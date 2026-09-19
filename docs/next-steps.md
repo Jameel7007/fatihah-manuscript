@@ -26,14 +26,22 @@ Prompt afterwards:
 
 ## 2. WebGPU repeatability and cross-browser (AI, on the M2 Pro)
 
-- [ ] Safari WebGPU 72-capture cold-load sequence with `&repeat=N` and `&post=NAME`.
-- [ ] Stall-injection test of the per-load-state hypothesis.
-- [ ] Brave and Safari WebGL2 fallback pass.
+- [x] Safari WebGPU 72-capture cold-load sequence (2026-09-19: 5/36 pairs differ; not Chromium-specific).
+- [x] Stall-injection, warm=90, no-shader-cache, no-blob and ink-RT tests (2026-09-19: all excluded as the cause; WebGL2 0/180 pairs differ, WebGPU 22/504). Record: `build/v166-step1-investigation.json`.
+- [x] Brave WebGL2 (headless, 5 sequences, bit-repeatable). · [ ] Safari WebGL2 fallback pass — needs a visible Safari window left open (`http://localhost:4521/?backend=webgl2` and `/qa/fallback.html`).
 - [ ] Fronted Safari playback run (`?perf=30&save=1`, Safari kept in front).
 
 Prompt:
 
 > Continue the WebGPU repeatability work. Run the Safari WebGPU cold-load capture sequence at the reference p values using the &repeat and &post rig, then the stall-injection experiment for the per-load-state hypothesis. Then do the Brave and Safari WebGL2 pass. Tell me before each step that needs a browser window kept in front. Record everything in the evidence index and ledger. Do not bless or change any reference hash; report what you found and what would be needed to re-bless.
+
+## 2b. Gate decision (owner)
+
+The WebGPU variance is ulp-level and appears in every browser; WebGL2 is bit-repeatable. Decide whether the reference gate becomes: bit-exact SHA-256 for WebGL2 (and any WebGPU pose that reproduces), plus a tolerance comparison against blessed PNGs for WebGPU frames (candidate limits: changed pixels ≤ 1%, median ΔE76 ≤ 1.0, worst 5×5 block ≤ 4.0). Details and evidence: ledger entry 2026-09-19, `build/v166-step1-investigation.json`.
+
+Prompt:
+
+> I authorize the gate change proposed in the 2026-09-19 ledger entry: bit-exact hashes for WebGL2 and reproducing WebGPU poses, tolerance comparison against blessed PNGs for WebGPU with the candidate limits [or: these limits …]. Implement the tolerance check in qa/matrix.mjs using qa/frame-compare.mjs, add PNG blessing to the manifest without removing any of the 27 historical entries, document the gate in the spec, and stop before blessing anything — show me the cold-load evidence for each reference first.
 
 ## 3. Aesthetics, Tier A: page layer over the canvas (no hash change)
 

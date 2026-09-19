@@ -1,0 +1,1008 @@
+{
+  "date": "2026-09-15T00:20:08.474Z",
+  "options": "?sequence=1&saveDiff=1",
+  "warm": 15,
+  "noshadow": false,
+  "rows": [
+    {
+      "key": "0-T1",
+      "repeat": 0,
+      "hash": "5d741ea3a56fe35addfb61a60b1eb534af5aa5ea7b40a30caae3551ed67e46a0",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T1",
+      "repeat": 0,
+      "hash": "ed654e0c8f8ac4c19d1506ab3ca52274283419535098d6c542fe1ddfe41fc707",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T1",
+      "repeat": 0,
+      "hash": "cba7cbe736364972f46b8f6648260ff823811ff43327815961b7f83c5562dc10",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T1",
+      "repeat": 0,
+      "hash": "c69cd83b9743354fab9747ff2b4a694270e2f8dcf907c847b5f339cc4e07ce2b",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T1",
+      "repeat": 0,
+      "hash": "32094b6a21ac63edd76bbfc4dae21d91b14eb754750b117674755d002f012348",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T1",
+      "repeat": 0,
+      "hash": "edb7b06c7c16edff0a7cb7e011d09089596d02e4111fc5179e530b2d232e693d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T1",
+      "repeat": 0,
+      "hash": "dd7ff50e053cbb425993b7b974ba52acb26a93520e422b41a32f0f3012417d06",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T1",
+      "repeat": 0,
+      "hash": "d18fef0153fc641e71c20d0ec5a4159442c86e8c1cc7443d28eb6ab0abfff151",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T1",
+      "repeat": 0,
+      "hash": "a4c3fcd3fbc050d4307b039ec270d84167d098739a76c979f3968549e4504967",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.86-T1",
+      "repeat": 0,
+      "hash": "008ee9efdb77edf7217c81f9fc1c4d7cb3ee29f25add69070b79687ea169cedc",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T1",
+      "repeat": 0,
+      "hash": "6d9ab03348805dc0d9464cc12b2f1b2042ba7df3d05dde6953ed8ff10a8a21d8",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T1",
+      "repeat": 0,
+      "hash": "dbcbdb94ce3bd6cc859f5e9d3b4aca2a554495982dfa9f61598b31b87106056b",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0-T2",
+      "repeat": 0,
+      "hash": "f6ee268b249eb9dd5fde6ff8e13be11d43478af78f519acc7205d137e48cfe1e",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T2",
+      "repeat": 0,
+      "hash": "638053aeffb601ea7476dc1273261cf759ca158797da948e1f1ace15bbceb3fa",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T2",
+      "repeat": 0,
+      "hash": "07c2f539c94789a53d000d617c66e600e4fb49cc6f7c1fd40e7b8349be31a293",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T2",
+      "repeat": 0,
+      "hash": "8c070cc84251ef630f194dd8d827540aca8080992693e442d2fd8145f078f1b1",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T2",
+      "repeat": 0,
+      "hash": "f70095d0e069ef4920ede955e5f486d3c519bd2e28b0662a6f2beeadf736937d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T2",
+      "repeat": 0,
+      "hash": "abe5605e0ce4b0e8d05fd9f04b2509e4d8d0a2bf1726c932e75672f863f2c537",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T2",
+      "repeat": 0,
+      "hash": "5e452d4482bc3e3e0e80b317a038adc0d7df838fb8b243d10a96989dd7efda10",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T2",
+      "repeat": 0,
+      "hash": "f81c6676c02de92d6bdda6a9f172861f3a4294757c630cf3a72b30bf06d94662",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T2",
+      "repeat": 0,
+      "hash": "6a53711ab928b33f11e23c72010bb5619280e6b1f55166b1c8465546a243e75c",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.86-T2",
+      "repeat": 0,
+      "hash": "f73583b021bcc8f479dc6488329e11f21e7321a5589e484c69b9dc074f08ccd4",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T2",
+      "repeat": 0,
+      "hash": "3cf0d05722d7fa31bed53029a025fc291429a6dc88bbfb1b20affc4271e0c95c",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T2",
+      "repeat": 0,
+      "hash": "e99481df974204614baf497d2be8d27be264accf173856e72431e2fc231bf195",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0-T3",
+      "repeat": 0,
+      "hash": "f6ee268b249eb9dd5fde6ff8e13be11d43478af78f519acc7205d137e48cfe1e",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T3",
+      "repeat": 0,
+      "hash": "638053aeffb601ea7476dc1273261cf759ca158797da948e1f1ace15bbceb3fa",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T3",
+      "repeat": 0,
+      "hash": "07c2f539c94789a53d000d617c66e600e4fb49cc6f7c1fd40e7b8349be31a293",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T3",
+      "repeat": 0,
+      "hash": "8c070cc84251ef630f194dd8d827540aca8080992693e442d2fd8145f078f1b1",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T3",
+      "repeat": 0,
+      "hash": "f70095d0e069ef4920ede955e5f486d3c519bd2e28b0662a6f2beeadf736937d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T3",
+      "repeat": 0,
+      "hash": "abe5605e0ce4b0e8d05fd9f04b2509e4d8d0a2bf1726c932e75672f863f2c537",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T3",
+      "repeat": 0,
+      "hash": "5e452d4482bc3e3e0e80b317a038adc0d7df838fb8b243d10a96989dd7efda10",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T3",
+      "repeat": 0,
+      "hash": "a9403596498d14bef63d2b68e7a6131c3b1e1487a284e9b09fc732c930a57b6d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T3",
+      "repeat": 0,
+      "hash": "e66b9ef51500cc996484567d42988cdff3c43633a9da2b62b84262cce9d5f001",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.86-T3",
+      "repeat": 0,
+      "hash": "6076d8a107e32d1027ed72bfe5b887ff69f1ec1d2b89dafdb91153b635414c5d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T3",
+      "repeat": 0,
+      "hash": "78b8c06d4348b63e241d813e22a63732cd6339a45b8f801d1f1f0d397478aa99",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T3",
+      "repeat": 0,
+      "hash": "59432ff0f4bad99987e8cef0cf751d9e6b10839a9e9142f6bfe467920f851914",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0-T1",
+      "repeat": 1,
+      "hash": "5d741ea3a56fe35addfb61a60b1eb534af5aa5ea7b40a30caae3551ed67e46a0",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T1",
+      "repeat": 1,
+      "hash": "ed654e0c8f8ac4c19d1506ab3ca52274283419535098d6c542fe1ddfe41fc707",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T1",
+      "repeat": 1,
+      "hash": "cba7cbe736364972f46b8f6648260ff823811ff43327815961b7f83c5562dc10",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T1",
+      "repeat": 1,
+      "hash": "c69cd83b9743354fab9747ff2b4a694270e2f8dcf907c847b5f339cc4e07ce2b",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T1",
+      "repeat": 1,
+      "hash": "32094b6a21ac63edd76bbfc4dae21d91b14eb754750b117674755d002f012348",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T1",
+      "repeat": 1,
+      "hash": "edb7b06c7c16edff0a7cb7e011d09089596d02e4111fc5179e530b2d232e693d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T1",
+      "repeat": 1,
+      "hash": "dd7ff50e053cbb425993b7b974ba52acb26a93520e422b41a32f0f3012417d06",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T1",
+      "repeat": 1,
+      "hash": "a8700994fa0546a86bee91d15bc863114a9205368483c31da19e7a856fce6e58",
+      "changedPixels": 64,
+      "maxDelta": 7,
+      "bounds": [
+        496,
+        238,
+        948,
+        771
+      ],
+      "evidence": {
+        "baselineHash": "d18fef0153fc641e71c20d0ec5a4159442c86e8c1cc7443d28eb6ab0abfff151",
+        "baseline": "v166-diff-0.71-T1-1789431578886-baseline.png",
+        "repeat": "v166-diff-0.71-T1-1789431578886-repeat.png",
+        "mask": "v166-diff-0.71-T1-1789431578886-mask.png",
+        "maskNote": "Orange means any raw RGBA difference; display diagnostic only, not a capture or blessed hash",
+        "saved": {
+          "baseline": true,
+          "repeat": true,
+          "mask": true
+        }
+      }
+    },
+    {
+      "key": "0.76-T1",
+      "repeat": 1,
+      "hash": "b27251cf7f5be92d05f7ad48540e70ccd64f1c269f64a8e9d87bd150a10e5879",
+      "changedPixels": 4180,
+      "maxDelta": 51,
+      "bounds": [
+        411,
+        167,
+        1028,
+        898
+      ],
+      "evidence": {
+        "baselineHash": "a4c3fcd3fbc050d4307b039ec270d84167d098739a76c979f3968549e4504967",
+        "baseline": "v166-diff-0.76-T1-1789431580217-baseline.png",
+        "repeat": "v166-diff-0.76-T1-1789431580217-repeat.png",
+        "mask": "v166-diff-0.76-T1-1789431580217-mask.png",
+        "maskNote": "Orange means any raw RGBA difference; display diagnostic only, not a capture or blessed hash",
+        "saved": {
+          "baseline": true,
+          "repeat": true,
+          "mask": true
+        }
+      }
+    },
+    {
+      "key": "0.86-T1",
+      "repeat": 1,
+      "hash": "008ee9efdb77edf7217c81f9fc1c4d7cb3ee29f25add69070b79687ea169cedc",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T1",
+      "repeat": 1,
+      "hash": "6d9ab03348805dc0d9464cc12b2f1b2042ba7df3d05dde6953ed8ff10a8a21d8",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T1",
+      "repeat": 1,
+      "hash": "dbcbdb94ce3bd6cc859f5e9d3b4aca2a554495982dfa9f61598b31b87106056b",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0-T2",
+      "repeat": 1,
+      "hash": "f6ee268b249eb9dd5fde6ff8e13be11d43478af78f519acc7205d137e48cfe1e",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T2",
+      "repeat": 1,
+      "hash": "638053aeffb601ea7476dc1273261cf759ca158797da948e1f1ace15bbceb3fa",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T2",
+      "repeat": 1,
+      "hash": "07c2f539c94789a53d000d617c66e600e4fb49cc6f7c1fd40e7b8349be31a293",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T2",
+      "repeat": 1,
+      "hash": "8c070cc84251ef630f194dd8d827540aca8080992693e442d2fd8145f078f1b1",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T2",
+      "repeat": 1,
+      "hash": "f70095d0e069ef4920ede955e5f486d3c519bd2e28b0662a6f2beeadf736937d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T2",
+      "repeat": 1,
+      "hash": "abe5605e0ce4b0e8d05fd9f04b2509e4d8d0a2bf1726c932e75672f863f2c537",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T2",
+      "repeat": 1,
+      "hash": "5e452d4482bc3e3e0e80b317a038adc0d7df838fb8b243d10a96989dd7efda10",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T2",
+      "repeat": 1,
+      "hash": "f81c6676c02de92d6bdda6a9f172861f3a4294757c630cf3a72b30bf06d94662",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T2",
+      "repeat": 1,
+      "hash": "6a53711ab928b33f11e23c72010bb5619280e6b1f55166b1c8465546a243e75c",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.86-T2",
+      "repeat": 1,
+      "hash": "4b0808f402797a7bb5228e2fe74167a42a5f2702eb30a06506474534ec0fa036",
+      "changedPixels": 638,
+      "maxDelta": 38,
+      "bounds": [
+        5,
+        342,
+        384,
+        685
+      ],
+      "evidence": {
+        "baselineHash": "f73583b021bcc8f479dc6488329e11f21e7321a5589e484c69b9dc074f08ccd4",
+        "baseline": "v166-diff-0.86-T2-1789431593751-baseline.png",
+        "repeat": "v166-diff-0.86-T2-1789431593751-repeat.png",
+        "mask": "v166-diff-0.86-T2-1789431593751-mask.png",
+        "maskNote": "Orange means any raw RGBA difference; display diagnostic only, not a capture or blessed hash",
+        "saved": {
+          "baseline": true,
+          "repeat": true,
+          "mask": true
+        }
+      }
+    },
+    {
+      "key": "0.93-T2",
+      "repeat": 1,
+      "hash": "3cf0d05722d7fa31bed53029a025fc291429a6dc88bbfb1b20affc4271e0c95c",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T2",
+      "repeat": 1,
+      "hash": "a09503b7a98020bb20077bd2219d53d6cb0edaab27f6c4b937e2e75ae4b0edf0",
+      "changedPixels": 36,
+      "maxDelta": 14,
+      "bounds": [
+        67,
+        213,
+        345,
+        498
+      ],
+      "evidence": {
+        "baselineHash": "e99481df974204614baf497d2be8d27be264accf173856e72431e2fc231bf195",
+        "baseline": "v166-diff-1-T2-1789431595908-baseline.png",
+        "repeat": "v166-diff-1-T2-1789431595908-repeat.png",
+        "mask": "v166-diff-1-T2-1789431595908-mask.png",
+        "maskNote": "Orange means any raw RGBA difference; display diagnostic only, not a capture or blessed hash",
+        "saved": {
+          "baseline": true,
+          "repeat": true,
+          "mask": true
+        }
+      }
+    },
+    {
+      "key": "0-T3",
+      "repeat": 1,
+      "hash": "f6ee268b249eb9dd5fde6ff8e13be11d43478af78f519acc7205d137e48cfe1e",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T3",
+      "repeat": 1,
+      "hash": "638053aeffb601ea7476dc1273261cf759ca158797da948e1f1ace15bbceb3fa",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T3",
+      "repeat": 1,
+      "hash": "07c2f539c94789a53d000d617c66e600e4fb49cc6f7c1fd40e7b8349be31a293",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T3",
+      "repeat": 1,
+      "hash": "8c070cc84251ef630f194dd8d827540aca8080992693e442d2fd8145f078f1b1",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T3",
+      "repeat": 1,
+      "hash": "f70095d0e069ef4920ede955e5f486d3c519bd2e28b0662a6f2beeadf736937d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T3",
+      "repeat": 1,
+      "hash": "abe5605e0ce4b0e8d05fd9f04b2509e4d8d0a2bf1726c932e75672f863f2c537",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T3",
+      "repeat": 1,
+      "hash": "5e452d4482bc3e3e0e80b317a038adc0d7df838fb8b243d10a96989dd7efda10",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T3",
+      "repeat": 1,
+      "hash": "a9403596498d14bef63d2b68e7a6131c3b1e1487a284e9b09fc732c930a57b6d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T3",
+      "repeat": 1,
+      "hash": "2f438dcfd1f0d3fc312fb70eb12d49353f22c23cc43a0d283c2b3b117f782dc0",
+      "changedPixels": 27,
+      "maxDelta": 5,
+      "bounds": [
+        83,
+        280,
+        326,
+        631
+      ],
+      "evidence": {
+        "baselineHash": "e66b9ef51500cc996484567d42988cdff3c43633a9da2b62b84262cce9d5f001",
+        "baseline": "v166-diff-0.76-T3-1789431605324-baseline.png",
+        "repeat": "v166-diff-0.76-T3-1789431605324-repeat.png",
+        "mask": "v166-diff-0.76-T3-1789431605324-mask.png",
+        "maskNote": "Orange means any raw RGBA difference; display diagnostic only, not a capture or blessed hash",
+        "saved": {
+          "baseline": true,
+          "repeat": true,
+          "mask": true
+        }
+      }
+    },
+    {
+      "key": "0.86-T3",
+      "repeat": 1,
+      "hash": "6076d8a107e32d1027ed72bfe5b887ff69f1ec1d2b89dafdb91153b635414c5d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T3",
+      "repeat": 1,
+      "hash": "78b8c06d4348b63e241d813e22a63732cd6339a45b8f801d1f1f0d397478aa99",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T3",
+      "repeat": 1,
+      "hash": "59432ff0f4bad99987e8cef0cf751d9e6b10839a9e9142f6bfe467920f851914",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    }
+  ],
+  "saveErrors": [],
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.6.2 Safari/605.1.15",
+  "backend": "webgpu",
+  "stall": null
+}

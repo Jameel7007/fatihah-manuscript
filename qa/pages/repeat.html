@@ -10,7 +10,7 @@ async function save(name,body){try{const r=await fetch(`/qa-save?name=${name}`,{
 const pixels=async dataUrl=>{const img=new Image();img.src=dataUrl;await img.decode();const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);return ctx.getImageData(0,0,c.width,c.height).data;};
 const cases=q.has('sequence')?[1,2,3].flatMap(tier=>[0,.08,.21,.34,.45,.56,.645,.710,.76,.86,.93,1].map(p=>[p,tier,tier===1?1440:390,tier===1?900:844])):[[.645,1,1440,900],[.76,2,390,844],[.93,2,390,844]];
 for(let repeat=0;repeat<(q.has('sequence')?2:8);repeat++)for(const [p,tier,w,h] of cases){
- const f=document.createElement('iframe');f.src=`/?capture=${p}&tier=${tier}&w=${w}&h=${h}&warm=${q.get('warm')||15}${q.has('noshadow')?'&noshadow':''}${q.has('gpuReadback')?'&gpuReadback':''}${q.has('traceSources')?'&traceSources':''}${q.has('noenv')?'&noenv':''}${q.has('nomsaa')?'&nomsaa':''}${q.has('gpuTrace')?'&gpuTrace':''}&repeat=${repeat}`;document.body.append(f);
+ const f=document.createElement('iframe');f.src=`/?capture=${p}&tier=${tier}&w=${w}&h=${h}&warm=${q.get('warm')||15}${q.has('noshadow')?'&noshadow':''}${q.has('gpuReadback')?'&gpuReadback':''}${q.has('traceSources')?'&traceSources':''}${q.has('noenv')?'&noenv':''}${q.has('nomsaa')?'&nomsaa':''}${q.has('gpuTrace')?'&gpuTrace':''}${q.has('backend')?'&backend='+q.get('backend'):''}${q.has('noblob')?'&noblob':''}${q.has('stall')?'&stall='+q.get('stall')+(q.has('stallFrames')?'&stallFrames='+q.get('stallFrames'):''):''}&repeat=${repeat}`;document.body.append(f);
  let c;for(let i=0;i<240;i++){await new Promise(r=>setTimeout(r,250));c=f.contentWindow?.__capture;if((c&&(!(q.has('traceSources')||q.has('gpuTrace'))||c.sources))||f.contentWindow?.__captureError)break;}
  const key=`${p}-T${tier}`,row={key,repeat,hash:c?.hash||'TIMEOUT',error:f.contentWindow?.__captureError,sources:c?.sources};
  if(c){const d=await pixels(c.dataUrl);if(!bases.has(key))bases.set(key,{hash:c.hash,d,dataUrl:c.dataUrl});const b=bases.get(key);row.changedPixels=0;row.maxDelta=0;row.bounds=[w,h,-1,-1];for(let i=0;i<d.length;i+=4){let changed=false;for(let k=0;k<4;k++){const delta=Math.abs(d[i+k]-b.d[i+k]);row.maxDelta=Math.max(row.maxDelta,delta);changed ||= delta>0;}if(changed){row.changedPixels++;const x=i/4%w,y=Math.floor(i/4/w);row.bounds=[Math.min(row.bounds[0],x),Math.min(row.bounds[1],y),Math.max(row.bounds[2],x),Math.max(row.bounds[3],y)];}}
@@ -30,6 +30,7 @@ for(let repeat=0;repeat<(q.has('sequence')?2:8);repeat++)for(const [p,tier,w,h] 
 }
 const out={date:new Date().toISOString(),options:location.search,warm:q.get('warm')||15,noshadow:q.has('noshadow'),rows,saveErrors};
 window.__repeatResult=out;
-const result=await save('v166-targeted-'+(q.has('gpuReadback')?'gpu-':'')+(q.has('sequence')?'sequence-':'')+(q.has('noshadow')?'noshadow':'normal')+'-'+(q.get('warm')||15)+'-'+Date.now(),JSON.stringify(out,null,2));
+out.userAgent=navigator.userAgent;out.backend=q.get('backend')||'webgpu';out.stall=q.get('stall')||null;
+const result=await save('v166-targeted-'+(q.has('gpuReadback')?'gpu-':'')+(q.has('sequence')?'sequence-':'')+(q.has('backend')?q.get('backend')+'-':'')+(q.has('noblob')?'noblob-':'')+(q.has('stall')?'stall'+q.get('stall')+'-':'')+(q.has('noshadow')?'noshadow':'normal')+'-'+(q.get('warm')||15)+'-'+Date.now(),JSON.stringify(out,null,2));
 log.textContent+='COMPLETE '+(result?'report saved':'REPORT NOT SAVED; window.__repeatResult retained');
 </script>

@@ -1,0 +1,984 @@
+{
+  "date": "2026-09-19T16:16:56.753Z",
+  "options": "?sequence=1&saveDiff=1&tag=headless-webgpu-5",
+  "warm": 15,
+  "noshadow": false,
+  "rows": [
+    {
+      "key": "0-T1",
+      "repeat": 0,
+      "hash": "b934b6d9bad533c25ffe553eb09c143ef5b1edeba9e7d4b0f7760342b34fae5b",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T1",
+      "repeat": 0,
+      "hash": "052bd8d14d61ce4fd3ab8e3e0cdb819d557a859fe9651b5b6465fdb5195c8666",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T1",
+      "repeat": 0,
+      "hash": "2cd0566ea6a198f2245fe8f247e3d57e6eb88384eb316644d4607971b54075c2",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T1",
+      "repeat": 0,
+      "hash": "1c4346361ee0dc7df4f122ec534e64d3251460faf4b084c94993a57ffcca33bf",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T1",
+      "repeat": 0,
+      "hash": "331b2dfde33da1ba163c4b97791aafc0e94f27ff37c2a9a428b62212e873961d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T1",
+      "repeat": 0,
+      "hash": "2ed5f3decca14fd62641763dd36d982e4976e9a6edbe2409443334ac0a39b169",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T1",
+      "repeat": 0,
+      "hash": "f79bd51bc0fe536b3b1beca4f95275a4b76277be4be6dd0aa569b29205e001c4",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T1",
+      "repeat": 0,
+      "hash": "3fd0c2aa3ea9e402f933e14f06c87af4c505b0bc9a9a072c1ba177ee53b3daa8",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T1",
+      "repeat": 0,
+      "hash": "0601cc5206129d8f3ca06930aa772fa84bd12331a96879458bd57584e8885521",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.86-T1",
+      "repeat": 0,
+      "hash": "0f2fe484febb61ff9ad1fc1dd6c2118fbe962ad6a29afaa02e7cf97e01bd9277",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T1",
+      "repeat": 0,
+      "hash": "ea6b13a6e469d2c81b94cb6215e8c819316fb8b1bb36ad6a8a2da4b4425b0056",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T1",
+      "repeat": 0,
+      "hash": "53c4214f8c3b59b3e0310f3c84b65294417396c0cbc06f8713b08305afd3906d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0-T2",
+      "repeat": 0,
+      "hash": "8fd96c4f93a8434262adae4730522cb628843b21548d31f023eaa51b2efb7a93",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T2",
+      "repeat": 0,
+      "hash": "0b958aef782f4e7329bccb038e7c9fca0dd95244a3676950693cbf97cf9576ec",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T2",
+      "repeat": 0,
+      "hash": "9ffaeb3a44a43e5ffd9f4fad4bd3daca19f647c712bb2a909c4d0756dc1d5745",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T2",
+      "repeat": 0,
+      "hash": "c63b54c4f90701b4012995939d7acbe18c1c91f8382f602cb1a9fd70e1e0f3db",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T2",
+      "repeat": 0,
+      "hash": "4c59aa68bf28efc8689ca668bd563a92e4aebd04203f6a76c306349ba9d745c6",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T2",
+      "repeat": 0,
+      "hash": "3197288a0743e0794dd12f244a58444d053b1c87ad1e62cd49971149919b2299",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T2",
+      "repeat": 0,
+      "hash": "d4c0ad96ea5b012951bc0ada06277a90c165d052d66f92d680dd65479e4a3c87",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T2",
+      "repeat": 0,
+      "hash": "a94ef5ce1e79d51b6c0d7422b9671c86a1d59bd86b971d2ae7cea9b2432d390d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T2",
+      "repeat": 0,
+      "hash": "0cbc6aa3e1c1f2b4b1558544637739b17e979a38a2e87a72c6b4b6bd816d5bec",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.86-T2",
+      "repeat": 0,
+      "hash": "442fffe04aeae7c9e5f5887485c9d3aa8b751c84b900098c21f3fa33f51497f4",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T2",
+      "repeat": 0,
+      "hash": "9ce9b89b000ed11eb899b365625b91a1483cc3aa5ef7ca51655aee5cb3e2603e",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T2",
+      "repeat": 0,
+      "hash": "b93c202c385217fa401bddb08a74de0ee3d59301dd73a0009340d103974948f5",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0-T3",
+      "repeat": 0,
+      "hash": "8fd96c4f93a8434262adae4730522cb628843b21548d31f023eaa51b2efb7a93",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T3",
+      "repeat": 0,
+      "hash": "0b958aef782f4e7329bccb038e7c9fca0dd95244a3676950693cbf97cf9576ec",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T3",
+      "repeat": 0,
+      "hash": "9ffaeb3a44a43e5ffd9f4fad4bd3daca19f647c712bb2a909c4d0756dc1d5745",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T3",
+      "repeat": 0,
+      "hash": "c63b54c4f90701b4012995939d7acbe18c1c91f8382f602cb1a9fd70e1e0f3db",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T3",
+      "repeat": 0,
+      "hash": "4c59aa68bf28efc8689ca668bd563a92e4aebd04203f6a76c306349ba9d745c6",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T3",
+      "repeat": 0,
+      "hash": "3197288a0743e0794dd12f244a58444d053b1c87ad1e62cd49971149919b2299",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T3",
+      "repeat": 0,
+      "hash": "d4c0ad96ea5b012951bc0ada06277a90c165d052d66f92d680dd65479e4a3c87",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T3",
+      "repeat": 0,
+      "hash": "b23dd15ed023a824dc2bb25d8084dc26f20ad5854cd33ca236f110191ed6ad29",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T3",
+      "repeat": 0,
+      "hash": "c296603bab141ee1f8809e2688af6090394a67fa3f573642f8f73db2791e42a0",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.86-T3",
+      "repeat": 0,
+      "hash": "76d21d7c539d02f70948a59537476bb4f0a0dddbffe1294c524e8a69a1d5a738",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T3",
+      "repeat": 0,
+      "hash": "deac8df1d3bd857302bce90252b1db51dc2b76abe71582e8776587c8bf174c6a",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T3",
+      "repeat": 0,
+      "hash": "957f0cf958bceafcc6f2555bfe5e80667941e735c791bcc7d111a8d71f9dffd9",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0-T1",
+      "repeat": 1,
+      "hash": "b934b6d9bad533c25ffe553eb09c143ef5b1edeba9e7d4b0f7760342b34fae5b",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T1",
+      "repeat": 1,
+      "hash": "052bd8d14d61ce4fd3ab8e3e0cdb819d557a859fe9651b5b6465fdb5195c8666",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T1",
+      "repeat": 1,
+      "hash": "2cd0566ea6a198f2245fe8f247e3d57e6eb88384eb316644d4607971b54075c2",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T1",
+      "repeat": 1,
+      "hash": "1c4346361ee0dc7df4f122ec534e64d3251460faf4b084c94993a57ffcca33bf",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T1",
+      "repeat": 1,
+      "hash": "331b2dfde33da1ba163c4b97791aafc0e94f27ff37c2a9a428b62212e873961d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T1",
+      "repeat": 1,
+      "hash": "2ed5f3decca14fd62641763dd36d982e4976e9a6edbe2409443334ac0a39b169",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T1",
+      "repeat": 1,
+      "hash": "f79bd51bc0fe536b3b1beca4f95275a4b76277be4be6dd0aa569b29205e001c4",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T1",
+      "repeat": 1,
+      "hash": "3fd0c2aa3ea9e402f933e14f06c87af4c505b0bc9a9a072c1ba177ee53b3daa8",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T1",
+      "repeat": 1,
+      "hash": "8197fe53be0dd7102a8c9e38d5e8bdd589a1922e4a2fc28b10797258326ac445",
+      "changedPixels": 2059,
+      "maxDelta": 51,
+      "bounds": [
+        2,
+        2,
+        1437,
+        899
+      ],
+      "evidence": {
+        "baselineHash": "0601cc5206129d8f3ca06930aa772fa84bd12331a96879458bd57584e8885521",
+        "baseline": "v166-diff-0.76-T1-1789834600912-baseline.png",
+        "repeat": "v166-diff-0.76-T1-1789834600912-repeat.png",
+        "mask": "v166-diff-0.76-T1-1789834600912-mask.png",
+        "maskNote": "Orange means any raw RGBA difference; display diagnostic only, not a capture or blessed hash",
+        "saved": {
+          "baseline": true,
+          "repeat": true,
+          "mask": true
+        }
+      }
+    },
+    {
+      "key": "0.86-T1",
+      "repeat": 1,
+      "hash": "0f2fe484febb61ff9ad1fc1dd6c2118fbe962ad6a29afaa02e7cf97e01bd9277",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T1",
+      "repeat": 1,
+      "hash": "ea6b13a6e469d2c81b94cb6215e8c819316fb8b1bb36ad6a8a2da4b4425b0056",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T1",
+      "repeat": 1,
+      "hash": "53c4214f8c3b59b3e0310f3c84b65294417396c0cbc06f8713b08305afd3906d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        1440,
+        900,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0-T2",
+      "repeat": 1,
+      "hash": "8fd96c4f93a8434262adae4730522cb628843b21548d31f023eaa51b2efb7a93",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T2",
+      "repeat": 1,
+      "hash": "0b958aef782f4e7329bccb038e7c9fca0dd95244a3676950693cbf97cf9576ec",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T2",
+      "repeat": 1,
+      "hash": "9ffaeb3a44a43e5ffd9f4fad4bd3daca19f647c712bb2a909c4d0756dc1d5745",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T2",
+      "repeat": 1,
+      "hash": "c63b54c4f90701b4012995939d7acbe18c1c91f8382f602cb1a9fd70e1e0f3db",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T2",
+      "repeat": 1,
+      "hash": "4c59aa68bf28efc8689ca668bd563a92e4aebd04203f6a76c306349ba9d745c6",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T2",
+      "repeat": 1,
+      "hash": "3197288a0743e0794dd12f244a58444d053b1c87ad1e62cd49971149919b2299",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T2",
+      "repeat": 1,
+      "hash": "d4c0ad96ea5b012951bc0ada06277a90c165d052d66f92d680dd65479e4a3c87",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T2",
+      "repeat": 1,
+      "hash": "a94ef5ce1e79d51b6c0d7422b9671c86a1d59bd86b971d2ae7cea9b2432d390d",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T2",
+      "repeat": 1,
+      "hash": "0cbc6aa3e1c1f2b4b1558544637739b17e979a38a2e87a72c6b4b6bd816d5bec",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.86-T2",
+      "repeat": 1,
+      "hash": "442fffe04aeae7c9e5f5887485c9d3aa8b751c84b900098c21f3fa33f51497f4",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.93-T2",
+      "repeat": 1,
+      "hash": "9ce9b89b000ed11eb899b365625b91a1483cc3aa5ef7ca51655aee5cb3e2603e",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T2",
+      "repeat": 1,
+      "hash": "b93c202c385217fa401bddb08a74de0ee3d59301dd73a0009340d103974948f5",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0-T3",
+      "repeat": 1,
+      "hash": "8fd96c4f93a8434262adae4730522cb628843b21548d31f023eaa51b2efb7a93",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.08-T3",
+      "repeat": 1,
+      "hash": "0b958aef782f4e7329bccb038e7c9fca0dd95244a3676950693cbf97cf9576ec",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.21-T3",
+      "repeat": 1,
+      "hash": "9ffaeb3a44a43e5ffd9f4fad4bd3daca19f647c712bb2a909c4d0756dc1d5745",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.34-T3",
+      "repeat": 1,
+      "hash": "c63b54c4f90701b4012995939d7acbe18c1c91f8382f602cb1a9fd70e1e0f3db",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.45-T3",
+      "repeat": 1,
+      "hash": "4c59aa68bf28efc8689ca668bd563a92e4aebd04203f6a76c306349ba9d745c6",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.56-T3",
+      "repeat": 1,
+      "hash": "3197288a0743e0794dd12f244a58444d053b1c87ad1e62cd49971149919b2299",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.645-T3",
+      "repeat": 1,
+      "hash": "d4c0ad96ea5b012951bc0ada06277a90c165d052d66f92d680dd65479e4a3c87",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.71-T3",
+      "repeat": 1,
+      "hash": "b23dd15ed023a824dc2bb25d8084dc26f20ad5854cd33ca236f110191ed6ad29",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "0.76-T3",
+      "repeat": 1,
+      "hash": "709b58f46d302abfe37275193d8e9cfaad21add7c908381f0acda6cd6450f08f",
+      "changedPixels": 988,
+      "maxDelta": 3,
+      "bounds": [
+        0,
+        0,
+        389,
+        843
+      ],
+      "evidence": {
+        "baselineHash": "c296603bab141ee1f8809e2688af6090394a67fa3f573642f8f73db2791e42a0",
+        "baseline": "v166-diff-0.76-T3-1789834614959-baseline.png",
+        "repeat": "v166-diff-0.76-T3-1789834614959-repeat.png",
+        "mask": "v166-diff-0.76-T3-1789834614959-mask.png",
+        "maskNote": "Orange means any raw RGBA difference; display diagnostic only, not a capture or blessed hash",
+        "saved": {
+          "baseline": true,
+          "repeat": true,
+          "mask": true
+        }
+      }
+    },
+    {
+      "key": "0.86-T3",
+      "repeat": 1,
+      "hash": "422d53a7754828362cfc2f65ff486d4a5ad40bb444d4f919a8d1df7c5472a302",
+      "changedPixels": 1044,
+      "maxDelta": 6,
+      "bounds": [
+        0,
+        0,
+        389,
+        842
+      ],
+      "evidence": {
+        "baselineHash": "76d21d7c539d02f70948a59537476bb4f0a0dddbffe1294c524e8a69a1d5a738",
+        "baseline": "v166-diff-0.86-T3-1789834615577-baseline.png",
+        "repeat": "v166-diff-0.86-T3-1789834615577-repeat.png",
+        "mask": "v166-diff-0.86-T3-1789834615577-mask.png",
+        "maskNote": "Orange means any raw RGBA difference; display diagnostic only, not a capture or blessed hash",
+        "saved": {
+          "baseline": true,
+          "repeat": true,
+          "mask": true
+        }
+      }
+    },
+    {
+      "key": "0.93-T3",
+      "repeat": 1,
+      "hash": "deac8df1d3bd857302bce90252b1db51dc2b76abe71582e8776587c8bf174c6a",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    },
+    {
+      "key": "1-T3",
+      "repeat": 1,
+      "hash": "957f0cf958bceafcc6f2555bfe5e80667941e735c791bcc7d111a8d71f9dffd9",
+      "changedPixels": 0,
+      "maxDelta": 0,
+      "bounds": [
+        390,
+        844,
+        -1,
+        -1
+      ]
+    }
+  ],
+  "saveErrors": [],
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+  "backend": "webgpu",
+  "stall": null
+}

@@ -1,7 +1,7 @@
 {
   "date": "2026-09-07",
   "version": "v1.6.6",
-  "status": "Step 1 open; no demonstrated fix; nothing blessed",
+  "status": "Step 1 open; root cause not demonstrated; WebGL2 bit-repeatable (2026-09-19); tolerance gate for WebGPU proposed, awaiting owner authorization; nothing blessed",
   "notes": [
     "September 11 follow-up: CPU vertex/index/storage uploads added to opt-in trace, including mapped-at-creation bytes. Does not observe GPU writes. Four trace tests added (22 total pass); build passes. Repeat runner now reports save failures and retains window.__repeatResult. The 72-page trace completed with two differing poses despite matching traced inputs; see first run. No fix established. September 12 local release hardening does not change rendering or waive this blocker.",
     "Each sequence uses 36 poses twice; excludes noblob. JSON sink files have a historical .png extension.",
@@ -18,7 +18,18 @@
       "captures": 72,
       "errors": 0,
       "saveErrors": 0,
-      "differences": [{ "key": "0.76-T1", "changedPixels": 198, "maxDelta": 19 }, { "key": "0.71-T3", "changedPixels": 12, "maxDelta": 8 }],
+      "differences": [
+        {
+          "key": "0.76-T1",
+          "changedPixels": 198,
+          "maxDelta": 19
+        },
+        {
+          "key": "0.71-T3",
+          "changedPixels": 12,
+          "maxDelta": 8
+        }
+      ],
       "verification": "All 36 pose pairs have equal traced shader strings and CPU-uploaded uniform/vertex/index/storage buffer hashes. All four saved PNGs independently decoded; raw RGBA hashes and difference counts/maxima reproduced. Both masks and final report saved successfully.",
       "conclusion": "This run excludes a difference in the traced CPU uploads, not all GPU state. GPU-written contents, pipeline descriptors, draw/binding state and driver execution remain outside this trace. No demonstrated cause/fix; approved rendering unchanged."
     },
@@ -26,8 +37,23 @@
       "date": "2026-09-11",
       "options": "?sequence=1&centroidRelief=1&saveDiff=1",
       "status": "INCOMPLETE: evidence sink stopped while saving first mismatch mask; no completed matrix report",
-      "differences": [{ "key": "0.71-T1", "changedPixels": 341, "maxDelta": 21, "bounds": [481,148,948,798] }],
-      "evidence": ["qa/review/v166-diff-0.71-T1-1789152674863-baseline.png", "qa/review/v166-diff-0.71-T1-1789152674863-repeat.png"],
+      "differences": [
+        {
+          "key": "0.71-T1",
+          "changedPixels": 341,
+          "maxDelta": 21,
+          "bounds": [
+            481,
+            148,
+            948,
+            798
+          ]
+        }
+      ],
+      "evidence": [
+        "qa/review/v166-diff-0.71-T1-1789152674863-baseline.png",
+        "qa/review/v166-diff-0.71-T1-1789152674863-repeat.png"
+      ],
       "verification": "Both actual PNGs independently decoded to RGBA; hashes differ and 341 differing pixels verified. No mask or final sequence report saved. Explicit centroid sampling did not eliminate variation in this pose; experiment removed, approved default restored."
     },
     {
@@ -37,12 +63,72 @@
       "captures": 72,
       "errors": 0,
       "differences": [
-        { "key": "0.34-T1", "changedPixels": 1, "maxDelta": 1, "bounds": [132,804,132,804] },
-        { "key": "0.71-T1", "changedPixels": 178, "maxDelta": 10, "bounds": [479,152,945,800] },
-        { "key": "0.86-T2", "changedPixels": 911, "maxDelta": 56, "bounds": [5,341,386,686] },
-        { "key": "1-T2", "changedPixels": 4, "maxDelta": 2, "bounds": [71,261,230,560] },
-        { "key": "0.93-T3", "changedPixels": 93, "maxDelta": 12, "bounds": [50,196,334,626] },
-        { "key": "1-T3", "changedPixels": 90, "maxDelta": 189, "bounds": [48,207,335,624] }
+        {
+          "key": "0.34-T1",
+          "changedPixels": 1,
+          "maxDelta": 1,
+          "bounds": [
+            132,
+            804,
+            132,
+            804
+          ]
+        },
+        {
+          "key": "0.71-T1",
+          "changedPixels": 178,
+          "maxDelta": 10,
+          "bounds": [
+            479,
+            152,
+            945,
+            800
+          ]
+        },
+        {
+          "key": "0.86-T2",
+          "changedPixels": 911,
+          "maxDelta": 56,
+          "bounds": [
+            5,
+            341,
+            386,
+            686
+          ]
+        },
+        {
+          "key": "1-T2",
+          "changedPixels": 4,
+          "maxDelta": 2,
+          "bounds": [
+            71,
+            261,
+            230,
+            560
+          ]
+        },
+        {
+          "key": "0.93-T3",
+          "changedPixels": 93,
+          "maxDelta": 12,
+          "bounds": [
+            50,
+            196,
+            334,
+            626
+          ]
+        },
+        {
+          "key": "1-T3",
+          "changedPixels": 90,
+          "maxDelta": 189,
+          "bounds": [
+            48,
+            207,
+            335,
+            624
+          ]
+        }
       ],
       "evidence": "Each differing row in the raw report links actual baseline/repeat PNGs and an orange difference mask. Independently decoded all 12 PNGs to RGBA and reproduced their recorded SHA-256 values; masks are diagnostics, not references.",
       "inspection": "Inspected T2 p=.86 pair and mask and T3 p=1 mask: sparse changes concentrate on lettering, without a broad background/parchment shift. Separate T1 p=.34 case changes one background-edge pixel by one green level. Largest T3 p=1 difference at (107,366): RGB (34,24,18) to (198,200,207). No demonstrated cause or fix."
@@ -53,7 +139,19 @@
       "options": "?sequence=1&noReliefBias=1",
       "captures": 72,
       "errors": 0,
-      "differences": [{ "key": "0.93-T1", "changedPixels": 804, "maxDelta": 30, "bounds": [444,40,997,825] }],
+      "differences": [
+        {
+          "key": "0.93-T1",
+          "changedPixels": 804,
+          "maxDelta": 30,
+          "bounds": [
+            444,
+            40,
+            997,
+            825
+          ]
+        }
+      ],
       "note": "Removing relief polygon offset did not fix capture differences. Experiment removed; approved offset restored."
     },
     {
@@ -63,8 +161,28 @@
       "captures": 72,
       "errors": 0,
       "differences": [
-        { "key": "0.86-T1", "changedPixels": 4817, "maxDelta": 100, "bounds": [343,317,1093,899] },
-        { "key": "0.93-T1", "changedPixels": 419, "maxDelta": 28, "bounds": [444,40,996,824] }
+        {
+          "key": "0.86-T1",
+          "changedPixels": 4817,
+          "maxDelta": 100,
+          "bounds": [
+            343,
+            317,
+            1093,
+            899
+          ]
+        },
+        {
+          "key": "0.93-T1",
+          "changedPixels": 419,
+          "maxDelta": 28,
+          "bounds": [
+            444,
+            40,
+            996,
+            824
+          ]
+        }
       ],
       "note": "Approved default shader restored; capture required-asset fail-closed correction applied. 34/36 poses repeat-identical. No fix or blessing."
     },
@@ -74,9 +192,39 @@
       "options": "?sequence=1&noReliefDerivatives=1",
       "captures": 72,
       "differences": [
-        { "key": "0.86-T1", "changedPixels": 2812, "maxDelta": 128, "bounds": [348,317,1084,899] },
-        { "key": "1-T2", "changedPixels": 1, "maxDelta": 1, "bounds": [71,261,71,261] },
-        { "key": "0.76-T3", "changedPixels": 25, "maxDelta": 8, "bounds": [49,276,309,630] }
+        {
+          "key": "0.86-T1",
+          "changedPixels": 2812,
+          "maxDelta": 128,
+          "bounds": [
+            348,
+            317,
+            1084,
+            899
+          ]
+        },
+        {
+          "key": "1-T2",
+          "changedPixels": 1,
+          "maxDelta": 1,
+          "bounds": [
+            71,
+            261,
+            71,
+            261
+          ]
+        },
+        {
+          "key": "0.76-T3",
+          "changedPixels": 25,
+          "maxDelta": 8,
+          "bounds": [
+            49,
+            276,
+            309,
+            630
+          ]
+        }
       ],
       "note": "In-app WebGPU, authored relief footprint and normal-derivative AA both disabled. Differences remain; this does not rule out every derivative elsewhere in the pipeline. Experiment removed, approved default shader preserved."
     },
@@ -87,8 +235,28 @@
       "captures": 72,
       "errors": 0,
       "differences": [
-        { "key": "1-T1", "changedPixels": 29, "maxDelta": 23, "bounds": [503, 229, 682, 816] },
-        { "key": "0.645-T3", "changedPixels": 6, "maxDelta": 1, "bounds": [90, 727, 374, 735] }
+        {
+          "key": "1-T1",
+          "changedPixels": 29,
+          "maxDelta": 23,
+          "bounds": [
+            503,
+            229,
+            682,
+            816
+          ]
+        },
+        {
+          "key": "0.645-T3",
+          "changedPixels": 6,
+          "maxDelta": 1,
+          "bounds": [
+            90,
+            727,
+            374,
+            735
+          ]
+        }
       ],
       "note": "Local Chrome after fallback implementation; no visual renderer changes. Two cases differ; not a fix or blessing."
     },
@@ -449,6 +617,615 @@
         }
       ],
       "inputDifferences": []
+    }
+  ],
+  "followups": [
+    {
+      "date": "2026-09-19",
+      "author": "Claude Fable 5.1 (second reviewer)",
+      "status": "Step 1 root cause not demonstrated; character of the variance established; WebGL2 bit-repeatable; gate change PROPOSED, not adopted; nothing blessed",
+      "method": "qa/pages/repeat.html?sequence=1 (36 poses × 2 cold iframe loads) in (a) visible Safari and Brave windows and (b) Brave 153 --headless=new with WebGPU (ANGLE Metal), several instances concurrently; new rig flags &stall, &backend, &noblob passthrough; qa/frame-compare.mjs for per-pair metrics.",
+      "findings": [
+        "Safari 26.6 WebGPU (visible window): 5/36 pose pairs differ — the variance is not specific to Chromium/Dawn.",
+        "Brave 153 visible: 2/36 differ (both T2, whole-frame bounds, one at maxDelta 1).",
+        "Headless WebGPU across 14 sequence runs: 22/504 pairs differ (≈4.4%); plain control runs and perturbed runs (warm=90, stall=300 ms×3 frames, --disable-gpu-shader-disk-cache, noblob) all show the same intermittent behaviour, so warm-up length, load-time stalls, the shader disk cache and the contact-blob pass are each excluded as the cause. The rate rose with more concurrent instances (GPU contention), which points at a timing-dependent per-load state inside the WebGPU path.",
+        "Headless WebGL2 (same three.js scene, ANGLE Metal) across 5 sequence runs: 0/180 pairs differ — bit-repeatable in every pose and tier.",
+        "Ink render target (?scene=inkrt&p=0.64, R/G view) across 8 headless cold loads: one hash (0db1e995…) — the once-per-load ink pass is excluded as the cause.",
+        "Character of a differing pair (38 saved pairs, build/step1-pair-metrics-2026-09-19.jsonl): changed pixels ≤ 1.55% of the frame, median ΔE76 of changed pixels ≤ 0.94 (sub-threshold), worst 5×5 block mean ΔE76 ≤ 2.9; the whole-frame cases are 1–3 level scatter consistent with ulp-level shading differences flipping the 1/255 dither; the lettering cases are edge speckle; one historical T3 pair contains a single star pixel flipping at a glyph edge (ΔE 72 for one pixel, 5×5 block 2.9)."
+      ],
+      "excluded_causes": [
+        "ink RT (8/8 identical)",
+        "contact blob (noblob runs differ)",
+        "warm-up length (warm=90 differs)",
+        "load-time stalls (stall=300 differs)",
+        "GPU shader disk cache (disabled, differs)",
+        "Chromium-specific (Safari differs)",
+        "MSAA/env/shadows/derivatives/bias/centroid (Codex 09-07…09-11)",
+        "CPU-side uniform/vertex/index/storage bytes and shader strings (Codex gpuTrace, equal)"
+      ],
+      "proposal_requires_owner_authorization": {
+        "summary": "Keep bit-exact SHA-256 references for the WebGL2 backend (demonstrated repeatable) and for every pose where WebGPU cold loads reproduce; gate WebGPU frames against blessed PNGs with a tolerance derived from the observed variance, so a real regression (moved lettering, changed gold, lighting shift) still fails while ulp-level scatter passes.",
+        "tolerance_candidate": {
+          "changedPct_max": 1.0,
+          "dE76_p50_max": 1.0,
+          "worstBlock5x5DE76_max": 4.0,
+          "note": "derived from 38 observed pairs with margin; the 1.55% pair (0.86-T2) would need changedPct_max 2.0 or a re-capture policy (best of two loads)"
+        },
+        "not_done": "No reference hash changed, no PNG blessed, no gate altered. M7/M8 remain open."
+      },
+      "runs": [
+        {
+          "file": "v166-targeted-sequence-normal-15-1789431608474.png",
+          "date": "2026-09-15T00:20:08.474Z",
+          "options": "?sequence=1&saveDiff=1",
+          "environment": "Safari 26.6.2 WebGPU, visible window",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": [
+            {
+              "key": "0.71-T1",
+              "changedPixels": 64,
+              "maxDelta": 7,
+              "bounds": [
+                496,
+                238,
+                948,
+                771
+              ]
+            },
+            {
+              "key": "0.76-T1",
+              "changedPixels": 4180,
+              "maxDelta": 51,
+              "bounds": [
+                411,
+                167,
+                1028,
+                898
+              ]
+            },
+            {
+              "key": "0.86-T2",
+              "changedPixels": 638,
+              "maxDelta": 38,
+              "bounds": [
+                5,
+                342,
+                384,
+                685
+              ]
+            },
+            {
+              "key": "1-T2",
+              "changedPixels": 36,
+              "maxDelta": 14,
+              "bounds": [
+                67,
+                213,
+                345,
+                498
+              ]
+            },
+            {
+              "key": "0.76-T3",
+              "changedPixels": 27,
+              "maxDelta": 5,
+              "bounds": [
+                83,
+                280,
+                326,
+                631
+              ]
+            }
+          ]
+        },
+        {
+          "file": "v166-targeted-sequence-normal-15-1789833279129.png",
+          "date": "2026-09-19T15:54:39.129Z",
+          "options": "?sequence=1&saveDiff=1",
+          "environment": "Brave 153, visible window",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": [
+            {
+              "key": "0.86-T2",
+              "changedPixels": 1262,
+              "maxDelta": 31,
+              "bounds": [
+                0,
+                0,
+                389,
+                842
+              ]
+            },
+            {
+              "key": "0.93-T2",
+              "changedPixels": 990,
+              "maxDelta": 1,
+              "bounds": [
+                0,
+                0,
+                389,
+                843
+              ]
+            }
+          ]
+        },
+        {
+          "file": "v166-targeted-sequence-normal-15-1789834260004.png",
+          "date": "2026-09-19T16:11:00.004Z",
+          "options": "?sequence=1&saveDiff=1&tag=headless-control",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": []
+        },
+        {
+          "file": "v166-targeted-sequence-normal-15-1789834260321.png",
+          "date": "2026-09-19T16:11:00.321Z",
+          "options": "?sequence=1&saveDiff=1&nocache=1&tag=headless-nocache",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": [
+            {
+              "key": "0.76-T1",
+              "changedPixels": 1406,
+              "maxDelta": 25,
+              "bounds": [
+                2,
+                0,
+                1436,
+                899
+              ]
+            },
+            {
+              "key": "0.93-T2",
+              "changedPixels": 993,
+              "maxDelta": 1,
+              "bounds": [
+                0,
+                0,
+                389,
+                842
+              ]
+            }
+          ]
+        },
+        {
+          "file": "v166-targeted-sequence-webgl2-normal-15-1789834275526.png",
+          "date": "2026-09-19T16:11:15.525Z",
+          "options": "?sequence=1&backend=webgl2&saveDiff=1&tag=headless-webgl2",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgl2",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": []
+        },
+        {
+          "file": "v166-targeted-sequence-stall300-normal-15-1789834320959.png",
+          "date": "2026-09-19T16:12:00.958Z",
+          "options": "?sequence=1&stall=300&saveDiff=1&tag=headless-stall300",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": [
+            {
+              "key": "0.76-T2",
+              "changedPixels": 975,
+              "maxDelta": 1,
+              "bounds": [
+                0,
+                0,
+                389,
+                840
+              ]
+            }
+          ]
+        },
+        {
+          "file": "v166-targeted-sequence-normal-90-1789834349547.png",
+          "date": "2026-09-19T16:12:29.546Z",
+          "options": "?sequence=1&warm=90&saveDiff=1&tag=headless-warm90",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgpu",
+          "warm": 90,
+          "captures": 72,
+          "errors": 0,
+          "differences": [
+            {
+              "key": "1-T1",
+              "changedPixels": 1473,
+              "maxDelta": 30,
+              "bounds": [
+                1,
+                3,
+                1438,
+                899
+              ]
+            }
+          ]
+        },
+        {
+          "file": "v166-targeted-sequence-normal-15-1789834456653.png",
+          "date": "2026-09-19T16:14:16.652Z",
+          "options": "?sequence=1&saveDiff=1&tag=headless-webgpu-4",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": [
+            {
+              "key": "0.76-T2",
+              "changedPixels": 1111,
+              "maxDelta": 3,
+              "bounds": [
+                0,
+                0,
+                389,
+                842
+              ]
+            }
+          ]
+        },
+        {
+          "file": "v166-targeted-sequence-normal-15-1789834457755.png",
+          "date": "2026-09-19T16:14:17.754Z",
+          "options": "?sequence=1&saveDiff=1&tag=headless-webgpu-3",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": [
+            {
+              "key": "0.86-T2",
+              "changedPixels": 5572,
+              "maxDelta": 56,
+              "bounds": [
+                0,
+                0,
+                389,
+                843
+              ]
+            }
+          ]
+        },
+        {
+          "file": "v166-targeted-sequence-normal-15-1789834457972.png",
+          "date": "2026-09-19T16:14:17.971Z",
+          "options": "?sequence=1&saveDiff=1&tag=headless-webgpu-1",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": []
+        },
+        {
+          "file": "v166-targeted-sequence-normal-15-1789834460832.png",
+          "date": "2026-09-19T16:14:20.832Z",
+          "options": "?sequence=1&saveDiff=1&tag=headless-webgpu-2",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": [
+            {
+              "key": "0.76-T1",
+              "changedPixels": 1104,
+              "maxDelta": 11,
+              "bounds": [
+                1,
+                2,
+                1439,
+                899
+              ]
+            },
+            {
+              "key": "0.93-T1",
+              "changedPixels": 1241,
+              "maxDelta": 16,
+              "bounds": [
+                8,
+                0,
+                1437,
+                899
+              ]
+            }
+          ]
+        },
+        {
+          "file": "v166-targeted-sequence-webgl2-normal-15-1789834482270.png",
+          "date": "2026-09-19T16:14:42.269Z",
+          "options": "?sequence=1&backend=webgl2&saveDiff=1&tag=headless-webgl2-4",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgl2",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": []
+        },
+        {
+          "file": "v166-targeted-sequence-webgl2-normal-15-1789834482948.png",
+          "date": "2026-09-19T16:14:42.947Z",
+          "options": "?sequence=1&backend=webgl2&saveDiff=1&tag=headless-webgl2-3",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgl2",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": []
+        },
+        {
+          "file": "v166-targeted-sequence-webgl2-normal-15-1789834484144.png",
+          "date": "2026-09-19T16:14:44.143Z",
+          "options": "?sequence=1&backend=webgl2&saveDiff=1&tag=headless-webgl2-1",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgl2",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": []
+        },
+        {
+          "file": "v166-targeted-sequence-webgl2-normal-15-1789834484476.png",
+          "date": "2026-09-19T16:14:44.476Z",
+          "options": "?sequence=1&backend=webgl2&saveDiff=1&tag=headless-webgl2-2",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgl2",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": []
+        },
+        {
+          "file": "v166-targeted-sequence-normal-15-1789834616753.png",
+          "date": "2026-09-19T16:16:56.753Z",
+          "options": "?sequence=1&saveDiff=1&tag=headless-webgpu-5",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": [
+            {
+              "key": "0.76-T1",
+              "changedPixels": 2059,
+              "maxDelta": 51,
+              "bounds": [
+                2,
+                2,
+                1437,
+                899
+              ]
+            },
+            {
+              "key": "0.76-T3",
+              "changedPixels": 988,
+              "maxDelta": 3,
+              "bounds": [
+                0,
+                0,
+                389,
+                843
+              ]
+            },
+            {
+              "key": "0.86-T3",
+              "changedPixels": 1044,
+              "maxDelta": 6,
+              "bounds": [
+                0,
+                0,
+                389,
+                842
+              ]
+            }
+          ]
+        },
+        {
+          "file": "v166-targeted-sequence-normal-15-1789834616988.png",
+          "date": "2026-09-19T16:16:56.988Z",
+          "options": "?sequence=1&saveDiff=1&tag=headless-webgpu-7",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": [
+            {
+              "key": "0.71-T1",
+              "changedPixels": 1046,
+              "maxDelta": 11,
+              "bounds": [
+                0,
+                1,
+                1437,
+                898
+              ]
+            },
+            {
+              "key": "1-T2",
+              "changedPixels": 1056,
+              "maxDelta": 3,
+              "bounds": [
+                1,
+                1,
+                389,
+                843
+              ]
+            }
+          ]
+        },
+        {
+          "file": "v166-targeted-sequence-noblob-normal-15-1789834617204.png",
+          "date": "2026-09-19T16:16:57.204Z",
+          "options": "?sequence=1&noblob=1&saveDiff=1&tag=headless-noblob-1",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": [
+            {
+              "key": "0.71-T1",
+              "changedPixels": 1044,
+              "maxDelta": 5,
+              "bounds": [
+                2,
+                0,
+                1436,
+                899
+              ]
+            }
+          ]
+        },
+        {
+          "file": "v166-targeted-sequence-noblob-normal-15-1789834617735.png",
+          "date": "2026-09-19T16:16:57.735Z",
+          "options": "?sequence=1&noblob=1&saveDiff=1&tag=headless-noblob-3",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": [
+            {
+              "key": "1-T1",
+              "changedPixels": 1193,
+              "maxDelta": 23,
+              "bounds": [
+                1,
+                4,
+                1439,
+                899
+              ]
+            },
+            {
+              "key": "0.645-T2",
+              "changedPixels": 1036,
+              "maxDelta": 1,
+              "bounds": [
+                0,
+                1,
+                389,
+                843
+              ]
+            },
+            {
+              "key": "0.86-T2",
+              "changedPixels": 1045,
+              "maxDelta": 3,
+              "bounds": [
+                0,
+                0,
+                389,
+                843
+              ]
+            }
+          ]
+        },
+        {
+          "file": "v166-targeted-sequence-normal-15-1789834618018.png",
+          "date": "2026-09-19T16:16:58.018Z",
+          "options": "?sequence=1&saveDiff=1&tag=headless-webgpu-6",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": [
+            {
+              "key": "0.93-T2",
+              "changedPixels": 1048,
+              "maxDelta": 1,
+              "bounds": [
+                0,
+                0,
+                389,
+                843
+              ]
+            },
+            {
+              "key": "0.56-T3",
+              "changedPixels": 1053,
+              "maxDelta": 1,
+              "bounds": [
+                0,
+                1,
+                389,
+                843
+              ]
+            }
+          ]
+        },
+        {
+          "file": "v166-targeted-sequence-noblob-normal-15-1789834618029.png",
+          "date": "2026-09-19T16:16:58.029Z",
+          "options": "?sequence=1&noblob=1&saveDiff=1&tag=headless-noblob-2",
+          "environment": "HeadlessChrome/153 (Brave 153 --headless=new, ANGLE Metal)",
+          "backend": "webgpu",
+          "warm": 15,
+          "captures": 72,
+          "errors": 0,
+          "differences": [
+            {
+              "key": "0.76-T2",
+              "changedPixels": 1085,
+              "maxDelta": 3,
+              "bounds": [
+                0,
+                0,
+                389,
+                842
+              ]
+            },
+            {
+              "key": "0.93-T2",
+              "changedPixels": 1009,
+              "maxDelta": 2,
+              "bounds": [
+                0,
+                1,
+                389,
+                841
+              ]
+            },
+            {
+              "key": "0.56-T3",
+              "changedPixels": 1018,
+              "maxDelta": 1,
+              "bounds": [
+                0,
+                0,
+                389,
+                842
+              ]
+            }
+          ]
+        }
+      ],
+      "pair_metrics_file": "build/step1-pair-metrics-2026-09-19.jsonl",
+      "tools": [
+        "qa/frame-compare.mjs (new)",
+        "qa/pages/repeat.html: &backend, &stall, &noblob passthrough; report carries userAgent/backend/stall",
+        "src/main.ts capture rig: &stall=MS[&stallFrames=K]; ?scene=inkrt: &rgb=1, &post=NAME",
+        "headless procedure: Brave --headless=new --enable-unsafe-webgpu --use-angle=metal --remote-debugging-port=N, driven over the DevTools protocol"
+      ]
     }
   ]
 }
