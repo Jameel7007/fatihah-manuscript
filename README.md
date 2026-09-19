@@ -38,8 +38,8 @@ of how far you have scrolled, so scrolling back replays it exactly.
 - **It adapts to the device.** Three quality tiers (desktop, iPhone 15 class, iPhone 12 class) pick the
   mesh, shadow filter and pixel density; a runtime monitor steps quality down if frames overrun. A poster
   image shows first, and the live canvas crossfades in once it has compiled.
-- **You can hold it.** At the ending, “Turn it in your hands” lets you drag the standing gold block and turn it
-  in the light; the extruded sidewalls and the bevel profile become visible from the side.
+- **You can hold it.** At the ending the standing gold block is placed in your hands: drag sideways to turn it
+  in the light (“Let it rest” puts it back); the extruded sidewalls and the bevel profile become visible from the side.
 - **It fails gracefully.** No WebGPU? The same node materials compile to WebGL2. No usable GPU at all?
   A folio of seven still plates. Prefer reduced motion? Seven held compositions with a pager and
   keyboard navigation.
@@ -51,8 +51,8 @@ taken from the [Tanzil](https://tanzil.net) project and verified letter for lett
 (`node build/verify-text.mjs`). The Basmalah is counted as āyah 1. The hand is
 [Amiri Quran](https://github.com/aliftype/amiri) by Khaled Hosny (SIL Open Font License), shaped once
 through HarfBuzz into a frozen, checksummed composition: a classical centred block of seven lines with
-rosette āyah markers. The English on the page follows Marmaduke Pickthall's 1930 translation
-(public domain).
+rosette āyah markers. The English on the page is Abdullah Yusuf Ali's 1934 translation, reproduced with his
+capitalisation and punctuation.
 
 ## Built with
 
@@ -102,5 +102,5 @@ with `FATIHAH_BASE=/fatihah-manuscript/`, and publishes `dist/` to GitHub Pages 
 
 ## Credits
 
-Calligraphic hand: Amiri Quran, Khaled Hosny, SIL OFL 1.1. Text: Tanzil Uthmani. Translation: Marmaduke
-Pickthall, 1930. Made by Thomas Mooney ([@Jameel7007](https://github.com/Jameel7007)).
+Calligraphic hand: Amiri Quran, Khaled Hosny, SIL OFL 1.1. Text: Tanzil Uthmani. Translation: Abdullah
+Yusuf Ali, 1934. Made by Thomas Mooney ([@Jameel7007](https://github.com/Jameel7007)).

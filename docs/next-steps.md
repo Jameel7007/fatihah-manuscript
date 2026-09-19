@@ -51,7 +51,7 @@ Decide first: English translation (Saheeh International / Abdel Haleem / none).
 
 - [x] Title card at the opening, fades on first scroll.
 - [x] Scroll cue, disappears on first scroll.
-- [x] Per-āyah translation (Pickthall 1930) as the ink is written and as each āyah rises; About panel with the explanation.
+- [x] Per-āyah translation (Abdullah Yusuf Ali 1934; was Pickthall until 2026-09-19) as the ink is written and as each āyah rises; About panel with the explanation.
 - [x] Closing card when the text has risen, with “Read it again”.
 - [x] Fraunces / Plex Mono / Amiri Quran in the gold palette; reduced motion respected; axe 0 violations; 66-check runner passes.
 

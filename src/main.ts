@@ -1012,7 +1012,9 @@ async function runMain(): Promise<void> {
   }
   // Explore: turn the standing gold at the held ending (armed from the closing card only; never in QA modes)
   const explore = story && !isCapture && holdS === 0 && perfS === 0 ? new Explore(canvas as HTMLCanvasElement, (on) => story?.setTurning(on)) : null;
-  if (story && explore) story.onTurn = (on) => explore.setArmed(on);
+  // arrival at the ending arms it by itself; "Let it rest" holds it off until the reader leaves and returns
+  let restedByReader = false;
+  if (story && explore) story.onTurn = (on) => { restedByReader = !on; explore.setArmed(on); };
 
   renderer.setAnimationLoop((now: number) => {
     const cpuStart = perfAudit && !perfAudit.done ? performance.now() : null;
@@ -1113,6 +1115,8 @@ async function runMain(): Promise<void> {
     bar!.style.height = `${scroll.p * 100}%`;
     story?.update(scroll.p);
     if (explore && stage.relief) {
+      if (scroll.p < 0.97) restedByReader = false;
+      else if (scroll.p >= 0.985 && !explore.armed && !restedByReader && assetsReady) explore.setArmed(true);
       explore.update(dt, scroll.p >= 0.97);
       stage.relief.uTurnYaw.value = explore.yaw;
       stage.relief.uTurnPitch.value = explore.pitch;

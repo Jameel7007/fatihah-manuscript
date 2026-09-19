@@ -1,5 +1,5 @@
-// Explore — the held ending in the visitor's hands. When armed (the closing card's "Turn it"
-// button), dragging on the canvas turns the standing gold block: yaw about its vertical axis,
+// Explore — the held ending in the visitor's hands. Armed automatically on arrival at the ending
+// (and by the closing card's button after "Let it rest"), dragging on the canvas turns the standing gold block: yaw about its vertical axis,
 // a little pitch about its horizontal one, with inertia and damping. Leaving the ending, or
 // switching it off, eases the block back to its authored pose. Pure input state: the rig's
 // capture/hold modes never arm it, so reference frames are unaffected.
@@ -65,11 +65,12 @@ export class Explore {
     canvas.addEventListener('pointercancel', end);
   }
 
-  /** Arm or disarm; touch scrolling on the canvas is suspended while armed. */
+  /** Arm or disarm; horizontal touch panning on the canvas is claimed while armed. */
   setArmed(on: boolean): void {
     if (this.armed === on) return;
     this.armed = on;
-    this.canvas.style.touchAction = on ? 'none' : '';
+    // pan-y: a sideways drag turns the block; a vertical swipe still scrolls (and leaving disarms)
+    this.canvas.style.touchAction = on ? 'pan-y' : '';
     this.canvas.style.cursor = on ? 'grab' : '';
     if (!on) this.dragging = false;
     this.onChange(on);

@@ -2,7 +2,7 @@
 // opening, a quiet stage caption as each state begins, the translation of each āyah as the
 // scribe writes it (once — not again at the rise), and a closing card at the held ending. Everything is a pure function of the
 // same p the canvas uses; nothing here touches the render, so reference frames are unaffected
-// (capture mode hides the whole layer). Translation: Marmaduke Pickthall, 1930 (public domain).
+// (capture mode hides the whole layer). Translation: Abdullah Yusuf Ali, 1934 — his capitalisation and punctuation kept as printed.
 
 import './story.css';
 
@@ -11,13 +11,13 @@ const WRITE: ReadonlyArray<readonly [number, number]> = [
   [0.32, 0.352], [0.356, 0.389], [0.393, 0.42], [0.424, 0.451], [0.455, 0.488], [0.492, 0.522], [0.526, 0.58],
 ];
 export const AYAT: ReadonlyArray<{ n: string; en: string }> = [
-  { n: '١', en: 'In the name of Allah, the Beneficent, the Merciful.' },
-  { n: '٢', en: 'Praise be to Allah, Lord of the Worlds,' },
-  { n: '٣', en: 'the Beneficent, the Merciful,' },
+  { n: '١', en: 'In the name of Allah, Most Gracious, Most Merciful.' },
+  { n: '٢', en: 'Praise be to Allah, the Cherisher and Sustainer of the Worlds;' },
+  { n: '٣', en: 'Most Gracious, Most Merciful;' },
   { n: '٤', en: 'Master of the Day of Judgment.' },
-  { n: '٥', en: 'Thee alone we worship; Thee alone we ask for help.' },
-  { n: '٦', en: 'Show us the straight path,' },
-  { n: '٧', en: 'the path of those whom Thou hast favoured; not of those who earn Thine anger, nor of those who go astray.' },
+  { n: '٥', en: 'Thee do we worship, and Thine aid we seek.' },
+  { n: '٦', en: 'Show us the straight way,' },
+  { n: '٧', en: 'The way of those on whom Thou hast bestowed Thy Grace, those whose (portion) is not wrath, and who go not astray.' },
 ];
 /** Stage captions: shown from each start until the next, in the state's own words. */
 const CAPTIONS: ReadonlyArray<readonly [number, string]> = [
