@@ -86,6 +86,14 @@ performance/loading, cross-browser/accessibility and scholarly/content review st
 Seven-plate renderer-failure fallback is implemented. Historical candidates below are not current
 references; no new hashes are blessed. Details and dates: the ledger.
 
+## Page layer and explore mode
+
+`src/director/story.ts` is the DOM layer of words (title, cue, captions, translation, closing card, About); it reads
+the same `p` as the canvas and is hidden in capture mode. `src/director/explore.ts` turns the standing gold at the
+ending: armed from the closing card only, it drives `uTurnYaw` / `uTurnPitch` on the glyph material (a rigid motion
+after the facing pivot); every QA mode leaves both at zero. Layout collisions are checked headless with
+`Page.captureScreenshot` clips (see the 2026-09-19 evidence index).
+
 ## Running it
 
 ```bash

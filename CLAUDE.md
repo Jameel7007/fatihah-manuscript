@@ -20,7 +20,7 @@ Read first, in this order: `docs/next-steps.md` (what is next, with prompts), `d
 
 ## How to run
 - `npm run dev` (4520) / `npx vite preview --port 4521`; QA pages at `/qa/*.html` (dev and preview only).
-- Deploy: push to main → `.github/workflows/pages.yml` → https://jameel7007.github.io/fatihah-manuscript/ (base path via `FATIHAH_BASE`; runtime URLs through `assetUrl()`). The page layer of words is `src/director/story.ts` (DOM only, hidden in capture).
+- Deploy: push to main → `.github/workflows/pages.yml` → https://jameel7007.github.io/fatihah-manuscript/ (base path via `FATIHAH_BASE`; runtime URLs through `assetUrl()`). The page layer of words is `src/director/story.ts` (DOM only, hidden in capture); explore mode is `src/director/explore.ts` (turn uniforms stay 0 in every QA mode).
 - QA sink: `node qa/review/receiver.mjs` on :4599, proxied at `/qa-save`; restart it if posts 502.
 - Device runs over the LAN: `FATIHAH_LAN=1 npx vite preview --port 4522` (HTTPS, cert in `~/.fatihah-tls`).
 - Rig: `?capture=P&tier=N&w=W&h=H[&post=NAME][&repeat=N]`, `?perf=30&save=1`, `?hold=60&save=1`, `?hud=1`.

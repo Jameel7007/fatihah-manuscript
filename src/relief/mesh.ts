@@ -97,6 +97,10 @@ export interface GlyphRelief {
   uPitch: { value: number };
   /** §5 S7 facing: anchor → presentation center blend 0..1 — drivers.faceFactor(p) */
   uLift: { value: number };
+  /** Explore (held ending): visitor's turn of the standing block — yaw about its vertical axis (radians) */
+  uTurnYaw: { value: number };
+  /** Explore: visitor's extra pitch about the block's horizontal axis (radians) */
+  uTurnPitch: { value: number };
 }
 
 /** cubic-bezier(0.22, 0, 0.18, 1) — the §13 E2/E4 curve — evaluated in-shader: five Newton
@@ -151,6 +155,8 @@ export function buildGlyphRelief(
   const uP = uniform(0);
   const uPitch = uniform(0);
   const uLift = uniform(0);
+  const uTurnYaw = uniform(0);
+  const uTurnPitch = uniform(0);
 
   const anc: N = attribute('aAnchor', 'vec4'); // su, sv, hn, kindScale
   void attribute('aNrm', 'vec4'); // per-vertex plan normal — superseded by the per-pixel profile normal (v1.6.1)
@@ -199,7 +205,20 @@ export function buildGlyphRelief(
   const sp: N = sin(uPitch);
   const rotY: N = rel.y.mul(cp).sub(rel.z.mul(sp));
   const rotZ: N = rel.y.mul(sp).add(rel.z.mul(cp));
-  const positionNode: N = vec3(rel.x, rotY, rotZ).add(cA).add(cR.sub(cA).mul(uLift));
+  const pivoted: N = vec3(rel.x, rotY, rotZ).add(cA).add(cR.sub(cA).mul(uLift));
+  // Explore (v1.7, the held ending): a second RIGID motion the visitor drives — pitch about the
+  // block's horizontal axis, then yaw about its vertical axis, both through the presentation
+  // center. Zero unless the visitor turns the block, so every reference frame is unaffected.
+  const turnC: N = cA.add(cR.sub(cA).mul(uLift));
+  const ct: N = cos(uTurnPitch);
+  const st: N = sin(uTurnPitch);
+  const cy: N = cos(uTurnYaw);
+  const sy: N = sin(uTurnYaw);
+  const turn = (v: N): N => {
+    const a: N = vec3(v.x, v.y.mul(ct).sub(v.z.mul(st)), v.y.mul(st).add(v.z.mul(ct)));
+    return vec3(a.x.mul(cy).add(a.z.mul(sy)), a.y, a.z.mul(cy).sub(a.x.mul(sy)));
+  };
+  const positionNode: N = turn(pivoted.sub(turnC)).add(turnC);
   const tGold: N = uP.sub(start.add(RISE_GOLD_LAG * RISE_DUR)).div(RISE_DUR).clamp(0, 1);
   const vGold: N = varying(bezierE2(tGold));
 
@@ -263,7 +282,7 @@ export function buildGlyphRelief(
   // Preserve its interpolated magnitude and normalize only the final 3D normal.
   const nPlan: N = vec3(gV.x.mul(slopeW).negate(), gV.y.mul(slopeW).negate(), float(1)).normalize();
   const nAnchor: N = surfTv.normalize().mul(nPlan.x).add(BpageV.normalize().mul(nPlan.y)).add(surfNv.normalize().mul(nPlan.z)).normalize();
-  const nObj: N = vec3(nAnchor.x, nAnchor.y.mul(cp).sub(nAnchor.z.mul(sp)), nAnchor.y.mul(sp).add(nAnchor.z.mul(cp)));
+  const nObj: N = turn(vec3(nAnchor.x, nAnchor.y.mul(cp).sub(nAnchor.z.mul(sp)), nAnchor.y.mul(sp).add(nAnchor.z.mul(cp))));
   const nView: N = transformNormalToView(nObj).normalize();
   m.normalNode = nView;
 
@@ -322,5 +341,5 @@ export function buildGlyphRelief(
   mesh.castShadow = false; // enabled by applyFrame at the rise (§14: contact/shadow pipelines unbiased)
   mesh.receiveShadow = true;
   mesh.visible = false;
-  return { mesh, uGeoDepth, uP, heightMaterial, uPitch, uLift };
+  return { mesh, uGeoDepth, uP, heightMaterial, uPitch, uLift, uTurnYaw, uTurnPitch };
 }

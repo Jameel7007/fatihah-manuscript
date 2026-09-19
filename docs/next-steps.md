@@ -59,6 +59,10 @@ Prompt:
 
 > Add the Tier A page layer we discussed: title card, scroll cue, per-āyah translation using [TRANSLATION], and a closing card. HTML/CSS over the canvas only; the canvas render and all reference hashes must stay byte-identical (prove it with a p=0 and p=1 T1 capture before and after). Show me screenshots at the opening, mid-ink, and ending on desktop and 390×844 before committing. Update spec Δ history, ledger and README. Keep the accessibility runner green.
 
+## 3b. Explore mode — DONE 2026-09-19 (v1.7.0)
+
+"Turn it in your hands" at the ending (src/director/explore.ts). Possible follow-ups if wanted: a soft back light so the block reads when turned far; a gyro option on phones; a "share this view" capture.
+
 ## 4. Aesthetics, Tier B: canvas changes (invalidates references, restarts visual approval)
 
 Pick at most two. Gold material stays as approved (roughness 0.52 / metalness 0.72, no burnish, anisotropy 0).

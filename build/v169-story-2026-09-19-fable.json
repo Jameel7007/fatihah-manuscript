@@ -27,5 +27,22 @@
   ],
   "story_layer_checks": "headless DOM probe: captions and ayah lines follow p (ink windows and rise windows), About opens with focus on Close, Escape closes and returns focus to the About button."
  },
- "not_done": "Tier B canvas changes (parchment, sky, light) not made — the approved v1.6.6 canvas is unchanged."
+ "not_done": "Tier B canvas changes (parchment, sky, light) not made — the approved v1.6.6 canvas is unchanged.",
+ "explore_v170": {
+  "request": "owner: \"is there a way at the end and we would be able to collect the three dimensional Arabic and rotate it? Like a Freeform\"",
+  "delivered": "src/director/explore.ts + uTurnYaw/uTurnPitch in src/relief/mesh.ts (rigid motion after the facing pivot, applied to positions and the normal frame); closing-card button \"Turn it in your hands\" / \"Let it rest\"; yaw ±70°, pitch ±26°, 0.0038 rad/px, glide tau 0.22 s, speed cap 2.2 rad/s; touch-action none on the canvas while armed; scrolling below p 0.97 disarms and eases home.",
+  "verification": {
+   "reference_gate_after_shader_change": "74/74 within tolerance, 0 fail (verify-report-2026-09-19-20-30-15.json, verify-report-2026-09-19-20-30-21.json)",
+   "headless_drive": "arm → aria-pressed true, cursor grab, touch-action none; 160 px drag turns the block (screenshot); scroll position unchanged; disarm → block returns to the authored pose (screenshot identical in layout to the rest state)",
+   "screenshots": [
+    "story-2026-09-19-explore-rest-1440x900.png",
+    "story-2026-09-19-explore-turned-1440x900.png",
+    "story-2026-09-19-explore-returned-1440x900.png"
+   ]
+  },
+  "fixes": {
+   "title": "Arabic title line-height 1.7 + .34em padding so the kasra clears the Latin name (owner screenshot)",
+   "numeral_ring": "flex-centred, 28 px ring, metric lift; measured glyph box centre within 5 px of ring centre and visually centred at 6× zoom"
+  }
+ }
 }

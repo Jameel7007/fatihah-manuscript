@@ -22,10 +22,12 @@ body.capture #story { display: none; }
   margin: 0 0 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: var(--gold-dim);
 }
 #story-title .arabic {
-  margin: 0; font-family: var(--arabic); font-size: clamp(44px, 7.5vw, 76px); line-height: 1.25; color: var(--gold);
+  margin: 0; font-family: var(--arabic); font-size: clamp(44px, 7.5vw, 76px); line-height: 1.7; color: var(--gold);
   direction: rtl; font-weight: 400; text-shadow: 0 0 40px rgba(201, 164, 91, .18);
+  /* Amiri Quran's marks reach well below the em box: give the line room so the kasra never crosses the name */
+  padding-bottom: .34em;
 }
-#story-title .name { margin: 4px 0 0; font-size: clamp(17px, 2.2vw, 22px); font-weight: 420; letter-spacing: .01em; color: var(--text); }
+#story-title .name { margin: 0; font-size: clamp(17px, 2.2vw, 22px); font-weight: 420; letter-spacing: .01em; color: var(--text); }
 #story-title .dek { margin: 10px auto 0; max-width: 46ch; font-size: clamp(13.5px, 1.5vw, 15.5px); line-height: 1.55; color: var(--muted); font-style: italic; }
 
 /* ---- scroll cue ---- */
@@ -50,9 +52,12 @@ body.capture #story { display: none; }
   width: min(86vw, 560px); text-align: center; text-wrap: balance;
 }
 #story-ayah-num {
-  display: inline-block; font-family: var(--arabic); font-size: 15px; line-height: 1; color: var(--gold);
-  border: 1px solid var(--gold-faint); border-radius: 50%; width: 26px; height: 26px; line-height: 26px; margin-bottom: 8px;
+  display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;
+  font-family: var(--arabic); font-size: 15px; line-height: 1; color: var(--gold);
+  border: 1px solid var(--gold-faint); border-radius: 50%; width: 28px; height: 28px; margin-bottom: 8px;
 }
+/* Amiri Quran digits sit on a low baseline inside a tall em box; lift the glyph to the ring's optical centre */
+#story-ayah-num { padding-bottom: 9px; font-size: 16px; }
 #story-ayah-text { margin: 0; font-size: clamp(16px, 2vw, 20px); line-height: 1.5; font-weight: 400; color: var(--text); }
 
 /* ---- closing card ---- */
@@ -64,6 +69,9 @@ body.capture #story { display: none; }
 #story-closing p { margin: 0; font-size: clamp(13px, 1.5vw, 15px); line-height: 1.6; color: var(--muted); }
 #story-closing .actions { margin-top: 12px; display: flex; gap: 18px; justify-content: center; }
 #story-closing:not(.is-off) .actions { pointer-events: auto; }
+#story-closing .actions { flex-wrap: wrap; }
+#story-closing .hint { margin-top: 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-dim); }
+.story-btn[aria-pressed="true"] { background: rgba(201, 164, 91, .12); border-color: var(--gold-dim); }
 
 /* ---- buttons ---- */
 .story-btn {

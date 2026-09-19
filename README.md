@@ -38,6 +38,8 @@ of how far you have scrolled, so scrolling back replays it exactly.
 - **It adapts to the device.** Three quality tiers (desktop, iPhone 15 class, iPhone 12 class) pick the
   mesh, shadow filter and pixel density; a runtime monitor steps quality down if frames overrun. A poster
   image shows first, and the live canvas crossfades in once it has compiled.
+- **You can hold it.** At the ending, “Turn it in your hands” lets you drag the standing gold block and turn it
+  in the light; the extruded sidewalls and the bevel profile become visible from the side.
 - **It fails gracefully.** No WebGPU? The same node materials compile to WebGL2. No usable GPU at all?
   A folio of seven still plates. Prefer reduced motion? Seven held compositions with a pager and
   keyboard navigation.

@@ -6,6 +6,7 @@ import { blobTilt, contactRamp, embossFactor, envYawDeg, FACE_CENTER_ANCHOR, FAC
 import { IdleController, type IdleState } from './director/idle';
 import { ReducedMotion } from './director/reduced';
 import { Story, AYAT } from './director/story';
+import { Explore } from './director/explore';
 import { assetUrl } from './core/url';
 import { Vector3 } from 'three/webgpu';
 import { ScrollDriver, SCROLL_DENSITY_TOTAL } from './director/scroll';
@@ -632,6 +633,7 @@ async function runMain(): Promise<void> {
     const list = storyRoot.querySelector('#story-about-ayat');
     if (list) for (const a of AYAT) { const li = document.createElement('li'); const n = document.createElement('span'); n.className = 'n'; n.lang = 'ar'; n.textContent = a.n; const t = document.createElement('span'); t.textContent = a.en; li.append(n, t); list.append(li); }
   } else if (storyRoot) storyRoot.hidden = true;
+
   if (q.get('noshadow') !== null) key.castShadow = false; // QA: isolate the key's shadow
   const noBlob = q.get('noblob') !== null; // QA: R-1.00-noblob (§8 — PCSS carries S7 alone)
   const rig = new CameraRig();
@@ -1008,6 +1010,9 @@ async function runMain(): Promise<void> {
     rig.snap(1);
     rig.parallaxEnabled = false;
   }
+  // Explore: turn the standing gold at the held ending (armed from the closing card only; never in QA modes)
+  const explore = story && !isCapture && holdS === 0 && perfS === 0 ? new Explore(canvas as HTMLCanvasElement, (on) => story?.setTurning(on)) : null;
+  if (story && explore) story.onTurn = (on) => explore.setArmed(on);
 
   renderer.setAnimationLoop((now: number) => {
     const cpuStart = perfAudit && !perfAudit.done ? performance.now() : null;
@@ -1107,6 +1112,11 @@ async function runMain(): Promise<void> {
     if (announcement && announcement.textContent !== message) announcement.textContent = message;
     bar!.style.height = `${scroll.p * 100}%`;
     story?.update(scroll.p);
+    if (explore && stage.relief) {
+      explore.update(dt, scroll.p >= 0.97);
+      stage.relief.uTurnYaw.value = explore.yaw;
+      stage.relief.uTurnPitch.value = explore.pitch;
+    }
 
     // The held-ending audit must not count staged loading, the p=0→1 arrival,
     // idle arming, or supersample/tier allocation as steady-state brightness drift.

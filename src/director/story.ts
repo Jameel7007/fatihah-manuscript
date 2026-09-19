@@ -46,6 +46,9 @@ export class Story {
   private lastCaption = '';
   private lastAyah = -1;
   private everScrolled = false;
+  private turnBtn: HTMLButtonElement;
+  private turnHint: HTMLElement;
+  onTurn: ((on: boolean) => void) | null = null;
 
   constructor(root: HTMLElement) {
     const $ = <T extends HTMLElement>(sel: string) => { const el = root.querySelector<T>(sel); if (!el) throw new Error(`story: missing ${sel}`); return el; };
@@ -62,7 +65,17 @@ export class Story {
     $('#story-about-close').addEventListener('click', () => this.toggleAbout(false));
     this.about.addEventListener('keydown', (e) => { if (e.key === 'Escape') this.toggleAbout(false); });
     this.about.addEventListener('click', (e) => { if (e.target === this.about) this.toggleAbout(false); });
+    this.turnBtn = $('#story-turn');
+    this.turnHint = $('#story-turn-hint');
+    this.turnBtn.addEventListener('click', () => this.onTurn?.(this.turnBtn.getAttribute('aria-pressed') !== 'true'));
     $('#story-again').addEventListener('click', () => window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
+  }
+
+  /** Reflect the explore state on the closing card. */
+  setTurning(on: boolean): void {
+    this.turnBtn.setAttribute('aria-pressed', String(on));
+    this.turnBtn.textContent = on ? 'Let it rest' : 'Turn it in your hands';
+    this.turnHint.hidden = !on;
   }
 
   toggleAbout(open: boolean = this.about.hidden === true): void {
