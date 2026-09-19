@@ -44,5 +44,21 @@
    "title": "Arabic title line-height 1.7 + .34em padding so the kasra clears the Latin name (owner screenshot)",
    "numeral_ring": "flex-centred, 28 px ring, metric lift; measured glyph box centre within 5 px of ring centre and visually centred at 6× zoom"
   }
+ },
+ "backlight_v171": {
+  "delivered": "stage.ts backL/backR DirectionalLight #E8D6B4 at (±1.4,0.7,−0.75) → rest centre; main.ts intensity = smoothstep(|yaw|/1.22) × KEY_INTENSITY × 0.16 on the side swinging away; zero at rest and in all QA modes",
+  "verification": {
+   "reference_gate": "74/74 (verify-report-2026-09-19-21-33-18.json, verify-report-2026-09-19-21-33-26.json)",
+   "screenshots": [
+    "story-2026-09-19-explore-45deg-backlight-1440x900.png",
+    "story-2026-09-19-explore-limit-backlight-1440x900.png"
+   ]
+  }
+ },
+ "first_paint_fix": {
+  "symptom": "owner: end-state information popped up for a split second on initial load",
+  "cause": "story elements had no opacity until the bundle ran; the CSS lives in the bundle",
+  "fix": "inline opacity:0 + is-off class in the markup for caption, translation and closing card",
+  "verification": "CDP sampler every 50 ms from navigation: closing card opacity 0 at every sample (first at 15 ms)"
  }
 }

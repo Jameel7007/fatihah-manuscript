@@ -1116,6 +1116,11 @@ async function runMain(): Promise<void> {
       explore.update(dt, scroll.p >= 0.97);
       stage.relief.uTurnYaw.value = explore.yaw;
       stage.relief.uTurnPitch.value = explore.pitch;
+      // back lights come up with the turn: the side swinging away from the key is lit from behind
+      const t = Math.min(1, Math.abs(explore.yaw) / 1.22);
+      const lift = t * t * (3 - 2 * t) * KEY_INTENSITY * 0.16;
+      stage.backL.intensity = explore.yaw > 0 ? lift : 0;
+      stage.backR.intensity = explore.yaw < 0 ? lift : 0;
     }
 
     // The held-ending audit must not count staged loading, the p=0→1 arrival,

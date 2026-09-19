@@ -110,6 +110,10 @@ export interface Stage {
   uKeyMask: { value: number };
   /** §8 fill light — intensity driven per frame (drivers.fillFactor) */
   fill: DirectionalLight;
+  /** v1.7.1 explore back lights (left/right, slightly behind the standing block): zero at rest, raised
+   *  by the visitor's turn so the side swinging away from the key still reads as gold */
+  backL: DirectionalLight;
+  backR: DirectionalLight;
   /** §15 dust motes (hidden in capture / reduced motion) */
   dust: Dust;
   /** §7/§11 v1.6 universe sky (floor + lobe + stars; per-frame pixel angle) */
@@ -257,6 +261,17 @@ export function buildStage(
   rim.target.position.set(0, 0, 0);
   scene.add(rim, rim.target);
 
+  // v1.7.1 explore back lights — warm-neutral so the turned gold keeps its colour; both sit at
+  // zero until the visitor turns the block (drivers: main.ts from Explore.yaw), so no authored
+  // frame changes. Targets: the block's rest centre (0, 0.4, −0.045).
+  const backL = new DirectionalLight(0xe8d6b4, 0);
+  backL.position.set(-1.4, 0.7, -0.75);
+  backL.target.position.set(0, 0.4, -0.045);
+  const backR = new DirectionalLight(0xe8d6b4, 0);
+  backR.position.set(1.4, 0.7, -0.75);
+  backR.target.position.set(0, 0.4, -0.045);
+  scene.add(backL, backL.target, backR, backR.target);
+
   const stage: Stage = {
     scene,
     sheetRoot,
@@ -271,6 +286,8 @@ export function buildStage(
     uRecede,
     uKeyMask,
     fill,
+    backL,
+    backR,
     dust,
     sky,
     setBackground: (r: number, g: number, b: number) => {
