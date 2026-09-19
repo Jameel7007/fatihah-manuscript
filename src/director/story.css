@@ -15,20 +15,20 @@ body.capture #story { display: none; }
 
 /* ---- opening: title + dek ---- */
 #story-title {
-  position: absolute; left: 50%; top: calc(7vh + env(safe-area-inset-top)); transform: translateX(-50%);
+  position: absolute; left: 50%; top: calc(4.5vh + env(safe-area-inset-top)); transform: translateX(-50%);
   width: min(88vw, 640px); text-align: center; text-wrap: balance;
 }
 #story-title .eyebrow {
   margin: 0 0 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: var(--gold-dim);
 }
 #story-title .arabic {
-  margin: 0; font-family: var(--arabic); font-size: clamp(44px, 7.5vw, 76px); line-height: 1.7; color: var(--gold);
+  margin: 0; font-family: var(--arabic); font-size: clamp(40px, 6.4vw, 64px); line-height: 1.75; color: var(--gold);
   direction: rtl; font-weight: 400; text-shadow: 0 0 40px rgba(201, 164, 91, .18);
   /* Amiri Quran's marks reach well below the em box: give the line room so the kasra never crosses the name */
-  padding-bottom: .34em;
+  padding-bottom: .4em;
 }
 #story-title .name { margin: 0; font-size: clamp(17px, 2.2vw, 22px); font-weight: 420; letter-spacing: .01em; color: var(--text); }
-#story-title .dek { margin: 10px auto 0; max-width: 46ch; font-size: clamp(13.5px, 1.5vw, 15.5px); line-height: 1.55; color: var(--muted); font-style: italic; }
+#story-title .dek { margin: 8px auto 0; max-width: 46ch; font-size: clamp(13.5px, 1.5vw, 15.5px); line-height: 1.55; color: var(--muted); font-style: italic; }
 
 /* ---- scroll cue ---- */
 #story-cue {
@@ -109,7 +109,7 @@ body.capture #story { display: none; }
 #story-about-close { position: absolute; right: 12px; top: 12px; }
 @media (max-width: 640px) {
   #story-about .panel { padding: 26px 18px 22px; font-size: 14.5px; }
-  #story-title { top: calc(5vh + env(safe-area-inset-top)); }
+  #story-title { top: calc(64px + env(safe-area-inset-top)); } /* below the About button */
 }
 
 /* ---- wide landscape: the words sit in the empty left margin, like marginalia beside the page ---- */
