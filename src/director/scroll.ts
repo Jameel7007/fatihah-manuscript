@@ -2,12 +2,12 @@
 // velocity LPF τ = 140 ms. Reduced motion hardens to a τ = 60 ms first-order lag.
 //
 // Writing dwell (review, 2026-08-27): the raw scroll fraction passes through a density
-// remap that slows p across the §10 write span [0.30, 0.62] by ×1.35 — the writing takes
+// remap that slows p across the §10 write span [0.30, 0.62] by ×2.0 (was ×1.35) — the writing takes
 // ~35% more scroll travel while every window stays §10-exact in p. The spacer scales by
 // the total density so scroll feel OUTSIDE the dwell is unchanged. Capture mode pins p
 // directly and never touches the remap (blessed frames unaffected).
 
-const DWELL = 1.35;
+const DWELL = 2.0; // 2026-09-19 (owner: "slow down the writing"): ×1.35 → ×2.0, the writing takes ~48% more scroll travel
 const DWELL_A = 0.3;
 const DWELL_B = 0.62;
 const DWELL_F = 0.03; // feather
