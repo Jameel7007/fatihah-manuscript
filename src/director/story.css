@@ -70,7 +70,8 @@ body.capture #story { display: none; }
 #story-closing .actions { margin-top: 12px; display: flex; gap: 18px; justify-content: center; }
 #story-closing:not(.is-off) .actions { pointer-events: auto; }
 #story-closing .actions { flex-wrap: wrap; }
-#story-closing .hint { margin-top: 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-dim); }
+#story-closing .hint { margin: 0 0 12px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); opacity: .85; transition: opacity .6s ease; }
+#story-closing .hint[hidden] { display: none; }
 .story-btn[aria-pressed="true"] { background: rgba(201, 164, 91, .12); border-color: var(--gold-dim); }
 
 /* ---- buttons ---- */

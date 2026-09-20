@@ -1,5 +1,5 @@
 // Explore — the held ending in the visitor's hands. Armed automatically on arrival at the ending
-// (and by the closing card's button after "Let it rest"), dragging on the canvas turns the standing gold block: yaw about its vertical axis,
+// (it settles with one gentle turn so the eye learns it can move), dragging on the canvas turns the standing gold block: yaw about its vertical axis,
 // a little pitch about its horizontal one, with inertia and damping. Leaving the ending, or
 // switching it off, eases the block back to its authored pose. Pure input state: the rig's
 // capture/hold modes never arm it, so reference frames are unaffected.
@@ -24,12 +24,18 @@ export class Explore {
   private lastT = 0;
   private moved = 0;
   private onChange: (armed: boolean) => void;
+  /** the settle: on arrival the block turns a few degrees and eases back, once — "I can be moved" */
+  private nudgeT = -1; // seconds into the nudge; −1 = none
+  private nudgeOn = true;
+  private turnedOnce = false;
+  onFirstTurn: (() => void) | null = null;
 
   constructor(private canvas: HTMLCanvasElement, onChange: (armed: boolean) => void) {
     this.onChange = onChange;
     canvas.addEventListener('pointerdown', (e) => {
       if (!this.armed || e.button !== 0) return;
       this.dragging = true;
+      this.nudgeT = -1; // a hand on it ends the settle
       this.moved = 0;
       this.lastX = e.clientX;
       this.lastY = e.clientY;
@@ -47,6 +53,7 @@ export class Explore {
       const dx = e.clientX - this.lastX;
       const dy = e.clientY - this.lastY;
       this.moved += Math.abs(dx) + Math.abs(dy);
+      if (!this.turnedOnce && this.moved > 24) { this.turnedOnce = true; this.onFirstTurn?.(); }
       this.yaw = Math.max(-YAW_LIMIT, Math.min(YAW_LIMIT, this.yaw + dx * YAW_PER_PX));
       this.pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, this.pitch + dy * PITCH_PER_PX));
       this.vy = Math.max(-V_LIMIT, Math.min(V_LIMIT, (dx * YAW_PER_PX) / dt));
@@ -69,6 +76,7 @@ export class Explore {
   setArmed(on: boolean): void {
     if (this.armed === on) return;
     this.armed = on;
+    this.nudgeT = on && this.nudgeOn ? 0 : -1;
     // pan-y: a sideways drag turns the block; a vertical swipe still scrolls (and leaving disarms)
     this.canvas.style.touchAction = on ? 'pan-y' : '';
     this.canvas.style.cursor = on ? 'grab' : '';
@@ -76,9 +84,23 @@ export class Explore {
     this.onChange(on);
   }
 
+  /** Reduced motion: no settle nudge (the cue text still shows). */
+  setNudge(on: boolean): void { this.nudgeOn = on; }
+
   /** Per frame. `atEnding` is false once the reader scrolls back, which disarms and returns. */
   update(dt: number, atEnding: boolean): void {
     if (this.armed && !atEnding) this.setArmed(false);
+    if (this.armed && this.nudgeT >= 0) {
+      // one slow breath: 0 → +9° → 0 over 2.6 s, soft at both ends
+      const T = 2.6;
+      this.nudgeT += dt;
+      const u = Math.min(1, this.nudgeT / T);
+      const e = u * u * (3 - 2 * u);
+      this.yaw = 0.16 * Math.sin(Math.PI * e);
+      this.pitch = 0;
+      if (u >= 1) { this.nudgeT = -1; this.yaw = 0; }
+      return;
+    }
     if (this.armed) {
       if (!this.dragging) {
         const k = Math.exp(-dt / INERTIA_TAU);

@@ -46,12 +46,11 @@ export class Story {
   private lastCaption = '';
   private lastAyah = -1;
   private everScrolled = false;
-  private turnBtn: HTMLButtonElement;
   private turnHint: HTMLElement;
+  private turnedOnce = false;
   private transBtn: HTMLButtonElement;
   private translation: HTMLElement;
   private translationOpen = false;
-  onTurn: ((on: boolean) => void) | null = null;
 
   constructor(root: HTMLElement) {
     const $ = <T extends HTMLElement>(sel: string) => { const el = root.querySelector<T>(sel); if (!el) throw new Error(`story: missing ${sel}`); return el; };
@@ -73,9 +72,7 @@ export class Story {
     const list = this.translation.querySelector('ul');
     if (list) for (const a of AYAT) { const li = document.createElement('li'); const n = document.createElement('span'); n.className = 'n'; n.lang = 'ar'; n.textContent = a.n; const t = document.createElement('span'); t.textContent = a.en; li.append(n, t); list.append(li); }
     this.transBtn.addEventListener('click', () => this.setTranslation(!this.translationOpen));
-    this.turnBtn = $('#story-turn');
     this.turnHint = $('#story-turn-hint');
-    this.turnBtn.addEventListener('click', () => this.onTurn?.(this.turnBtn.getAttribute('aria-pressed') !== 'true'));
     $('#story-again').addEventListener('click', () => window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
   }
 
@@ -87,11 +84,14 @@ export class Story {
     this.transBtn.textContent = open ? 'Hide translation' : 'Show translation';
   }
 
-  /** Reflect the explore state on the closing card. */
+  /** The quiet cue that the block can be turned: shown while explore is armed, gone after the first turn. */
   setTurning(on: boolean): void {
-    this.turnBtn.setAttribute('aria-pressed', String(on));
-    this.turnBtn.textContent = on ? 'Let it rest' : 'Turn it in your hands';
-    this.turnHint.hidden = !on;
+    this.turnHint.hidden = !on || this.turnedOnce;
+  }
+  /** The reader has turned it once — the cue has done its work. */
+  turned(): void {
+    this.turnedOnce = true;
+    this.turnHint.hidden = true;
   }
 
   toggleAbout(open: boolean = this.about.hidden === true): void {
