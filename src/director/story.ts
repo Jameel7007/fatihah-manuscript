@@ -27,7 +27,7 @@ const CAPTIONS: ReadonlyArray<readonly [number, string]> = [
   [0.575, 'The page is read'],
   [0.64, 'The ink begins to rise'],
   [0.722, 'The words stand up in gold'],
-  [0.84, 'Al-Fātiḥah, standing in the light'],
+  [0.84, 'Al-Fātiḥah'],
 ];
 
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
@@ -48,6 +48,9 @@ export class Story {
   private everScrolled = false;
   private turnBtn: HTMLButtonElement;
   private turnHint: HTMLElement;
+  private transBtn: HTMLButtonElement;
+  private translation: HTMLElement;
+  private translationOpen = false;
   onTurn: ((on: boolean) => void) | null = null;
 
   constructor(root: HTMLElement) {
@@ -65,10 +68,23 @@ export class Story {
     $('#story-about-close').addEventListener('click', () => this.toggleAbout(false));
     this.about.addEventListener('keydown', (e) => { if (e.key === 'Escape') this.toggleAbout(false); });
     this.about.addEventListener('click', (e) => { if (e.target === this.about) this.toggleAbout(false); });
+    this.translation = $('#story-translation');
+    this.transBtn = $('#story-translate');
+    const list = this.translation.querySelector('ul');
+    if (list) for (const a of AYAT) { const li = document.createElement('li'); const n = document.createElement('span'); n.className = 'n'; n.lang = 'ar'; n.textContent = a.n; const t = document.createElement('span'); t.textContent = a.en; li.append(n, t); list.append(li); }
+    this.transBtn.addEventListener('click', () => this.setTranslation(!this.translationOpen));
     this.turnBtn = $('#story-turn');
     this.turnHint = $('#story-turn-hint');
     this.turnBtn.addEventListener('click', () => this.onTurn?.(this.turnBtn.getAttribute('aria-pressed') !== 'true'));
     $('#story-again').addEventListener('click', () => window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
+  }
+
+  /** The full translation at the ending — a toggle on the closing card. */
+  setTranslation(open: boolean): void {
+    this.translationOpen = open;
+    this.translation.hidden = !open;
+    this.transBtn.setAttribute('aria-pressed', String(open));
+    this.transBtn.textContent = open ? 'Hide translation' : 'Show translation';
   }
 
   /** Reflect the explore state on the closing card. */
@@ -128,7 +144,9 @@ export class Story {
     }
     this.show(this.ayah, idx >= 0 ? a : 0);
 
-    // closing card at the held ending
-    this.show(this.closing, smooth(0.975, 0.995, p));
+    // closing card at the held ending; the full translation only while it is open there
+    const closingA = smooth(0.975, 0.995, p);
+    this.show(this.closing, closingA);
+    if (closingA < 0.02 && this.translationOpen) this.setTranslation(false);
   }
 }
