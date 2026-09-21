@@ -133,7 +133,7 @@ export class Story {
     let a = 0;
     for (let i = 0; i < WRITE.length; i++) {
       const [s] = WRITE[i]!;
-      const next = i + 1 < WRITE.length ? WRITE[i + 1]![0] : 0.6;
+      const next = i + 1 < WRITE.length ? WRITE[i + 1]![0] : 0.588; // gone once the last line is written
       if (p >= s - 0.006 && p < next) { idx = i; a = smooth(s - 0.006, s + 0.008, p) * (1 - smooth(next - 0.01, next, p)); }
     }
     if (idx !== this.lastAyah && idx >= 0) {
