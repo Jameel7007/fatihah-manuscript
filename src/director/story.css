@@ -9,6 +9,8 @@
   font-family: var(--serif); -webkit-font-smoothing: antialiased;
 }
 #story > * { transition: opacity .45s ease; }
+/* the caption, the āyah card and the closing card are eased in script (frame-rate smoothing tied to the scroll) */
+#story-caption, #story-ayah, #story-closing { transition: none; }
 #story .is-off { visibility: hidden; }
 @media (prefers-reduced-motion: reduce) { #story > * { transition: none; } }
 body.capture #story { display: none; }

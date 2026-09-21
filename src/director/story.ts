@@ -45,6 +45,13 @@ export class Story {
   private about: HTMLElement;
   private lastCaption = '';
   private lastAyah = -1;
+  // temporal smoothing (like the scroll spring): the words ease at the pace of the scroll, never snap
+  private ayahA = 0;
+  private ayahTarget = 0;
+  private pendingAyah = -1;
+  private captionA = 0;
+  private closingA = 0;
+  private reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   private everScrolled = false;
   private turnHint: HTMLElement;
   private turnedOnce = false;
@@ -110,8 +117,14 @@ export class Story {
     el.classList.toggle('is-off', hidden);
   }
 
-  /** Called every frame with the live p (0–1). */
-  update(p: number): void {
+  /** first-order ease toward a target: τ seconds; instant under reduced motion */
+  private ease(current: number, target: number, dt: number, tau: number): number {
+    if (this.reduced) return target;
+    return current + (target - current) * (1 - Math.exp(-dt / tau));
+  }
+
+  /** Called every frame with the live p (0–1) and the frame's dt (s). */
+  update(p: number, dt = 1 / 60): void {
     if (p > 0.004) this.everScrolled = true;
     // title + cue: present at the opening, gone once the seal breaks
     const titleA = 1 - smooth(0.012, 0.05, p);
@@ -125,27 +138,34 @@ export class Story {
     if (cap !== this.lastCaption) { this.caption.textContent = cap; this.lastCaption = cap; }
     let capStart = 0;
     for (const [start] of CAPTIONS) if (p >= start) capStart = start;
-    this.show(this.caption, cap ? smooth(capStart, capStart + 0.012, p) : 0);
+    this.captionA = this.ease(this.captionA, cap ? smooth(capStart, capStart + 0.008, p) : 0, dt, 0.5);
+    this.show(this.caption, this.captionA);
 
     // translation of the āyah being written (window start → next start) — once; the rise repeats
     // the same order a few seconds later and a second pass read as a repeat (owner, 2026-09-19)
+    // which āyah is being written: from its window start until the next window starts; the last one
+    // leaves as the writing ends (0.588). The text only ever changes while the card is faded out, and
+    // the card's opacity eases with τ 0.42 s, so a fast scroll reads as a soft cross-fade, not a flicker.
     let idx = -1;
-    let a = 0;
     for (let i = 0; i < WRITE.length; i++) {
       const [s] = WRITE[i]!;
-      const next = i + 1 < WRITE.length ? WRITE[i + 1]![0] : 0.588; // gone once the last line is written
-      if (p >= s - 0.006 && p < next) { idx = i; a = smooth(s - 0.006, s + 0.008, p) * (1 - smooth(next - 0.01, next, p)); }
+      const next = i + 1 < WRITE.length ? WRITE[i + 1]![0] : 0.588;
+      if (p >= s - 0.004 && p < next) idx = i;
     }
-    if (idx !== this.lastAyah && idx >= 0) {
-      const ay = AYAT[idx]!;
-      this.ayahNum.textContent = ay.n;
-      this.ayahText.textContent = ay.en;
-      this.lastAyah = idx;
+    if (idx !== this.lastAyah) { this.pendingAyah = idx; }
+    const wantVisible = idx >= 0 && this.pendingAyah === this.lastAyah;
+    this.ayahTarget = wantVisible ? 1 : 0;
+    this.ayahA = this.ease(this.ayahA, this.ayahTarget, dt, this.ayahTarget > this.ayahA ? 0.42 : 0.3);
+    if (this.pendingAyah !== this.lastAyah && this.ayahA < 0.06) {
+      // swap the words only once the card is (nearly) gone
+      if (this.pendingAyah >= 0) { const ay = AYAT[this.pendingAyah]!; this.ayahNum.textContent = ay.n; this.ayahText.textContent = ay.en; }
+      this.lastAyah = this.pendingAyah;
     }
-    this.show(this.ayah, idx >= 0 ? a : 0);
+    this.show(this.ayah, this.ayahA);
 
     // closing card at the held ending; the full translation only while it is open there
-    const closingA = smooth(0.975, 0.995, p);
+    this.closingA = this.ease(this.closingA, smooth(0.975, 0.995, p), dt, 0.4);
+    const closingA = this.closingA;
     this.show(this.closing, closingA);
     if (closingA < 0.02 && this.translationOpen) this.setTranslation(false);
   }

@@ -7,7 +7,7 @@
 // the total density so scroll feel OUTSIDE the dwell is unchanged. Capture mode pins p
 // directly and never touches the remap (blessed frames unaffected).
 
-const DWELL = 2.0; // 2026-09-19 (owner: "slow down the writing"): ×1.35 → ×2.0, the writing takes ~48% more scroll travel
+const DWELL = 2.4; // 2026-09-19 ×1.35 → ×2.0 ("slow down the writing"); 2026-09-21 → ×2.4 ("slow both down")
 const DWELL_A = 0.3;
 const DWELL_B = 0.62;
 const DWELL_F = 0.03; // feather

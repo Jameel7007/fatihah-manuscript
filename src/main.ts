@@ -1112,7 +1112,7 @@ async function runMain(): Promise<void> {
     const message = `${stateLabel(scroll.p)}${assetError ? ' · text unavailable' : !assetsReady ? ' · loading text' : ''}${reduced ? ' · reduced motion' : ''}`;
     if (announcement && announcement.textContent !== message) announcement.textContent = message;
     bar!.style.height = `${scroll.p * 100}%`;
-    story?.update(scroll.p);
+    story?.update(scroll.p, dt);
     if (explore && stage.relief) {
       if (scroll.p >= 0.985 && !explore.armed && assetsReady) explore.setArmed(true);
       explore.update(dt, scroll.p >= 0.97);
