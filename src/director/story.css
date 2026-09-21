@@ -110,7 +110,16 @@ body.capture #story { display: none; }
 #story-about-close { position: absolute; right: 12px; top: 12px; }
 @media (max-width: 640px) {
   #story-about .panel { padding: 26px 18px 22px; font-size: 14.5px; }
-  #story-title { top: calc(64px + env(safe-area-inset-top)); } /* below the About button */
+  /* portrait phones: Safari's bars leave ≈ 660 px and the roll is framed at ≈ 45 % of that,
+     so the whole block must end above ~40 % of the viewport */
+  #story-title { top: calc(58px + env(safe-area-inset-top)); width: 88vw; }
+  #story-title .eyebrow { display: none; }
+  #story-title .arabic { font-size: 40px; line-height: 1.35; padding-bottom: .28em; }
+  #story-title .name { font-size: 16px; line-height: 1.3; }
+  #story-title .dek { font-size: 13px; line-height: 1.45; margin-top: 6px; max-width: 34ch; }
+}
+@media (max-width: 640px) and (max-height: 760px) {
+  #story-title .dek { display: none; } /* short viewport: the name is enough */
 }
 
 /* ---- wide landscape: the words sit in the empty left margin, like marginalia beside the page ---- */
