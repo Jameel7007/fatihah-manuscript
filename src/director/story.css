@@ -10,7 +10,7 @@
 }
 #story > * { transition: opacity .45s ease; }
 /* the caption, the āyah card and the closing card are eased in script (frame-rate smoothing tied to the scroll) */
-#story-caption, #story-ayah, #story-closing { transition: none; }
+#story-caption, #story-ayah, #story-closing, #story-wait { transition: none; }
 #story .is-off { visibility: hidden; }
 @media (prefers-reduced-motion: reduce) { #story > * { transition: none; } }
 body.capture #story { display: none; }
@@ -41,6 +41,17 @@ body.capture #story { display: none; }
 #story-cue .line { width: 1px; height: 34px; background: linear-gradient(var(--gold), transparent); animation: story-cue 2.6s ease-in-out infinite; transform-origin: top; }
 @keyframes story-cue { 0%, 100% { transform: scaleY(.55); opacity: .4; } 50% { transform: scaleY(1); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { #story-cue .line { animation: none; } }
+
+/* ---- still-arriving note (v1.8.0): the reader is ahead of the streamed ink or relief ---- */
+#story-wait {
+  position: absolute; left: 50%; bottom: calc(26px + env(safe-area-inset-bottom)); transform: translateX(-50%); margin: 0;
+  display: flex; align-items: center; gap: 10px; white-space: nowrap;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted);
+  padding: 8px 14px; border-radius: 999px; background: rgba(1, 3, 13, .62); border: 1px solid var(--gold-faint);
+}
+#story-wait .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); animation: story-wait 1.8s ease-in-out infinite; }
+@keyframes story-wait { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { #story-wait .dot { animation: none; } }
 
 /* ---- stage caption ---- */
 #story-caption {

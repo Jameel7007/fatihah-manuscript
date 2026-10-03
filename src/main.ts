@@ -9,7 +9,7 @@ import { Story, AYAT } from './director/story';
 import { Explore } from './director/explore';
 import { assetUrl } from './core/url';
 import { Vector3 } from 'three/webgpu';
-import { ScrollDriver, SCROLL_DENSITY_TOTAL } from './director/scroll';
+import { INK_NEEDED_P, RELIEF_NEEDED_P, ScrollDriver, SCROLL_DENSITY_TOTAL } from './director/scroll';
 import { evalDeform } from './field/deform';
 import { Field } from './field/field';
 import { Residual } from './field/residual';
@@ -80,13 +80,30 @@ const spacer = document.querySelector<HTMLDivElement>('#spacer');
 if (!canvas || !hud || !bar || !capEl || !spacer) throw new Error('missing DOM scaffolding');
 
 const coarse = matchMedia('(pointer: coarse)').matches;
+// v1.8.0 phone budget (live only — capture frames are pinned by ?tier and never see it): a
+// touch device whose short side is phone-sized takes the phone relief mesh (half the download)
+// and renders at most 2 device px per CSS px, with no moving supersample at the rise.
+const phoneParam = q.get('phone'); // QA: ?phone=1 | 0 (headless emulation cannot fake screen.width)
+const phone = !isCapture && (phoneParam === '1' || (phoneParam !== '0' && coarse && Math.min(screen.width, screen.height) < 600));
 const flatPage = isCapture || sceneMode === 'proof' || sceneMode === 'reveal';
+// index.html carries the same height in CSS so the page scrolls from first paint (test: spacer.test.mjs)
 spacer.style.height = flatPage ? '0' : `${Math.round((coarse ? 6.5 : 8) * 100 * SCROLL_DENSITY_TOTAL) + 100}vh`;
 if (isCapture) document.body.classList.add('capture');
 
+// v1.8.0: the manuscript's ink and relief start downloading now, alongside renderer start-up
+// and pipeline compilation, instead of after the first live frames. Attachment still waits.
+const meshParam = q.get('mesh'); // QA: ?mesh=t3 | full overrides the tier/phone choice
+const glyphUrl = assetUrl(meshParam === 't3' || (meshParam !== 'full' && (tier === 3 || phone)) ? 'text/glyphs-t3.bin' : 'text/glyphs.bin');
+const liveMain = sceneMode === 'main' && !isCapture && calibrate === null && q.get('noink') === null;
+const early = liveMain
+  ? { ink: loadInk(), glyph: q.get('nogeo') === null ? loadGlyphBin(glyphUrl) : null }
+  : null;
+early?.ink.catch(() => undefined); // surfaced when awaited in hydrateStage
+early?.glyph?.catch(() => undefined);
+
 const boot = await createRenderer(canvas, {
   forceWebGL: q.get('backend') === 'webgl2',
-  dprCap: isCapture ? 1 : DPR_CAP[tier],
+  dprCap: isCapture ? 1 : phone ? Math.min(DPR_CAP[tier], 2) : DPR_CAP[tier],
 });
 const { renderer, backend } = boot;
 console.info(
@@ -607,7 +624,6 @@ async function runMain(): Promise<void> {
   const field = new Field(sil);
   const wantsInk = q.get('noink') === null;
   const wantsRelief = wantsInk && q.get('nogeo') === null;
-  const glyphUrl = assetUrl(tier === 3 ? 'text/glyphs-t3.bin' : 'text/glyphs.bin');
   // Capture stays all-at-once and deterministic. Live mode builds the rolled parchment
   // from phase A, then streams phase B/C only after the first canvas presentation.
   let initialInk: Awaited<ReturnType<typeof loadInk>> | undefined;
@@ -657,34 +673,41 @@ async function runMain(): Promise<void> {
   let presented = 0;
   let posterGone = isCapture;
   let assetsReady = isCapture || !wantsInk;
+  // v1.8.0 staged readiness: each stage of the piece waits only for what it shows
+  let inkReady = isCapture || !wantsInk;
+  let reliefReady = isCapture || !wantsRelief;
   let assetError: string | null = null;
   let hydrationStarted = false;
   const hydrateStage = async (): Promise<void> => {
     if (hydrationStarted || assetsReady) return;
     hydrationStarted = true;
-    const status: { inkReady: boolean; reliefReady: boolean; tier: number; glyphUrl: string; error?: string } = { inkReady: false, reliefReady: !wantsRelief, tier, glyphUrl };
+    const status: { inkReady: boolean; reliefReady: boolean; tier: number; glyphUrl: string; inkAt_s?: number; error?: string } = { inkReady: false, reliefReady: !wantsRelief, tier, glyphUrl };
     (window as unknown as { __assets?: unknown }).__assets = status;
+    const since = (): number => +((performance.now() - posterClockT0) / 1000).toFixed(2);
+    // Both downloads began at boot. The ink attaches the moment it lands — it no longer waits
+    // for the relief mesh, so the writing is ready long before the gold on a slow link.
+    // Attachment order stays ink → relief because the relief material consumes the ink target.
+    const glyphLoad = wantsRelief ? (early?.glyph ?? loadGlyphBin(glyphUrl)) : null;
     try {
-      // Network work overlaps; attachment order stays ink → relief because the relief
-      // material consumes the ink render target.
-      const [ink, glyphBin] = await Promise.all([
-        loadInk(),
-        wantsRelief ? loadGlyphBin(glyphUrl) : Promise.resolve(undefined),
-      ]);
+      const ink = await (early?.ink ?? loadInk());
       stage.attachInk(ink);
-      status.inkReady = true;
-      if (glyphBin) {
-        stage.attachRelief(glyphBin);
-        status.reliefReady = true;
-      }
       await renderer.compileAsync(scene, rig.camera);
+      status.inkReady = inkReady = true;
+      status.inkAt_s = since();
+      console.info(`[assets] ink ready in ${status.inkAt_s.toFixed(2)}s`);
+      if (glyphLoad) {
+        const glyphBin = await glyphLoad;
+        stage.attachRelief(glyphBin);
+        await renderer.compileAsync(scene, rig.camera);
+        status.reliefReady = reliefReady = true;
+      }
     } catch (err) {
       assetError = String(err);
       status.error = assetError;
       console.error('[assets] streamed manuscript load failed', err);
     } finally {
       assetsReady = status.inkReady && status.reliefReady;
-      const readyAt = +((performance.now() - posterClockT0) / 1000).toFixed(2);
+      const readyAt = since();
       (window as unknown as { __assets?: unknown }).__assets = { ...status, ready: assetsReady, readyAt_s: readyAt };
       if (assetsReady) console.info(`[assets] phase B/C ready in ${readyAt.toFixed(2)}s`);
     }
@@ -720,12 +743,32 @@ async function runMain(): Promise<void> {
   document.addEventListener('visibilitychange', () => { if (document.hidden) perfAudit?.markHidden(); });
   let perfT0 = -1;
 
-  window.addEventListener('resize', () => {
-    if (isCapture) return;
+  const applyResize = (): void => {
     const s = fitViewport();
     rig.camera.aspect = s.w / s.h;
     rig.camera.updateProjectionMatrix();
     grade.setAspect(s.w / s.h);
+  };
+  // v1.8.0: on touch devices a height-only resize is the browser toolbar sliding in or out as
+  // the reader scrolls. Reallocating the drawing buffer then lands a hitch mid-gesture, so it
+  // waits for the scroll to rest; the sky-coloured page floor fills the strip in the meantime.
+  // Width changes (rotation) still apply at once.
+  let lastW = window.innerWidth;
+  let lastScrollAt = -1e9;
+  let resizeTimer = 0;
+  window.addEventListener('scroll', () => { lastScrollAt = performance.now(); }, { passive: true });
+  const settleResize = (): void => {
+    const quiet = performance.now() - lastScrollAt;
+    if (quiet < 250) { resizeTimer = window.setTimeout(settleResize, 260 - quiet); return; }
+    applyResize();
+  };
+  window.addEventListener('resize', () => {
+    if (isCapture) return;
+    const widthChanged = window.innerWidth !== lastW;
+    lastW = window.innerWidth;
+    window.clearTimeout(resizeTimer);
+    if (coarse && !widthChanged) { resizeTimer = window.setTimeout(settleResize, 120); return; }
+    applyResize();
   });
 
   const IDLE_ZERO: IdleState = { ramp: 0, breath: 0, keyMod: 1, yawDeg: 0, drift: [0, 0, 0] };
@@ -738,7 +781,7 @@ async function runMain(): Promise<void> {
   const liveSupersample = (activeTier: 1 | 2 | 3, p: number, idleRamp: number): number => {
     const t0 = Math.max(0, Math.min(1, (p - 0.62) / 0.11));
     const reliefRamp = t0 * t0 * (3 - 2 * t0);
-    const movingTarget = activeTier === 1 ? 1 + 0.5 * reliefRamp : activeTier === 2 ? 1 + 0.25 * reliefRamp : 1;
+    const movingTarget = activeTier === 1 ? 1 + 0.5 * reliefRamp : activeTier === 2 && !phone ? 1 + 0.25 * reliefRamp : 1; // v1.8.0: phones stay native
     const idleTarget = activeTier === 1 ? 1 + Math.max(0, Math.min(1, idleRamp)) : 1;
     return Math.round(Math.max(movingTarget, idleTarget) * 8) / 8;
   };
@@ -1034,11 +1077,13 @@ async function runMain(): Promise<void> {
       reduced.fromScroll(max > 0 ? window.scrollY / max : 0);
       reduced.tick(now);
     }
-    // Do not let a fast first gesture outrun phase B/C. Forced mode is released as soon
-    // as the inscription has attached and compiled; failures remain visibly safe at p=0.
-    if (!assetsReady) scroll.forced = 0;
-    else if (holdS > 0) scroll.forced = 1;
-    else if (reduced) scroll.forced = reduced.p;
+    // v1.8.0: a fast first gesture still cannot outrun the assets, but the limit is staged
+    // (it was a hard pin at p = 0 until the 7 MB relief had landed, so phones could not scroll
+    // at all for 10–25 s). The unroll needs nothing streamed; the writing needs the ink; the
+    // emboss and rise need the relief. The spring carries p on when each limit lifts.
+    scroll.limit = !inkReady ? INK_NEEDED_P : !reliefReady ? RELIEF_NEEDED_P : 1;
+    if (holdS > 0) scroll.forced = assetsReady ? 1 : 0;
+    else if (reduced) scroll.forced = Math.min(scroll.limit, reduced.p);
     else if (perfS === 0) scroll.forced = null;
     if (perfS > 0 && assetsReady) {
       // synthetic scrub: p sweeps 0 → 1 → 0 over perfS seconds (worst pass set every cycle)
@@ -1112,6 +1157,11 @@ async function runMain(): Promise<void> {
     const message = `${stateLabel(scroll.p)}${assetError ? ' · text unavailable' : !assetsReady ? ' · loading text' : ''}${reduced ? ' · reduced motion' : ''}`;
     if (announcement && announcement.textContent !== message) announcement.textContent = message;
     bar!.style.height = `${scroll.p * 100}%`;
+    if (story) {
+      const wantedP = reduced ? reduced.p : scroll.wanted;
+      const ahead = scroll.limit < 1 && wantedP > scroll.limit + 0.01;
+      story.setWaiting(!ahead ? null : assetError ? 'The text could not load · please reload' : !inkReady ? 'The ink is still arriving' : 'The gold is still arriving');
+    }
     story?.update(scroll.p, dt);
     if (explore && stage.relief) {
       if (scroll.p >= 0.985 && !explore.armed && assetsReady) explore.setArmed(true);

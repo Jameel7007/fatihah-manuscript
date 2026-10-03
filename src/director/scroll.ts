@@ -39,6 +39,12 @@ export function scrollToP(s: number): number {
   return (lo + (t - cum[lo]!) / seg) / LUT_N;
 }
 
+/** v1.8.0 staged asset limits: p stops just short of the first written stroke (§10 write span
+ *  opens at 0.30) until the ink has attached, and just short of the emboss (0.64) until the
+ *  relief has. qa/spacer.test.mjs checks both sit before anything they would hide. */
+export const INK_NEEDED_P = 0.295;
+export const RELIEF_NEEDED_P = 0.635;
+
 export class ScrollDriver {
   p = 0;
   target = 0;
@@ -46,6 +52,11 @@ export class ScrollDriver {
   vLpf = 0;
   /** Capture mode pins p directly and zeroes all dynamics. */
   forced: number | null = null;
+  /** Furthest p the loaded assets can show (v1.8.0): the unroll always scrolls, the writing
+   *  waits only for the ink, the rise only for the relief. 1 once everything has attached. */
+  limit = 1;
+  /** The reader's scroll position as p, before the asset limit — drives the "still arriving" note. */
+  wanted = 0;
 
   private v = 0;
   private forcedPrev: number | null = null;
@@ -63,7 +74,8 @@ export class ScrollDriver {
     }
     this.forcedPrev = null;
     const max = document.documentElement.scrollHeight - window.innerHeight;
-    this.target = max > 0 ? scrollToP(window.scrollY / max) : 0;
+    this.wanted = max > 0 ? scrollToP(window.scrollY / max) : 0;
+    this.target = Math.min(this.limit, this.wanted);
 
     const dt = Math.min(dtRaw, 1 / 30);
     if (dt <= 0) return;

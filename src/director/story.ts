@@ -4,7 +4,7 @@
 // same p the canvas uses; nothing here touches the render, so reference frames are unaffected
 // (capture mode hides the whole layer). Translation: Abdullah Yusuf Ali, 1934 — his capitalisation and punctuation kept as printed.
 
-import './story.css';
+// story.css is imported by boot.ts so the page layer is styled from first paint (v1.8.0)
 
 /** §10 per-āyah write windows (p) — baked from the frozen composition. */
 const WRITE: ReadonlyArray<readonly [number, number]> = [
@@ -58,6 +58,11 @@ export class Story {
   private transBtn: HTMLButtonElement;
   private translation: HTMLElement;
   private translationOpen = false;
+  // v1.8.0: a quiet note when the reader scrolls ahead of the streamed ink or relief
+  private wait: HTMLElement;
+  private waitText: string | null = null;
+  private waitShown = '';
+  private waitA = 0;
 
   constructor(root: HTMLElement) {
     const $ = <T extends HTMLElement>(sel: string) => { const el = root.querySelector<T>(sel); if (!el) throw new Error(`story: missing ${sel}`); return el; };
@@ -80,6 +85,10 @@ export class Story {
     if (list) for (const a of AYAT) { const li = document.createElement('li'); const n = document.createElement('span'); n.className = 'n'; n.lang = 'ar'; n.textContent = a.n; const t = document.createElement('span'); t.textContent = a.en; li.append(n, t); list.append(li); }
     this.transBtn.addEventListener('click', () => this.setTranslation(!this.translationOpen));
     this.turnHint = $('#story-turn-hint');
+    this.wait = $('#story-wait');
+    // boot.ts may already be showing "The manuscript is arriving" over the poster: take it over
+    this.waitA = +this.wait.style.opacity || 0;
+    this.waitShown = this.waitA > 0 ? (this.wait.textContent ?? '') : '';
     $('#story-again').addEventListener('click', () => window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
   }
 
@@ -89,6 +98,11 @@ export class Story {
     this.translation.hidden = !open;
     this.transBtn.setAttribute('aria-pressed', String(open));
     this.transBtn.textContent = open ? 'Hide translation' : 'Show translation';
+  }
+
+  /** The reader is ahead of the download: show a quiet note (null hides it). */
+  setWaiting(text: string | null): void {
+    this.waitText = text;
   }
 
   /** The quiet cue that the block can be turned: shown while explore is armed, gone after the first turn. */
@@ -130,6 +144,15 @@ export class Story {
     const titleA = 1 - smooth(0.012, 0.05, p);
     this.show(this.title, titleA);
     this.show(this.cue, this.everScrolled ? Math.min(titleA, 1 - smooth(0.004, 0.02, p)) : 1);
+
+    // still-arriving note: eases like the cards; its words change only while it is faded out
+    if (!this.wait.dataset.owned) { this.wait.dataset.owned = '1'; this.wait.style.transition = ''; }
+    if (this.waitText && this.waitShown !== this.waitText && this.waitA < 0.06) {
+      this.waitShown = this.waitText;
+      this.wait.querySelector('span:last-child')!.textContent = this.waitText;
+    }
+    this.waitA = this.ease(this.waitA, this.waitText && this.waitShown === this.waitText ? 1 : 0, dt, 0.35);
+    this.show(this.wait, this.waitA);
 
     // stage caption
     let cap = '';

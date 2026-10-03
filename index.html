@@ -13,7 +13,10 @@
 <style>
   html { background: #01030D; } /* §1 v1.6 universe floor — overscroll and first paint match the sky */
   body { margin: 0; background: #01030D; color: #A2957A; }
-  #spacer { width: 1px; }
+  /* v1.8.0: the scroll length is here from first paint (it used to arrive only with the engine
+     script, so early swipes did nothing); main.ts sets the same values — qa/spacer.test.mjs */
+  #spacer { width: 1px; height: 1258vh; }
+  @media (pointer: coarse) { #spacer { height: 1041vh; } }
   canvas#gl { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; opacity: 0; }
   /* §15 designed first frame: inline LQIP blur-up under the poster JPEG of R-p0.00 — landscape
      1600×1000 for landscape viewports, and since v1.6.7 a portrait 780×1688 capture of the same
@@ -58,6 +61,7 @@
     <p class="dek">The seven verses that open the Qurʾān: a parchment unrolls, a scribe writes them in ink, and the words rise into gold as you scroll.</p>
   </div>
   <div id="story-cue"><span>Scroll</span><span class="line" aria-hidden="true"></span></div>
+  <p id="story-wait" class="is-off" style="opacity:0" aria-hidden="true" role="status"><span class="dot" aria-hidden="true"></span><span></span></p>
   <p id="story-caption" class="is-off" style="opacity:0" aria-hidden="true"></p>
   <div id="story-ayah" class="is-off" style="opacity:0" aria-hidden="true"><span id="story-ayah-num" lang="ar"></span><p id="story-ayah-text"></p></div>
   <div id="story-closing" class="is-off" style="opacity:0" aria-hidden="true">

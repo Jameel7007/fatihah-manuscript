@@ -36,10 +36,12 @@ of how far you have scrolled, so scrolling back replays it exactly.
   contact shadows under the rising words, and a dark blue sky with tiny stars that keep clear of the text.
   Tone mapping is AgX; there is no bloom.
 - **It adapts to the device.** Three quality tiers (desktop, iPhone 15 class, iPhone 12 class) pick the
-  mesh, shadow filter and pixel density; a runtime monitor steps quality down if frames overrun. A poster
-  image shows first, and the live canvas crossfades in once it has compiled.
-- **You can hold it.** At the ending the standing gold block is placed in your hands: drag sideways to turn it
-  in the light (“Let it rest” puts it back); the extruded sidewalls and the bevel profile become visible from the side.
+  mesh, shadow filter and pixel density; phones get a lighter mesh and pixel budget, and a runtime monitor
+  steps quality down if frames overrun. A poster image shows first and the page scrolls straight away; the
+  ink and the gold stream in behind it, and the scroll only waits at the point where it would need them.
+- **You can hold it.** At the ending the standing gold block is placed in your hands: it settles with one
+  gentle turn, and a sideways touch or mouse movement turns it in the light (it returns to rest when you let go);
+  the extruded sidewalls and the bevel profile become visible from the side.
 - **It fails gracefully.** No WebGPU? The same node materials compile to WebGL2. No usable GPU at all?
   A folio of seven still plates. Prefer reduced motion? Seven held compositions with a pager and
   keyboard navigation.
