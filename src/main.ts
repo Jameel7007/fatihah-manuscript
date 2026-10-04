@@ -63,7 +63,6 @@ const flickOn = q.get('flick') !== null;
 const calibrate = q.get('calibrate'); // 'bg' | 'key' — M2 calibration harnesses
 const sceneMode = q.get('scene') ?? 'main';
 const debugMode = (calibrate === 'key' ? 'graycard' : (q.get('debug') ?? 'none')) as DebugMode;
-const tier = detectTier(q.get('tier'));
 const isCapture = captureP !== null || probeP !== null || sceneMode === 'ramp' || sceneMode === 'inkrt' || calibrate !== null;
 const capW = Number(q.get('w') ?? 1440);
 const capH = Number(q.get('h') ?? 900);
@@ -85,6 +84,12 @@ const coarse = matchMedia('(pointer: coarse)').matches;
 // and renders at most 2 device px per CSS px, with no moving supersample at the rise.
 const phoneParam = q.get('phone'); // QA: ?phone=1 | 0 (headless emulation cannot fake screen.width)
 const phone = !isCapture && (phoneParam === '1' || (phoneParam !== '0' && coarse && Math.min(screen.width, screen.height) < 600));
+// v1.8.1 phone render profile: phones run the T3 pipeline (5-tap PCF shadow, 256² contact, no dust,
+// no residual sim, phone mesh) at a 1.75 DPR cap — the heuristic below put almost every modern iPhone
+// on T2's desktop-class shadow filter. Gold, scripture, camera and compositions are unchanged.
+// An explicit ?tier= still wins (A/B on the device).
+const PHONE_DPR = 1.75;
+const tier = phone && q.get('tier') === null ? 3 : detectTier(q.get('tier'));
 const flatPage = isCapture || sceneMode === 'proof' || sceneMode === 'reveal';
 // index.html carries the same height in CSS so the page scrolls from first paint (test: spacer.test.mjs)
 spacer.style.height = flatPage ? '0' : `${Math.round((coarse ? 6.5 : 8) * 100 * SCROLL_DENSITY_TOTAL) + 100}vh`;
@@ -103,16 +108,43 @@ early?.glyph?.catch(() => undefined);
 
 const boot = await createRenderer(canvas, {
   forceWebGL: q.get('backend') === 'webgl2',
-  dprCap: isCapture ? 1 : phone ? Math.min(DPR_CAP[tier], 2) : DPR_CAP[tier],
+  dprCap: isCapture ? 1 : phone ? (tier === 3 ? PHONE_DPR : Math.min(DPR_CAP[tier], 2)) : DPR_CAP[tier],
 });
 const { renderer, backend } = boot;
 console.info(
   `[fatihah] three r${REVISION} · ${backend} · T${tier} · dpr ${renderer.getPixelRatio()} · ${sceneMode}${isCapture ? ' · capture' : ''}${debugMode !== 'none' ? ` · debug=${debugMode}` : ''}`,
 );
 
+// v1.8.1 stable viewport on touch devices. Mobile browsers slide their toolbars as the reader
+// scrolls, which changes innerHeight (and fires resize) many times a session; each change used to
+// reallocate the canvas and reframe the camera. The canvas is now sized to the SMALL viewport
+// (100svh — the area visible with the toolbars shown, so the composition is never under them) and
+// the scroll range is measured against the LARGE viewport (100lvh), neither of which moves with
+// the toolbar. Rotation changes both and still resizes. Older browsers without the units fall
+// back to innerHeight.
+function makeVhProbe(unit: 'svh' | 'lvh'): HTMLDivElement {
+  const d = document.createElement('div');
+  d.setAttribute('aria-hidden', 'true');
+  d.style.cssText = `position:fixed;left:0;top:0;width:0;height:100${unit};visibility:hidden;pointer-events:none`;
+  document.body.append(d);
+  return d;
+}
+const stableViewport = coarse && !isCapture;
+const svhProbe = stableViewport ? makeVhProbe('svh') : null;
+const lvhProbe = stableViewport ? makeVhProbe('lvh') : null;
+let svhPx = 0;
+let lvhPx = 0;
+function measureViewport(): void {
+  svhPx = svhProbe?.offsetHeight || window.innerHeight;
+  lvhPx = lvhProbe?.offsetHeight || window.innerHeight;
+}
+measureViewport();
+/** The height the scroll range is measured against (stable on touch devices). */
+const scrollViewportHeight = (): number => (stableViewport ? lvhPx : window.innerHeight);
+
 function fitViewport(): { w: number; h: number } {
   const w = isCapture ? capW : window.innerWidth;
-  const h = isCapture ? capH : window.innerHeight;
+  const h = isCapture ? capH : stableViewport ? svhPx : window.innerHeight;
   renderer.setSize(w, h);
   return { w, h };
 }
@@ -654,6 +686,8 @@ async function runMain(): Promise<void> {
   const noBlob = q.get('noblob') !== null; // QA: R-1.00-noblob (§8 — PCSS carries S7 alone)
   const rig = new CameraRig();
   const scroll = new ScrollDriver();
+  scroll.viewportHeight = scrollViewportHeight;
+  scroll.vMax = coarse ? 0.3 : 0.8; // v1.8.1 calm motion: flicks and lifted limits glide
   const size = fitViewport();
   rig.camera.aspect = size.w / size.h;
   const grade = createGrade(renderer, scene, rig.camera);
@@ -665,7 +699,12 @@ async function runMain(): Promise<void> {
   const poster = document.querySelector<HTMLDivElement>('#poster');
   if (!isCapture) {
     try {
-      await renderer.compileAsync(scene, rig.camera);
+      // v1.8.1: against the beauty pass target — the canvas target compiled pipelines nothing used
+      const saved = renderer.getRenderTarget();
+      renderer.setRenderTarget(grade.passTarget);
+      let job: Promise<void>;
+      try { job = renderer.compileAsync(scene, rig.camera); } finally { renderer.setRenderTarget(saved); }
+      await job;
     } catch (err) {
       console.warn('[boot] compileAsync unavailable — pipelines compile on first frames', err);
     }
@@ -678,6 +717,34 @@ async function runMain(): Promise<void> {
   let reliefReady = isCapture || !wantsRelief;
   let assetError: string | null = null;
   let hydrationStarted = false;
+  // v1.8.1 off-scene pre-compile against the beauty pass target (compileAsync against the canvas
+  // compiled pipelines the pass never uses, so every attach compiled again on the next frame)
+  const precompile = async (objects: import('three/webgpu').Object3D[]): Promise<void> => {
+    const saved = renderer.getRenderTarget();
+    const jobs: Promise<void>[] = [];
+    for (const o of objects) {
+      const fc = o.frustumCulled;
+      const vis = o.visible;
+      o.frustumCulled = false;
+      o.visible = true;
+      renderer.setRenderTarget(grade.passTarget);
+      try {
+        jobs.push(renderer.compileAsync(o, rig.camera, scene)); // render context is captured synchronously
+      } finally {
+        renderer.setRenderTarget(saved);
+        o.frustumCulled = fc;
+        o.visible = vis;
+      }
+    }
+    try { await Promise.all(jobs); } catch (err) { console.warn('[assets] pre-compile failed; pipelines compile on first use', err); }
+  };
+  let warmDone: (() => void) | null = null;
+  // v1.8.1: attaching the ink or the gold costs the main thread a few frames (building the material
+  // graph and geometry). It waits for a quiet moment — the reader at rest for 250 ms, or already
+  // waiting at the asset limit — so the cost never lands in the middle of a scroll.
+  let quietWaiter: (() => void) | null = null;
+  let quietSince = -1;
+  const whenQuiet = (): Promise<void> => new Promise<void>((resolve) => { quietWaiter = resolve; });
   const hydrateStage = async (): Promise<void> => {
     if (hydrationStarted || assetsReady) return;
     hydrationStarted = true;
@@ -690,15 +757,22 @@ async function runMain(): Promise<void> {
     const glyphLoad = wantsRelief ? (early?.glyph ?? loadGlyphBin(glyphUrl)) : null;
     try {
       const ink = await (early?.ink ?? loadInk());
-      stage.attachInk(ink);
-      await renderer.compileAsync(scene, rig.camera);
+      await whenQuiet();
+      traceMark('attachInk');
+      await stage.attachInk(ink, precompile, (pass) => pass.prepare(renderer, scroll.p));
+      traceMark('inkSwapped');
       status.inkReady = inkReady = true;
       status.inkAt_s = since();
       console.info(`[assets] ink ready in ${status.inkAt_s.toFixed(2)}s`);
       if (glyphLoad) {
         const glyphBin = await glyphLoad;
-        stage.attachRelief(glyphBin);
-        await renderer.compileAsync(scene, rig.camera);
+        await whenQuiet();
+        traceMark('attachRelief');
+        await stage.attachRelief(glyphBin, precompile);
+        traceMark('reliefSwapped');
+        // the rise's own shadow and contact passes still compile on first use: a warm-up frame in
+        // the live loop renders them once, invisibly, before the limit lifts (v1.8.1)
+        await new Promise<void>((resolve) => { warmDone = resolve; });
         status.reliefReady = reliefReady = true;
       }
     } catch (err) {
@@ -717,6 +791,10 @@ async function runMain(): Promise<void> {
     presented++;
     if (presented < 3) return;
     posterGone = true;
+    // v1.8.1: a reader who scrolled under the poster meets the canvas at their position (masked by
+    // the crossfade) instead of watching it race there.
+    if (scroll.forced === null) { scroll.snapToTarget(); rig.snap(scroll.p); }
+    traceMark('reveal');
     (canvas as HTMLCanvasElement).style.transition = 'opacity 420ms ease-out';
     (canvas as HTMLCanvasElement).style.opacity = '1';
     if (poster) {
@@ -735,7 +813,7 @@ async function runMain(): Promise<void> {
   }
 
   // §19 runtime tier monitor: demotion at state boundaries, thermal guard; off in capture
-  const tierMon = new TierMonitor(tier);
+  const tierMon = new TierMonitor(tier, phone && tier === 3 ? PHONE_DPR : undefined);
   let lastState = stateLabel(0);
   // ?perf=N — scrub p 0 → 1 → 0 over N seconds repeatedly and report the frame-time histogram
   const perfS = q.get('perf') !== null ? Number(q.get('perf') ?? '30') : 0;
@@ -743,31 +821,68 @@ async function runMain(): Promise<void> {
   document.addEventListener('visibilitychange', () => { if (document.hidden) perfAudit?.markHidden(); });
   let perfT0 = -1;
 
+  // ?trace=1 — per-frame QA trace (window.__trace): dt, p, target, limit, canvas size,
+  // supersample, tier and named events (attach, resize, demote). Live only; read by the
+  // mobile smoothness harness. Never enabled for visitors.
+  const traceOn = q.get('trace') !== null && !isCapture;
+  const traceBuf: Array<Record<string, number | string>> = [];
+  const traceEvents: string[] = [];
+  const traceMark = (e: string): void => { if (traceOn) traceEvents.push(e); };
+  if (traceOn) (window as unknown as { __trace?: unknown }).__trace = traceBuf;
+  if (traceOn) {
+    // name every pipeline the backend creates, and whether it was compiled ahead (async) or on a frame (SYNC)
+    const be = renderer.backend as unknown as Record<string, (...a: unknown[]) => unknown>;
+    for (const fn of ['createRenderPipeline', 'createComputePipeline']) {
+      const orig = be[fn];
+      if (typeof orig !== 'function') continue;
+      be[fn] = function (this: unknown, ...a: unknown[]) {
+        const ro = a[0] as { material?: { name?: string; type?: string }; object?: { name?: string; type?: string } } | undefined;
+        const pr = a[1];
+        traceMark(`pipe:${fn === 'createComputePipeline' ? 'compute' : pr ? 'async' : 'SYNC'}:${ro?.object?.name || ro?.object?.type || '?'}/${ro?.material?.name || ro?.material?.type || '?'}`);
+        return orig.apply(this, a);
+      };
+    }
+  }
+  // v1.8.1 phone layouts: the closing card covers the bottom of the screen at the ending, so the
+  // camera frames the standing gold above it (CameraRig.bottomInset). Same media query as the
+  // compact page layer in story.css; portrait only (landscape phones put the card in the margin).
+  const compactPortrait = matchMedia('(max-width: 899px) and (orientation: portrait)');
+  const closingEl = document.querySelector<HTMLElement>('#story-closing');
+  const measureInset = (): void => {
+    if (isCapture || !closingEl || !compactPortrait.matches) { rig.bottomInset = 0; rig.topInset = 0; return; }
+    // measure with the "turn it gently" line shown (it comes and goes; the framing must not)
+    const hint = closingEl.querySelector<HTMLElement>('#story-turn-hint');
+    const hintWasHidden = hint?.hidden ?? false;
+    if (hint) hint.hidden = false;
+    const cardH = window.innerHeight - closingEl.getBoundingClientRect().top;
+    if (hint) hint.hidden = hintWasHidden;
+    const h = stableViewport ? svhPx : window.innerHeight; // the canvas height
+    rig.bottomInset = h > 0 && cardH > 0 ? Math.min(0.3, cardH / h + 0.015) : 0;
+    const about = document.querySelector<HTMLElement>('#story-about-btn');
+    const aboutBottom = about ? about.getBoundingClientRect().bottom : 0;
+    rig.topInset = h > 0 && aboutBottom > 0 ? Math.min(0.15, aboutBottom / h) : 0;
+  };
   const applyResize = (): void => {
+    traceMark(`resize ${window.innerWidth}x${window.innerHeight}`);
     const s = fitViewport();
     rig.camera.aspect = s.w / s.h;
     rig.camera.updateProjectionMatrix();
     grade.setAspect(s.w / s.h);
+    measureInset();
   };
-  // v1.8.0: on touch devices a height-only resize is the browser toolbar sliding in or out as
-  // the reader scrolls. Reallocating the drawing buffer then lands a hitch mid-gesture, so it
-  // waits for the scroll to rest; the sky-coloured page floor fills the strip in the meantime.
-  // Width changes (rotation) still apply at once.
-  let lastW = window.innerWidth;
-  let lastScrollAt = -1e9;
-  let resizeTimer = 0;
-  window.addEventListener('scroll', () => { lastScrollAt = performance.now(); }, { passive: true });
-  const settleResize = (): void => {
-    const quiet = performance.now() - lastScrollAt;
-    if (quiet < 250) { resizeTimer = window.setTimeout(settleResize, 260 - quiet); return; }
-    applyResize();
-  };
+  measureInset();
+  void document.fonts?.ready.then(measureInset);
+  // v1.8.1: on touch devices only a change of the stable viewport (rotation, split view) resizes;
+  // toolbar slides change innerHeight alone and are ignored (see measureViewport).
+  let lastFit = `${window.innerWidth}x${svhPx}`;
   window.addEventListener('resize', () => {
     if (isCapture) return;
-    const widthChanged = window.innerWidth !== lastW;
-    lastW = window.innerWidth;
-    window.clearTimeout(resizeTimer);
-    if (coarse && !widthChanged) { resizeTimer = window.setTimeout(settleResize, 120); return; }
+    measureViewport();
+    if (stableViewport) {
+      const fit = `${window.innerWidth}x${svhPx}`;
+      if (fit === lastFit) return;
+      lastFit = fit;
+    }
     applyResize();
   });
 
@@ -1011,6 +1126,8 @@ async function runMain(): Promise<void> {
   let pointerNX = 0;
   window.addEventListener('pointermove', (e) => {
     lastPointer = performance.now();
+    // v1.8.1: a finger is scrolling, not pointing — touch never steers the camera gimbal
+    if (e.pointerType === 'touch') return;
     pointerNX = (e.clientX / window.innerWidth - 0.5) * 2;
     rig.setPointer(pointerNX, -(e.clientY / window.innerHeight - 0.5) * 2);
   });
@@ -1058,8 +1175,10 @@ async function runMain(): Promise<void> {
   // arrival at the ending arms it by itself and the block settles with one gentle turn; leaving disarms
   if (story && explore) { explore.onFirstTurn = () => story?.turned(); explore.setNudge(!reducedMotion); }
 
+  let traceRenderMs = 0;
   renderer.setAnimationLoop((now: number) => {
     const cpuStart = perfAudit && !perfAudit.done ? performance.now() : null;
+    const traceT0 = traceOn ? performance.now() : 0;
     const dt = Math.max(0, (now - last) / 1000);
     last = now;
 
@@ -1067,13 +1186,13 @@ async function runMain(): Promise<void> {
       if (flickT0 < 0) flickT0 = now;
       const t = (now - flickT0) / 1000;
       const target = flickProfile(t);
-      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const max = document.documentElement.scrollHeight - scrollViewportHeight();
       if (target !== null) window.scrollTo(0, target * max);
       else if (t > 8) finishFlick();
     }
 
     if (reduced) {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const max = document.documentElement.scrollHeight - scrollViewportHeight();
       reduced.fromScroll(max > 0 ? window.scrollY / max : 0);
       reduced.tick(now);
     }
@@ -1114,11 +1233,36 @@ async function runMain(): Promise<void> {
     // key light sway ±0.004 world with the pointer (§12), off in reduced motion
     key.position.x = keyBaseX + (reducedMotion ? 0 : 0.004 * pointerNX);
     // reduced motion: ink pre-dried (the trail is evaluated 0.05 ahead), sim off
+    // v1.8.1 warm-up: once the relief is swapped in, render the rise and the ending once inside this
+    // frame (the real frame below overwrites them; they are never presented) so the rise's shadow,
+    // contact and dust pipelines compile now — while the reader rests or waits at the limit — and
+    // never at the rise itself. The gold's scroll limit lifts only after this.
+    const atRest = Math.abs(scroll.vLpf) < 0.01 && Math.abs(scroll.target - scroll.p) < 0.002;
+    const waiting = scroll.limit < 1 && scroll.wanted > scroll.limit + 0.005;
+    quietSince = atRest ? (quietSince < 0 ? now : quietSince) : -1;
+    if (quietWaiter && (waiting || (quietSince >= 0 && now - quietSince > 250))) {
+      const go = quietWaiter;
+      quietWaiter = null;
+      go();
+    }
+    if (warmDone && (atRest || waiting)) {
+      traceMark('warm');
+      for (const wp of [0.8, 0.97]) {
+        applyFrame(wp, 0, false, IDLE_ZERO, wp);
+        dust.update(0, reducedMotion ? 0 : faceFactor(wp), DUST_SCALE[tierMon.tier]);
+        grade.render();
+      }
+      const done = warmDone;
+      warmDone = null;
+      done();
+    }
     applyFrame(scroll.p, dt, !reducedMotion, idleState, reduced ? Math.min(0.64, scroll.p + 0.05) : scroll.p);
     rig.update(scroll.p, dt);
     dust.update(dt, reducedMotion ? 0 : faceFactor(scroll.p), DUST_SCALE[tierMon.tier]); // §15 dust fades in with the facing state; §19 per-tier population
     grade.setGrainSeed(Math.floor(now / 125)); // 8 Hz grain phase (§16)
+    const traceR0 = traceOn ? performance.now() : 0;
     grade.render();
+    if (traceOn) traceRenderMs = performance.now() - traceR0;
     revealCanvas(now);
     if (perfAudit && assetsReady) {
       const cpuMs = cpuStart === null ? undefined : performance.now() - cpuStart;
@@ -1147,10 +1291,15 @@ async function runMain(): Promise<void> {
       lastState = st;
       const change = assetsReady ? tierMon.update(dt, atBoundary) : null;
       if (change) {
+        traceMark(`tier ${change.reason} T${change.tier}`);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, change.dprCap));
         fitViewport();
         console.info(`[tier] ${change.reason} → T${change.tier} (dpr cap ${change.dprCap.toFixed(2)})`);
       }
+    }
+    if (traceOn) {
+      traceBuf.push({ t: +now.toFixed(1), dt: +(dt * 1000).toFixed(1), cpu: +(performance.now() - traceT0).toFixed(1), ren: +traceRenderMs.toFixed(1), late: +(traceT0 - now).toFixed(1), p: +scroll.p.toFixed(4), tg: +scroll.target.toFixed(4), w: +scroll.wanted.toFixed(4), lim: scroll.limit, cw: canvas!.width, ch: canvas!.height, ss: grade.supersample, tier: tierMon.tier, ev: traceEvents.splice(0).join(',') });
+      if (traceBuf.length > 20000) traceBuf.splice(0, 5000);
     }
     hud!.textContent = `${stateLabel(scroll.p)} · p ${scroll.p.toFixed(3)}${assetError ? ' · text unavailable' : !assetsReady ? ' · loading text' : ''}${idleState.ramp > 0 ? ' · idle' : ''}${reduced ? ' · reduced motion' : ''}${tierMon.tier !== tier ? ` · demoted T${tierMon.tier}` : ''}${q.get('showss') !== null ? ` · ss ${grade.supersample.toFixed(3)}×` : ''}`;
     // Announce state/loading changes only, not a new progress string every rendered frame.

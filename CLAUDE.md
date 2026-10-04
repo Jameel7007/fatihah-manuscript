@@ -24,10 +24,16 @@ Read first, in this order: `docs/next-steps.md` (what is next, with prompts), `d
 - QA sink: `node qa/review/receiver.mjs` on :4599, proxied at `/qa-save`; restart it if posts 502.
 - Device runs over the LAN: `FATIHAH_LAN=1 npx vite preview --port 4522` (HTTPS, cert in `~/.fatihah-tls`).
 - Rig: `?capture=P&tier=N&w=W&h=H[&post=NAME][&repeat=N]`, `?perf=30&save=1`, `?hold=60&save=1`, `?hud=1`.
-- Tests: `node --test qa/perf.test.mjs qa/tiers.test.mjs qa/assets.test.mjs qa/gpuTrace.test.mjs qa/spacer.test.mjs`.
+- Tests: `node --test qa/perf.test.mjs qa/tiers.test.mjs qa/assets.test.mjs qa/gpuTrace.test.mjs qa/spacer.test.mjs qa/scroll.test.mjs`.
 - Loading (v1.8.0): never pin the live scroll. `ScrollDriver.limit` stages it (ink → p 0.295, mesh → p 0.635);
   the `#spacer` height in index.html must match main.ts (spacer.test.mjs). Phone QA in headless emulation needs
   `?phone=1` (headless cannot fake screen.width); `?mesh=t3|full` overrides the mesh choice.
+- Mobile smoothness (v1.8.1, docs/mobile-smoothness-plan.md): p has a speed limit (`ScrollDriver.vMax`); new
+  materials are pre-compiled against `grade.passTarget` (never the canvas) before they are swapped in, attach at
+  quiet moments, and the rise is warmed before the gold's limit lifts; touch devices size the canvas to 100svh and
+  measure scroll against 100lvh; phones run T3 at DPR 1.75. Measure with `?trace=1` (window.__trace: dt, cpu,
+  late, p, events incl. SYNC pipeline creation) — restart the headless browser between long runs (stale GPU
+  state adds false gaps).
 - Repeatability/perf sequences: run headless (`Brave --headless=new --enable-unsafe-webgpu --use-angle=metal --remote-debugging-port=N`, driven over DevTools `Runtime.evaluate`; see README) — visible windows on the working Mac get occluded or closed. Safari only runs visibly.
 - Hidden browser panes throttle rAF to ~1 fps and freeze after 5 min; captures and perf/hold runs need a
   fresh, visible, fronted window.

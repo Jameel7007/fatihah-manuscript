@@ -56,6 +56,17 @@ export class InkPass {
     this.scene.add(quad);
   }
 
+  /** v1.8.1 compile the pass's pipeline in the background (against its own target) and then run it
+   *  once at p, so the first live frame after the ink is swapped in neither compiles nor uploads. */
+  async prepare(renderer: import('three/webgpu').WebGPURenderer, p: number): Promise<void> {
+    const prev = renderer.getRenderTarget();
+    renderer.setRenderTarget(this.rt);
+    let job: Promise<void>;
+    try { job = renderer.compileAsync(this.scene, this.cam); } finally { renderer.setRenderTarget(prev); }
+    try { await job; } catch { /* compiles on first run instead */ }
+    this.run(renderer, p);
+  }
+
   get texture(): import('three/webgpu').Texture {
     return this.rt.texture;
   }

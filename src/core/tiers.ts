@@ -52,9 +52,10 @@ export class TierMonitor {
   private clock = 0;
   private windowElapsed = 0;
 
-  constructor(initial: Tier) {
+  /** `dprCap` overrides the tier's table cap when the session started below it or above it (v1.8.1 phone profile). */
+  constructor(initial: Tier, dprCap?: number) {
     this.tier = initial;
-    this.dprCap = DPR_CAP[initial];
+    this.dprCap = dprCap ?? DPR_CAP[initial];
   }
 
   /** p95 of the current window (ms), for the HUD / perf harness. */

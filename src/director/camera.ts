@@ -108,6 +108,12 @@ export class CameraRig {
   /** §15 idle camera drift (world), set per frame by the idle controller */
   drift: [number, number, number] = [0, 0, 0];
   parallaxEnabled = true;
+  /** v1.8.1 fraction of the viewport height covered by the closing card at the ending (phone
+   *  layouts). The S7 fit frames the standing block in the area above it and a lens shift raises
+   *  the image, both growing with the lift — 0 on desktop and in capture, where nothing changes. */
+  bottomInset = 0;
+  /** v1.8.1 likewise the fraction covered at the top by the About button on phone layouts. */
+  topInset = 0;
 
   setPointer(nx: number, ny: number): void {
     this.pointerTarget.x = Math.max(-1, Math.min(1, nx));
@@ -178,7 +184,7 @@ export class CameraRig {
       this.dir.copy(this.anchorPos).sub(this.lookNow).normalize();
       this.lookNow.lerp(center, e);
       const dAnchor = this.anchorPos.distanceTo(this.lookNow) * (this.camera.aspect < 1 ? this.mobileDistMul(p) : 1);
-      const dFit = this.fitAssembly(p, this.dir, this.lookNow);
+      const dFit = this.fitAssembly(p, this.dir, this.lookNow, (this.bottomInset + this.topInset) * e);
       const blend = E1(clamp01((p - FACE_START) / 0.04));
       const d = dAnchor + (Math.max(dAnchor, dFit) - dAnchor) * blend;
       (window as unknown as { __s7fit?: unknown }).__s7fit = { p: +p.toFixed(3), dAnchor: +dAnchor.toFixed(3), dFit: +dFit.toFixed(3), d: +d.toFixed(3) };
@@ -210,6 +216,10 @@ export class CameraRig {
     }
     this.camera.lookAt(this.lookTarget);
     this.camera.fov = (2 * Math.atan(12 / focalAt(p)) * 180) / Math.PI;
+    // v1.8.1 lens shift: raise the image by half the inset so the fitted block sits above the card
+    const shift = p > FACE_START ? 0.5 * (this.bottomInset - this.topInset) * faceFactor(p) : 0;
+    if (shift !== 0) this.camera.setViewOffset(1000, 1000, 0, 1000 * shift, 1000, 1000);
+    else if (this.camera.view !== null) this.camera.clearViewOffset();
     this.camera.updateProjectionMatrix();
   }
 
@@ -255,7 +265,7 @@ export class CameraRig {
   /** Smallest distance along `dir` from `look` such that the text block — pitched and lifted
    *  per the S7 drivers — projects inside the viewport with DOLLY_MARGIN per side. Block
    *  bbox on the sheet: x ±0.28, the §3 text band v ∈ [0.15, 0.865] (z = v − 0.5). */
-  private fitAssembly(p: number, dir: Vector3, look: Vector3): number {
+  private fitAssembly(p: number, dir: Vector3, look: Vector3, inset = 0): number {
     const pitch = facePitch(p);
     const lift = faceFactor(p);
     const cA = new Vector3(...FACE_CENTER_ANCHOR);
@@ -267,7 +277,8 @@ export class CameraRig {
     const Ty = 12 / focalAt(p); // the true focal for this p (camera.fov lags one frame / is stale on snap)
     const Tx = Ty * this.camera.aspect;
     const kx = Tx * (1 - DOLLY_MARGIN);
-    const ky = Ty * (1 - DOLLY_MARGIN);
+    // with a reserved card/button band the band itself is the breathing room: a slim margin inside it
+    const ky = Ty * (1 - inset) * (1 - (inset > 0 ? Math.min(DOLLY_MARGIN, 0.03) : DOLLY_MARGIN));
     let dFit = 0.2;
     const rel = new Vector3();
     for (const x of [-0.28, 0.28]) {

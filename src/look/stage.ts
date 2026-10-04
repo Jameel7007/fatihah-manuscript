@@ -120,11 +120,16 @@ export interface Stage {
   sky: Sky;
   /** scene-linear sky floor (a physical far sphere — pass() drops scene.background) */
   setBackground(r: number, g: number, b: number): void;
-  /** Attach streamed phase-B ink without rebuilding the scene. */
-  attachInk(ink: InkPack): void;
-  /** Attach or replace the streamed phase-C relief with the active tier's mesh. */
-  attachRelief(bin: GlyphBin): void;
+  /** Attach streamed phase-B ink without rebuilding the scene. v1.8.1: the new sheet is handed to
+   *  `compile` (off-scene, against the live lights) BEFORE it replaces the old one, so no frame
+   *  compiles it synchronously. */
+  attachInk(ink: InkPack, compile?: Precompile, prepareInk?: (pass: InkPass) => Promise<void>): Promise<void>;
+  /** Attach or replace the streamed phase-C relief with the active tier's mesh (pre-compiled as above). */
+  attachRelief(bin: GlyphBin, compile?: Precompile): Promise<void>;
 }
+
+/** v1.8.1 pre-compiles objects off-scene against the live scene's lights and the beauty pass target. */
+export type Precompile = (objects: import('three/webgpu').Object3D[]) => Promise<void>;
 
 // key world position — shared by the light and the translucency term
 const KEY_POS: [number, number, number] = [-0.55, 1.3, 0.85];
@@ -293,25 +298,32 @@ export function buildStage(
     setBackground: (r: number, g: number, b: number) => {
       sky.uFloor.value.set(r, g, b);
     },
-    attachInk: (pack: InkPack): void => {
+    attachInk: async (pack: InkPack, compile?: Precompile, prepareInk?: (pass: InkPass) => Promise<void>): Promise<void> => {
       if (stage.inkPass) return;
-      inkPass = new InkPass(pack, maps.fiber);
-      stage.inkPass = inkPass;
-      replaceSheet();
+      const nextInk = new InkPass(pack, maps.fiber);
+      const next = buildSheet(field, maps, debug, nextInk.texture, uEmboss, stage.contact?.texture, uContact, uGhost, uRecede, uKeyMask);
+      if (compile) await compile([next]);
+      if (prepareInk) await prepareInk(nextInk);
+      inkPass = nextInk;
+      stage.inkPass = nextInk;
+      swapSheet(next);
     },
-    attachRelief: (bin: GlyphBin): void => {
+    attachRelief: async (bin: GlyphBin, compile?: Precompile): Promise<void> => {
       if (!stage.inkPass || (debug !== 'none' && debug !== 'blob')) return;
+      const nextRelief = buildGlyphRelief(bin, field, maps.fiber, maps.burnish, stage.inkPass.texture);
+      const nextContact = new ContactBlob(nextRelief.mesh, nextRelief.heightMaterial, qualityTier === 3 ? 256 : 512, qualityTier === 3 ? 5 : 13);
+      const next = buildSheet(field, maps, debug, stage.inkPass.texture, uEmboss, nextContact.texture, uContact, uGhost, uRecede, uKeyMask);
+      if (compile) await compile([nextRelief.mesh, next]);
       if (stage.relief) sheetRoot.remove(stage.relief.mesh);
-      relief = buildGlyphRelief(bin, field, maps.fiber, maps.burnish, stage.inkPass.texture);
-      contact = new ContactBlob(relief.mesh, relief.heightMaterial, qualityTier === 3 ? 256 : 512, qualityTier === 3 ? 5 : 13);
-      stage.relief = relief;
-      stage.contact = contact;
-      sheetRoot.add(relief.mesh);
-      replaceSheet();
+      relief = nextRelief;
+      contact = nextContact;
+      stage.relief = nextRelief;
+      stage.contact = nextContact;
+      sheetRoot.add(nextRelief.mesh);
+      swapSheet(next);
     },
   };
-  function replaceSheet(): void {
-    const next = buildSheet(field, maps, debug, stage.inkPass?.texture, uEmboss, stage.contact?.texture, uContact, uGhost, uRecede, uKeyMask);
+  function swapSheet(next: typeof sheet): void {
     sheetRoot.remove(sheet);
     sheet.geometry.dispose();
     if (Array.isArray(sheet.material)) sheet.material.forEach((m) => m.dispose());

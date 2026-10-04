@@ -36,6 +36,8 @@ export interface Grade {
   /** beauty-pass supersample factor (1 = native); the chain samples it down bilinearly */
   setSupersample(s: number): void;
   readonly supersample: number;
+  /** v1.8.1 the beauty pass's render target — pipelines must be pre-compiled against it, not the canvas */
+  readonly passTarget: RenderTarget;
 }
 
 export function createGrade(renderer: WebGPURenderer, scene: Scene, camera: Camera): Grade {
@@ -102,6 +104,7 @@ export function createGrade(renderer: WebGPURenderer, scene: Scene, camera: Came
   post.outputNode = vec4(outv.x, outv.y, outv.z, 1);
 
   return {
+    get passTarget(): RenderTarget { return scenePass.renderTarget as RenderTarget; },
     render: () => post.render(),
     renderTo: (target: RenderTarget) => {
       const previous = renderer.getRenderTarget();

@@ -58,9 +58,30 @@ export class ScrollDriver {
   /** The reader's scroll position as p, before the asset limit — drives the "still arriving" note. */
   wanted = 0;
 
+  /** v1.8.1 speed limit on p (per second): a hard flick or a lifted asset limit glides instead of racing. */
+  vMax = 0.8;
+  /** v1.8.1 the viewport height the scroll range is measured against. Phones pass the large viewport
+   *  (100lvh), which does not change when the browser toolbar slides, so p does not jump with it. */
+  viewportHeight: () => number = () => window.innerHeight;
+
   private v = 0;
   private forcedPrev: number | null = null;
   private readonly reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /** Jump straight to the reader's position (no glide) — used once, under the poster crossfade. */
+  snapToTarget(): void {
+    if (this.forced !== null) return;
+    this.measure();
+    this.p = this.target;
+    this.v = 0;
+    this.vLpf = 0;
+  }
+
+  private measure(): void {
+    const max = document.documentElement.scrollHeight - this.viewportHeight();
+    this.wanted = max > 0 ? scrollToP(window.scrollY / max) : 0;
+    this.target = Math.min(this.limit, this.wanted);
+  }
 
   update(dtRaw: number): void {
     if (this.forced !== null) {
@@ -73,9 +94,7 @@ export class ScrollDriver {
       return;
     }
     this.forcedPrev = null;
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    this.wanted = max > 0 ? scrollToP(window.scrollY / max) : 0;
-    this.target = Math.min(this.limit, this.wanted);
+    this.measure();
 
     const dt = Math.min(dtRaw, 1 / 30);
     if (dt <= 0) return;
@@ -88,6 +107,7 @@ export class ScrollDriver {
     } else {
       const a = 110 * (this.target - this.p) - 21 * this.v;
       this.v += a * dt;
+      this.v = Math.max(-this.vMax, Math.min(this.vMax, this.v));
       this.p += this.v * dt;
     }
     this.p = Math.min(1, Math.max(0, this.p));
