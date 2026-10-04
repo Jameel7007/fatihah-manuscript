@@ -37,7 +37,7 @@ Headless runs on the Mac GPU, so it shows logic and main-thread problems, not ph
    `?tier=2` still forces the heavier profile for comparison.
 5. **Touch never steers the camera.** Pointer parallax only for mouse and pen.
 6. **The ending fits above the closing card** on short phone screens (measured at 393×600/660/760).
-7. **Instrumented.** `?trace=1` per-frame trace for the harness; `?hud=1` on the phone shows fps so the
+7. **Instrumented.** `?trace=1` per-frame trace for the harness; `?hud=1` on the phone shows fps, tier and DPR so the
    owner can screenshot what their device does.
 
 Out of scope: the desktop look and feel (approved), the reference frames (capture paths untouched), the

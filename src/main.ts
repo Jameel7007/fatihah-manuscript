@@ -1176,6 +1176,7 @@ async function runMain(): Promise<void> {
   if (story && explore) { explore.onFirstTurn = () => story?.turned(); explore.setNudge(!reducedMotion); }
 
   let traceRenderMs = 0;
+  let hudFps = 60; // smoothed frame rate for ?hud=1 (owner device checks)
   renderer.setAnimationLoop((now: number) => {
     const cpuStart = perfAudit && !perfAudit.done ? performance.now() : null;
     const traceT0 = traceOn ? performance.now() : 0;
@@ -1301,7 +1302,8 @@ async function runMain(): Promise<void> {
       traceBuf.push({ t: +now.toFixed(1), dt: +(dt * 1000).toFixed(1), cpu: +(performance.now() - traceT0).toFixed(1), ren: +traceRenderMs.toFixed(1), late: +(traceT0 - now).toFixed(1), p: +scroll.p.toFixed(4), tg: +scroll.target.toFixed(4), w: +scroll.wanted.toFixed(4), lim: scroll.limit, cw: canvas!.width, ch: canvas!.height, ss: grade.supersample, tier: tierMon.tier, ev: traceEvents.splice(0).join(',') });
       if (traceBuf.length > 20000) traceBuf.splice(0, 5000);
     }
-    hud!.textContent = `${stateLabel(scroll.p)} · p ${scroll.p.toFixed(3)}${assetError ? ' · text unavailable' : !assetsReady ? ' · loading text' : ''}${idleState.ramp > 0 ? ' · idle' : ''}${reduced ? ' · reduced motion' : ''}${tierMon.tier !== tier ? ` · demoted T${tierMon.tier}` : ''}${q.get('showss') !== null ? ` · ss ${grade.supersample.toFixed(3)}×` : ''}`;
+    if (dt > 0) hudFps += (1 / dt - hudFps) * 0.05;
+    hud!.textContent = `${Math.round(hudFps)} fps · T${tierMon.tier} · dpr ${renderer.getPixelRatio().toFixed(2)} · ${stateLabel(scroll.p)} · p ${scroll.p.toFixed(3)}${assetError ? ' · text unavailable' : !assetsReady ? ' · loading text' : ''}${idleState.ramp > 0 ? ' · idle' : ''}${reduced ? ' · reduced motion' : ''}${tierMon.tier !== tier ? ` · demoted T${tierMon.tier}` : ''}${q.get('showss') !== null ? ` · ss ${grade.supersample.toFixed(3)}×` : ''}`;
     // Announce state/loading changes only, not a new progress string every rendered frame.
     const message = `${stateLabel(scroll.p)}${assetError ? ' · text unavailable' : !assetsReady ? ' · loading text' : ''}${reduced ? ' · reduced motion' : ''}`;
     if (announcement && announcement.textContent !== message) announcement.textContent = message;
