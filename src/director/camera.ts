@@ -218,7 +218,12 @@ export class CameraRig {
     this.camera.fov = (2 * Math.atan(12 / focalAt(p)) * 180) / Math.PI;
     // v1.8.1 lens shift: raise the image by half the inset so the fitted block sits above the card
     const shift = p > FACE_START ? 0.5 * (this.bottomInset - this.topInset) * faceFactor(p) : 0;
-    if (shift !== 0) this.camera.setViewOffset(1000, 1000, 0, 1000 * shift, 1000, 1000);
+    // v1.8.3: setViewOffset() SETS camera.aspect = fullWidth / fullHeight — v1.8.1 passed a square
+    // 1000×1000 frame, which forced aspect 1 and squeezed the whole picture sideways on phones (the
+    // owner's "totally bunched" ending, and it stayed squeezed after scrolling back). The full frame
+    // now carries the real aspect.
+    const aspect = this.camera.aspect;
+    if (shift !== 0) this.camera.setViewOffset(1000 * aspect, 1000, 0, 1000 * shift, 1000 * aspect, 1000);
     else if (this.camera.view !== null) this.camera.clearViewOffset();
     this.camera.updateProjectionMatrix();
   }
