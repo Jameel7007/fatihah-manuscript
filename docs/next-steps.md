@@ -1,5 +1,7 @@
 # Al-Fātiḥah 3D Manuscript · Next steps and prompts
 
+> **2026-10-12:** v1 is live at v1.8.3. The next phase is a rebuild with more animation — plan and ready-to-paste prompt in [`rebuild-plan.md`](rebuild-plan.md). Hosting (§6) is done: GitHub Pages since 2026-09-19.
+
 Written 2026-09-13 · repo `~/Code/fatihah-manuscript` · main = origin/main at `d1fc20c` · v1.6.7 · M0–M6 signed off, M7/M8 open.
 Ledger: <https://claude.ai/code/artifact/9af3f15c-105e-4238-94e4-2b40e1891354> · Spec: <https://claude.ai/code/artifact/1fe75f9f-9779-4526-b424-bac53ba1143f>
 
