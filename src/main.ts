@@ -687,7 +687,7 @@ async function runMain(): Promise<void> {
   const rig = new CameraRig();
   const scroll = new ScrollDriver();
   scroll.viewportHeight = scrollViewportHeight;
-  scroll.vMax = coarse ? 0.3 : 0.8; // v1.8.1 calm motion: flicks and lifted limits glide
+  scroll.vMax = coarse ? 0.22 : 0.3; // v1.8.2 calm motion: flicks, lifted limits and catch-up glide (the unroll takes ≥ 1 s)
   const size = fitViewport();
   rig.camera.aspect = size.w / size.h;
   const grade = createGrade(renderer, scene, rig.camera);
@@ -791,9 +791,9 @@ async function runMain(): Promise<void> {
     presented++;
     if (presented < 3) return;
     posterGone = true;
-    // v1.8.1: a reader who scrolled under the poster meets the canvas at their position (masked by
-    // the crossfade) instead of watching it race there.
-    if (scroll.forced === null) { scroll.snapToTarget(); rig.snap(scroll.p); }
+    // v1.8.2: no snap. The canvas always appears at the opening pose (p = 0, as the poster shows)
+    // and a reader who scrolled under the poster watches the paper unroll to their position at the
+    // gentle speed limit — the v1.8.1 snap skipped the whole opening.
     traceMark('reveal');
     (canvas as HTMLCanvasElement).style.transition = 'opacity 420ms ease-out';
     (canvas as HTMLCanvasElement).style.opacity = '1';
@@ -1239,7 +1239,9 @@ async function runMain(): Promise<void> {
     // contact and dust pipelines compile now — while the reader rests or waits at the limit — and
     // never at the rise itself. The gold's scroll limit lifts only after this.
     const atRest = Math.abs(scroll.vLpf) < 0.01 && Math.abs(scroll.target - scroll.p) < 0.002;
-    const waiting = scroll.limit < 1 && scroll.wanted > scroll.limit + 0.005;
+    // waiting = the reader is ahead of the download AND the picture has already arrived at the limit
+    // (not while the opening is still gliding toward it — an attach then would land mid-animation)
+    const waiting = scroll.limit < 1 && scroll.wanted > scroll.limit + 0.005 && scroll.p >= scroll.limit - 0.002;
     quietSince = atRest ? (quietSince < 0 ? now : quietSince) : -1;
     if (quietWaiter && (waiting || (quietSince >= 0 && now - quietSince > 250))) {
       const go = quietWaiter;

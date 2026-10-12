@@ -11,6 +11,8 @@ const diagnostic = ['capture', 'probe', 'calibrate'].some(key => query.has(key))
 // carries the scroll length) and a quiet note says the manuscript is on its way. Story takes
 // the note over on its first frame.
 if (!diagnostic) {
+  // v1.8.2: start at the top (a reload or a back-navigation must not land mid-piece)
+  if (scrollY > 0) scrollTo(0, 0);
   const wait = document.getElementById('story-wait');
   const onEarlyScroll = (): void => {
     if (!wait || wait.dataset.owned) { removeEventListener('scroll', onEarlyScroll); return; }
